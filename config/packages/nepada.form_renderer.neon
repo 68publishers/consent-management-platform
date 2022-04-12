@@ -1,0 +1,9 @@
+extensions:
+	nepada.form_renderer: Nepada\Bridges\FormRendererDI\FormRendererExtension
+
+nepada.form_renderer:
+	bootstrap4:
+		mode: horizontal
+		useErrorTooltips: no
+		#imports:
+		#	- %appDir%/Ui/templates/form-renderer/bootstrap4-imports.latte

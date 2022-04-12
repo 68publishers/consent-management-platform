@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# Remove cache and logs
+rm -rf var/cache/*
+rm -rf var/log/*
+
+# Copy config files
+cp .env.dist .env
+
+# Load envs
+. .env
+
+echo "Running docker-compose (down, pull & up)"
+
+docker-compose -f docker-compose.yml down
+docker-compose -f docker-compose.yml pull
+docker-compose -f docker-compose.yml up -d
+
+echo "Running docker-compose [Done]"
+
+docker exec cookie-consent-admin-app ./installer-run
+
+exit 0

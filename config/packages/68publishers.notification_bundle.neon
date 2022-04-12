@@ -1,0 +1,5 @@
+extensions:
+	68publishers.notification_bundle: SixtyEightPublishers\NotificationBundle\DI\NotificationBundleExtension
+
+68publishers.notification_bundle:
+	storage: Nette\Caching\Storages\DevNullStorage

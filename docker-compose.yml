@@ -1,0 +1,54 @@
+version: "3.7"
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: app
+        container_name: cookie-consent-admin-app
+        command: ["run-nginx-unit"]
+        ports:
+            - 8888:8080
+        dns:
+            - 8.8.8.8
+            - 8.8.4.4
+        volumes:
+            - nfsmount:/var/www/html:cached
+        depends_on:
+            - db
+            - redis
+    db:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: db
+        container_name: cookie-consent-admin-db
+        restart: always
+        ports:
+            - 5432:5432
+        volumes:
+            - ./docker/postgres/postgres.conf:/var/lib/postgresql/data/postgresql.conf:delegated
+            - ./var/postgres-data:/var/lib/postgresql/data:cached
+        environment:
+            - PGDATA=/var/lib/postgresql/data/pgdata
+            - POSTGRES_USER=root
+            - POSTGRES_PASSWORD=root
+            - POSTGRES_DB=cookie-consent-admin
+        command:
+            - postgres
+            - -c
+            - config_file=/var/lib/postgresql/data/postgresql.conf
+    redis:
+        image: redis:5.0.8-alpine
+        container_name: cookie-consent-admin-redis
+        ports:
+            - 6379:6379
+
+volumes:
+    nfsmount:
+        driver: local
+        driver_opts:
+            type: nfs
+            o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
+            device: ":${PWD}"

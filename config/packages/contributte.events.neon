@@ -1,0 +1,3 @@
+extensions:
+	contributte.events: Contributte\EventDispatcher\DI\EventDispatcherExtension
+	contributte.events.extra: Contributte\Events\Extra\DI\EventBridgesExtension

@@ -1,0 +1,2 @@
+extensions:
+	contributte.recaptcha: Contributte\ReCaptcha\DI\ReCaptchaExtension

@@ -1,0 +1,14 @@
+extensions:
+	nettrine.dbal: Nettrine\DBAL\DI\DbalExtension
+
+nettrine.dbal:
+	debug:
+		panel: %debugMode%
+		sourcePaths: [%appDir%]
+	connection:
+		driver: pdo_pgsql
+		host: ::env(DB_HOST)
+		port: ::env(DB_PORT)
+		dbname: ::env(DB_NAME)
+		user: ::env(DB_USER)
+		password: ::env(DB_PASSWORD)

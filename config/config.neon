@@ -1,0 +1,30 @@
+includes:
+	- php/@php.neon
+	- acl/@acl.neon
+	- packages/@packages.neon
+	- services.neon
+
+parameters:
+	assetsDir: %appDir%/../assets
+
+php:
+    date.timezone: UTC
+
+application:
+	errorPresenter: Error
+	mapping:
+		*: App\Web\*Module\Presenter\*Presenter
+
+session:
+	expiration: 14 days
+	name: ps
+
+tracy:
+	maxDepth: 6
+
+http:
+	proxy: ::array_filter(::explode(',', ::env(TRUSTED_PROXIES, '')))
+
+decorator:
+	#SixtyEightPublishers\SmartNetteComponent\UI\Control:
+	#	inject: yes

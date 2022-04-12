@@ -1,0 +1,2 @@
+extensions:
+	nettrine.cache: Nettrine\Cache\DI\CacheExtension

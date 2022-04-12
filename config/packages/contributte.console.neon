@@ -1,0 +1,8 @@
+extensions:
+	contributte.console: Contributte\Console\DI\ConsoleExtension(%consoleMode%)
+
+contributte.console:
+    name: AMP
+    version: 1.0
+    url: null # @todo %env.PROJECT_URL%, validation schema from contributte/console doesn't allow parameters here - create Issue and PR
+    lazy: false

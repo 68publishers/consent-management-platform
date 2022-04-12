@@ -1,0 +1,12 @@
+extensions:
+	contributte.translation: Contributte\Translation\DI\TranslationExtension
+
+contributte.translation:
+	locales:
+		default: cs_CZ
+		fallback:
+			- cs_CZ
+			- cs
+	dirs:
+		- %appDir%/../translations
+	localeResolvers: []

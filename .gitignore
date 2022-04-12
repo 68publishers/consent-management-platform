@@ -1,0 +1,22 @@
+# Application
+.env
+.env.local.php
+vendor/
+
+# Project files etc.
+#nbproject
+.idea
+#.settings
+#.project
+#.buildpath
+
+# Dev
+node_modules/
+
+# Client-side
+public/dist/
+
+# MacOS
+#.DS_Store
+#._.DS_Store
+#._*

@@ -1,0 +1,2 @@
+services:
+	routing.router: App\Web\Router\RouterFactory()::create()

@@ -1,0 +1,5 @@
+services:
+	acl:
+		type: Nette\Security\Permission
+		setup:
+			- addRole(guest)

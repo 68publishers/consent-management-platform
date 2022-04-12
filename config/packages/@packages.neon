@@ -1,0 +1,22 @@
+includes:
+	- 68publishers.architecture_bundle.neon
+	- 68publishers.asset.neon
+	- 68publishers.i18n.neon
+	- 68publishers.notification_bundle.neon
+	- 68publishers.smart_nette_component.neon
+	- 68publishers.tracy_git_version.neon
+	- 68publishers.translation_bridge.neon
+	- 68publishers.user_bundle.neon
+	- 68publishers.webpack_encore_bundle.neon
+	- 68publishers.health_check.neon
+	- contributte.apitte.neon
+	- contributte.translation.neon
+	- contributte.console.neon
+	- contributte.events.neon
+	- contributte.monolog.neon
+	- contributte.recaptcha.neon
+	- kdyby.redis.neon
+	- nepada.form_renderer.neon
+	- nettrine.annotations.neon
+	- nettrine.cache.neon
+	- nettrine.dbal.neon

@@ -1,0 +1,17 @@
+extensions:
+	68publishers.i18n: SixtyEightPublishers\i18n\DI\I18nExtension(%debugMode%)
+
+services:
+	68publishers.i18n.profile_container:
+		autowired: yes
+
+68publishers.i18n:
+	profiles:
+		default:
+			language: [ cs_CZ ]
+			currency: [ CZK ]
+			country: [ CZ ]
+	translation_bridge:
+		locale_resolver:
+			enabled: yes
+			use_default: yes

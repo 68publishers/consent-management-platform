@@ -1,0 +1,5 @@
+extensions:
+	68publishers.asset: SixtyEightPublishers\Asset\DI\AssetExtension
+
+68publishers.asset:
+	json_manifest_path: %wwwDir%/dist/manifest.json

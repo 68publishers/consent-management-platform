@@ -1,0 +1,2 @@
+extensions:
+	68publishers.translation_bridge: SixtyEightPublishers\TranslationBridge\Bridge\Contributte\DI\TranslationBridgeExtension
