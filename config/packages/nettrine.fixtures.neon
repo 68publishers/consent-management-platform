@@ -1,0 +1,6 @@
+extensions:
+	nettrine.fixtures: Nettrine\Fixtures\DI\FixturesExtension
+
+nettrine.fixtures:
+	paths:
+		- %appDir%/Fixture

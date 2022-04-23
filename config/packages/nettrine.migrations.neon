@@ -1,0 +1,10 @@
+extensions:
+	nettrine.migrations: Nettrine\Migrations\DI\MigrationsExtension
+
+services:
+	- App\Bridge\Doctrine\EventSubscriber\FixDefaultSchemaSubscriber
+
+nettrine.migrations:
+	table: migrations
+	directory: %appDir%/Migration
+	namespace: App\Migration

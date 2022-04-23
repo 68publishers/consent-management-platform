@@ -19,7 +19,7 @@ trait RedrawControlTrait
 
 	/**
 	 * @param string|array|NULL $snippet
-	 * @param bool $redraw
+	 * @param bool              $redraw
 	 *
 	 * @return void
 	 * @throws \Nette\Application\AbortException

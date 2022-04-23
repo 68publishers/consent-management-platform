@@ -1,0 +1,12 @@
+extensions:
+	nettrine.orm: Nettrine\ORM\DI\OrmExtension
+	nettrine.orm.cache: Nettrine\ORM\DI\OrmCacheExtension
+	nettrine.orm.console: Nettrine\ORM\DI\OrmConsoleExtension(%consoleMode%)
+	nettrine.orm.xml: Nettrine\ORM\DI\OrmXmlExtension
+
+nettrine.orm:
+	configuration:
+		proxyDir: %tempDir%/cache/proxies
+
+nettrine.orm.xml:
+	mapping: []

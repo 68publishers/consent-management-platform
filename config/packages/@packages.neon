@@ -1,6 +1,7 @@
 includes:
 	- 68publishers.architecture_bundle.neon
 	- 68publishers.asset.neon
+	- 68publishers.doctrine_bridge.neon
 	- 68publishers.i18n.neon
 	- 68publishers.notification_bundle.neon
 	- 68publishers.smart_nette_component.neon
@@ -20,3 +21,6 @@ includes:
 	- nettrine.annotations.neon
 	- nettrine.cache.neon
 	- nettrine.dbal.neon
+	- nettrine.fixtures.neon
+	- nettrine.migrations.neon
+	- nettrine.orm.neon

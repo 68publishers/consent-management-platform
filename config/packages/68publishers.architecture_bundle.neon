@@ -1,2 +1,3 @@
 extensions:
 	68publishers.architecture_bundle: SixtyEightPublishers\ArchitectureBundle\Bridge\Nette\DI\ArchitectureBundleExtension
+	68publishers.architecture_bundle.doctrine: SixtyEightPublishers\ArchitectureBundle\Bridge\Nette\DI\DoctrineInfrastructureExtension

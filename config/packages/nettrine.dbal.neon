@@ -4,7 +4,8 @@ extensions:
 nettrine.dbal:
 	debug:
 		panel: %debugMode%
-		sourcePaths: [%appDir%]
+		sourcePaths:
+			- %appDir%
 	connection:
 		driver: pdo_pgsql
 		host: ::env(DB_HOST)
