@@ -1,0 +1,11 @@
+open_user_menu: Otevřít uživatelské menu
+open_sidebar: Otevřít hlavní menu
+close_sidebar: Zavřít hlavní menu
+settings: Nastavení
+sign_out: Odhlásit se
+
+sidebar:
+	dashboard: Dashboard
+	users: Uživatelé
+	user_list: Výpis uživatelů
+	password_request_list: Zapomenutá hesla

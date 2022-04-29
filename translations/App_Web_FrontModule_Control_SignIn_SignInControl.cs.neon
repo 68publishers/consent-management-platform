@@ -1,0 +1,13 @@
+username:
+	field: Email
+	required: Vyplňte prosím email.
+
+password:
+	field: Heslo
+	required: Vyplňte prosím heslo.
+
+login:
+	field: Přihlásit se
+
+message:
+	user_authentication_failed: Nesprávné přihlašovací údaje.

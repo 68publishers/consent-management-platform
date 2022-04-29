@@ -18,26 +18,21 @@ final class RouterFactory
 
 		$router->withModule('Front')
 			->addRoute('<presenter>', [
-				'action' => 'default',
 				NULL => [
 					Route::FILTER_IN => static function (array $params) {
 						return in_array($params['presenter'], [
 							'SignIn',
-							'SignUp',
 							'ForgotPassword',
 							'ResetPassword',
 						], TRUE) ? $params : NULL;
 					},
 				],
+				'action' => 'default',
 			]);
 
 		$router->withModule('Admin')
-			->addRoute('[/<module>/<presenter>[/<id>]]', [
+			->addRoute('[[<module>/]<presenter>[/<id>]]', [
 				'presenter' => 'Dashboard',
-				'action' => 'default',
-			])
-			->addRoute('<presenter>/<_sec>', [
-				'presenter' => 'SignOut',
 				'action' => 'default',
 			]);
 

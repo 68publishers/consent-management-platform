@@ -1,0 +1,2 @@
+extensions:
+	68publishers.event_dispatcher_extra: SixtyEightPublishers\EventDispatcherExtra\Bridge\Nette\DI\EventDispatcherExtraExtension

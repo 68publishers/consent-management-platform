@@ -5,16 +5,19 @@ declare(strict_types=1);
 namespace App\Web\Ui;
 
 use Nette\Security\User as NetteUser;
-use SixtyEightPublishers\NotificationBundle\UI\TNotifier;
 use SixtyEightPublishers\TranslationBridge\TranslatorAwareTrait;
 use SixtyEightPublishers\TranslationBridge\TranslatorAwareInterface;
+use SixtyEightPublishers\EventDispatcherExtra\EventDispatcherAwareTrait;
 use SixtyEightPublishers\SmartNetteComponent\UI\Control as SmartControl;
+use SixtyEightPublishers\EventDispatcherExtra\EventDispatcherAwareInterface;
+use SixtyEightPublishers\FlashMessageBundle\Bridge\Nette\Ui\ControlTrait as FlashMessageControlTrait;
 
-abstract class Control extends SmartControl implements TranslatorAwareInterface
+abstract class Control extends SmartControl implements TranslatorAwareInterface, EventDispatcherAwareInterface
 {
-	use TNotifier;
 	use TranslatorAwareTrait;
 	use RedrawControlTrait;
+	use EventDispatcherAwareTrait;
+	use FlashMessageControlTrait;
 
 	private NetteUser $user;
 

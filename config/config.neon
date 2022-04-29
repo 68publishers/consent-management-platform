@@ -26,5 +26,5 @@ http:
 	proxy: ::array_filter(::explode(',', ::env(TRUSTED_PROXIES, '')))
 
 decorator:
-	#SixtyEightPublishers\SmartNetteComponent\UI\Control:
-	#	inject: yes
+	SixtyEightPublishers\SmartNetteComponent\UI\Control:
+		inject: yes

@@ -1,0 +1,46 @@
+{varType Contributte\MenuControl\IMenu $menu}
+{varType Contributte\MenuControl\IMenu $itemsParent}
+{varType Contributte\MenuControl\IMenuItem $item}
+
+{* Recursive menu generation *}
+{define #menu_branch, $itemsParent}
+    {foreach $itemsParent->getVisibleItemsOnMenu() as $item}
+
+        {continueIf FALSE === $item->isAllowed()}
+
+        {if 0 < count($item->getItems()) && TRUE === $itemsParent->hasVisibleItemsOnMenu()}
+            <div x-data="collapse" x-bind="collapse">
+                <button x-bind="collapseButton" type="button" n:class="'group flex items-center px-2 py-2 text-sm font-medium rounded-md w-full', $item->isActive() ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-600'">
+                    {if $item->getData(icon, NULL)}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-3 flex-shrink-0 h-6 w-6 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            {$item->getData(icon)|noescape}
+                        </svg>
+                    {/if}
+                    <span class="flex-1 text-left">{$item->getRealTitle()}</span>
+                </button>
+
+                <div x-bind="collapsePanel" class="py-1" n:attr="'x-cloak' => $item->isActive() ? NULL : TRUE">
+                    <a n:foreach="$item->getVisibleItemsOnMenu() as $subItem" href="{$subItem->getRealLink()}" n:class="'group flex items-center px-2 py-2 pl-11 text-sm font-medium rounded-md', $subItem->isActive() ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-600'">
+                        {$subItem->getRealTitle()}
+                    </a>
+                </div>
+            </div>
+        {else}
+            <a href="{$item->getRealLink()}" n:class="'group flex items-center px-2 py-2 text-sm font-medium rounded-md', $item->isActive() ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-600'">
+                {if $item->getData(icon, NULL)}
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mr-3 flex-shrink-0 h-6 w-6 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        {$item->getData(icon)|noescape}
+                    </svg>
+                {/if}
+                {$item->getRealTitle()}
+            </a>
+        {/if}
+
+    {/foreach}
+
+{/define}
+
+{* Lets ddo it! *}
+<nav class="flex-1 px-2 pb-4 space-y-1" n:if="$menu->hasVisibleItemsOnMenu()">
+    {include #menu_branch, $menu}
+</nav>

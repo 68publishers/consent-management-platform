@@ -1,0 +1,150 @@
+{define #controls}
+    {if}
+        {foreach $group->getControls() as $control}
+            {continueIf $control->getOption('rendered') || $control->getOption('type') === 'hidden'}
+            {include #helpers-override-split, blockNamePrefix => pair, control => $control, parameters => [controlsIterator => $iterator]}
+        {/foreach}
+    {/if $iterations}
+{/define}
+
+{define #pair-type-default}
+    <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start pt-4" n:attr="id => $control->getOption('id')">
+        {include #label, control => $control}
+
+        <div class="mt-1 sm:mt-0 sm:col-span-2">
+            {include #helpers-override-split, blockNamePrefix => control, control => $control}
+        </div>
+    </div>
+{/define}
+
+{define #pair-type-button}
+    <div class="flex justify-end pt-4">
+        {block #control-type-button}
+            {if !$control->getOption('rendered')}
+                <input n:name="$control" n:class="
+                    $control->getControlPrototype()->class,
+                    'ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                ">
+                {include #control-help, control => $control}
+            {/if}
+            {if !$controlsIterator->isLast() && $controlsIterator->getNextValue()->getOption('type') === 'button'}
+                {php $controlsIterator->next()}
+                {include #control-type-button, control => $controlsIterator->current(), controlsIterator => $controlsIterator}
+            {/if}
+        {/block}
+    </div>
+{/define}
+
+{define #label}
+    <label n:if="$control->getLabel()" n:name="$control" n:class="
+        $control->getLabelPrototype()->class,
+        'block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
+    " />
+{/define}
+
+{define #control-type-default}
+    {include #helpers-override-split, blockNamePrefix => input, control => $control}
+    {include #control-help, control => $control}
+    {include #control-errors, control => $control}
+{/define}
+
+{define #control-type-checkboxlist}
+    {include #helpers-override-split, blockNamePrefix => input, control => $control}
+    {include #control-help, control => $control}
+    {include #control-errors, control => $control}
+{/define}
+
+{define #control-type-radio}
+    {include #control-type-checkboxlist, control => $control}
+{/define}
+
+{define #control-errors}
+    <div n:foreach="$control->getErrors() as $error" class="text-red-500 text-xs italic pt-2">{$error}</div>
+{/define}
+
+{define #control-help}
+    <small n:if="$control->getOption('description') !== null" class="text-gray-600 text-xs italic pt-2">{$control->getOption('description')|safeTranslate}</small>
+{/define}
+
+{define #input-type-default}
+    {input $control}
+{/define}
+
+{define #input-type-text}
+    <input n:name="$control" n:class="
+        $control->getControlPrototype()->class,
+        'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md'
+    ">
+{/define}
+
+{define #input-type-textarea}
+    <textarea n:name="$control" n:class="
+        $control->getControlPrototype()->class,
+        'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md'
+    "/>
+{/define}
+
+{define #input-type-select}
+    <select n:name="$control" n:class="
+        $control->getControlPrototype()->class,
+        'mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+    " />
+{/define}
+
+{define #input-type-range}
+    <input n:name="$control" n:class="
+        $control->getControlPrototype()->class,
+        'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md'
+    ">
+{/define}
+
+{define #input-type-checkbox}
+    <div n:class="$control->getSeparatorPrototype()->class, 'flex items-start'">
+        <div class="flex items-center h-5">
+            <input n:name="$control:" n:class="
+                $control->getControlPrototype()->class,
+                'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded'
+            ">
+        </div>
+        <div class="ml-3 text-sm">
+            <label n:name="$control:" n:class="
+                $control->getLabelPrototype()->class,
+                'font-medium text-gray-700'
+            "/>
+        </div>
+    </div>
+{/define}
+
+{define #input-type-checkboxlist}
+    <div n:foreach="$control->items as $k => $v" n:class="$control->getSeparatorPrototype()->class, 'flex items-start'">
+        <div class="flex items-center h-5">
+            <input n:name="$control:$k" n:class="
+                $control->getControlPrototype()->class,
+                'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded'
+            ">
+        </div>
+        <div class="ml-3 text-sm">
+            <label n:name="$control:$k" n:class="
+                $control->getLabelPrototype()->class,
+                'font-medium text-gray-700'
+            ">{=$control->translate($v)}</label>
+        </div>
+    </div>
+{/define}
+
+{define #input-type-radio}
+    <div n:foreach="$control->items as $k => $v" n:class="$control->getSeparatorPrototype()->class, 'flex items-start'">
+        <div class="flex items-center h-5">
+            <input n:name="$control:$k" n:class="
+                $control->getControlPrototype()->class,
+                'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300'
+            ">
+        </div>
+        <div class="ml-3 text-sm">
+            <label n:name="$control:$k" n:class="
+                $control->getLabelPrototype()->class,
+                'ml-3 block text-sm font-medium text-gray-700'
+            ">{=$control->translate($v)}</label>
+        </div>
+    </div>
+{/define}

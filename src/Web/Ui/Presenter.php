@@ -6,17 +6,17 @@ namespace App\Web\Ui;
 
 use Nette\Application\Request;
 use Nette\Application\Responses\ForwardResponse;
-use SixtyEightPublishers\NotificationBundle\UI\TNotifier;
 use SixtyEightPublishers\TranslationBridge\TranslatorAwareTrait;
 use SixtyEightPublishers\TranslationBridge\TranslatorAwareInterface;
 use SixtyEightPublishers\SmartNetteComponent\UI\Presenter as SmartPresenter;
 use SixtyEightPublishers\TranslationBridge\Localization\TranslatorLocalizerInterface;
+use SixtyEightPublishers\FlashMessageBundle\Bridge\Nette\Ui\PresenterTrait as FlashMessagePresenterTrait;
 
 abstract class Presenter extends SmartPresenter implements TranslatorAwareInterface
 {
-	use TNotifier;
 	use TranslatorAwareTrait;
 	use RedrawControlTrait;
+	use FlashMessagePresenterTrait;
 
 	private TranslatorLocalizerInterface $translatorLocalizer;
 
@@ -37,10 +37,13 @@ abstract class Presenter extends SmartPresenter implements TranslatorAwareInterf
 	 */
 	protected function beforeRender(): void
 	{
-		$this->template->setTranslator($this->getPrefixedTranslator());
+		$template = $this->getTemplate();
 
-		$this->template->locale = $this->translatorLocalizer->getLocale();
-		$this->template->lang = current(explode('_', $this->translatorLocalizer->getLocale()));
+		$template->setTranslator($this->getPrefixedTranslator());
+
+		$template->locale = $this->translatorLocalizer->getLocale();
+		$template->lang = current(explode('_', $this->translatorLocalizer->getLocale()));
+		$template->user = $this->getUser();
 	}
 
 	/**

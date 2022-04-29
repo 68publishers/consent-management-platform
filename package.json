@@ -1,0 +1,42 @@
+{
+  "name": "cmp",
+  "version": "0.0.1",
+  "description": "CMP - Consent Management Platform",
+  "dependencies": {
+    "@alpinejs/collapse": "^3.10.2",
+    "@babel/core": "^7.17.9",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@headlessui/vue": "^1.6.0",
+    "@symfony/webpack-encore": "^1.8.2",
+    "@tailwindcss/forms": "^0.5.0",
+    "@tailwindcss/typography": "^0.5.2",
+    "alpinejs": "^3.10.2",
+    "autoprefixer": "^10.4.5",
+    "core-js": "^3.22.2",
+    "jquery": "^3.6.0",
+    "live-form-validation": "^1.10.0",
+    "nette.ajax.js": "^2.3.0",
+    "path": "^0.12.7",
+    "postcss": "^8.4.12",
+    "postcss-loader": "^6.2.1",
+    "script-loader": "^0.7.2",
+    "scriptjs": "^2.5.9",
+    "tailwindcss": "^3.0.24",
+    "toastr": "^2.1.4",
+    "webpack-require-http": "^0.4.3"
+  },
+  "devDependencies": {
+    "ynpx": "^2.1.2"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/68publishers/cookie-consent-admin"
+  },
+  "author": "68publishers",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/68publishers/cookie-consent-admin/issues"
+  },
+  "homepage": "https://github.com/68publishers/cookie-consent-admin#readme"
+}

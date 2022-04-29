@@ -1,0 +1,7 @@
+{define #pair-type-default}
+    <div class="sm:grid sm:gap-4 sm:items-start pt-4" n:attr="id => $control->getOption('id')">
+        <div class="mt-1 sm:mt-0">
+            {include #helpers-override-split, blockNamePrefix => control, control => $control}
+        </div>
+    </div>
+{/define}

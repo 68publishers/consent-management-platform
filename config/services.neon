@@ -1,2 +1,12 @@
 services:
+	# Routing
 	routing.router: App\Web\Router\RouterFactory()::create()
+
+	# Web\Ui
+	- App\Web\Ui\Form\RecaptchaResolver(::env(RECAPTCHA_ENABLED|bool, no))
+	-
+		type: App\Web\Ui\Form\FormFactoryInterface
+		factory: App\Web\Ui\Form\FormFactory
+
+	# Web\FrontModule
+	- App\Web\FrontModule\Control\SignIn\SignInControlFactoryInterface
