@@ -22,7 +22,7 @@ final class LoggedInEvent extends Event
 	/**
 	 * @return \SixtyEightPublishers\UserBundle\ReadModel\View\IdentityView
 	 */
-	public function getIdentity(): IdentityView
+	public function identity(): IdentityView
 	{
 		return $this->identity;
 	}

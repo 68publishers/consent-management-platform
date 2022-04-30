@@ -2,6 +2,11 @@ services:
 	# Routing
 	routing.router: App\Web\Router\RouterFactory()::create()
 
+	# Subscribers
+	-
+		autowired: no
+		factory: App\Subscriber\PasswordRequest\OnPasswordChangeRequested
+
 	# Web\Ui
 	- App\Web\Ui\Form\RecaptchaResolver(::env(RECAPTCHA_ENABLED|bool, no))
 	-
@@ -10,3 +15,5 @@ services:
 
 	# Web\FrontModule
 	- App\Web\FrontModule\Control\SignIn\SignInControlFactoryInterface
+	- App\Web\FrontModule\Control\ForgotPassword\ForgotPasswordControlFactoryInterface
+	- App\Web\FrontModule\Control\ResetPassword\ResetPasswordControlFactoryInterface

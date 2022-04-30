@@ -22,7 +22,7 @@ final class AuthenticationFailedEvent extends Event
 	/**
 	 * @return \SixtyEightPublishers\UserBundle\Application\Exception\AuthenticationException
 	 */
-	public function getException(): AuthenticationException
+	public function exception(): AuthenticationException
 	{
 		return $this->exception;
 	}

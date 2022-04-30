@@ -8,6 +8,3 @@ password:
 
 login:
 	field: Přihlásit se
-
-message:
-	user_authentication_failed: Nesprávné přihlašovací údaje.

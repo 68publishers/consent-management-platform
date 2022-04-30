@@ -6,6 +6,7 @@ namespace App\Web\FrontModule\Presenter;
 
 use App\Web\FrontModule\Control\SignIn\SignInControl;
 use App\Web\FrontModule\Control\SignIn\Event\LoggedInEvent;
+use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use App\Web\FrontModule\Control\SignIn\SignInControlFactoryInterface;
 use App\Web\FrontModule\Control\SignIn\Event\AuthenticationFailedEvent;
 
@@ -33,7 +34,7 @@ final class SignInPresenter extends FrontPresenter
 	{
 		$control = $this->signInControlFactory->create();
 
-		$control->addEventListener(LoggedInEvent::class, function () {
+		$control->addEventListener(LoggedInEvent::class, function (): void {
 			if (!empty($this->backLink)) {
 				$this->restoreRequest($this->backLink);
 			}
@@ -41,8 +42,8 @@ final class SignInPresenter extends FrontPresenter
 			$this->redirect(':Admin:Dashboard:');
 		});
 
-		$control->addEventListener(AuthenticationFailedEvent::class, function (AuthenticationFailedEvent $event) {
-			bdump($event->getException());
+		$control->addEventListener(AuthenticationFailedEvent::class, function (): void {
+			$this->subscribeFlashMessage(FlashMessage::error('user_authentication_failed'));
 		});
 
 		return $control;

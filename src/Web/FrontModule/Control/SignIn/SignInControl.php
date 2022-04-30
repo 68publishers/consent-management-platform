@@ -10,7 +10,6 @@ use App\Web\Ui\Form\FormFactoryInterface;
 use Nepada\FormRenderer\TemplateRenderer;
 use App\Web\Ui\Form\FormFactoryOptionsTrait;
 use App\Web\FrontModule\Control\SignIn\Event\LoggedInEvent;
-use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use SixtyEightPublishers\UserBundle\Bridge\Nette\Security\Identity;
 use App\Web\FrontModule\Control\SignIn\Event\AuthenticationFailedEvent;
 use SixtyEightPublishers\UserBundle\Application\Exception\AuthenticationException;
@@ -76,7 +75,6 @@ final class SignInControl extends Control
 
 			$this->dispatchEvent(new LoggedInEvent($identity->data()));
 		} catch (AuthenticationException $e) {
-			$this->subscribeFlashMessage(FlashMessage::error('user_authentication_failed'));
 			$this->dispatchEvent(new AuthenticationFailedEvent($e));
 		}
 	}

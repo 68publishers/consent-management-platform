@@ -17,7 +17,7 @@ final class RouterFactory
 		$router = new RouteList();
 
 		$router->withModule('Front')
-			->addRoute('<presenter>', [
+			->addRoute('<presenter>[/<id>]', [
 				NULL => [
 					Route::FILTER_IN => static function (array $params) {
 						return in_array($params['presenter'], [
