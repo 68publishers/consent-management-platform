@@ -4,4 +4,4 @@ extensions:
 nepada.form_renderer:
 	default:
 		imports:
-			- %appDir%/Web/Ui/Form/templates/imports.latte
+			- %appDir%/Web/Ui/templates/forms/imports.latte

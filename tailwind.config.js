@@ -3,6 +3,11 @@ module.exports = {
     './src/**/*.latte',
     './assets/js/**/*.js',
   ],
+  safelist: [
+    {
+      pattern: /text-(center|left|right)/,
+    },
+  ],
   theme: {
     extend: {},
   },

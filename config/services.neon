@@ -7,13 +7,28 @@ services:
 		autowired: no
 		factory: App\Subscriber\PasswordRequest\OnPasswordChangeRequested
 
+	# Read model
+	-
+		autowired: no
+		factory: App\Infrastructure\Doctrine\QueryHandler\UsersDataGridQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\Doctrine\QueryHandler\PasswordRequestsDataGridQueryHandler
+
 	# Web\Ui
 	- App\Web\Ui\Form\RecaptchaResolver(::env(RECAPTCHA_ENABLED|bool, no))
 	-
 		type: App\Web\Ui\Form\FormFactoryInterface
 		factory: App\Web\Ui\Form\FormFactory
+	-
+		type: App\Web\Ui\DataGrid\DataGridFactoryInterface
+		factory: App\Web\Ui\DataGrid\DataGridFactory
 
 	# Web\FrontModule
 	- App\Web\FrontModule\Control\SignIn\SignInControlFactoryInterface
 	- App\Web\FrontModule\Control\ForgotPassword\ForgotPasswordControlFactoryInterface
 	- App\Web\FrontModule\Control\ResetPassword\ResetPasswordControlFactoryInterface
+
+	# Web\AdminModule\UserModule
+	- App\Web\AdminModule\UserModule\Control\UserList\UserListControlFactoryInterface
+	- App\Web\AdminModule\UserModule\Control\PasswordRequestList\PasswordRequestListControlFactoryInterface

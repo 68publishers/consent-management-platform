@@ -1,0 +1,10 @@
+{varType SixtyEightPublishers\UserBundle\ReadModel\View\UserView $item}
+
+{foreach $item->roles->all() as $role}
+    {varType SixtyEightPublishers\UserBundle\Domain\Dto\Role $role}
+
+    {_'//layout.role_name.' . $role->value()}
+    {if !$iterator->isLast()}
+        ,
+    {/if}
+{/foreach}

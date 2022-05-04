@@ -1,0 +1,33 @@
+no_item_found_reset: Žádné položky. Můžete zkusit resetovat filtr.
+no_item_found: Žádné položky.
+here: zde
+items: položky
+all: vše
+from: z
+reset_filter: Resetovat filtry
+group_actions: Hromadné akce
+show: Zobrazit
+add: Přidat
+edit: Edit
+show_all_columns: Zobrazit všechny sloupce
+show_default_columns: Zobrazit výchozí sloupce
+hide_column: Schovat sloupec
+action: ''
+previous: Předchozí
+next: Další
+choose: Vybrat
+choose_input_required: Hodnota nesmí být prázdná
+execute: Provést
+save: Uložit
+cancel: Zrušit
+multiselect_choose: Vybrat
+multiselect_selected: '{0} vybráno'
+filter_submit_button: Filtrovat
+show_filter: Ukázat filtr
+per_page_submit: Změnit
+
+boolean_filter:
+	yes: ano
+	no: ne
+
+invalid_uuid: UUID není validní

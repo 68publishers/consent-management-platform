@@ -1,0 +1,75 @@
+@import 'ublaboo-datagrid/assets/datagrid.css';
+@import 'ublaboo-datagrid/assets/datagrid-spinners.css';
+
+.datagrid {
+    @apply p-0 bg-transparent;
+}
+
+.datagrid .table {
+    @apply min-w-full divide-y divide-gray-300;
+}
+
+.datagrid .table > thead {
+    @apply bg-gray-50;
+}
+
+.datagrid .table > thead th, .datagrid .table > thead td {
+    @apply px-3 py-3.5 text-sm font-semibold text-gray-900;
+}
+
+.datagrid .table > thead th.col-action, .datagrid .table > thead td.col-action {
+    @apply relative py-3.5 pl-3 pr-4 sm:pr-6;
+}
+
+.datagrid .table > tbody {
+    @apply divide-y divide-gray-200 bg-white;
+}
+
+.datagrid .table > tbody tr:nth-child(event) {
+    @apply bg-gray-50;
+}
+
+.datagrid .table > tbody th, .datagrid .table > tbody td {
+    @apply whitespace-nowrap px-3 py-4 text-sm text-gray-600;
+}
+
+.datagrid input.form-control {
+    @apply shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md;
+}
+
+.datagrid select.form-control {
+    @apply mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm;
+}
+
+.datagrid .btn {
+    @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm;
+}
+
+.datagrid .btn.btn-sm {
+    @apply px-3 py-2 rounded;
+}
+
+.datagrid .btn.btn-primary {
+    @apply text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
+}
+
+.datagrid .btn.btn-danger {
+    @apply text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500;
+}
+
+.datagrid .row-grid-bottom .col-per-page {
+    @apply inline-flex items-baseline justify-end;
+}
+
+.datagrid .row-grid-bottom .col-per-page > select {
+    @apply ml-1;
+    min-width: 60px;
+}
+
+.datagrid .table > thead th a, .datagrid .table > thead td a {
+    @apply text-indigo-500;
+}
+
+.datagrid .link, .datagrid .table > thead th a.sort {
+    @apply text-indigo-700;
+}

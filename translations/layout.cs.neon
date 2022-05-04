@@ -9,3 +9,7 @@ sidebar:
 	users: Uživatelé
 	user_list: Výpis uživatelů
 	password_request_list: Zapomenutá hesla
+
+role_name:
+	admin: Admin
+	supervisor: Supervisor

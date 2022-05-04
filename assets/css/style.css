@@ -1,5 +1,7 @@
 @import 'toastr';
-@import "x-cloak.css";
+@import 'flatpickr/dist/themes/airbnb.css';
+@import '_x-cloak.css';
+@import '_datagrid.css';
 
 @tailwind base;
 @tailwind components;

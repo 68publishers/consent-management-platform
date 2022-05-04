@@ -11,6 +11,7 @@
 	],
 	"require": {
 		"php": "^7.4",
+		"ext-json": "*",
 		"68publishers/asset": "^2.0",
 		"68publishers/doctrine-bridge": "^0.2.1",
 		"68publishers/environment": "^0.4",
@@ -31,6 +32,7 @@
 		"contributte/recaptcha": "^3.4",
 		"contributte/translation": "^1.0",
 		"kdyby/redis": "^6.1",
+		"latte/latte": "2.11.0",
 		"nepada/form-renderer": "^1.9",
 		"nette/application": "^3.1",
 		"nette/bootstrap": "^3.0",
@@ -53,8 +55,11 @@
 		"nettrine/migrations": "^0.8.0",
 		"nettrine/orm": "^0.8.3",
 		"nextras/migrations": "^3.1",
+		"oro/doctrine-extensions": "^2.0",
+		"scienta/doctrine-json-functions": "^4.2",
 		"sentry/sdk": "^3.1",
-		"symfony/validator": "^5.4"
+		"symfony/validator": "^5.4",
+		"ublaboo/datagrid": "^6.9"
 	},
 	"require-dev": {
 		"friendsofphp/php-cs-fixer": "^2.19",

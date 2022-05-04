@@ -6,6 +6,6 @@ namespace App\Web\AdminModule\UserModule\Presenter;
 
 use App\Web\AdminModule\Presenter\AdminTemplate;
 
-final class UserListTemplate extends AdminTemplate
+final class PasswordRequestsTemplate extends AdminTemplate
 {
 }

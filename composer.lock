@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2484fffe52e91bbf9d966b6a687040d5",
+    "content-hash": "a355b2d64c3e446f9376f5f127c3120e",
     "packages": [
         {
             "name": "68publishers/asset",
@@ -387,12 +387,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/68publishers/omni.git",
-                "reference": "048c3fd650c4feb19d0287c86bc77cf91fb4b4e3"
+                "reference": "c8e16c29d632df640c77bf9ac5f8804c670f1481"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/68publishers/omni/zipball/048c3fd650c4feb19d0287c86bc77cf91fb4b4e3",
-                "reference": "048c3fd650c4feb19d0287c86bc77cf91fb4b4e3",
+                "url": "https://api.github.com/repos/68publishers/omni/zipball/c8e16c29d632df640c77bf9ac5f8804c670f1481",
+                "reference": "c8e16c29d632df640c77bf9ac5f8804c670f1481",
                 "shasum": ""
             },
             "require": {
@@ -442,7 +442,7 @@
                 "issues": "https://github.com/68publishers/omni/issues",
                 "source": "https://github.com/68publishers/omni/tree/main"
             },
-            "time": "2022-04-30T02:46:49+00:00"
+            "time": "2022-05-02T22:05:18+00:00"
         },
         {
             "name": "68publishers/smart-nette-component",
@@ -924,6 +924,82 @@
                 }
             ],
             "time": "2022-02-10T13:22:09+00:00"
+        },
+        {
+            "name": "contributte/application",
+            "version": "v0.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/contributte/application.git",
+                "reference": "2579ab2bc3b7c95ae32a2e664ac9a8cc038777f9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/contributte/application/zipball/2579ab2bc3b7c95ae32a2e664ac9a8cc038777f9",
+                "reference": "2579ab2bc3b7c95ae32a2e664ac9a8cc038777f9",
+                "shasum": ""
+            },
+            "require": {
+                "nette/application": "^3.0.0",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "nette/http": "~2.4.8 || ~3.0.0",
+                "ninjify/nunjuck": "^0.3.0",
+                "ninjify/qa": "^0.9.0",
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan-deprecation-rules": "^0.11.0",
+                "phpstan/phpstan-nette": "^0.11.1",
+                "phpstan/phpstan-shim": "^0.11.2",
+                "phpstan/phpstan-strict-rules": "^0.11.0",
+                "psr/http-message": "~1.0.1",
+                "tracy/tracy": "~2.6.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Contributte\\Application\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Milan Felix Šulc",
+                    "homepage": "https://f3l1x.io"
+                }
+            ],
+            "description": "Extra contrib to nette/application",
+            "homepage": "https://github.com/contributte/application",
+            "keywords": [
+                "application",
+                "component",
+                "control",
+                "nette",
+                "presenter"
+            ],
+            "support": {
+                "issues": "https://github.com/contributte/application/issues",
+                "source": "https://github.com/contributte/application/tree/v0.5.1"
+            },
+            "funding": [
+                {
+                    "url": "https://contributte.org/partners.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/f3l1x",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-03-10T21:48:30+00:00"
         },
         {
             "name": "contributte/console",
@@ -3527,16 +3603,16 @@
         },
         {
             "name": "latte/latte",
-            "version": "v2.11.1",
+            "version": "v2.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/latte.git",
-                "reference": "21316b42fb0a4e43df01f73c55d52bd531823fda"
+                "reference": "a815687bfadaf3af51ae99f92edb4ea310c43426"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/latte/zipball/21316b42fb0a4e43df01f73c55d52bd531823fda",
-                "reference": "21316b42fb0a4e43df01f73c55d52bd531823fda",
+                "url": "https://api.github.com/repos/nette/latte/zipball/a815687bfadaf3af51ae99f92edb4ea310c43426",
+                "reference": "a815687bfadaf3af51ae99f92edb4ea310c43426",
                 "shasum": ""
             },
             "require": {
@@ -3605,9 +3681,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nette/latte/issues",
-                "source": "https://github.com/nette/latte/tree/v2.11.1"
+                "source": "https://github.com/nette/latte/tree/v2.11.0"
             },
-            "time": "2022-04-07T13:21:53+00:00"
+            "time": "2022-02-22T18:39:58+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -5551,6 +5627,64 @@
             "time": "2022-04-04T15:13:14+00:00"
         },
         {
+            "name": "oro/doctrine-extensions",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/oroinc/doctrine-extensions.git",
+                "reference": "a56d0330f785af336d226b2c84292494a343e0d0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/oroinc/doctrine-extensions/zipball/a56d0330f785af336d226b2c84292494a343e0d0",
+                "reference": "a56d0330f785af336d226b2c84292494a343e0d0",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/orm": ">=2.6",
+                "php": ">=7.3"
+            },
+            "require-dev": {
+                "doctrine/data-fixtures": "^1.3",
+                "phpunit/phpunit": "9.*",
+                "squizlabs/php_codesniffer": "3.5.*",
+                "symfony/yaml": "5.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Oro\\ORM\\": "src/Oro/ORM",
+                    "Oro\\DBAL\\": "src/Oro/DBAL"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Oro, Inc",
+                    "homepage": "https://oroinc.com/"
+                }
+            ],
+            "description": "Doctrine Extensions for MySQL and PostgreSQL.",
+            "homepage": "https://github.com/oroinc/doctrine-extensions/",
+            "keywords": [
+                "database",
+                "doctrine",
+                "dql",
+                "function",
+                "mysql",
+                "postgresql",
+                "type"
+            ],
+            "support": {
+                "issues": "https://github.com/oroinc/doctrine-extensions/issues",
+                "source": "https://github.com/oroinc/doctrine-extensions/tree/2.0.1"
+            },
+            "time": "2021-09-02T11:41:41+00:00"
+        },
+        {
             "name": "php-http/client-common",
             "version": "2.5.0",
             "source": {
@@ -6517,6 +6651,74 @@
                 }
             ],
             "time": "2021-09-25T23:10:38+00:00"
+        },
+        {
+            "name": "scienta/doctrine-json-functions",
+            "version": "4.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ScientaNL/DoctrineJsonFunctions.git",
+                "reference": "138a017a92d9f0dfd22e221584b66517f005c222"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ScientaNL/DoctrineJsonFunctions/zipball/138a017a92d9f0dfd22e221584b66517f005c222",
+                "reference": "138a017a92d9f0dfd22e221584b66517f005c222",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": "2.*",
+                "doctrine/orm": "2.*",
+                "ext-pdo": "*",
+                "php": "^7.1 || ^8.0"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^8.0 || ^9.0",
+                "doctrine/orm": "^2.7",
+                "phpunit/phpunit": "^8.0 || ^9.0"
+            },
+            "suggest": {
+                "dunglas/doctrine-json-odm": "To serialize / deserialize objects as JSON documents."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Scienta\\DoctrineJsonFunctions\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Doctrine Json Functions Contributors",
+                    "homepage": "https://github.com/ScientaNL/DoctrineJsonFunctions/contributors"
+                }
+            ],
+            "description": "A set of extensions to Doctrine 2 that add support for json query functions.",
+            "keywords": [
+                "database",
+                "doctrine",
+                "dql",
+                "json",
+                "mariadb",
+                "mysql",
+                "orm",
+                "postgres",
+                "postgresql",
+                "sqlite"
+            ],
+            "support": {
+                "issues": "https://github.com/ScientaNL/DoctrineJsonFunctions/issues",
+                "source": "https://github.com/ScientaNL/DoctrineJsonFunctions/tree/4.5.0"
+            },
+            "time": "2022-01-12T09:54:17+00:00"
         },
         {
             "name": "sentry/sdk",
@@ -8493,6 +8695,178 @@
             "time": "2021-10-20T20:35:02+00:00"
         },
         {
+            "name": "symfony/property-access",
+            "version": "v5.4.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/property-access.git",
+                "reference": "fe501d498d6ec7e9efe928c90fabedf629116495"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/property-access/zipball/fe501d498d6ec7e9efe928c90fabedf629116495",
+                "reference": "fe501d498d6ec7e9efe928c90fabedf629116495",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/deprecation-contracts": "^2.1|^3",
+                "symfony/polyfill-php80": "^1.16",
+                "symfony/property-info": "^5.2|^6.0"
+            },
+            "require-dev": {
+                "symfony/cache": "^4.4|^5.0|^6.0"
+            },
+            "suggest": {
+                "psr/cache-implementation": "To cache access methods."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\PropertyAccess\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Provides functions to read and write from/to an object or array using a simple string notation",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "access",
+                "array",
+                "extraction",
+                "index",
+                "injection",
+                "object",
+                "property",
+                "property path",
+                "reflection"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/property-access/tree/v5.4.8"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-04-12T15:48:08+00:00"
+        },
+        {
+            "name": "symfony/property-info",
+            "version": "v5.4.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/property-info.git",
+                "reference": "0fc07795712972b9792f203d0fe0e77c26c3281d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/property-info/zipball/0fc07795712972b9792f203d0fe0e77c26c3281d",
+                "reference": "0fc07795712972b9792f203d0fe0e77c26c3281d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/deprecation-contracts": "^2.1|^3",
+                "symfony/polyfill-php80": "^1.16",
+                "symfony/string": "^5.1|^6.0"
+            },
+            "conflict": {
+                "phpdocumentor/reflection-docblock": "<3.2.2",
+                "phpdocumentor/type-resolver": "<1.4.0",
+                "symfony/dependency-injection": "<4.4"
+            },
+            "require-dev": {
+                "doctrine/annotations": "^1.10.4",
+                "phpdocumentor/reflection-docblock": "^3.0|^4.0|^5.0",
+                "phpstan/phpdoc-parser": "^1.0",
+                "symfony/cache": "^4.4|^5.0|^6.0",
+                "symfony/dependency-injection": "^4.4|^5.0|^6.0",
+                "symfony/serializer": "^4.4|^5.0|^6.0"
+            },
+            "suggest": {
+                "phpdocumentor/reflection-docblock": "To use the PHPDoc",
+                "psr/cache-implementation": "To cache results",
+                "symfony/doctrine-bridge": "To use Doctrine metadata",
+                "symfony/serializer": "To use Serializer metadata"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\PropertyInfo\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kévin Dunglas",
+                    "email": "dunglas@gmail.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Extracts information about PHP class' properties using metadata of popular sources",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "doctrine",
+                "phpdoc",
+                "property",
+                "symfony",
+                "type",
+                "validator"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/property-info/tree/v5.4.7"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-03-30T13:40:48+00:00"
+        },
+        {
             "name": "symfony/redis-messenger",
             "version": "v5.4.6",
             "source": {
@@ -9151,6 +9525,95 @@
                 "source": "https://github.com/nette/tracy/tree/v2.9.1"
             },
             "time": "2022-02-15T16:38:30+00:00"
+        },
+        {
+            "name": "ublaboo/datagrid",
+            "version": "v6.9.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/contributte/datagrid.git",
+                "reference": "a91ad121517c1adf74e7b5f0528031d479230e7d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/contributte/datagrid/zipball/a91ad121517c1adf74e7b5f0528031d479230e7d",
+                "reference": "a91ad121517c1adf74e7b5f0528031d479230e7d",
+                "shasum": ""
+            },
+            "require": {
+                "contributte/application": "^0.5.0",
+                "nette/di": "^3.0.0",
+                "nette/forms": "^3.1.3",
+                "nette/utils": "^3.0.1",
+                "php": ">=7.2",
+                "symfony/property-access": "^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0"
+            },
+            "require-dev": {
+                "contributte/code-rules": "^1.1.0",
+                "dibi/dibi": "^3.0.0 || ^4.0.0",
+                "doctrine/annotations": "^1.12.1",
+                "doctrine/cache": "^1.11.0",
+                "doctrine/orm": "^2.11.1",
+                "elasticsearch/elasticsearch": "^7.1",
+                "mockery/mockery": "^1.3.3",
+                "nette/database": "^3.0.2",
+                "nette/tester": "^2.3.4",
+                "nextras/dbal": "^3.0.1 || ^4.0",
+                "nextras/orm": "^3.1.0 || ^4.0",
+                "ninjify/coding-standard": "^0.12.1",
+                "phpstan/phpstan-nette": "^1.0.0",
+                "tharos/leanmapper": "^3.4.2 || ^4.0.0",
+                "tracy/tracy": "^2.6.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "6.10.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Ublaboo\\DataGrid\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pavel Janda",
+                    "homepage": "https://paveljanda.com"
+                },
+                {
+                    "name": "Milan Felix Šulc",
+                    "homepage": "https://f3l1x.io"
+                }
+            ],
+            "description": "DataGrid for Nette Framework: filtering, sorting, pagination, tree view, table view, translator, etc",
+            "keywords": [
+                "contributte",
+                "data",
+                "datagrid",
+                "grid",
+                "nette",
+                "table"
+            ],
+            "support": {
+                "issues": "https://github.com/contributte/datagrid/issues",
+                "source": "https://github.com/contributte/datagrid/tree/v6.9.4"
+            },
+            "funding": [
+                {
+                    "url": "https://contributte.org/partners.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/f3l1x",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-02-14T15:35:30+00:00"
         },
         {
             "name": "umpirsky/locale-list",

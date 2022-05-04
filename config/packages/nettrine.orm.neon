@@ -7,6 +7,9 @@ extensions:
 nettrine.orm:
 	configuration:
 		proxyDir: %tempDir%/cache/proxies
+		customStringFunctions:
+			CAST: Oro\ORM\Query\AST\Functions\Cast
+			JSONB_CONTAINS: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql\JsonbContains
 
 nettrine.orm.xml:
 	mapping: []
