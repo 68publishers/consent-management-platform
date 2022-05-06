@@ -20,7 +20,7 @@
                 </button>
 
                 <div x-bind="collapsePanel" class="py-1" n:attr="'x-cloak' => $item->isActive() ? NULL : TRUE">
-                    <a n:foreach="$item->getVisibleItemsOnMenu() as $subItem" href="{$subItem->getRealLink()}" n:class="'group flex items-center px-2 py-2 pl-11 text-sm font-medium rounded-md', $subItem->isActive() ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-600'">
+                    <a n:foreach="$item->getVisibleItemsOnMenu() as $subItem" href="{$subItem->getRealLink()}" n:class="'group flex items-center px-2 py-2 pl-11 mb-1 text-sm font-medium rounded-md', $subItem->isActive() ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-600'">
                         {$subItem->getRealTitle()}
                     </a>
                 </div>

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Web\FrontModule\Control\ResetPassword;
 
-use SixtyEightPublishers\ForgotPasswordBundle\Domain\Dto\PasswordRequestId;
+use SixtyEightPublishers\ForgotPasswordBundle\Domain\ValueObject\PasswordRequestId;
 
 interface ResetPasswordControlFactoryInterface
 {
 	/**
-	 * @param \SixtyEightPublishers\ForgotPasswordBundle\Domain\Dto\PasswordRequestId $passwordRequestId
+	 * @param \SixtyEightPublishers\ForgotPasswordBundle\Domain\ValueObject\PasswordRequestId $passwordRequestId
 	 *
 	 * @return \App\Web\FrontModule\Control\ResetPassword\ResetPasswordControl
 	 */

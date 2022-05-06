@@ -1,0 +1,6 @@
+page_title: Upravit uživatele
+
+message:
+	user_not_found: Uživatel nebyl nalezen.
+	user_edited: Uživatel byl upraven.
+	user_edit_failed: Při úpravě uživatele došlo k chybě.

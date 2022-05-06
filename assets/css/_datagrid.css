@@ -17,20 +17,28 @@
     @apply px-3 py-3.5 text-sm font-semibold text-gray-900;
 }
 
+.datagrid .table > thead tr:nth-child(even) th, .datagrid .table > thead tr:nth-child(even) td {
+    @apply pt-0;
+}
+
 .datagrid .table > thead th.col-action, .datagrid .table > thead td.col-action {
-    @apply relative py-3.5 pl-3 pr-4 sm:pr-6;
+    @apply relative py-3.5 pl-6 pr-4 sm:pr-6;
 }
 
 .datagrid .table > tbody {
     @apply divide-y divide-gray-200 bg-white;
 }
 
-.datagrid .table > tbody tr:nth-child(event) {
+.datagrid .table > tbody tr:nth-child(even) {
     @apply bg-gray-50;
 }
 
 .datagrid .table > tbody th, .datagrid .table > tbody td {
     @apply whitespace-nowrap px-3 py-4 text-sm text-gray-600;
+}
+
+.datagrid .table > tbody th.col-action, .datagrid .table > tbody td.col-action {
+    @apply pl-6;
 }
 
 .datagrid input.form-control {

@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Fixture;
+namespace App\Application\Fixture;
 
 use Nette\DI\Container;
+use App\Domain\User\RolesEnum;
 use Doctrine\Persistence\ObjectManager;
 use Nettrine\Fixtures\ContainerAwareInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -37,17 +38,8 @@ final class UsersFixture extends AbstractFixture implements ContainerAwareInterf
 			'admin',
 			'admin@68publishers.io',
 			'Admin',
-			'Admin',
-			['admin']
-		));
-
-		$commandBus->dispatch(CreateUserCommand::create(
-			'supervisor@68publishers.io',
-			'supervisor',
-			'supervisor@68publishers.io',
-			'Supervisor',
-			'Supervisor',
-			['supervisor']
+			'SixtyEightPublishers',
+			[RolesEnum::ADMIN]
 		));
 
 		$manager->clear();

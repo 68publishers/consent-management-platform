@@ -10,6 +10,4 @@ use SixtyEightPublishers\UserBundle\ReadModel\View\IdentityView;
 abstract class AdminTemplate extends DefaultPresenterTemplate
 {
 	public IdentityView $identity;
-
-	public string $signOutLink;
 }

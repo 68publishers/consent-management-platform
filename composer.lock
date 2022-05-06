@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a355b2d64c3e446f9376f5f127c3120e",
+    "content-hash": "112e23a02ef13ec68014bd425b9f4564",
     "packages": [
         {
             "name": "68publishers/asset",
@@ -387,12 +387,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/68publishers/omni.git",
-                "reference": "c8e16c29d632df640c77bf9ac5f8804c670f1481"
+                "reference": "9ec7f60c33b2cc786348ffb1f2f70a51e4936e30"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/68publishers/omni/zipball/c8e16c29d632df640c77bf9ac5f8804c670f1481",
-                "reference": "c8e16c29d632df640c77bf9ac5f8804c670f1481",
+                "url": "https://api.github.com/repos/68publishers/omni/zipball/9ec7f60c33b2cc786348ffb1f2f70a51e4936e30",
+                "reference": "9ec7f60c33b2cc786348ffb1f2f70a51e4936e30",
                 "shasum": ""
             },
             "require": {
@@ -442,7 +442,7 @@
                 "issues": "https://github.com/68publishers/omni/issues",
                 "source": "https://github.com/68publishers/omni/tree/main"
             },
-            "time": "2022-05-02T22:05:18+00:00"
+            "time": "2022-05-06T01:16:02+00:00"
         },
         {
             "name": "68publishers/smart-nette-component",
@@ -10794,7 +10794,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.4"
+        "php": "^7.4",
+        "ext-json": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.0.0"

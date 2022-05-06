@@ -1,0 +1,9 @@
+page_title: Uživatelský profil
+basic_information: Základní informace
+password_change: Změna hesla
+
+message:
+	basic_information_edited: Základní informace byly uloženy.
+	basic_information_edit_failed: Při ukládaní základních informací došlo k chybě.
+	password_changed: Heslo bylo změněno.
+	password_change_failed: Při změně hesla došlo k chybě.

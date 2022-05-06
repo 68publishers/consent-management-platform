@@ -11,10 +11,10 @@ use Nepada\FormRenderer\TemplateRenderer;
 use App\Web\Ui\Form\FormFactoryOptionsTrait;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 use App\Web\FrontModule\Control\ResetPassword\Event\PasswordResetEvent;
-use SixtyEightPublishers\ForgotPasswordBundle\Domain\Dto\PasswordRequestId;
 use App\Web\FrontModule\Control\ResetPassword\Event\PasswordResetFailedEvent;
 use SixtyEightPublishers\ForgotPasswordBundle\Application\Helper\ServerHelpers;
 use App\Web\FrontModule\Control\ResetPassword\Event\PasswordRequestExpiredEvent;
+use SixtyEightPublishers\ForgotPasswordBundle\Domain\ValueObject\PasswordRequestId;
 use SixtyEightPublishers\ForgotPasswordBundle\Domain\Command\CompletePasswordRequestCommand;
 use SixtyEightPublishers\ForgotPasswordBundle\Domain\Exception\EmailAddressNotFoundException;
 use SixtyEightPublishers\ForgotPasswordBundle\Domain\Exception\PasswordStatusChangeException;
@@ -32,9 +32,9 @@ final class ResetPasswordControl extends Control
 	private FormFactoryInterface $formFactory;
 
 	/**
-	 * @param \SixtyEightPublishers\ForgotPasswordBundle\Domain\Dto\PasswordRequestId $passwordRequestId
-	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface        $commandBus
-	 * @param \App\Web\Ui\Form\FormFactoryInterface                                   $formFactory
+	 * @param \SixtyEightPublishers\ForgotPasswordBundle\Domain\ValueObject\PasswordRequestId $passwordRequestId
+	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface                $commandBus
+	 * @param \App\Web\Ui\Form\FormFactoryInterface                                           $formFactory
 	 */
 	public function __construct(PasswordRequestId $passwordRequestId, CommandBusInterface $commandBus, FormFactoryInterface $formFactory)
 	{

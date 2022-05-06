@@ -6,6 +6,7 @@ contributte.menu:
 		translator: yes
 		templates:
 			menu: %appDir%/Web/Ui/templates/menu/sidebar.latte
+			breadcrumbs: %appDir%/Web/Ui/templates/menu/breadcrumbs.latte
 		items:
 			layout.sidebar.dashboard:
 				action: Admin:Dashboard:default
@@ -28,4 +29,24 @@ contributte.menu:
 				data:
 					icon: '''
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+					'''
+	profile:
+		translator: yes
+		templates:
+			menu: %appDir%/Web/Ui/templates/menu/profile.latte
+		items:
+			layout.profile.settings:
+				action: Admin:Profile:Settings:default
+				data:
+					icon: '''
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+					'''
+			layout.profile.sign_out:
+				action:
+					target: Admin:SignOut:default
+					parameters:
+						_sec: @SixtyEightPublishers\UserBundle\Application\Csrf\CsrfTokenFactoryInterface::create(App\Web\AdminModule\Presenter\SignOutPresenter)
+				data:
+					icon: '''
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
 					'''

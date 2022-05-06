@@ -38,7 +38,7 @@ class DataGrid extends UblabooDataGrid
 	 */
 	public function render(): void
 	{
-		$this->getTemplate()->originalAppTemplate = __DIR__ . '/../templates/datagrid';
+		$this->getTemplate()->ublabooTemplateFile = parent::getOriginalTemplateFile();
 
 		parent::render();
 	}
@@ -117,14 +117,6 @@ class DataGrid extends UblabooDataGrid
 	}
 
 	/**
-	 * @return string
-	 */
-	public function getTemplateFile(): string
-	{
-		return $this->templateFile ?? __DIR__ . '/../templates/datagrid/datagrid.latte';
-	}
-
-	/**
 	 * @param string|NULL $sessionNamePostfix
 	 */
 	public function setSessionNamePostfix(?string $sessionNamePostfix): void
@@ -144,5 +136,13 @@ class DataGrid extends UblabooDataGrid
 		}
 
 		return $name;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getOriginalTemplateFile(): string
+	{
+		return __DIR__ . '/../templates/datagrid/datagrid.latte';
 	}
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Subscriber\PasswordRequest;
+namespace App\Subscribers\PasswordRequest;
 
 use Nette\Application\LinkGenerator;
 use SixtyEightPublishers\ArchitectureBundle\Event\EventHandlerInterface;

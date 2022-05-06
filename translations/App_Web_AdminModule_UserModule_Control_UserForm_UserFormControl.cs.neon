@@ -1,0 +1,30 @@
+email_address:
+	field: Email
+	required: Vyplňte prosím email.
+	rule: Vyplňený email není validní.
+	error:
+		duplicated_value: Uživatel s tímto emailem již existuje.
+
+firstname:
+	field: Jméno
+	required: Vyplňte prosím jméno.
+
+surname:
+	field: Příjmení
+	required: Vyplňte prosím příjmení
+
+roles:
+	field: Role
+	required: Uživatel musí mít alespoň jednu roli.
+
+password:
+	field: Heslo
+	description:
+		add: 'Nepovinné, uživatel si může později nastavit vlastní heslo přes "zapomenuté heslo".'
+		edit: 'Vyplňte pouze v případě, že chcete uživateli heslo změnit.'
+
+save:
+	field: Vytvořit uživatele
+
+update:
+	field: Uložit

@@ -8,13 +8,12 @@ use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use App\Web\FrontModule\Control\ResetPassword\ResetPasswordControl;
 use App\Web\FrontModule\Control\ResetPassword\Event\PasswordResetEvent;
-use SixtyEightPublishers\ForgotPasswordBundle\Domain\Dto\PasswordRequestId;
 use App\Web\FrontModule\Control\ResetPassword\Event\PasswordResetFailedEvent;
 use App\Web\FrontModule\Control\ResetPassword\Event\PasswordRequestExpiredEvent;
 use SixtyEightPublishers\ForgotPasswordBundle\ReadModel\View\PasswordRequestView;
 use App\Web\FrontModule\Control\ResetPassword\ResetPasswordControlFactoryInterface;
+use SixtyEightPublishers\ForgotPasswordBundle\Domain\ValueObject\PasswordRequestId;
 use SixtyEightPublishers\ForgotPasswordBundle\ReadModel\Query\GetPasswordRequestByIdQuery;
-use SixtyEightPublishers\ArchitectureBundle\Domain\Exception\InvalidIdentityValueException;
 
 final class ResetPasswordPresenter extends FrontPresenter
 {
@@ -42,12 +41,9 @@ final class ResetPasswordPresenter extends FrontPresenter
 	 */
 	public function actionDefault(string $id): void
 	{
-		try {
-			$passwordRequestView = $this->queryBus->dispatch(GetPasswordRequestByIdQuery::create(PasswordRequestId::fromString($id)->toString()));
-		} catch (InvalidIdentityValueException $e) {
-		}
+		$passwordRequestView = PasswordRequestId::isValid($id) ? $this->queryBus->dispatch(GetPasswordRequestByIdQuery::create($id)) : NULL;
 
-		if (!isset($passwordRequestView) || !$passwordRequestView instanceof PasswordRequestView || $passwordRequestView->expired() || $passwordRequestView->status->isFinished()) {
+		if (!$passwordRequestView instanceof PasswordRequestView || $passwordRequestView->expired() || $passwordRequestView->status->isFinished()) {
 			$this->subscribeFlashMessage(FlashMessage::info('password_request_expired'));
 			$this->redirect('SignIn:');
 		}

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Web\Ui;
 
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerAwareInterface;
 use Nette\Security\User as NetteUser;
 use SixtyEightPublishers\TranslationBridge\TranslatorAwareTrait;
 use SixtyEightPublishers\TranslationBridge\TranslatorAwareInterface;
@@ -12,12 +14,13 @@ use SixtyEightPublishers\SmartNetteComponent\UI\Control as SmartControl;
 use SixtyEightPublishers\EventDispatcherExtra\EventDispatcherAwareInterface;
 use SixtyEightPublishers\FlashMessageBundle\Bridge\Nette\Ui\ControlTrait as FlashMessageControlTrait;
 
-abstract class Control extends SmartControl implements TranslatorAwareInterface, EventDispatcherAwareInterface
+abstract class Control extends SmartControl implements TranslatorAwareInterface, EventDispatcherAwareInterface, LoggerAwareInterface
 {
 	use TranslatorAwareTrait;
 	use RedrawControlTrait;
 	use EventDispatcherAwareTrait;
 	use FlashMessageControlTrait;
+	use LoggerAwareTrait;
 
 	private NetteUser $user;
 

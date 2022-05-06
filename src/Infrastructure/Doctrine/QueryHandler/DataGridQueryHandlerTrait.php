@@ -171,7 +171,7 @@ trait DataGridQueryHandlerTrait
 	{
 		$p = $this->newParameterName();
 
-		$qb->andWhere(sprintf('%s IN :%s', $column, $p))
+		$qb->andWhere(sprintf('%s IN (:%s)', $column, $p))
 			->setParameter($p, $value);
 	}
 

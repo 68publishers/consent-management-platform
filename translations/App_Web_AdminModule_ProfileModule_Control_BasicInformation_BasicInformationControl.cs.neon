@@ -1,0 +1,13 @@
+email_address: Email
+roles: Role
+
+firstname:
+	field: Jméno
+	required: Vyplňte prosím jméno.
+
+surname:
+	field: Příjmení
+	required: Vyplňte prosím příjmení
+
+save:
+	field: Uložit

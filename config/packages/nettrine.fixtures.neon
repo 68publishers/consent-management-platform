@@ -3,4 +3,4 @@ extensions:
 
 nettrine.fixtures:
 	paths:
-		- %appDir%/Fixture
+		- %appDir%/Application/Fixture

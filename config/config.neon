@@ -28,3 +28,6 @@ http:
 decorator:
 	SixtyEightPublishers\SmartNetteComponent\UI\Control:
 		inject: yes
+	Psr\Log\LoggerAwareInterface:
+		setup:
+			- setLogger(@Psr\Log\LoggerInterface)

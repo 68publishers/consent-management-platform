@@ -34,6 +34,8 @@ final class DataGridFactory implements DataGridFactoryInterface
 		$dataGrid->setItemsPerPageList([10, 20, 50], FALSE);
 		$dataGrid->setStrictSessionFilterValues(FALSE);
 
+		$dataGrid->setCustomPaginatorTemplate(__DIR__ . '/../templates/datagrid/paginator.latte');
+
 		return $dataGrid;
 	}
 }

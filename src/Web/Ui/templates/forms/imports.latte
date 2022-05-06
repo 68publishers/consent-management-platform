@@ -1,24 +1,37 @@
+{define #form-body}
+    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+        {foreach $form->getGroups() as $group}
+            {include #group, group => $group, groupsIterator => $iterator}
+        {/foreach}
+        {include #controls, group => $form}
+    </div>
+{/define}
+
 {define #controls}
     {if}
         {foreach $group->getControls() as $control}
             {continueIf $control->getOption('rendered') || $control->getOption('type') === 'hidden'}
+            {if $control instanceof Nette\Forms\Controls\CheckboxList && 'checkbox' === $control->getOption('type')}
+                {do $control->setOption('type', 'checkboxlist')}
+            {/if}
+
             {include #helpers-override-split, blockNamePrefix => pair, control => $control, parameters => [controlsIterator => $iterator]}
         {/foreach}
     {/if $iterations}
 {/define}
 
 {define #pair-type-default}
-    <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start pt-4" n:attr="id => $control->getOption('id')">
+    <div class="sm:col-span-6" n:attr="id => $control->getOption('id')">
         {include #label, control => $control}
 
-        <div class="mt-1 sm:mt-0 sm:col-span-2">
+        <div class="mt-1">
             {include #helpers-override-split, blockNamePrefix => control, control => $control}
         </div>
     </div>
 {/define}
 
 {define #pair-type-button}
-    <div class="flex justify-end pt-4">
+    <div class="sm:col-span-6 flex justify-end pt-4">
         {block #control-type-button}
             {if !$control->getOption('rendered')}
                 <input n:name="$control" n:class="
@@ -36,9 +49,9 @@
 {/define}
 
 {define #label}
-    <label n:if="$control->getLabel()" n:name="$control" n:class="
+    <label n:if="$control->getLabel()" n:ifcontent n:name="$control" n:class="
         $control->getLabelPrototype()->class,
-        'block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
+        'block text-sm font-medium text-gray-700'
     " />
 {/define}
 
@@ -73,28 +86,28 @@
 {define #input-type-text}
     <input n:name="$control" n:class="
         $control->getControlPrototype()->class,
-        'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md'
+        'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none'
     ">
 {/define}
 
 {define #input-type-textarea}
     <textarea n:name="$control" n:class="
         $control->getControlPrototype()->class,
-        'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md'
+        'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none'
     "/>
 {/define}
 
 {define #input-type-select}
     <select n:name="$control" n:class="
         $control->getControlPrototype()->class,
-        'mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+        'mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none'
     " />
 {/define}
 
 {define #input-type-range}
     <input n:name="$control" n:class="
         $control->getControlPrototype()->class,
-        'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md'
+        'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none'
     ">
 {/define}
 
@@ -103,7 +116,7 @@
         <div class="flex items-center h-5">
             <input n:name="$control:" n:class="
                 $control->getControlPrototype()->class,
-                'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded'
+                'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none'
             ">
         </div>
         <div class="ml-3 text-sm">
@@ -116,35 +129,39 @@
 {/define}
 
 {define #input-type-checkboxlist}
-    <div n:foreach="$control->items as $k => $v" n:class="$control->getSeparatorPrototype()->class, 'flex items-start'">
-        <div class="flex items-center h-5">
-            <input n:name="$control:$k" n:class="
-                $control->getControlPrototype()->class,
-                'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded'
-            ">
-        </div>
-        <div class="ml-3 text-sm">
-            <label n:name="$control:$k" n:class="
-                $control->getLabelPrototype()->class,
-                'font-medium text-gray-700'
-            ">{=$control->translate($v)}</label>
+    <div class="lfv-message-parent mt-3">
+        <div n:foreach="$control->items as $k => $v" n:class="$control->getSeparatorPrototype()->class, 'flex items-start'">
+            <div class="flex items-center h-5">
+                <input n:name="$control:$k" n:class="
+                    $control->getControlPrototype()->class,
+                    'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none'
+                ">
+            </div>
+            <div class="ml-3 text-sm">
+                <label n:name="$control:$k" n:class="
+                    $control->getLabelPrototype()->class,
+                    'font-medium text-gray-700'
+                ">{=$control->translate($v)}</label>
+            </div>
         </div>
     </div>
 {/define}
 
 {define #input-type-radio}
-    <div n:foreach="$control->items as $k => $v" n:class="$control->getSeparatorPrototype()->class, 'flex items-start'">
-        <div class="flex items-center h-5">
-            <input n:name="$control:$k" n:class="
-                $control->getControlPrototype()->class,
-                'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300'
-            ">
-        </div>
-        <div class="ml-3 text-sm">
-            <label n:name="$control:$k" n:class="
-                $control->getLabelPrototype()->class,
-                'ml-3 block text-sm font-medium text-gray-700'
-            ">{=$control->translate($v)}</label>
+    <div class="lfv-message-parent mt-3">
+        <div n:foreach="$control->items as $k => $v" n:class="$control->getSeparatorPrototype()->class, 'flex items-start'">
+            <div class="flex items-center h-5">
+                <input n:name="$control:$k" n:class="
+                    $control->getControlPrototype()->class,
+                    'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none'
+                ">
+            </div>
+            <div class="ml-3 text-sm">
+                <label n:name="$control:$k" n:class="
+                    $control->getLabelPrototype()->class,
+                    'ml-3 block text-sm font-medium text-gray-700'
+                ">{=$control->translate($v)}</label>
+            </div>
         </div>
     </div>
 {/define}

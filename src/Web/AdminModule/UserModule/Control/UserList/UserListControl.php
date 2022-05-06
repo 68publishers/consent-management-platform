@@ -31,6 +31,7 @@ final class UserListControl extends Control
 		$grid = $this->dataGridFactory->create(UsersDataGridQuery::create());
 
 		$grid->setTranslator($this->getPrefixedTranslator());
+		$grid->setTemplateFile(__DIR__ . '/templates/datagrid.latte');
 
 		$grid->setDefaultSort([
 			'created_at' => 'DESC',
@@ -52,9 +53,11 @@ final class UserListControl extends Control
 			->setSortable('createdAt')
 			->setFilterDate('createdAt');
 
-		$grid->addColumnText('roles', 'roles')
-			->setTemplate(__DIR__ . '/templates/column.roles.latte');
+		$grid->addColumnText('roles', 'roles');
 		//->setFilterMultiSelect(FilterHelper::items(['admin', 'supervisor'], FALSE, $this->getTranslator(), '//layout.role_name.'));
+
+		$grid->addAction('edit', '')
+			->setTemplate(__DIR__ . '/templates/action.edit.latte');
 
 		return $grid;
 	}

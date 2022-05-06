@@ -1,0 +1,5 @@
+page_title: Nový uživatel
+
+message:
+	user_created: Uživatel byl vytvořen.
+	user_creation_failed: Při vytváření uživatele dišlo k chybě.

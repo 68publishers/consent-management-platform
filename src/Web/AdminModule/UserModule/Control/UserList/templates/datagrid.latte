@@ -1,0 +1,14 @@
+{extends $originalTemplate}
+
+{varType SixtyEightPublishers\UserBundle\ReadModel\View\UserView $item}
+
+{define col-roles}
+    {foreach $item->roles->all() as $role}
+        {varType SixtyEightPublishers\UserBundle\Domain\ValueObject\Role $role}
+
+        {_'//layout.role_name.' . $role->value()}
+        {if !$iterator->isLast()}
+            ,
+        {/if}
+    {/foreach}
+{/define}

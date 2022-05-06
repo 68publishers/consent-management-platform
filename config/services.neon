@@ -5,7 +5,7 @@ services:
 	# Subscribers
 	-
 		autowired: no
-		factory: App\Subscriber\PasswordRequest\OnPasswordChangeRequested
+		factory: App\Subscribers\PasswordRequest\OnPasswordChangeRequested
 
 	# Read model
 	-
@@ -29,6 +29,11 @@ services:
 	- App\Web\FrontModule\Control\ForgotPassword\ForgotPasswordControlFactoryInterface
 	- App\Web\FrontModule\Control\ResetPassword\ResetPasswordControlFactoryInterface
 
+	# Web\AdminModule\AccountModule
+	- App\Web\AdminModule\ProfileModule\Control\BasicInformation\BasicInformationControlFactoryInterface
+
 	# Web\AdminModule\UserModule
 	- App\Web\AdminModule\UserModule\Control\UserList\UserListControlFactoryInterface
 	- App\Web\AdminModule\UserModule\Control\PasswordRequestList\PasswordRequestListControlFactoryInterface
+	- App\Web\AdminModule\UserModule\Control\UserForm\UserFormControlFactoryInterface
+	- App\Web\AdminModule\ProfileModule\Control\PasswordChange\PasswordChangeControlFactoryInterface

@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Web\AdminModule\Presenter;
 
 use App\Web\Ui\Presenter;
+use Nette\HtmlStringable;
+use Nette\Application\UI\Component;
 use Contributte\MenuControl\UI\MenuComponent;
 use Contributte\MenuControl\UI\IMenuComponentFactory;
 use SixtyEightPublishers\SmartNetteComponent\Annotation\LoggedIn;
 use SixtyEightPublishers\UserBundle\Bridge\Nette\Security\Identity;
-use SixtyEightPublishers\UserBundle\Application\Csrf\CsrfTokenFactoryInterface;
 use SixtyEightPublishers\SmartNetteComponent\Annotation\AuthorizationAnnotationInterface;
 
 /**
@@ -18,20 +19,19 @@ use SixtyEightPublishers\SmartNetteComponent\Annotation\AuthorizationAnnotationI
 abstract class AdminPresenter extends Presenter
 {
 	private const MENU_NAME_SIDEBAR = 'sidebar';
-
-	private CsrfTokenFactoryInterface $csrfTokenFactory;
+	private const MENU_NAME_PROFILE = 'profile';
 
 	private IMenuComponentFactory $menuComponentFactory;
 
+	private array $customBreadcrumbItems = [];
+
 	/**
-	 * @param \SixtyEightPublishers\UserBundle\Application\Csrf\CsrfTokenFactoryInterface $csrfTokenFactory
-	 * @param \Contributte\MenuControl\UI\IMenuComponentFactory                           $menuComponentFactory
+	 * @param \Contributte\MenuControl\UI\IMenuComponentFactory $menuComponentFactory
 	 *
 	 * @return void
 	 */
-	public function injectAdminDependencies(CsrfTokenFactoryInterface $csrfTokenFactory, IMenuComponentFactory $menuComponentFactory): void
+	public function injectAdminDependencies(IMenuComponentFactory $menuComponentFactory): void
 	{
-		$this->csrfTokenFactory = $csrfTokenFactory;
 		$this->menuComponentFactory = $menuComponentFactory;
 	}
 
@@ -52,7 +52,6 @@ abstract class AdminPresenter extends Presenter
 	/**
 	 * @return void
 	 * @throws \SixtyEightPublishers\UserBundle\Application\Exception\IdentityException
-	 * @throws \Nette\Application\UI\InvalidLinkException
 	 */
 	protected function beforeRender(): void
 	{
@@ -65,9 +64,28 @@ abstract class AdminPresenter extends Presenter
 		assert($identity instanceof Identity);
 
 		$template->identity = $identity->data();
-		$template->signOutLink = $this->link(':Admin:SignOut:', [
-			'_sec' => $this->csrfTokenFactory->create(SignOutPresenter::class),
-		]);
+	}
+
+	/**
+	 * @param \Nette\HtmlStringable|string $title
+	 *
+	 * @return void
+	 */
+	protected function addBreadcrumbItem($title): void
+	{
+		assert(is_string($title) || $title instanceof HtmlStringable);
+
+		$this->customBreadcrumbItems[] = $title;
+	}
+
+	/**
+	 * @param array $items
+	 *
+	 * @return void
+	 */
+	protected function setBreadcrumbItems(array $items): void
+	{
+		$this->customBreadcrumbItems = $items;
 	}
 
 	/**
@@ -75,6 +93,20 @@ abstract class AdminPresenter extends Presenter
 	 */
 	protected function createComponentSidebarMenu(): MenuComponent
 	{
-		return $this->menuComponentFactory->create(self::MENU_NAME_SIDEBAR);
+		$control = $this->menuComponentFactory->create(self::MENU_NAME_SIDEBAR);
+
+		$control->onAnchor[] = function (Component $component) {
+			$component->template->customBreadcrumbItems = $this->customBreadcrumbItems;
+		};
+
+		return $control;
+	}
+
+	/**
+	 * @return \Contributte\MenuControl\UI\MenuComponent
+	 */
+	protected function createComponentProfileMenu(): MenuComponent
+	{
+		return $this->menuComponentFactory->create(self::MENU_NAME_PROFILE);
 	}
 }

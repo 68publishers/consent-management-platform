@@ -1,0 +1,24 @@
+{extends $originalTemplate}
+
+{varType SixtyEightPublishers\ForgotPasswordBundle\ReadModel\View\PasswordRequestView $item}
+
+{define col-status}
+    {switch TRUE}
+        {case $item->status->is(SixtyEightPublishers\ForgotPasswordBundle\Domain\ValueObject\Status::REQUESTED)}
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">{_status_value.requested}</span>
+        {case $item->status->is(SixtyEightPublishers\ForgotPasswordBundle\Domain\ValueObject\Status::COMPLETED)}
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">{_status_value.completed}</span>
+        {case $item->status->is(SixtyEightPublishers\ForgotPasswordBundle\Domain\ValueObject\Status::CANCELED)}
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">{_status_value.canceled}</span>
+    {/switch}
+{/define}
+
+{define col-request_device_info}
+    <span n:ifcontent class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 mr-1">{$item->requestDeviceInfo->ipAddress()->value()}</span>
+    <span n:ifcontent class="text-xs">{$item->requestDeviceInfo->userAgent()->value()}</span>
+{/define}
+
+{define col-finished_device_info}
+    <span n:ifcontent class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 mr-1">{$item->finishedDeviceInfo->ipAddress()->value()}</span>
+    <span n:ifcontent class="text-xs">{$item->finishedDeviceInfo->userAgent()->value()}</span>
+{/define}

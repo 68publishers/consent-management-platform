@@ -30,6 +30,7 @@ final class PasswordRequestListControl extends Control
 		$grid = $this->dataGridFactory->create(PasswordRequestsDataGridQuery::create());
 
 		$grid->setTranslator($this->getPrefixedTranslator());
+		$grid->setTemplateFile(__DIR__ . '/templates/datagrid.latte');
 
 		$grid->setDefaultSort([
 			'requested_at' => 'DESC',
@@ -43,9 +44,7 @@ final class PasswordRequestListControl extends Control
 			->setFilterText('emailAddress');
 
 		$grid->addColumnText('status', 'status')
-			->setTemplate(__DIR__ . '/templates/column.status.latte')
-			->setAlign('center')
-			->setSortable('name');
+			->setAlign('center');
 
 		$grid->addColumnDateTimeTz('requested_at', 'requested_at', 'requestedAt')
 			->setFormat('j.n.Y H:i:s')
@@ -57,11 +56,9 @@ final class PasswordRequestListControl extends Control
 			->setSortable('finishedAt')
 			->setFilterDate('finishedAt');
 
-		$grid->addColumnText('request_device_info', 'request_device_info')
-			->setTemplate(__DIR__ . '/templates/column.requestDeviceInfo.latte');
+		$grid->addColumnText('request_device_info', 'request_device_info');
 
-		$grid->addColumnText('finished_device_info', 'finished_device_info')
-			->setTemplate(__DIR__ . '/templates/column.finishedDeviceInfo.latte');
+		$grid->addColumnText('finished_device_info', 'finished_device_info');
 
 		return $grid;
 	}
