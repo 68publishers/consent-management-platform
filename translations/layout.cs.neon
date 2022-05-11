@@ -1,13 +1,18 @@
 open_user_menu: Otevřít uživatelské menu
 open_sidebar: Otevřít hlavní menu
 close_sidebar: Zavřít hlavní menu
-back_to_list: Zpět na výpis
 
 sidebar:
 	dashboard: Dashboard
 	users: Uživatelé
 	user_list: Výpis uživatelů
 	password_request_list: Zapomenutá hesla
+	projects: Projekty
+
+sidebar_project:
+	consents: Evidence souhlasů
+	assigned_users: Přiřazení uživatelé
+	edit_project: Upravit projekt
 
 profile:
 	settings: Uživatelský profil

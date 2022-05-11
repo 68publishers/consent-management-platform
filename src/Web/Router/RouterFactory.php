@@ -30,6 +30,11 @@ final class RouterFactory
 				'action' => 'default',
 			]);
 
+		$router->addRoute('project/<project>/[<module>/]<presenter>[/<id>]', [
+			'module' => 'Admin:Project',
+			'action' => 'default',
+		]);
+
 		$router->withModule('Admin')
 			->addRoute('[[<module>/]<presenter>[/<id>]]', [
 				'presenter' => 'Dashboard',

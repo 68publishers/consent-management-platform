@@ -30,6 +30,39 @@ contributte.menu:
 					icon: '''
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
 					'''
+			layout.sidebar.projects:
+				action: Admin:Project:Projects:default
+				include:
+					- '^Admin\:Project\:Projects\:.+$'
+					- '^Admin\:Project\:AddProject\:.+$'
+				data:
+					icon: '''
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+					'''
+
+	sidebar_project:
+		translator: yes
+		templates:
+			menu: %appDir%/Web/Ui/templates/menu/sidebar.latte
+			breadcrumbs: %appDir%/Web/Ui/templates/menu/breadcrumbs.latte
+		items:
+			layout.sidebar_project.consents:
+				action: Admin:Project:Consents:default
+				include:
+					- '^Admin\:Project\:Consents\:.+$'
+				data:
+					icon: '''
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+					'''
+			layout.sidebar_project.edit_project:
+				action: Admin:Project:EditProject:default
+				include:
+					- '^Admin\:Project\:EditProject\:.+$'
+				data:
+					icon: '''
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+					'''
+
 	profile:
 		translator: yes
 		templates:

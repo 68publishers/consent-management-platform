@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Web\Ui\DataGrid;
 
-use App\ReadModel\Query\DataGridQueryInterface;
+use App\ReadModel\DataGridQueryInterface;
 
 interface DataGridFactoryInterface
 {
 	/**
-	 * @param \App\ReadModel\Query\DataGridQueryInterface|null $query
+	 * @param \App\ReadModel\DataGridQueryInterface|null $query
 	 *
 	 * @return \App\Web\Ui\DataGrid\DataGrid
 	 */

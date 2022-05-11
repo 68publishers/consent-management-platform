@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Web\Ui\DataGrid\DataSource;
 
 use Ublaboo\DataGrid\Utils\Sorting;
+use App\ReadModel\DataGridQueryInterface;
 use Ublaboo\DataGrid\DataSource\IDataSource;
-use App\ReadModel\Query\DataGridQueryInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 
 final class ReadModelDataSource implements IDataSource
@@ -16,7 +16,7 @@ final class ReadModelDataSource implements IDataSource
 	private QueryBusInterface $queryBus;
 
 	/**
-	 * @param \App\ReadModel\Query\DataGridQueryInterface                    $query
+	 * @param \App\ReadModel\DataGridQueryInterface                          $query
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface $queryBus
 	 */
 	public function __construct(DataGridQueryInterface $query, QueryBusInterface $queryBus)

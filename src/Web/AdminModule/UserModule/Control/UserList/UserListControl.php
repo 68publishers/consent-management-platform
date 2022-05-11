@@ -6,7 +6,7 @@ namespace App\Web\AdminModule\UserModule\Control\UserList;
 
 use App\Web\Ui\Control;
 use App\Web\Ui\DataGrid\DataGrid;
-use App\ReadModel\Query\UsersDataGridQuery;
+use App\ReadModel\User\UsersDataGridQuery;
 use App\Web\Ui\DataGrid\Helper\FilterHelper;
 use App\Web\Ui\DataGrid\DataGridFactoryInterface;
 

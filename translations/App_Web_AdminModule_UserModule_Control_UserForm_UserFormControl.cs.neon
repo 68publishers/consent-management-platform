@@ -23,6 +23,9 @@ password:
 		add: 'Nepovinné, uživatel si může později nastavit vlastní heslo přes "zapomenuté heslo".'
 		edit: 'Vyplňte pouze v případě, že chcete uživateli heslo změnit.'
 
+projects:
+	field: Projekty
+
 save:
 	field: Vytvořit uživatele
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Ui\DataGrid;
 
-use App\ReadModel\Query\DataGridQueryInterface;
+use App\ReadModel\DataGridQueryInterface;
 use App\Web\Ui\DataGrid\DataSource\ReadModelDataSource;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 

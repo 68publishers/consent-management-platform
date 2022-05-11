@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\UserModule\Presenter;
 
+use App\Web\Ui\Form\FormFactoryInterface;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use SixtyEightPublishers\UserBundle\ReadModel\View\UserView;
 use SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId;
@@ -63,9 +64,12 @@ final class EditUserPresenter extends AdminPresenter
 	{
 		$control = $this->userFormControlFactory->create($this->userView);
 
+		$control->setFormFactoryOptions([
+			FormFactoryInterface::OPTION_AJAX => TRUE,
+		]);
+
 		$control->addEventListener(UserUpdatedEvent::class, function () {
 			$this->subscribeFlashMessage(FlashMessage::success('user_edited'));
-			$this->redirect('this');
 		});
 
 		$control->addEventListener(UserFormProcessingFailedEvent::class, function () {

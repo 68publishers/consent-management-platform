@@ -13,5 +13,6 @@ import './js/alpine'
 import './js/flatpickr';
 import './js/live-form-validation';
 //import './js/select2';
+import './js/textarea-autosize';
 
 import './css/style.css';

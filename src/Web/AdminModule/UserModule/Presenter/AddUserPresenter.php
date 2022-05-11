@@ -40,9 +40,9 @@ final class AddUserPresenter extends AdminPresenter
 	{
 		$control = $this->userFormControlFactory->create();
 
-		$control->addEventListener(UserCreatedEvent::class, function (UserCreatedEvent $e) {
+		$control->addEventListener(UserCreatedEvent::class, function (UserCreatedEvent $event) {
 			$this->subscribeFlashMessage(FlashMessage::success('user_created'));
-			$this->redirect('EditUser:', ['id' => $e->userId()->toString()]);
+			$this->redirect('EditUser:', ['id' => $event->userId()->toString()]);
 		});
 
 		$control->addEventListener(UserFormProcessingFailedEvent::class, function () {

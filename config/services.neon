@@ -2,19 +2,6 @@ services:
 	# Routing
 	routing.router: App\Web\Router\RouterFactory()::create()
 
-	# Subscribers
-	-
-		autowired: no
-		factory: App\Subscribers\PasswordRequest\OnPasswordChangeRequested
-
-	# Read model
-	-
-		autowired: no
-		factory: App\Infrastructure\Doctrine\QueryHandler\UsersDataGridQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Doctrine\QueryHandler\PasswordRequestsDataGridQueryHandler
-
 	# Web\Ui
 	- App\Web\Ui\Form\RecaptchaResolver(::env(RECAPTCHA_ENABLED|bool, no))
 	-
@@ -37,3 +24,6 @@ services:
 	- App\Web\AdminModule\UserModule\Control\PasswordRequestList\PasswordRequestListControlFactoryInterface
 	- App\Web\AdminModule\UserModule\Control\UserForm\UserFormControlFactoryInterface
 	- App\Web\AdminModule\ProfileModule\Control\PasswordChange\PasswordChangeControlFactoryInterface
+
+	# Web\AdminModule\ProjectModule
+	- App\Web\AdminModule\ProjectModule\Control\ProjectForm\ProjectFormControlFactoryInterface

@@ -1,0 +1,30 @@
+name:
+	field: Název
+	required: Vyplňte prosím název.
+
+code:
+	field: Kód
+	required: Vyplňte prosím kód.
+	rule_pattern: 'Kód smí obsahovat pouze malá písmena (a-z), číslice a znaky "_", "-" a "."'
+	rule_max_length: Maximální povolená délka je %d znaků.
+	error:
+		duplicated_value: 'Projekt s tímto kódem již existuje.'
+	description: 'Povolená jsou pouze malá písmena, číslice, tečka, podrtžítko a pomlčka.'
+
+color:
+	field: Barva
+	required: Vyplňte prosím barvu.
+	rule_pattern: Nevalidní formát.
+	description: 'Povolen je hexadecimální formát #xxx, či #xxxxxx'
+
+active:
+	field: Zapnuto
+
+description:
+	field: Popis projektu
+
+save:
+	field: Vytvořit projekt
+
+update:
+	field: Uložit

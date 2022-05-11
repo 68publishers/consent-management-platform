@@ -10,10 +10,14 @@ use App\Domain\User\RolesEnum;
 use Nette\Application\UI\Form;
 use App\Web\Utils\TranslatorUtils;
 use Nette\Forms\Controls\TextInput;
+use App\ReadModel\Project\ProjectView;
 use App\Web\Ui\Form\FormFactoryInterface;
 use App\Web\Ui\Form\FormFactoryOptionsTrait;
+use App\ReadModel\Project\FindAllProjectsQuery;
+use App\ReadModel\Project\FindUserProjectsQuery;
 use SixtyEightPublishers\UserBundle\ReadModel\View\UserView;
 use SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId;
+use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 use SixtyEightPublishers\UserBundle\Domain\Command\CreateUserCommand;
 use SixtyEightPublishers\UserBundle\Domain\Command\UpdateUserCommand;
@@ -31,17 +35,21 @@ final class UserFormControl extends Control
 
 	private CommandBusInterface $commandBus;
 
+	private QueryBusInterface $queryBus;
+
 	private ?UserView $default;
 
 	/**
 	 * @param \App\Web\Ui\Form\FormFactoryInterface                            $formFactory
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface $commandBus
+	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface   $queryBus
 	 * @param \SixtyEightPublishers\UserBundle\ReadModel\View\UserView|NULL    $default
 	 */
-	public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, ?UserView $default = NULL)
+	public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, QueryBusInterface $queryBus, ?UserView $default = NULL)
 	{
 		$this->formFactory = $formFactory;
 		$this->commandBus = $commandBus;
+		$this->queryBus = $queryBus;
 		$this->default = $default;
 	}
 
@@ -73,6 +81,17 @@ final class UserFormControl extends Control
 		$form->addPassword('password', 'password.field')
 			->setOption('description', NULL === $this->default ? 'password.description.add' : 'password.description.edit');
 
+		$projects = [];
+
+		foreach ($this->queryBus->dispatch(FindAllProjectsQuery::create()) as $projectView) {
+			assert($projectView instanceof ProjectView);
+			$projects[$projectView->id->toString()] = $projectView->name->value();
+		}
+
+		$form->addCheckboxList('projects', 'projects.field', $projects)
+			->checkDefaultValue(FALSE)
+			->setTranslator(NULL);
+
 		$form->addProtection('//layout.form_protection');
 
 		$form->addSubmit('save', NULL === $this->default ? 'save.field' : 'update.field');
@@ -86,6 +105,10 @@ final class UserFormControl extends Control
 				'firstname' => $this->default->name->firstname(),
 				'surname' => $this->default->name->surname(),
 				'roles' => $this->default->roles->toArray(),
+				'projects' => array_map(
+					static fn (ProjectView $projectView): string => $projectView->id->toString(),
+					$this->queryBus->dispatch(FindUserProjectsQuery::create($this->default->id->toString()))
+				),
 			]);
 		}
 
@@ -127,6 +150,8 @@ final class UserFormControl extends Control
 				$command = $command->withPassword($values->password);
 			}
 		}
+
+		$command = $command->withParam('project_ids', $values->projects);
 
 		try {
 			$this->commandBus->dispatch($command);

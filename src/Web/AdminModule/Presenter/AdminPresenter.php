@@ -21,9 +21,9 @@ abstract class AdminPresenter extends Presenter
 	private const MENU_NAME_SIDEBAR = 'sidebar';
 	private const MENU_NAME_PROFILE = 'profile';
 
-	private IMenuComponentFactory $menuComponentFactory;
+	protected IMenuComponentFactory $menuComponentFactory;
 
-	private array $customBreadcrumbItems = [];
+	protected array $customBreadcrumbItems = [];
 
 	/**
 	 * @param \Contributte\MenuControl\UI\IMenuComponentFactory $menuComponentFactory
@@ -60,10 +60,7 @@ abstract class AdminPresenter extends Presenter
 		$template = $this->getTemplate();
 		assert($template instanceof AdminTemplate);
 
-		$identity = $this->getUser()->getIdentity();
-		assert($identity instanceof Identity);
-
-		$template->identity = $identity->data();
+		$template->identity = $this->getIdentity()->data();
 	}
 
 	/**
@@ -86,6 +83,17 @@ abstract class AdminPresenter extends Presenter
 	protected function setBreadcrumbItems(array $items): void
 	{
 		$this->customBreadcrumbItems = $items;
+	}
+
+	/**
+	 * @return \SixtyEightPublishers\UserBundle\Bridge\Nette\Security\Identity
+	 */
+	protected function getIdentity(): Identity
+	{
+		$identity = $this->getUser()->getIdentity();
+		assert($identity instanceof Identity);
+
+		return $identity;
 	}
 
 	/**

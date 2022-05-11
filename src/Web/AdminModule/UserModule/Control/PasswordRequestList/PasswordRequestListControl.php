@@ -7,7 +7,7 @@ namespace App\Web\AdminModule\UserModule\Control\PasswordRequestList;
 use App\Web\Ui\Control;
 use App\Web\Ui\DataGrid\DataGrid;
 use App\Web\Ui\DataGrid\DataGridFactoryInterface;
-use App\ReadModel\Query\PasswordRequestsDataGridQuery;
+use App\ReadModel\PasswordRequest\PasswordRequestsDataGridQuery;
 
 final class PasswordRequestListControl extends Control
 {

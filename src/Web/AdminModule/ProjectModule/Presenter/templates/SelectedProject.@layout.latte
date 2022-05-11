@@ -1,0 +1,37 @@
+{extends '../../../templates/@layout.latte'}
+
+{templateType App\Web\AdminModule\ProjectModule\Presenter\SelectedProjectTemplate}
+
+<div n:block="breadcrumbs" class="flex">
+	<div class="flex place-items-center mb-1">
+		<span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2" style="background-color: {$projectView->color->value()|noescape} !important;">
+			{$projectView->name->value()}
+		</span>
+		<svg class="flex-shrink-0 h-5 w-5 text-gray-400 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+			<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+		</svg>
+	</div>
+	<div class="pt-1">
+		{control sidebarProjectMenu:breadcrumbs}
+	</div>
+</div>
+
+{block #sidebar_menu_desktop}
+	{control sidebarMenu}
+
+	<h3 class="text-sm font-semibold text-indigo-100 uppercase tracking-wider px-3 pb-2 pt-6">
+		{$projectView->name->value()}
+	</h3>
+
+	{control sidebarProjectMenu}
+{/block}
+
+{block #sidebar_menu_mobile}
+	{control sidebarMenu}
+
+	<h3 class="text-sm font-semibold text-indigo-100 uppercase tracking-wider px-3 pb-2 pt-6">
+		{$projectView->name->value()}
+	</h3>
+
+	{control sidebarProjectMenu}
+{/block}
