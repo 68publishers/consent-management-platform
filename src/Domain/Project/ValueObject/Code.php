@@ -1,0 +1,31 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domain\Project\ValueObject;
+
+use App\Domain\Project\Exception\InvalidCodeException;
+use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AbstractStringValueObject;
+
+final class Code extends AbstractStringValueObject
+{
+	public const MAX_LENGTH = 70;
+
+	/**
+	 * @param string $code
+	 *
+	 * @return static
+	 */
+	public static function fromValidCode(string $code): self
+	{
+		if (!preg_match('/^[a-z0-9_\-\.]+$/', $code)) {
+			throw InvalidCodeException::containsNonAllowedCharacters($code);
+		}
+
+		if (self::MAX_LENGTH < strlen($code)) {
+			throw InvalidCodeException::tooLong($code, self::MAX_LENGTH);
+		}
+
+		return self::fromValue($code);
+	}
+}

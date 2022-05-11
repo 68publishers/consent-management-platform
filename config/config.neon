@@ -2,6 +2,7 @@ includes:
 	- php/@php.neon
 	- acl/@acl.neon
 	- packages/@packages.neon
+	- model/@model.neon
 	- services.neon
 
 parameters:

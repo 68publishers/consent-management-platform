@@ -1,0 +1,10 @@
+services:
+	# infra: doctrine
+	-
+		autowired: no
+		factory: App\Infrastructure\User\Doctrine\QueryHandler\UsersDataGridQueryHandler
+
+# infra: doctrine mapping
+nettrine.orm.xml:
+	mapping:
+		App\Domain\User: %appDir%/Infrastructure/User/Doctrine/Mapping

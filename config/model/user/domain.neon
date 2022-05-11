@@ -1,0 +1,4 @@
+services:
+	-
+		autowired: no
+		factory: App\Domain\User\CommandHandler\AssignProjectsToUserCommandHandler

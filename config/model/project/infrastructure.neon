@@ -1,0 +1,51 @@
+services:
+	# infra
+	-
+		type: App\Domain\Project\ProjectRepositoryInterface
+		factory: App\Infrastructure\Project\ProjectRepository
+	-
+		type: App\Domain\Project\CheckCodeUniquenessInterface
+		factory: App\Infrastructure\Project\CheckCodeUniqueness
+
+	# infra: doctrine
+	-
+		autowired: no
+		factory: App\Infrastructure\Project\Doctrine\QueryHandler\FindAllProjectsQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\Project\Doctrine\QueryHandler\FindUserProjectsQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\Project\Doctrine\QueryHandler\GetProjectByCodeQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\Project\Doctrine\QueryHandler\GetUserProjectByCodeQueryHandler
+
+# infra: doctrine mapping
+nettrine.orm.xml:
+	mapping:
+		App\Domain\Project: %appDir%/Infrastructure/Project/Doctrine/Mapping
+
+# infra: dbal types
+nettrine.dbal:
+	connection:
+		types:
+			App\Domain\Project\ValueObject\Code:
+				class: App\Infrastructure\Project\Doctrine\DbalType\CodeType
+				commented: yes
+
+			App\Domain\Project\ValueObject\Color:
+				class: App\Infrastructure\Project\Doctrine\DbalType\ColorType
+				commented: yes
+
+			App\Domain\Project\ValueObject\Description:
+				class: App\Infrastructure\Project\Doctrine\DbalType\DescriptionType
+				commented: yes
+
+			App\Domain\Project\ValueObject\Name:
+				class: App\Infrastructure\Project\Doctrine\DbalType\NameType
+				commented: yes
+
+			App\Domain\Project\ValueObject\ProjectId:
+				class: App\Infrastructure\Project\Doctrine\DbalType\ProjectIdType
+				commented: yes

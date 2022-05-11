@@ -1,3 +1,7 @@
 extensions:
 	68publishers.user_bundle: SixtyEightPublishers\UserBundle\Bridge\Nette\DI\UserBundleExtension
 	68publishers.user_bundle.doctrine: SixtyEightPublishers\UserBundle\Bridge\Nette\DI\DoctrineInfrastructureExtension
+
+68publishers.user_bundle:
+	aggregate_classname:
+		user: App\Domain\User\User

@@ -6,5 +6,5 @@ services:
 
 nettrine.migrations:
 	table: migrations
-	directory: %appDir%/Infrastructure/Doctrine/Migration
-	namespace: App\Infrastructure\Doctrine\Migration
+	directory: %appDir%/Infrastructure/Migration/Doctrine
+	namespace: App\Infrastructure\Migration\Doctrine

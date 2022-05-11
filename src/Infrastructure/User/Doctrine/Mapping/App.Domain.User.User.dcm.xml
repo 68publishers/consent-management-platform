@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                                      https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Domain\User\User" table='"user"'>
+        <indexes>
+            <index name="idx_user_created_at" columns="created_at" />
+        </indexes>
+
+        <id name="id" column="id" type="SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId" unique="true" />
+
+        <field name="createdAt" column="created_at" type="datetime_immutable" />
+
+        <field name="username" column="username" type="SixtyEightPublishers\UserBundle\Domain\ValueObject\Username" unique="true" />
+
+        <field name="password" column="password" type="SixtyEightPublishers\UserBundle\Domain\ValueObject\HashedPassword" nullable="true" />
+
+        <field name="emailAddress" column="email_address" type="SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\EmailAddress" unique="true" />
+
+        <embedded name="name" class="SixtyEightPublishers\UserBundle\Domain\ValueObject\Name" use-column-prefix="false" />
+
+        <field name="roles" column="roles" type="SixtyEightPublishers\UserBundle\Domain\ValueObject\Roles">
+            <options>
+                <option name="jsonb">true</option>
+            </options>
+        </field>
+
+        <field name="version" column="version" type="integer" />
+
+        <one-to-many field="projects" target-entity="App\Domain\User\UserHasProject" mapped-by="user" orphan-removal="true">
+            <cascade>
+                <cascade-persist />
+                <cascade-remove />
+            </cascade>
+        </one-to-many>
+    </entity>
+
+</doctrine-mapping>
