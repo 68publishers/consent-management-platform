@@ -2,19 +2,21 @@
 
 declare(strict_types=1);
 
-namespace App\ReadModel\ConsentSettings;
+namespace App\ReadModel\Consent;
 
 use DateTimeImmutable;
 use DateTimeInterface;
 use App\Domain\Shared\ValueObject\Checksum;
+use App\Domain\Consent\ValueObject\Consents;
+use App\Domain\Consent\ValueObject\ConsentId;
 use App\Domain\Project\ValueObject\ProjectId;
-use App\Domain\ConsentSettings\ValueObject\SettingsGroup;
-use App\Domain\ConsentSettings\ValueObject\ConsentSettingsId;
+use App\Domain\Consent\ValueObject\Attributes;
+use App\Domain\Consent\ValueObject\UserIdentifier;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\AbstractView;
 
-final class ConsentSettingsView extends AbstractView
+final class ConsentView extends AbstractView
 {
-	public ConsentSettingsId $id;
+	public ConsentId $id;
 
 	public ProjectId $projectId;
 
@@ -22,9 +24,13 @@ final class ConsentSettingsView extends AbstractView
 
 	public DateTimeImmutable $lastUpdateAt;
 
-	public Checksum $checksum;
+	public UserIdentifier $userIdentifier;
 
-	public SettingsGroup $settings;
+	public Checksum $settingsChecksum;
+
+	public Consents $consents;
+
+	public Attributes $attributes;
 
 	/**
 	 * @return array
@@ -36,8 +42,10 @@ final class ConsentSettingsView extends AbstractView
 			'project_id' => $this->projectId->toString(),
 			'created_at' => $this->createdAt->format(DateTimeInterface::ATOM),
 			'last_update_at' => $this->lastUpdateAt->format(DateTimeInterface::ATOM),
-			'checksum' => $this->checksum->value(),
-			'settings' => $this->settings->toArray(),
+			'user_identifier' => $this->userIdentifier->value(),
+			'settings_checksum' => $this->settingsChecksum->value(),
+			'consents' => $this->consents->values(),
+			'attributes' => $this->attributes->values(),
 		];
 	}
 }

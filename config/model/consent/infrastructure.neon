@@ -1,0 +1,41 @@
+services:
+	# infra
+	-
+		type: App\Domain\Consent\ConsentRepositoryInterface
+		factory: App\Infrastructure\Consent\ConsentRepository
+	-
+		type: App\Domain\Consent\CheckUserIdentifierNotExistsInterface
+		factory: App\Infrastructure\Consent\CheckUserIdentifierNotExists
+
+	# infra: doctrine
+	-
+		autowired: no
+		factory: App\Infrastructure\Consent\Doctrine\QueryHandler\ConsentsDataGridQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\Consent\Doctrine\QueryHandler\GetConsentByProjectIdAndUserIdentifierQueryHandler
+
+# infra: doctrine mapping
+nettrine.orm.xml:
+	mapping:
+		App\Domain\Consent\: %appDir%/Infrastructure/Consent/Doctrine/Mapping
+
+# infra: dbal types
+nettrine.dbal:
+	connection:
+		types:
+			App\Domain\Consent\ValueObject\Attributes:
+				class: App\Infrastructure\Consent\Doctrine\DbalType\AttributesType
+				commented: yes
+
+			App\Domain\Consent\ValueObject\ConsentId:
+				class: App\Infrastructure\Consent\Doctrine\DbalType\ConsentIdType
+				commented: yes
+
+			App\Domain\Consent\ValueObject\Consents:
+				class: App\Infrastructure\Consent\Doctrine\DbalType\ConsentsType
+				commented: yes
+
+			App\Domain\Consent\ValueObject\UserIdentifier:
+				class: App\Infrastructure\Consent\Doctrine\DbalType\UserIdentifierType
+				commented: yes

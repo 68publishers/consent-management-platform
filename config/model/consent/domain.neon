@@ -1,0 +1,4 @@
+services:
+	-
+		autowired: no
+		factory: App\Domain\Consent\CommandHandler\StoreConsentCommandHandler

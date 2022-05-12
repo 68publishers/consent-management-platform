@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                                      https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Domain\Consent\Consent" table="consent">
+        <indexes>
+            <index name="idx_consent_project_id" columns="project_id" />
+            <index name="idx_consent_project_id_checksum" columns="project_id,user_identifier" />
+            <index name="idx_consent_created_at" columns="created_at" />
+            <index name="idx_consent_last_update_at" columns="last_update_at" />
+        </indexes>
+
+        <unique-constraints>
+            <unique-constraint name="uniq_consent_project_id_user_identifier" columns="project_id,user_identifier" />
+        </unique-constraints>
+
+        <id name="id" column="id" type="App\Domain\Consent\ValueObject\ConsentId" unique="true" />
+
+        <field name="projectId" column="project_id" type="App\Domain\Project\ValueObject\ProjectId" />
+
+        <field name="createdAt" column="created_at" type="datetime_immutable" />
+
+        <field name="lastUpdateAt" column="last_update_at" type="datetime_immutable" />
+
+        <field name="userIdentifier" column="user_identifier" type="App\Domain\Consent\ValueObject\UserIdentifier" />
+
+        <field name="settingsChecksum" column="settings_checksum" type="App\Domain\Shared\ValueObject\Checksum" />
+
+        <field name="consents" column="consents" type="App\Domain\Consent\ValueObject\Consents" />
+
+        <field name="attributes" column="attributes" type="App\Domain\Consent\ValueObject\Attributes" />
+
+        <field name="version" column="version" type="integer" />
+    </entity>
+
+</doctrine-mapping>

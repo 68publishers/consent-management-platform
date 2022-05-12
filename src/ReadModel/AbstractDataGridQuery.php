@@ -9,14 +9,6 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractPaginatedQue
 abstract class AbstractDataGridQuery extends AbstractPaginatedQuery implements DataGridQueryInterface
 {
 	/**
-	 * @return $this
-	 */
-	public static function create(): self
-	{
-		return self::fromParameters([]);
-	}
-
-	/**
 	 * {@inheritDoc}
 	 */
 	public function filters(): array
@@ -43,7 +35,7 @@ abstract class AbstractDataGridQuery extends AbstractPaginatedQuery implements D
 	/**
 	 * {@inheritDoc}
 	 */
-	public function withFilter(string $name, $value): DataGridQueryInterface
+	public function withFilter(string $name, $value): self
 	{
 		$filters = $this->getParam('filters') ?? [];
 		$filters[$name] = $value;
@@ -54,7 +46,7 @@ abstract class AbstractDataGridQuery extends AbstractPaginatedQuery implements D
 	/**
 	 * {@inheritDoc}
 	 */
-	public function withSorting(string $name, string $direction): DataGridQueryInterface
+	public function withSorting(string $name, string $direction): self
 	{
 		$sorting = $this->getParam('sorting') ?? [];
 		$sorting[$name] = $direction;
@@ -65,7 +57,7 @@ abstract class AbstractDataGridQuery extends AbstractPaginatedQuery implements D
 	/**
 	 * {@inheritDoc}
 	 */
-	public function withDataMode(): DataGridQueryInterface
+	public function withDataMode(): self
 	{
 		return $this->withParam('mode', self::MODE_DATA);
 	}
@@ -73,7 +65,7 @@ abstract class AbstractDataGridQuery extends AbstractPaginatedQuery implements D
 	/**
 	 * {@inheritDoc}
 	 */
-	public function withOneMode(): DataGridQueryInterface
+	public function withOneMode(): self
 	{
 		return $this->withParam('mode', self::MODE_ONE);
 	}
@@ -81,7 +73,7 @@ abstract class AbstractDataGridQuery extends AbstractPaginatedQuery implements D
 	/**
 	 * {@inheritDoc}
 	 */
-	public function withCountMode(): DataGridQueryInterface
+	public function withCountMode(): self
 	{
 		return $this->withParam('mode', self::MODE_COUNT);
 	}

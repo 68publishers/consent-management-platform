@@ -26,4 +26,5 @@ services:
 	- App\Web\AdminModule\ProfileModule\Control\PasswordChange\PasswordChangeControlFactoryInterface
 
 	# Web\AdminModule\ProjectModule
+	- App\Web\AdminModule\ProjectModule\Control\ConsentList\ConsentListControlFactoryInterface
 	- App\Web\AdminModule\ProjectModule\Control\ProjectForm\ProjectFormControlFactoryInterface

@@ -23,3 +23,6 @@ services:
 
 	# api/v1/consent-settings
 	- App\Api\V1\Controller\ConsentSettingsController
+
+	# api/v1/consent
+	- App\Api\V1\Controller\ConsentController
