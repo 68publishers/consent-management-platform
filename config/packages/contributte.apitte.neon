@@ -20,3 +20,6 @@ contributte.apitte:
 services:
 	# api/health-check
 	- App\Api\Controller\HealthCheckController(%debugMode%)
+
+	# api/v1/consent-settings
+	- App\Api\V1\Controller\ConsentSettingsController

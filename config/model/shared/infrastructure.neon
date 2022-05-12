@@ -1,0 +1,7 @@
+# infra: dbal types
+nettrine.dbal:
+	connection:
+		types:
+			App\Domain\Shared\ValueObject\Checksum:
+				class: App\Infrastructure\Shared\Doctrine\DbalType\ChecksumType
+				commented: yes

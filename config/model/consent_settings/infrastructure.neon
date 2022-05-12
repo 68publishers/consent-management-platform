@@ -1,0 +1,30 @@
+services:
+	# infra
+	-
+		type: App\Domain\ConsentSettings\ConsentSettingsRepositoryInterface
+		factory: App\Infrastructure\ConsentSettings\ConsentSettingsRepository
+	-
+		type: App\Domain\ConsentSettings\CheckChecksumNotExistsInterface
+		factory: App\Infrastructure\ConsentSettings\CheckChecksumNotExists
+
+	# infra: doctrine
+	-
+		autowired: no
+		factory: App\Infrastructure\ConsentSettings\Doctrine\QueryHandler\GetConsentSettingByProjectIdAndChecksumQueryHandler
+
+# infra: doctrine mapping
+nettrine.orm.xml:
+	mapping:
+		App\Domain\ConsentSettings: %appDir%/Infrastructure/ConsentSettings/Doctrine/Mapping
+
+# infra: dbal types
+nettrine.dbal:
+	connection:
+		types:
+			App\Domain\ConsentSettings\ValueObject\ConsentSettingsId:
+				class: App\Infrastructure\ConsentSettings\Doctrine\DbalType\ConsentSettingsIdType
+				commented: yes
+
+			App\Domain\ConsentSettings\ValueObject\SettingsGroup:
+				class: App\Infrastructure\ConsentSettings\Doctrine\DbalType\SettingsGroupType
+				commented: yes
