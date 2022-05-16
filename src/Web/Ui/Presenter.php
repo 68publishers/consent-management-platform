@@ -6,6 +6,7 @@ namespace App\Web\Ui;
 
 use Nette\Application\Request;
 use Nette\Application\Responses\ForwardResponse;
+use App\Web\Ui\Modal\PresenterTrait as ModalPresenterTrait;
 use SixtyEightPublishers\TranslationBridge\TranslatorAwareTrait;
 use SixtyEightPublishers\TranslationBridge\TranslatorAwareInterface;
 use SixtyEightPublishers\SmartNetteComponent\UI\Presenter as SmartPresenter;
@@ -17,6 +18,7 @@ abstract class Presenter extends SmartPresenter implements TranslatorAwareInterf
 	use TranslatorAwareTrait;
 	use RedrawControlTrait;
 	use FlashMessagePresenterTrait;
+	use ModalPresenterTrait;
 
 	private TranslatorLocalizerInterface $translatorLocalizer;
 

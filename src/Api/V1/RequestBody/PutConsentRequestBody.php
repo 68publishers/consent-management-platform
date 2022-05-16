@@ -9,10 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 final class PutConsentRequestBody extends BasicEntity
 {
-	/**
-	 * @Assert\NotBlank
-	 */
-	public string $settingsChecksum = '';
+	public ?string $settingsChecksum = NULL;
 
 	/**
 	 * @Assert\NotBlank

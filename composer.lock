@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "112e23a02ef13ec68014bd425b9f4564",
+    "content-hash": "6ac53ec0d7930413ab4bb6d6ddf34539",
     "packages": [
         {
             "name": "68publishers/asset",
@@ -387,12 +387,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/68publishers/omni.git",
-                "reference": "138f543f6336315e0a27c0f17c70e38f87fa1270"
+                "reference": "e1428ccc7928ab9a52901825084785bd0098bd4a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/68publishers/omni/zipball/138f543f6336315e0a27c0f17c70e38f87fa1270",
-                "reference": "138f543f6336315e0a27c0f17c70e38f87fa1270",
+                "url": "https://api.github.com/repos/68publishers/omni/zipball/e1428ccc7928ab9a52901825084785bd0098bd4a",
+                "reference": "e1428ccc7928ab9a52901825084785bd0098bd4a",
                 "shasum": ""
             },
             "require": {
@@ -442,20 +442,20 @@
                 "issues": "https://github.com/68publishers/omni/issues",
                 "source": "https://github.com/68publishers/omni/tree/main"
             },
-            "time": "2022-05-11T23:42:59+00:00"
+            "time": "2022-05-16T05:26:55+00:00"
         },
         {
             "name": "68publishers/smart-nette-component",
-            "version": "v0.2",
+            "version": "v0.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/68publishers/smart-nette-component.git",
-                "reference": "eb124a7bbf75d0e8e1178889ac6d7119e7573446"
+                "reference": "d93ee51a518de3bb0107436e0e859d673858868c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/68publishers/smart-nette-component/zipball/eb124a7bbf75d0e8e1178889ac6d7119e7573446",
-                "reference": "eb124a7bbf75d0e8e1178889ac6d7119e7573446",
+                "url": "https://api.github.com/repos/68publishers/smart-nette-component/zipball/d93ee51a518de3bb0107436e0e859d673858868c",
+                "reference": "d93ee51a518de3bb0107436e0e859d673858868c",
                 "shasum": ""
             },
             "require": {
@@ -508,9 +508,9 @@
             ],
             "support": {
                 "issues": "https://github.com/68publishers/smart-nette-component/issues",
-                "source": "https://github.com/68publishers/smart-nette-component/tree/v0.2"
+                "source": "https://github.com/68publishers/smart-nette-component/tree/v0.2.1"
             },
-            "time": "2020-11-19T01:38:27+00:00"
+            "time": "2022-05-15T20:29:43+00:00"
         },
         {
             "name": "68publishers/tracy-git-version",
@@ -2163,35 +2163,38 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "2.13.8",
+            "version": "3.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "dc9b3c3c8592c935a6e590441f9abc0f9eba335b"
+                "reference": "9e7f76dd1cde81c62574fdffa5a9c655c847ad21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/dc9b3c3c8592c935a6e590441f9abc0f9eba335b",
-                "reference": "dc9b3c3c8592c935a6e590441f9abc0f9eba335b",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/9e7f76dd1cde81c62574fdffa5a9c655c847ad21",
+                "reference": "9e7f76dd1cde81c62574fdffa5a9c655c847ad21",
                 "shasum": ""
             },
             "require": {
-                "doctrine/cache": "^1.0|^2.0",
-                "doctrine/deprecations": "^0.5.3",
+                "composer-runtime-api": "^2",
+                "doctrine/cache": "^1.11|^2.0",
+                "doctrine/deprecations": "^0.5.3|^1",
                 "doctrine/event-manager": "^1.0",
-                "ext-pdo": "*",
-                "php": "^7.1 || ^8"
+                "php": "^7.3 || ^8.0",
+                "psr/cache": "^1|^2|^3",
+                "psr/log": "^1|^2|^3"
             },
             "require-dev": {
                 "doctrine/coding-standard": "9.0.0",
-                "jetbrains/phpstorm-stubs": "2021.1",
-                "phpstan/phpstan": "1.4.6",
-                "phpunit/phpunit": "^7.5.20|^8.5|9.5.16",
+                "jetbrains/phpstorm-stubs": "2022.1",
+                "phpstan/phpstan": "1.6.3",
+                "phpstan/phpstan-strict-rules": "^1.2",
+                "phpunit/phpunit": "9.5.20",
                 "psalm/plugin-phpunit": "0.16.1",
                 "squizlabs/php_codesniffer": "3.6.2",
-                "symfony/cache": "^4.4",
-                "symfony/console": "^2.0.5|^3.0|^4.0|^5.0",
-                "vimeo/psalm": "4.22.0"
+                "symfony/cache": "^5.2|^6.0",
+                "symfony/console": "^2.7|^3.0|^4.0|^5.0|^6.0",
+                "vimeo/psalm": "4.23.0"
             },
             "suggest": {
                 "symfony/console": "For helpful console commands such as SQL execution and import of files."
@@ -2202,7 +2205,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Doctrine\\DBAL\\": "lib/Doctrine/DBAL"
+                    "Doctrine\\DBAL\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2245,14 +2248,13 @@
                 "queryobject",
                 "sasql",
                 "sql",
-                "sqlanywhere",
                 "sqlite",
                 "sqlserver",
                 "sqlsrv"
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/2.13.8"
+                "source": "https://github.com/doctrine/dbal/tree/3.3.6"
             },
             "funding": [
                 {
@@ -2268,7 +2270,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-09T15:25:46+00:00"
+            "time": "2022-05-02T17:21:01+00:00"
         },
         {
             "name": "doctrine/deprecations",
@@ -2752,16 +2754,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "2.12.0",
+            "version": "2.12.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/orm.git",
-                "reference": "d5503644314ed825fe4b276a588458a033fa3e7c"
+                "reference": "8291a7f09b12d14783ed6537b4586583d155869e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/orm/zipball/d5503644314ed825fe4b276a588458a033fa3e7c",
-                "reference": "d5503644314ed825fe4b276a588458a033fa3e7c",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/8291a7f09b12d14783ed6537b4586583d155869e",
+                "reference": "8291a7f09b12d14783ed6537b4586583d155869e",
                 "shasum": ""
             },
             "require": {
@@ -2770,7 +2772,7 @@
                 "doctrine/collections": "^1.5",
                 "doctrine/common": "^3.0.3",
                 "doctrine/dbal": "^2.13.1 || ^3.2",
-                "doctrine/deprecations": "^0.5.3",
+                "doctrine/deprecations": "^0.5.3 || ^1",
                 "doctrine/event-manager": "^1.1",
                 "doctrine/inflector": "^1.4 || ^2.0",
                 "doctrine/instantiator": "^1.3",
@@ -2790,13 +2792,13 @@
                 "doctrine/annotations": "^1.13",
                 "doctrine/coding-standard": "^9.0",
                 "phpbench/phpbench": "^0.16.10 || ^1.0",
-                "phpstan/phpstan": "~1.4.10 || 1.5.0",
-                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.4",
+                "phpstan/phpstan": "~1.4.10 || 1.6.3",
+                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5",
                 "psr/log": "^1 || ^2 || ^3",
                 "squizlabs/php_codesniffer": "3.6.2",
                 "symfony/cache": "^4.4 || ^5.4 || ^6.0",
                 "symfony/yaml": "^3.4 || ^4.0 || ^5.0 || ^6.0",
-                "vimeo/psalm": "4.22.0"
+                "vimeo/psalm": "4.23.0"
             },
             "suggest": {
                 "symfony/cache": "Provides cache support for Setup Tool with doctrine/cache 2.0",
@@ -2845,22 +2847,22 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/orm/issues",
-                "source": "https://github.com/doctrine/orm/tree/2.12.0"
+                "source": "https://github.com/doctrine/orm/tree/2.12.2"
             },
-            "time": "2022-04-19T18:34:28+00:00"
+            "time": "2022-05-02T19:10:07+00:00"
         },
         {
             "name": "doctrine/persistence",
-            "version": "3.0.0",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/persistence.git",
-                "reference": "e6103cb9e0982a4312e05ad94bb7be3f8e2d5869"
+                "reference": "25ec98a8cbd1f850e60fdb62c0ef77c162da8704"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/persistence/zipball/e6103cb9e0982a4312e05ad94bb7be3f8e2d5869",
-                "reference": "e6103cb9e0982a4312e05ad94bb7be3f8e2d5869",
+                "url": "https://api.github.com/repos/doctrine/persistence/zipball/25ec98a8cbd1f850e60fdb62c0ef77c162da8704",
+                "reference": "25ec98a8cbd1f850e60fdb62c0ef77c162da8704",
                 "shasum": ""
             },
             "require": {
@@ -2932,7 +2934,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/persistence/issues",
-                "source": "https://github.com/doctrine/persistence/tree/3.0.0"
+                "source": "https://github.com/doctrine/persistence/tree/3.0.2"
             },
             "funding": [
                 {
@@ -2948,7 +2950,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-15T10:39:55+00:00"
+            "time": "2022-05-06T06:10:05+00:00"
         },
         {
             "name": "fmasa/messenger",
@@ -5277,21 +5279,21 @@
         },
         {
             "name": "nettrine/dbal",
-            "version": "v0.7.1",
+            "version": "v0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nettrine/dbal.git",
-                "reference": "9d6f2dc0979ff4665c51ccfdc8b0b6a3ddc369fb"
+                "reference": "e092aac6561073e802cab948fb913e2043894155"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nettrine/dbal/zipball/9d6f2dc0979ff4665c51ccfdc8b0b6a3ddc369fb",
-                "reference": "9d6f2dc0979ff4665c51ccfdc8b0b6a3ddc369fb",
+                "url": "https://api.github.com/repos/nettrine/dbal/zipball/e092aac6561073e802cab948fb913e2043894155",
+                "reference": "e092aac6561073e802cab948fb913e2043894155",
                 "shasum": ""
             },
             "require": {
                 "contributte/di": "^0.5.0",
-                "doctrine/dbal": "^2.9.2",
+                "doctrine/dbal": "^2.13 || ^3.2",
                 "nettrine/cache": "^0.3.0",
                 "php": ">=7.2 <8.2"
             },
@@ -5345,9 +5347,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nettrine/dbal/issues",
-                "source": "https://github.com/nettrine/dbal/tree/v0.7.1"
+                "source": "https://github.com/nettrine/dbal/tree/v0.8.0"
             },
-            "time": "2022-04-12T14:52:00+00:00"
+            "time": "2022-05-09T08:04:24+00:00"
         },
         {
             "name": "nettrine/fixtures",
@@ -6654,27 +6656,27 @@
         },
         {
             "name": "scienta/doctrine-json-functions",
-            "version": "4.5.0",
+            "version": "5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ScientaNL/DoctrineJsonFunctions.git",
-                "reference": "138a017a92d9f0dfd22e221584b66517f005c222"
+                "reference": "a5a2309844cbb7fbf60d2aabcc6fb27418a431c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ScientaNL/DoctrineJsonFunctions/zipball/138a017a92d9f0dfd22e221584b66517f005c222",
-                "reference": "138a017a92d9f0dfd22e221584b66517f005c222",
+                "url": "https://api.github.com/repos/ScientaNL/DoctrineJsonFunctions/zipball/a5a2309844cbb7fbf60d2aabcc6fb27418a431c5",
+                "reference": "a5a2309844cbb7fbf60d2aabcc6fb27418a431c5",
                 "shasum": ""
             },
             "require": {
-                "doctrine/dbal": "2.*",
-                "doctrine/orm": "2.*",
+                "doctrine/dbal": "^3.0",
+                "doctrine/orm": "^2.0",
                 "ext-pdo": "*",
-                "php": "^7.1 || ^8.0"
+                "php": "^7.3 || ^8.0"
             },
             "require-dev": {
+                "doctrine/annotations": "^1.13",
                 "doctrine/coding-standard": "^8.0 || ^9.0",
-                "doctrine/orm": "^2.7",
                 "phpunit/phpunit": "^8.0 || ^9.0"
             },
             "suggest": {
@@ -6716,9 +6718,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ScientaNL/DoctrineJsonFunctions/issues",
-                "source": "https://github.com/ScientaNL/DoctrineJsonFunctions/tree/4.5.0"
+                "source": "https://github.com/ScientaNL/DoctrineJsonFunctions/tree/5.0.0"
             },
-            "time": "2022-01-12T09:54:17+00:00"
+            "time": "2022-01-12T10:14:59+00:00"
         },
         {
             "name": "sentry/sdk",
@@ -7105,16 +7107,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v5.4.7",
+            "version": "v5.4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "900275254f0a1a2afff1ab0e11abd5587a10e1d6"
+                "reference": "ffe3aed36c4d60da2cf1b0a1cee6b8f2e5fa881b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/900275254f0a1a2afff1ab0e11abd5587a10e1d6",
-                "reference": "900275254f0a1a2afff1ab0e11abd5587a10e1d6",
+                "url": "https://api.github.com/repos/symfony/console/zipball/ffe3aed36c4d60da2cf1b0a1cee6b8f2e5fa881b",
+                "reference": "ffe3aed36c4d60da2cf1b0a1cee6b8f2e5fa881b",
                 "shasum": ""
             },
             "require": {
@@ -7184,7 +7186,7 @@
                 "terminal"
             ],
             "support": {
-                "source": "https://github.com/symfony/console/tree/v5.4.7"
+                "source": "https://github.com/symfony/console/tree/v5.4.8"
             },
             "funding": [
                 {
@@ -7200,7 +7202,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-31T17:09:19+00:00"
+            "time": "2022-04-12T16:02:29+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -9080,16 +9082,16 @@
         },
         {
             "name": "symfony/string",
-            "version": "v5.4.3",
+            "version": "v5.4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "92043b7d8383e48104e411bc9434b260dbeb5a10"
+                "reference": "3c061a76bff6d6ea427d85e12ad1bb8ed8cd43e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/92043b7d8383e48104e411bc9434b260dbeb5a10",
-                "reference": "92043b7d8383e48104e411bc9434b260dbeb5a10",
+                "url": "https://api.github.com/repos/symfony/string/zipball/3c061a76bff6d6ea427d85e12ad1bb8ed8cd43e8",
+                "reference": "3c061a76bff6d6ea427d85e12ad1bb8ed8cd43e8",
                 "shasum": ""
             },
             "require": {
@@ -9146,7 +9148,7 @@
                 "utf8"
             ],
             "support": {
-                "source": "https://github.com/symfony/string/tree/v5.4.3"
+                "source": "https://github.com/symfony/string/tree/v5.4.8"
             },
             "funding": [
                 {
@@ -9162,7 +9164,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-01-02T09:53:40+00:00"
+            "time": "2022-04-19T10:40:37+00:00"
         },
         {
             "name": "symfony/translation",

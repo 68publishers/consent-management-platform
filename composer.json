@@ -19,7 +19,7 @@
 		"68publishers/health-check": "^0.1.3",
 		"68publishers/i18n": "^0.2.0",
 		"68publishers/omni": "dev-main",
-		"68publishers/smart-nette-component": "^0.2.0",
+		"68publishers/smart-nette-component": "^0.2.1",
 		"68publishers/tracy-git-version": "^1.0",
 		"68publishers/translation-bridge": "^1.2",
 		"68publishers/webpack-encore-bundle": "^2.0",
@@ -56,7 +56,7 @@
 		"nettrine/orm": "^0.8.3",
 		"nextras/migrations": "^3.1",
 		"oro/doctrine-extensions": "^2.0",
-		"scienta/doctrine-json-functions": "^4.2",
+		"scienta/doctrine-json-functions": "^5.0",
 		"sentry/sdk": "^3.1",
 		"symfony/validator": "^5.4",
 		"ublaboo/datagrid": "^6.9"

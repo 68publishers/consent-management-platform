@@ -1,0 +1,9 @@
+App_Domain_Consent_Event_ConsentUpdated:
+	title: Souhlas byl aktualizován
+
+App_Domain_Consent_Event_ConsentCreated:
+	title: Uživatel "%user_identifier%" udělil souhlas
+
+consents: Souhlasy
+attributes: Atributy
+settings_checksum: Nastavení lišty

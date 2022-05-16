@@ -7,15 +7,13 @@ namespace App\Domain\Consent;
 use DateTimeImmutable;
 use App\Domain\Shared\ValueObject\Checksum;
 use App\Domain\Consent\Event\ConsentCreated;
+use App\Domain\Consent\Event\ConsentUpdated;
 use App\Domain\Consent\ValueObject\Consents;
-use App\Domain\Consent\Event\ConsentsChanged;
 use App\Domain\Consent\ValueObject\ConsentId;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\Consent\ValueObject\Attributes;
-use App\Domain\Consent\Event\AttributesChanged;
 use App\Domain\Consent\ValueObject\UserIdentifier;
 use App\Domain\Consent\Command\StoreConsentCommand;
-use App\Domain\Consent\Event\SettingsChecksumChanged;
 use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AggregateId;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Aggregate\AggregateRootTrait;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Aggregate\AggregateRootInterface;
@@ -34,7 +32,7 @@ final class Consent implements AggregateRootInterface
 
 	private UserIdentifier $userIdentifier;
 
-	private Checksum $settingsChecksum;
+	private ?Checksum $settingsChecksum = NULL;
 
 	private Consents $consents;
 
@@ -51,7 +49,7 @@ final class Consent implements AggregateRootInterface
 		$consentId = ConsentId::new();
 		$projectId = ProjectId::fromString($command->projectId());
 		$userIdentifier = UserIdentifier::fromValue($command->userIdentifier());
-		$settingsChecksum = Checksum::fromValue($command->settingsChecksum());
+		$settingsChecksum = NULL !== $command->settingsChecksum() ? Checksum::fromValue($command->settingsChecksum()) : NULL;
 		$consents = Consents::fromArray($command->consents());
 		$attributes = Attributes::fromArray($command->attributes());
 
@@ -73,18 +71,10 @@ final class Consent implements AggregateRootInterface
 	{
 		$consents = Consents::fromArray($command->consents());
 		$attributes = Attributes::fromArray($command->attributes());
-		$settingsChecksum = Checksum::fromValue($command->settingsChecksum());
+		$settingsChecksum = NULL !== $command->settingsChecksum() ? Checksum::fromValue($command->settingsChecksum()) : NULL;
 
-		if (!$this->consents->equals($consents)) {
-			$this->recordThat(ConsentsChanged::create($this->id, $consents));
-		}
-
-		if (!$this->attributes->equals($attributes)) {
-			$this->recordThat(AttributesChanged::create($this->id, $attributes));
-		}
-
-		if (!$this->settingsChecksum->equals($settingsChecksum)) {
-			$this->recordThat(SettingsChecksumChanged::create($this->id, $settingsChecksum));
+		if (!$this->consents->equals($consents) || !$this->attributes->equals($attributes) || !$this->areChecksumsEquals($settingsChecksum)) {
+			$this->recordThat(ConsentUpdated::create($this->id, $settingsChecksum, $consents, $attributes));
 		}
 	}
 
@@ -114,35 +104,33 @@ final class Consent implements AggregateRootInterface
 	}
 
 	/**
-	 * @param \App\Domain\Consent\Event\AttributesChanged $event
+	 * @param \App\Domain\Consent\Event\ConsentUpdated $event
 	 *
 	 * @return void
 	 */
-	protected function whenAttributesChanged(AttributesChanged $event): void
+	protected function whenConsentUpdated(ConsentUpdated $event): void
 	{
-		$this->attributes = $event->attributes();
 		$this->lastUpdateAt = $event->createdAt();
-	}
-
-	/**
-	 * @param \App\Domain\Consent\Event\ConsentsChanged $event
-	 *
-	 * @return void
-	 */
-	protected function whenConsentsChanged(ConsentsChanged $event): void
-	{
-		$this->consents = $event->consents();
-		$this->lastUpdateAt = $event->createdAt();
-	}
-
-	/**
-	 * @param \App\Domain\Consent\Event\SettingsChecksumChanged $event
-	 *
-	 * @return void
-	 */
-	protected function whenSettingsChecksumChanged(SettingsChecksumChanged $event): void
-	{
 		$this->settingsChecksum = $event->settingsChecksum();
-		$this->lastUpdateAt = $event->createdAt();
+		$this->consents = $event->consents();
+		$this->attributes = $event->attributes();
+	}
+
+	/**
+	 * @param \App\Domain\Shared\ValueObject\Checksum|NULL $checksum
+	 *
+	 * @return bool
+	 */
+	private function areChecksumsEquals(?Checksum $checksum): bool
+	{
+		if (NULL === $this->settingsChecksum && NULL === $checksum) {
+			return TRUE;
+		}
+
+		if (NULL === $this->settingsChecksum || NULL === $checksum) {
+			return FALSE;
+		}
+
+		return $this->settingsChecksum->equals($checksum);
 	}
 }

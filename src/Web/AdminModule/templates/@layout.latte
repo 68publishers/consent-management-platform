@@ -63,7 +63,7 @@
             </div>
 
             <div class="md:pl-64 flex flex-col flex-1 h-screen">
-                <div class="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white shadow">
+                <div class="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white md:bg-transparent shadow md:shadow-none">
                     <button x-data x-on:click="$dispatch('open-sidebar-sidebar-main')" type="button" class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden">
                         <span class="sr-only">{_//layout.open_sidebar}</span>
                         <!-- Heroicon name: outline/menu-alt-2 -->
@@ -80,7 +80,7 @@
                                 <div>
                                     <button x-bind="dropdownButton" type="button" class="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                         <span class="sr-only">{_//layout.open_user_menu}</span>
-                                        <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-indigo-700">
+                                        <span class="inline-flex items-center justify-center h-12 w-12 rounded-full bg-indigo-700">
                                             <span class="text-sm font-medium leading-none text-white">{$identity->name->firstname()|substr:0,1|upper}{$identity->name->surname()|substr:0,1|upper}</span>
                                         </span>
                                     </button>
@@ -122,15 +122,37 @@
                     </div>
                 </main>
 
-                <footer class="bg-white mt-3">
+                <footer class="mt-3">
                     <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
-                        <p class="text-right text-sm text-gray-400 w-full">
+                        <p class="text-center text-sm text-gray-400 w-full">
                             Developed by&nbsp;<a href="http://www.68publishers.io" target="_blank" class="text-indigo-700">'68 Publishers</a>
+
+                            {capture $version}
+                                {var $tag = $gitRepository->handle(new SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand())}
+
+                                {if $tag instanceof SixtyEightPublishers\TracyGitVersion\Repository\Entity\Tag && $tag->getName() !== '..'}
+                                    <span title="{$tag->getCommitHash()->getValue()}">{$tag->getName()}</span>
+                                {else}
+                                {var $head = $gitRepository->handle(new SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand())}
+
+                                    {if $head instanceof SixtyEightPublishers\TracyGitVersion\Repository\Entity\Head && NULL !== $head->getBranch()}
+                                        <span n:attr="title => NULL !== $head->getCommitHash() ? $head->getCommitHash()->getValue() : NULL">{$head->getBranch()}</span>
+                                    {elseif $head instanceof SixtyEightPublishers\TracyGitVersion\Repository\Entity\Head && NULL !== $head->getCommitHash()}
+                                        <span>{$head->getCommitHash()->getValue()}</span>
+                                    {/if}
+                                {/if}
+                            {/capture}
+
+                            {if !empty($version)}
+                                &middot; version: {$version}
+                            {/if}
                         </p>
                     </div>
                 </footer>
             </div>
         </div>
+
+        {control modals}
 
         {block #scripts}
             {encore_js 'app'}

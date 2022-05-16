@@ -85,7 +85,7 @@ final class ConsentController extends AbstractV1Controller
 				]);
 		}
 
-		$consentSettingsView = $this->queryBus->dispatch(GetConsentSettingsByProjectIdAndChecksumQuery::create($projectView->id->toString(), $body->settingsChecksum));
+		$consentSettingsView = NULL !== $body->settingsChecksum ? $this->queryBus->dispatch(GetConsentSettingsByProjectIdAndChecksumQuery::create($projectView->id->toString(), $body->settingsChecksum)) : NULL;
 
 		return $response->withStatus(ApiResponse::S200_OK)
 			->writeJsonBody([

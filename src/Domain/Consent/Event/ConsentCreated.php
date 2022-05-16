@@ -20,7 +20,7 @@ final class ConsentCreated extends AbstractDomainEvent
 
 	private UserIdentifier $userIdentifier;
 
-	private Checksum $settingsChecksum;
+	private ?Checksum $settingsChecksum = NULL;
 
 	private Consents $consents;
 
@@ -30,18 +30,18 @@ final class ConsentCreated extends AbstractDomainEvent
 	 * @param \App\Domain\Consent\ValueObject\ConsentId      $consentId
 	 * @param \App\Domain\Project\ValueObject\ProjectId      $projectId
 	 * @param \App\Domain\Consent\ValueObject\UserIdentifier $userIdentifier
-	 * @param \App\Domain\Shared\ValueObject\Checksum        $settingsChecksum
+	 * @param \App\Domain\Shared\ValueObject\Checksum|NULL   $settingsChecksum
 	 * @param \App\Domain\Consent\ValueObject\Consents       $consents
 	 * @param \App\Domain\Consent\ValueObject\Attributes     $attributes
 	 *
 	 * @return static
 	 */
-	public static function create(ConsentId $consentId, ProjectId $projectId, UserIdentifier $userIdentifier, Checksum $settingsChecksum, Consents $consents, Attributes $attributes): self
+	public static function create(ConsentId $consentId, ProjectId $projectId, UserIdentifier $userIdentifier, ?Checksum $settingsChecksum, Consents $consents, Attributes $attributes): self
 	{
 		$event = self::occur($consentId->toString(), [
 			'project_id' => $projectId->toString(),
 			'user_identifier' => $userIdentifier->value(),
-			'settings_checksum' => $settingsChecksum->value(),
+			'settings_checksum' => NULL !== $settingsChecksum ? $settingsChecksum->value() : NULL,
 			'consents' => $consents->values(),
 			'attributes' => $attributes->values(),
 		]);
@@ -83,7 +83,7 @@ final class ConsentCreated extends AbstractDomainEvent
 	/**
 	 * @return \App\Domain\Shared\ValueObject\Checksum
 	 */
-	public function settingsChecksum(): Checksum
+	public function settingsChecksum(): ?Checksum
 	{
 		return $this->settingsChecksum;
 	}
@@ -112,7 +112,7 @@ final class ConsentCreated extends AbstractDomainEvent
 		$this->consentId = ConsentId::fromUuid($this->aggregateId()->id());
 		$this->projectId = ProjectId::fromString($parameters['project_id']);
 		$this->userIdentifier = UserIdentifier::fromValue($parameters['user_identifier']);
-		$this->settingsChecksum = Checksum::fromValue($parameters['settings_checksum']);
+		$this->settingsChecksum = isset($parameters['settings_checksum']) ? Checksum::fromValue($parameters['settings_checksum']) : NULL;
 		$this->consents = Consents::fromArray($parameters['consents']);
 		$this->attributes = Attributes::fromArray($parameters['attributes']);
 	}

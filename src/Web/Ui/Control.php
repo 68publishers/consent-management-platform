@@ -7,6 +7,7 @@ namespace App\Web\Ui;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerAwareInterface;
 use Nette\Security\User as NetteUser;
+use App\Web\Ui\Modal\ControlTrait as ModalControlTrait;
 use SixtyEightPublishers\TranslationBridge\TranslatorAwareTrait;
 use SixtyEightPublishers\TranslationBridge\TranslatorAwareInterface;
 use SixtyEightPublishers\EventDispatcherExtra\EventDispatcherAwareTrait;
@@ -21,6 +22,7 @@ abstract class Control extends SmartControl implements TranslatorAwareInterface,
 	use EventDispatcherAwareTrait;
 	use FlashMessageControlTrait;
 	use LoggerAwareTrait;
+	use ModalControlTrait;
 
 	private NetteUser $user;
 
@@ -38,10 +40,11 @@ abstract class Control extends SmartControl implements TranslatorAwareInterface,
 	/**
 	 * @return void
 	 */
-	public function render(): void
+	protected function beforeRender(): void
 	{
+		parent::beforeRender();
+
 		$this->template->setTranslator($this->getPrefixedTranslator());
-		$this->doRender();
 	}
 
 	/**

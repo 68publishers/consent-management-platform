@@ -65,6 +65,10 @@
     @apply text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500;
 }
 
+.datagrid .row-grid-bottom {
+    @apply border-0;
+}
+
 .datagrid .row-grid-bottom .col-per-page {
     @apply inline-flex items-baseline justify-end;
 }

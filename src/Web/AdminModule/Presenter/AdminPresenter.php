@@ -11,6 +11,7 @@ use Contributte\MenuControl\UI\MenuComponent;
 use Contributte\MenuControl\UI\IMenuComponentFactory;
 use SixtyEightPublishers\SmartNetteComponent\Annotation\LoggedIn;
 use SixtyEightPublishers\UserBundle\Bridge\Nette\Security\Identity;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
 use SixtyEightPublishers\SmartNetteComponent\Annotation\AuthorizationAnnotationInterface;
 
 /**
@@ -25,14 +26,18 @@ abstract class AdminPresenter extends Presenter
 
 	protected array $customBreadcrumbItems = [];
 
+	private GitRepositoryInterface $gitRepository;
+
 	/**
-	 * @param \Contributte\MenuControl\UI\IMenuComponentFactory $menuComponentFactory
+	 * @param \Contributte\MenuControl\UI\IMenuComponentFactory                       $menuComponentFactory
+	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface $gitRepository
 	 *
 	 * @return void
 	 */
-	public function injectAdminDependencies(IMenuComponentFactory $menuComponentFactory): void
+	public function injectAdminDependencies(IMenuComponentFactory $menuComponentFactory, GitRepositoryInterface $gitRepository): void
 	{
 		$this->menuComponentFactory = $menuComponentFactory;
+		$this->gitRepository = $gitRepository;
 	}
 
 	/**
@@ -61,6 +66,7 @@ abstract class AdminPresenter extends Presenter
 		assert($template instanceof AdminTemplate);
 
 		$template->identity = $this->getIdentity()->data();
+		$template->gitRepository = $this->gitRepository;
 	}
 
 	/**

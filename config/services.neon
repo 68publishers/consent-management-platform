@@ -2,6 +2,12 @@ services:
 	# Routing
 	routing.router: App\Web\Router\RouterFactory()::create()
 
+	# Application
+	-
+		autowired: self
+		type: SixtyEightPublishers\ArchitectureBundle\EventStore\EventMetadataExtenderInterface
+		factory: App\Application\EventMetadataExtender\CurrentUserExtender
+
 	# Web\Ui
 	- App\Web\Ui\Form\RecaptchaResolver(::env(RECAPTCHA_ENABLED|bool, no))
 	-
@@ -10,6 +16,12 @@ services:
 	-
 		type: App\Web\Ui\DataGrid\DataGridFactoryInterface
 		factory: App\Web\Ui\DataGrid\DataGridFactory
+
+	-
+		type: App\Web\Ui\Modal\Dispatcher\ModalDispatcherInterface
+		factory: App\Web\Ui\Modal\Dispatcher\ModalDispatcher
+
+	- App\Web\Ui\Modal\ModalsControlFactoryInterface
 
 	# Web\FrontModule
 	- App\Web\FrontModule\Control\SignIn\SignInControlFactoryInterface
@@ -28,3 +40,5 @@ services:
 	# Web\AdminModule\ProjectModule
 	- App\Web\AdminModule\ProjectModule\Control\ConsentList\ConsentListControlFactoryInterface
 	- App\Web\AdminModule\ProjectModule\Control\ProjectForm\ProjectFormControlFactoryInterface
+	- App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryControlFactoryInterface
+	- App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryModalControlFactoryInterface

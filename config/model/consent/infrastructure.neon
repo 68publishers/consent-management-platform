@@ -13,6 +13,9 @@ services:
 		factory: App\Infrastructure\Consent\Doctrine\QueryHandler\ConsentsDataGridQueryHandler
 	-
 		autowired: no
+		factory: App\Infrastructure\Consent\Doctrine\QueryHandler\GetConsentByIdAndProjectIdQueryHandler
+	-
+		autowired: no
 		factory: App\Infrastructure\Consent\Doctrine\QueryHandler\GetConsentByProjectIdAndUserIdentifierQueryHandler
 
 # infra: doctrine mapping

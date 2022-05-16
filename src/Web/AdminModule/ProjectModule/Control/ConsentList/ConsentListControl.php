@@ -5,10 +5,17 @@ declare(strict_types=1);
 namespace App\Web\AdminModule\ProjectModule\Control\ConsentList;
 
 use App\Web\Ui\Control;
+use Nette\InvalidStateException;
 use App\Web\Ui\DataGrid\DataGrid;
+use Nette\Application\UI\Multiplier;
+use App\ReadModel\Consent\ConsentView;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\ReadModel\Consent\ConsentsDataGridQuery;
 use App\Web\Ui\DataGrid\DataGridFactoryInterface;
+use App\ReadModel\Consent\GetConsentByIdAndProjectIdQuery;
+use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
+use App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryModalControl;
+use App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryModalControlFactoryInterface;
 
 final class ConsentListControl extends Control
 {
@@ -16,14 +23,22 @@ final class ConsentListControl extends Control
 
 	private DataGridFactoryInterface $dataGridFactory;
 
+	private ConsentHistoryModalControlFactoryInterface $consentHistoryModalControlFactory;
+
+	private QueryBusInterface $queryBus;
+
 	/**
-	 * @param \App\Domain\Project\ValueObject\ProjectId     $projectId
-	 * @param \App\Web\Ui\DataGrid\DataGridFactoryInterface $dataGridFactory
+	 * @param \App\Domain\Project\ValueObject\ProjectId                                                            $projectId
+	 * @param \App\Web\Ui\DataGrid\DataGridFactoryInterface                                                        $dataGridFactory
+	 * @param \App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryModalControlFactoryInterface $consentHistoryModalControlFactory
+	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface                                       $queryBus
 	 */
-	public function __construct(ProjectId $projectId, DataGridFactoryInterface $dataGridFactory)
+	public function __construct(ProjectId $projectId, DataGridFactoryInterface $dataGridFactory, ConsentHistoryModalControlFactoryInterface $consentHistoryModalControlFactory, QueryBusInterface $queryBus)
 	{
 		$this->projectId = $projectId;
 		$this->dataGridFactory = $dataGridFactory;
+		$this->consentHistoryModalControlFactory = $consentHistoryModalControlFactory;
+		$this->queryBus = $queryBus;
 	}
 
 	/**
@@ -58,6 +73,30 @@ final class ConsentListControl extends Control
 			->setSortable('lastUpdateAt')
 			->setFilterDate('lastUpdateAt');
 
+		$grid->addAction('edit', '')
+			->setTemplate(__DIR__ . '/templates/action.detail.latte', [
+				'createLink' => fn (ConsentView $view): string => $this->link('openModal!', ['modal' => 'history-' . $view->id->id()->getHex()->toString()]),
+			]);
+
 		return $grid;
+	}
+
+	/**
+	 * @return \Nette\Application\UI\Multiplier
+	 */
+	protected function createComponentHistory(): Multiplier
+	{
+		return new Multiplier(function (string $consentId): ConsentHistoryModalControl {
+			$consentView = $this->queryBus->dispatch(GetConsentByIdAndProjectIdQuery::create($consentId, $this->projectId->toString()));
+
+			if (!$consentView instanceof ConsentView) {
+				throw new InvalidStateException(sprintf(
+					'Consent for ID %s not found.',
+					$consentId
+				));
+			}
+
+			return $this->consentHistoryModalControlFactory->create($consentView);
+		});
 	}
 }

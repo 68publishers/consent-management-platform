@@ -1,0 +1,11 @@
+{templateType App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryModalTemplate}
+
+{extends $layout}
+
+{block #title}
+    {_title, [user_identifier => $consentView->userIdentifier->value()]}
+{/block}
+
+{block #body}
+
+{control history}

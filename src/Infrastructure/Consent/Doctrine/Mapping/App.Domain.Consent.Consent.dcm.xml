@@ -26,7 +26,7 @@
 
         <field name="userIdentifier" column="user_identifier" type="App\Domain\Consent\ValueObject\UserIdentifier" />
 
-        <field name="settingsChecksum" column="settings_checksum" type="App\Domain\Shared\ValueObject\Checksum" />
+        <field name="settingsChecksum" column="settings_checksum" type="App\Domain\Shared\ValueObject\Checksum" nullable="true" />
 
         <field name="consents" column="consents" type="App\Domain\Consent\ValueObject\Consents" />
 

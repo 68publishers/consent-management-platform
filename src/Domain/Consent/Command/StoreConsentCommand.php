@@ -9,15 +9,15 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 final class StoreConsentCommand extends AbstractCommand
 {
 	/**
-	 * @param string $projectId
-	 * @param string $userIdentifier
-	 * @param string $settingsChecksum
-	 * @param array  $consents
-	 * @param array  $attributes
+	 * @param string      $projectId
+	 * @param string      $userIdentifier
+	 * @param string|NULL $settingsChecksum
+	 * @param array       $consents
+	 * @param array       $attributes
 	 *
 	 * @return static
 	 */
-	public static function create(string $projectId, string $userIdentifier, string $settingsChecksum, array $consents, array $attributes): self
+	public static function create(string $projectId, string $userIdentifier, ?string $settingsChecksum, array $consents, array $attributes): self
 	{
 		return self::fromParameters([
 			'project_id' => $projectId,
@@ -47,7 +47,7 @@ final class StoreConsentCommand extends AbstractCommand
 	/**
 	 * @return string
 	 */
-	public function settingsChecksum(): string
+	public function settingsChecksum(): ?string
 	{
 		return $this->getParam('settings_checksum');
 	}

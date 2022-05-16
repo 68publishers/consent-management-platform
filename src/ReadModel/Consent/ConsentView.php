@@ -26,7 +26,7 @@ final class ConsentView extends AbstractView
 
 	public UserIdentifier $userIdentifier;
 
-	public Checksum $settingsChecksum;
+	public ?Checksum $settingsChecksum = NULL;
 
 	public Consents $consents;
 
@@ -43,7 +43,7 @@ final class ConsentView extends AbstractView
 			'created_at' => $this->createdAt->format(DateTimeInterface::ATOM),
 			'last_update_at' => $this->lastUpdateAt->format(DateTimeInterface::ATOM),
 			'user_identifier' => $this->userIdentifier->value(),
-			'settings_checksum' => $this->settingsChecksum->value(),
+			'settings_checksum' => NULL !== $this->settingsChecksum ? $this->settingsChecksum->value() : NULL,
 			'consents' => $this->consents->values(),
 			'attributes' => $this->attributes->values(),
 		];

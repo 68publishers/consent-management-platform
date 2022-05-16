@@ -11,7 +11,9 @@ sidebar:
 
 sidebar_project:
 	consents: Evidence souhlasů
-	assigned_users: Přiřazení uživatelé
+	providers: Poskytovatelé
+	cookies: Cookies
+	settings: Nastavení
 	edit_project: Upravit projekt
 
 profile:
