@@ -1,7 +1,7 @@
 {
-	"name": "68publishers/cookie-consent-admin",
+	"name": "68publishers/consent-management-platform",
 	"description": "",
-	"keywords": ["68publishers", "cookieconsent", "cookie", "cookie-consent", "cookie-consent-admin", "nette"],
+	"keywords": ["68publishers", "cookieconsent", "cookie", "cookie-consent", "consent-management-platform", "cmp", "nette"],
 	"license": "MIT",
 	"authors": [
 		{

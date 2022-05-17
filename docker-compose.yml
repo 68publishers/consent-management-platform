@@ -6,15 +6,12 @@ services:
             context: .
             dockerfile: Dockerfile
             target: app
-        container_name: cookie-consent-admin-app
+        container_name: cmp-app
         command: ["run-nginx-unit"]
         ports:
             - 8888:8080
-        dns:
-            - 8.8.8.8
-            - 8.8.4.4
         volumes:
-            - nfsmount:/var/www/html:cached
+            - .:/var/www/html:cached
         depends_on:
             - db
             - redis
@@ -23,7 +20,7 @@ services:
             context: .
             dockerfile: Dockerfile
             target: db
-        container_name: cookie-consent-admin-db
+        container_name: cmp-db
         restart: always
         ports:
             - 5432:5432
@@ -34,21 +31,14 @@ services:
             - PGDATA=/var/lib/postgresql/data/pgdata
             - POSTGRES_USER=root
             - POSTGRES_PASSWORD=root
-            - POSTGRES_DB=cookie-consent-admin
+            - POSTGRES_DB=cmp
         command:
             - postgres
             - -c
             - config_file=/var/lib/postgresql/data/postgresql.conf
     redis:
         image: redis:5.0.8-alpine
-        container_name: cookie-consent-admin-redis
+        container_name: cmp-redis
+        command: redis-server --requirepass redis_pass
         ports:
             - 6379:6379
-
-volumes:
-    nfsmount:
-        driver: local
-        driver_opts:
-            type: nfs
-            o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
-            device: ":${PWD}"

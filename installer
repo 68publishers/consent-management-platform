@@ -5,10 +5,10 @@ rm -rf var/cache/*
 rm -rf var/log/*
 
 # Copy config files
-cp .env.dist .env
+cp ./.env.dist ./.env
 
 # Load envs
-. .env
+. ./.env
 
 echo "Running docker-compose (down, pull & up)"
 
@@ -18,6 +18,6 @@ docker-compose -f docker-compose.yml up -d
 
 echo "Running docker-compose [Done]"
 
-docker exec cookie-consent-admin-app ./installer-run
+docker exec cmp-app ./installer-run
 
 exit 0

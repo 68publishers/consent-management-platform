@@ -6,13 +6,13 @@
 ########################################################################################################################
 
 # Load envs
-. .env
+. ./.env
 
 # Dependencies
 composer install --no-interaction --no-ansi --prefer-dist --no-progress --optimize-autoloader || { echo '"composer install" failed'; exit 1; }
 
-bin/console migrations:migrate || { echo '"bin/console migrations:migrate" failed'; exit 1; }
-bin/console doctrine:fixtures:load || { echo '"bin/console doctrine:fixtures:load" failed'; exit 1; }
+bin/console migrations:migrate --no-interaction || { echo '"bin/console migrations:migrate" failed'; exit 1; }
+bin/console doctrine:fixtures:load --no-interaction || { echo '"bin/console doctrine:fixtures:load" failed'; exit 1; }
 
 # Build project assets
 yarn install --no-progress --non-interactive || { echo '"yarn install" failed'; exit 1; }

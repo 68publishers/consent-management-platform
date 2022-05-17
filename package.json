@@ -34,12 +34,12 @@
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "https://github.com/68publishers/cookie-consent-admin"
+    "url": "https://github.com/68publishers/consent-management-platform"
   },
   "author": "68publishers",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/68publishers/cookie-consent-admin/issues"
+    "url": "https://github.com/68publishers/consent-management-platform/issues"
   },
-  "homepage": "https://github.com/68publishers/cookie-consent-admin#readme"
+  "homepage": "https://github.com/68publishers/consent-management-platform#readme"
 }
