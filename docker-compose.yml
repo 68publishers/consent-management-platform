@@ -10,6 +10,8 @@ services:
         command: ["run-nginx-unit"]
         ports:
             - 8888:8080
+        networks:
+            - backend
         volumes:
             - .:/var/www/html:cached
         depends_on:
@@ -24,6 +26,8 @@ services:
         restart: always
         ports:
             - 5432:5432
+        networks:
+            - backend
         volumes:
             - ./docker/postgres/postgres.conf:/var/lib/postgresql/data/postgresql.conf:delegated
             - ./var/postgres-data:/var/lib/postgresql/data:cached
@@ -42,3 +46,7 @@ services:
         command: redis-server --requirepass redis_pass
         ports:
             - 6379:6379
+        networks:
+            - backend
+networks:
+    backend:
