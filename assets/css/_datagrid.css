@@ -46,7 +46,7 @@
 }
 
 .datagrid select.form-control {
-    @apply mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm;
+    @apply block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm;
 }
 
 .datagrid .btn {
@@ -67,10 +67,6 @@
 
 .datagrid .row-grid-bottom {
     @apply border-0;
-}
-
-.datagrid .row-grid-bottom .col-per-page {
-    @apply inline-flex items-baseline justify-end;
 }
 
 .datagrid .row-grid-bottom .col-per-page > select {

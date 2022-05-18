@@ -16,7 +16,6 @@ use Nette\Utils\AssertionException;
 
 final class Flatpickr extends TextInput
 {
-	public const ATTRIBUTE_TOGGLE = 'data-toggle';
 	public const ATTRIBUTE_MODE = 'data-mode';
 	public const ATTRIBUTE_NO_CALENDAR = 'data-no-calendar';
 	public const ATTRIBUTE_ENABLE_TIME = 'data-enable-time';
@@ -32,7 +31,8 @@ final class Flatpickr extends TextInput
 	public const MODE_DEFAULT = self::MODE_SINGLE;
 
 	private array $attributes = [
-		self::ATTRIBUTE_TOGGLE => 'flatpickr',
+		'x-data' => '',
+		'x-flatpickr' => '',
 		self::ATTRIBUTE_MODE => self::MODE_DEFAULT,
 		self::ATTRIBUTE_NO_CALENDAR => FALSE,
 		self::ATTRIBUTE_ENABLE_TIME => FALSE,

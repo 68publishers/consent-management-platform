@@ -42,17 +42,22 @@ trait ControlTrait
 				Presenter::SIGNAL_KEY,
 				$this->getParameterId('modal') . '*',
 			],
-		]);
+		], TRUE);
 	}
 
 	/**
 	 * @param \App\Web\Ui\Modal\AbstractModalControl $control
 	 * @param array                                  $metadata
+	 * @param bool                                   $closePrevious
 	 *
 	 * @return void
 	 */
-	protected function openModal(AbstractModalControl $control, array $metadata = []): void
+	protected function openModal(AbstractModalControl $control, array $metadata = [], bool $closePrevious = FALSE): void
 	{
+		if ($closePrevious) {
+			$this->closeModal();
+		}
+
 		$this->modalDispatcher->dispatch($control, $metadata);
 	}
 

@@ -9,6 +9,7 @@
         <title>{ifset #page_title}{include #page_title}{else}{_page_title}{/ifset} | CMP</title>
 
         {block #styles}
+            <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
             {encore_css 'app'}
         {/block}
 

@@ -38,14 +38,14 @@ final class FilterHelper
 	}
 
 	/**
-	 * @param \Nette\Localization\Translator $translator
 	 * @param array                          $enum
 	 * @param bool                           $preserveKeys
+	 * @param \Nette\Localization\Translator $translator
 	 * @param string|NULL                    $translatorPrefix
 	 *
 	 * @return array
 	 */
-	public static function select(Translator $translator, array $enum, bool $preserveKeys = FALSE, ?string $translatorPrefix = NULL): array
+	public static function select(array $enum, bool $preserveKeys, Translator $translator, ?string $translatorPrefix = NULL): array
 	{
 		return self::all($translator) + self::items($enum, $preserveKeys, $translator, $translatorPrefix);
 	}

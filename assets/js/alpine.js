@@ -1,13 +1,17 @@
 const Alpine = require('alpinejs').default;
 const Collapse = require('@alpinejs/collapse').default;
 const Autosize = require('@marcreichel/alpine-autosize').default;
+const Flatpickr = require('./plugin/flatpickr').default;
+const Select = require('./plugin/select').default;
 
 Alpine.plugin(Collapse);
 Alpine.plugin(Autosize);
+Alpine.plugin(Flatpickr);
+Alpine.plugin(Select);
 
-Alpine.data('dropdown', require('./components/dropdown'));
-Alpine.data('sidebar', require('./components/sidebar'));
 Alpine.data('collapse', require('./components/collapse'));
+Alpine.data('dropdown', require('./components/dropdown'));
 Alpine.data('modal', require('./components/modal'));
+Alpine.data('sidebar', require('./components/sidebar'));
 
 Alpine.start();

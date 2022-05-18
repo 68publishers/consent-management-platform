@@ -6,8 +6,10 @@ namespace App\Web\AdminModule\UserModule\Control\PasswordRequestList;
 
 use App\Web\Ui\Control;
 use App\Web\Ui\DataGrid\DataGrid;
+use App\Web\Ui\DataGrid\Helper\FilterHelper;
 use App\Web\Ui\DataGrid\DataGridFactoryInterface;
 use App\ReadModel\PasswordRequest\PasswordRequestsDataGridQuery;
+use SixtyEightPublishers\ForgotPasswordBundle\Domain\ValueObject\Status;
 
 final class PasswordRequestListControl extends Control
 {
@@ -44,7 +46,8 @@ final class PasswordRequestListControl extends Control
 			->setFilterText('emailAddress');
 
 		$grid->addColumnText('status', 'status')
-			->setAlign('center');
+			->setAlign('center')
+			->setFilterMultiSelect(FilterHelper::items(Status::values(), FALSE, $this->getPrefixedTranslator(), 'status_value.'));
 
 		$grid->addColumnDateTimeTz('requested_at', 'requested_at', 'requestedAt')
 			->setFormat('j.n.Y H:i:s')

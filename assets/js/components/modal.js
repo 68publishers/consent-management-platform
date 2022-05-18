@@ -34,7 +34,7 @@ module.exports = () => ({
             this.name = this.$el.getAttribute('data-modal-name');
             Bridge.dispatchInitialized(this);
         },
-        ['x-on:keydown.escape']() {
+        ['x-on:keydown.escape.window']() {
             this.close();
         },
         ['x-show']() {

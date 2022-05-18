@@ -10,9 +10,7 @@ window.toastr = Toastr;
 
 import './js/ajax-error';
 import './js/alpine'
-import './js/flatpickr';
 import './js/live-form-validation';
 import './js/modal/modal';
-//import './js/select2';
 
 import './css/style.css';

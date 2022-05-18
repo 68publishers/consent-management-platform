@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Web\AdminModule\UserModule\Control\UserList;
 
 use App\Web\Ui\Control;
+use App\Domain\User\RolesEnum;
 use App\Web\Ui\DataGrid\DataGrid;
 use App\ReadModel\User\UsersDataGridQuery;
 use App\Web\Ui\DataGrid\Helper\FilterHelper;
@@ -53,8 +54,8 @@ final class UserListControl extends Control
 			->setSortable('createdAt')
 			->setFilterDate('createdAt');
 
-		$grid->addColumnText('roles', 'roles');
-		//->setFilterMultiSelect(FilterHelper::items(['admin', 'supervisor'], FALSE, $this->getTranslator(), '//layout.role_name.'));
+		$grid->addColumnText('roles', 'roles')
+			->setFilterMultiSelect(FilterHelper::items(RolesEnum::values(), FALSE, $this->getTranslator(), '//layout.role_name.'));
 
 		$grid->addAction('edit', '')
 			->setTemplate(__DIR__ . '/templates/action.edit.latte');

@@ -9,7 +9,11 @@ module.exports = {
     },
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Inter var', ...require('tailwindcss/defaultTheme').fontFamily.sans],
+      },
+    },
   },
   plugins: [
     require('@tailwindcss/forms'),

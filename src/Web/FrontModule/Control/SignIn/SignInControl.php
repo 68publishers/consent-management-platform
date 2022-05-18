@@ -50,6 +50,8 @@ final class SignInControl extends Control
 			->setHtmlAttribute('placeholder', 'password.field')
 			->setHtmlAttribute('autocomplete', 'current-password');
 
+		$form->addCheckbox('remember_me', 'remember_me.field');
+
 		$form->addSubmit('login', 'login.field');
 
 		$form->onSuccess[] = function (Form $form) {
@@ -68,7 +70,10 @@ final class SignInControl extends Control
 	private function login(Form $form): void
 	{
 		try {
-			$this->getUser()->login($form->values->username, $form->values->password);
+			$values = $form->values;
+
+			$this->getUser()->setExpiration($values->remember_me ? '14 days' : '6 hours');
+			$this->getUser()->login($values->username, $values->password);
 
 			$identity = $this->getUser()->getIdentity();
 			assert($identity instanceof Identity);
