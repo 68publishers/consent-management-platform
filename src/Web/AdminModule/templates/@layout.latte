@@ -124,30 +124,24 @@
                 </main>
 
                 <footer class="mt-3">
-                    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
-                        <p class="text-center text-sm text-gray-400 w-full footer-content">
+                    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                        <div class="flex items-center justify-center text-sm text-gray-400 w-full footer-content">
                             <span>Developed by&nbsp;<a href="http://www.68publishers.io" target="_blank" class="text-indigo-700">'68 Publishers</a></span>
 
-                            {capture $version}
-                                {var $tag = $gitRepository->handle(new SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand())}
+                            {var $tag = $gitRepository->handle(new SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand())}
 
-                                {if $tag instanceof SixtyEightPublishers\TracyGitVersion\Repository\Entity\Tag}
-                                    <span title="{$tag->getCommitHash()->getValue()}">{$tag->getName()}</span>
+                            {if $tag instanceof SixtyEightPublishers\TracyGitVersion\Repository\Entity\Tag}
+                                <span title="{$tag->getCommitHash()->getValue()}">{$tag->getName()}</span>
+                            {else}
+                                {var $head = $gitRepository->handle(new SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand())}
+
+                                {if $head instanceof SixtyEightPublishers\TracyGitVersion\Repository\Entity\Head && NULL !== $head->getCommitHash()}
+                                    <span title="{$head->getCommitHash()->getValue()}">{$head->getCommitHash()->getValue()|substr:0, 7}</span>
                                 {else}
-                                    {var $head = $gitRepository->handle(new SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand())}
-
-                                    {if $head instanceof SixtyEightPublishers\TracyGitVersion\Repository\Entity\Head && NULL !== $head->getCommitHash()}
-                                        <span>{$head->getCommitHash()->getValue()}</span>
-                                    {else}
-                                        <span>unknown</span>
-                                    {/if}
+                                    <span>unknown</span>
                                 {/if}
-                            {/capture}
-
-                            {if !empty($version)}
-                                {$version}
                             {/if}
-                        </p>
+                        </div>
                     </div>
                 </footer>
             </div>
