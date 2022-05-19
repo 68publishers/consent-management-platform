@@ -2,9 +2,9 @@
 
 {block data}
     <div class="flex flex-col">
-        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+        <div class="overflow-x-auto py-2 sm:rounded-lg bg-gray-50 ring-1 ring-black ring-opacity-5 shadow">
+            <div class="inline-block min-w-full align-middle">
+                <div class="overflow-hidden">
                     {include parent}
                 </div>
             </div>
@@ -32,16 +32,14 @@
         <td colspan="{$control->getColumnsCount()}" n:if="!$control->isTreeView()" class="row-grid-bottom">
             <div class="flex items-center">
                 <div class="col-items">
-                    <small class="text-muted" n:if="$control->isPaginated()">
+                    <p n:if="$control->isPaginated()" class="text-sm text-gray-700">
                         {var $paginator = $control['paginator']->getPaginator()}
-
                         {if $control->getPerPage() === 'all'}
-                            {='ublaboo_datagrid.items'|translate} {='ublaboo_datagrid.all'|translate}
+                            {_'ublaboo_datagrid.showing_all_items'|noescape}
                         {else}
-                            {='ublaboo_datagrid.items'|translate} {$paginator->getOffset() > 0 ? $paginator->getOffset() + 1 : ($paginator->getItemCount() > 0 ? 1 : 0)} - {sizeof($rows) + $paginator->getOffset()}
-                            {='ublaboo_datagrid.from'|translate} {$paginator->getItemCount()}
+                            {_'ublaboo_datagrid.showing_items', [from => $paginator->getOffset() > 0 ? $paginator->getOffset() + 1 : ($paginator->getItemCount() > 0 ? 1 : 0), to => sizeof($rows) + $paginator->getOffset(), total => $paginator->getItemCount()]|noescape}
                         {/if}
-                    </small>
+                    </p>
                 </div>
                 <div class="col-pagination text-center">
                     {control paginator}

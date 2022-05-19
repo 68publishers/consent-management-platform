@@ -20,7 +20,7 @@
 		"68publishers/i18n": "^0.2.0",
 		"68publishers/omni": "dev-main",
 		"68publishers/smart-nette-component": "^0.2.1",
-		"68publishers/tracy-git-version": "^1.0",
+		"68publishers/tracy-git-version": "^1.0.2",
 		"68publishers/translation-bridge": "^1.2",
 		"68publishers/webpack-encore-bundle": "^2.0",
 		"contributte/apitte": "^0.9.1",

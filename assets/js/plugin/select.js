@@ -185,7 +185,7 @@ function Select(Alpine) {
 
                 <ul x-bind="selectOptions" class="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm" tabindex="-1" role="listbox">
                     <template x-for="(option, index) in options" :key="option.value">
-                        <li x-on:click="choose(index)" x-on:mouseenter="activeIndex = index" x-on:mouseleave="activeIndex = null" :id="$id('select') + '-option-' + index" class="cursor-default select-none relative py-2 pl-3 pr-9" :class="{'text-white': activeIndex === index, 'text-gray-900': activeIndex !== index, 'bg-indigo-600': activeIndex === index}" role="option">
+                        <li x-on:click="choose(index)" x-on:mouseenter="activeIndex = index" x-on:mouseleave="activeIndex = null" :id="$id('select') + '-option-' + index" class="cursor-pointer select-none relative py-2 pl-3 pr-9" :class="{'text-white': activeIndex === index, 'text-gray-900': activeIndex !== index, 'bg-indigo-600': activeIndex === index}" role="option">
                             <span x-text="option.label" class="text-left font-normal block truncate"></span>
 
                             <span x-show="isSelected(index)" class="absolute inset-y-0 right-0 flex items-center pr-2 text-indigo-600" :class="{'text-white': activeIndex === index, 'text-indigo-600': activeIndex !== index}">

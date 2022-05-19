@@ -13,6 +13,9 @@ module.exports = () => ({
         ['x-on:sidebar-open.window']() {
             this.open = true;
         },
+        ['x-on:keydown.escape.window']() {
+            this.open = false;
+        },
     },
 
     sidebarOverlay: {

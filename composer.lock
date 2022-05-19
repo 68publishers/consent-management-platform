@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6ac53ec0d7930413ab4bb6d6ddf34539",
+    "content-hash": "c091c6331c7c06e97271ecd449fd1562",
     "packages": [
         {
             "name": "68publishers/asset",
@@ -514,16 +514,16 @@
         },
         {
             "name": "68publishers/tracy-git-version",
-            "version": "v1.0.0",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/68publishers/tracy-git-version.git",
-                "reference": "5431c3b7ec5701f033bfcc4701aea471e93e3cb2"
+                "reference": "50bf695278d23eea04b7d65a723aa7624a84b853"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/68publishers/tracy-git-version/zipball/5431c3b7ec5701f033bfcc4701aea471e93e3cb2",
-                "reference": "5431c3b7ec5701f033bfcc4701aea471e93e3cb2",
+                "url": "https://api.github.com/repos/68publishers/tracy-git-version/zipball/50bf695278d23eea04b7d65a723aa7624a84b853",
+                "reference": "50bf695278d23eea04b7d65a723aa7624a84b853",
                 "shasum": ""
             },
             "require": {
@@ -577,9 +577,9 @@
             ],
             "support": {
                 "issues": "https://github.com/68publishers/tracy-git-version/issues",
-                "source": "https://github.com/68publishers/tracy-git-version/tree/v1.0.0"
+                "source": "https://github.com/68publishers/tracy-git-version/tree/v1.0.2"
             },
-            "time": "2022-01-09T23:17:38+00:00"
+            "time": "2022-05-19T00:14:01+00:00"
         },
         {
             "name": "68publishers/translation-bridge",

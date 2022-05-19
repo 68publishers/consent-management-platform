@@ -41,12 +41,12 @@ module.exports = () => ({
             return this.opened;
         },
         ['x-on:open-modal.window']() {
-            if (name === this.$event.detail) {
+            if (this.name === this.$event.detail) {
                 this.open();
             }
         },
         ['x-on:close-modal.window']() {
-            if (name === this.$event.detail) {
+            if (this.name === this.$event.detail) {
                 this.close();
             }
         },
