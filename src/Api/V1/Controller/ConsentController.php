@@ -37,6 +37,28 @@ final class ConsentController extends AbstractV1Controller
 
 	/**
 	 * @API\Path("/{project}/{userIdentifier}")
+	 * @API\Method("OPTIONS")
+	 * @API\RequestParameters({
+	 *      @API\RequestParameter(name="project", type="string", in="path", description="Project code"),
+	 *      @API\RequestParameter(name="userIdentifier", type="string", in="path", description="Unique user identifier e.g. uuid, session id"),
+	 * })
+	 *
+	 * @param \Apitte\Core\Http\ApiRequest  $request
+	 * @param \Apitte\Core\Http\ApiResponse $response
+	 *
+	 * @return \Apitte\Core\Http\ApiResponse
+	 */
+	public function options(ApiRequest $request, ApiResponse $response): ApiResponse
+	{
+		return $response
+			->withHeader('Access-Control-Allow-Origin', '*')
+			->withHeader('Access-Control-Allow-Methods', 'PUT, OPTIONS')
+			->withHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+			->withStatus($response::S204_NO_CONTENT);
+	}
+
+	/**
+	 * @API\Path("/{project}/{userIdentifier}")
 	 * @API\Method("PUT")
 	 * @API\RequestParameters({
 	 *      @API\RequestParameter(name="project", type="string", in="path", description="Project code"),
@@ -51,6 +73,8 @@ final class ConsentController extends AbstractV1Controller
 	 */
 	public function put(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
+		$response = $response->withHeader('Access-Control-Allow-Origin', '*');
+
 		/** @var \App\Api\V1\RequestBody\PutConsentRequestBody $body */
 		$body = $request->getEntity();
 		$projectView = $this->queryBus->dispatch(GetProjectByCodeQuery::create($request->getParameter('project')));

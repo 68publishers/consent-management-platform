@@ -35,6 +35,28 @@ final class ConsentSettingsController extends AbstractV1Controller
 
 	/**
 	 * @API\Path("/{project}/{checksum}")
+	 * @API\Method("OPTIONS")
+	 * @API\RequestParameters({
+	 *      @API\RequestParameter(name="project", type="string", in="path", description="Project code"),
+	 *      @API\RequestParameter(name="checksum", type="string", in="path", description="Checksum of passed consent settings"),
+	 * })
+	 *
+	 * @param \Apitte\Core\Http\ApiRequest  $request
+	 * @param \Apitte\Core\Http\ApiResponse $response
+	 *
+	 * @return \Apitte\Core\Http\ApiResponse
+	 */
+	public function options(ApiRequest $request, ApiResponse $response): ApiResponse
+	{
+		return $response
+			->withHeader('Access-Control-Allow-Origin', '*')
+			->withHeader('Access-Control-Allow-Methods', 'PUT, OPTIONS')
+			->withHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+			->withStatus($response::S204_NO_CONTENT);
+	}
+
+	/**
+	 * @API\Path("/{project}/{checksum}")
 	 * @API\Method("PUT")
 	 * @API\RequestParameters({
 	 *      @API\RequestParameter(name="project", type="string", in="path", description="Project code"),
@@ -48,6 +70,7 @@ final class ConsentSettingsController extends AbstractV1Controller
 	 */
 	public function put(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
+		$response = $response->withHeader('Access-Control-Allow-Origin', '*');
 		$projectView = $this->queryBus->dispatch(GetProjectByCodeQuery::create($request->getParameter('project')));
 
 		if (!$projectView instanceof ProjectView) {
