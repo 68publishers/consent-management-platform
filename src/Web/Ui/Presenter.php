@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Web\Ui;
 
 use Nette\Application\Request;
+use App\Web\Control\Gtm\GtmControl;
 use Nette\Application\Responses\ForwardResponse;
+use App\Web\Control\Gtm\GtmControlFactoryInterface;
 use App\Web\Ui\Modal\PresenterTrait as ModalPresenterTrait;
 use SixtyEightPublishers\TranslationBridge\TranslatorAwareTrait;
 use SixtyEightPublishers\TranslationBridge\TranslatorAwareInterface;
@@ -22,16 +24,20 @@ abstract class Presenter extends SmartPresenter implements TranslatorAwareInterf
 
 	private TranslatorLocalizerInterface $translatorLocalizer;
 
+	private GtmControlFactoryInterface $gtmControlFactory;
+
 	/**
 	 * @internal
 	 *
 	 * @param \SixtyEightPublishers\TranslationBridge\Localization\TranslatorLocalizerInterface $translatorLocalizer
+	 * @param \App\Web\Control\Gtm\GtmControlFactoryInterface                                   $gtmControlFactory
 	 *
 	 * @return void
 	 */
-	public function injectBaseDependencies(TranslatorLocalizerInterface $translatorLocalizer): void
+	public function injectBaseDependencies(TranslatorLocalizerInterface $translatorLocalizer, GtmControlFactoryInterface $gtmControlFactory): void
 	{
 		$this->translatorLocalizer = $translatorLocalizer;
+		$this->gtmControlFactory = $gtmControlFactory;
 	}
 
 	/**
@@ -73,6 +79,14 @@ abstract class Presenter extends SmartPresenter implements TranslatorAwareInterf
 
 		$request->setParameters($params);
 		$this->sendResponse(new ForwardResponse($request));
+	}
+
+	/**
+	 * @return \App\Web\Control\Gtm\GtmControl
+	 */
+	protected function createComponentGtm(): GtmControl
+	{
+		return $this->gtmControlFactory->create();
 	}
 
 	/**

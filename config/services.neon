@@ -23,6 +23,11 @@ services:
 
 	- App\Web\Ui\Modal\ModalsControlFactoryInterface
 
+	# Web\Control
+	-
+		implement: App\Web\Control\Gtm\GtmControlFactoryInterface
+		factory: App\Web\Control\Gtm\GtmControl(::env(GTM_CONTAINER_ID, ''))
+
 	# Web\FrontModule
 	- App\Web\FrontModule\Control\SignIn\SignInControlFactoryInterface
 	- App\Web\FrontModule\Control\ForgotPassword\ForgotPasswordControlFactoryInterface

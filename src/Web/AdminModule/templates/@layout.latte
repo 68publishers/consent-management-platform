@@ -8,6 +8,8 @@
         <meta name="description" content="{$pageDescription}">
         <title>{ifset #page_title}{include #page_title}{else}{_page_title}{/ifset} | CMP</title>
 
+        {control gtm:script}
+
         {block #styles}
             <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
             {encore_css 'app'}
@@ -17,6 +19,8 @@
     </head>
 
     <body class="h-full">
+        {control gtm:noscript}
+
         <div>
             {* Off-canvas menu for mobile *}
             <div x-data="sidebar" x-bind="sidebar" x-cloak id="sidebar-main" class="fixed inset-0 flex z-40 md:hidden" role="dialog" aria-modal="true">

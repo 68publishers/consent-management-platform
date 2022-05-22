@@ -8,6 +8,8 @@
         <meta name="description" content="{$pageDescription}">
         <title>{ifset #page_title}{include #page_title}{else}{_page_title}{/ifset} | CMP</title>
 
+        {control gtm:script}
+
         {block #styles}
             <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
             {encore_css 'app'}
@@ -17,6 +19,8 @@
     </head>
 
     <body class="h-full">
+        {control gtm:noscript}
+
         <div class="bg-gray-50">
             <div class="min-h-full h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
                 <div class="sm:mx-auto sm:w-full sm:max-w-md">
