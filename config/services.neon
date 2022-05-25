@@ -33,6 +33,9 @@ services:
 	- App\Web\FrontModule\Control\ForgotPassword\ForgotPasswordControlFactoryInterface
 	- App\Web\FrontModule\Control\ResetPassword\ResetPasswordControlFactoryInterface
 
+	# Web\AdminModule\ApplicationModule
+	- App\Web\AdminModule\ApplicationModule\Control\GlobalSettingsForm\GlobalSettingsFormControlFactoryInterface
+
 	# Web\AdminModule\AccountModule
 	- App\Web\AdminModule\ProfileModule\Control\BasicInformation\BasicInformationControlFactoryInterface
 

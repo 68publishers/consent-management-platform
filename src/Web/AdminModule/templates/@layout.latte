@@ -135,12 +135,12 @@
                             {var $tag = $gitRepository->handle(new SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand())}
 
                             {if $tag instanceof SixtyEightPublishers\TracyGitVersion\Repository\Entity\Tag}
-                                <span title="{$tag->getCommitHash()->getValue()}">{$tag->getName()}</span>
+                                <span x-data x-tooltip.interactive.raw="{$tag->getCommitHash()->getValue()}">{$tag->getName()}</span>
                             {else}
                                 {var $head = $gitRepository->handle(new SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand())}
 
                                 {if $head instanceof SixtyEightPublishers\TracyGitVersion\Repository\Entity\Head && NULL !== $head->getCommitHash()}
-                                    <span title="{$head->getCommitHash()->getValue()}">{$head->getCommitHash()->getValue()|substr:0, 7}</span>
+                                    <span x-data x-tooltip.interactive.raw="{$head->getCommitHash()->getValue()}">{$head->getCommitHash()->getValue()|substr:0, 7}</span>
                                 {else}
                                     <span>unknown</span>
                                 {/if}

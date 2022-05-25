@@ -1,0 +1,22 @@
+services:
+	# infra: doctrine
+	-
+		type: App\Domain\GlobalSettings\GlobalSettingsRepositoryInterface
+		factory: App\Infrastructure\GlobalSettings\Doctrine\GlobalSettingsRepository
+
+	-
+		autowired: no
+		factory: App\Infrastructure\GlobalSettings\Doctrine\QueryHandler\GetGlobalSettingsQueryHandler
+
+# infra: doctrine mapping
+nettrine.orm.xml:
+	mapping:
+		App\Domain\GlobalSettings: %appDir%/Infrastructure/GlobalSettings/Doctrine/Mapping
+
+# infra: dbal types
+nettrine.dbal:
+	connection:
+		types:
+			App\Domain\GlobalSettings\ValueObject\GlobalSettingsId:
+				class: App\Infrastructure\GlobalSettings\Doctrine\DbalType\GlobalSettingsIdType
+				commented: yes

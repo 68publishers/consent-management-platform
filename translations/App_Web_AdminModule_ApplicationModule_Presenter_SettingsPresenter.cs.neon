@@ -1,0 +1,5 @@
+page_title: Nastavení aplikace
+
+message:
+	global_settings_updated: Nastavení bylo uloženo.
+	global_settings_update_failed: Při ukládaní nastavení došlo k chybě.

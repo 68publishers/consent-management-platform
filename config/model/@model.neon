@@ -1,6 +1,7 @@
 includes:
 	- consent/@default.neon
 	- consent_settings/@default.neon
+	- global_settings/@default.neon
 	- password_request/@default.neon
 	- project/@default.neon
 	- shared/@default.neon

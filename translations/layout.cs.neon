@@ -7,6 +7,7 @@ sidebar:
 	users: Uživatelé
 	user_list: Výpis uživatelů
 	password_request_list: Zapomenutá hesla
+	application_settings: Nastavení aplikace
 	projects: Projekty
 
 sidebar_project:
