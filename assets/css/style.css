@@ -1,8 +1,11 @@
 @import 'toastr';
 @import 'flatpickr/dist/themes/airbnb.css';
+@import 'tippy.js/dist/tippy.css';
+@import 'tippy.js/dist/svg-arrow.css';
 @import '_datagrid.css';
 @import '_flatpickr.css';
 @import '_footer.css';
+@import '_tags.css';
 @import '_x-cloak.css';
 
 @tailwind base;

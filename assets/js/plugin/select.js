@@ -10,6 +10,7 @@ function Select(Alpine) {
         activeDescendant: null,
         selected: [],
         options: [],
+        searchbarValue: '',
 
         selectedText() {
             const labels = [];
@@ -53,6 +54,7 @@ function Select(Alpine) {
             }
 
             this.opened = false;
+            this.searchbarValue = '';
 
             focusAfter && focusAfter.focus();
         },
@@ -130,7 +132,9 @@ function Select(Alpine) {
                 this.close(this.$refs.button);
             },
             ['x-on:focusin.window']() {
-                !this.$refs.options.contains(this.$event.target) && this.close();
+                !this.$refs.options.contains(this.$event.target)
+                    && !this.$event.target.hasAttribute('data-remove-button')
+                    && this.close();
             },
             ['x-id']: '["select"]',
         },
@@ -138,7 +142,9 @@ function Select(Alpine) {
         selectButton: {
             ['x-ref']: 'button',
             ['x-on:click']() {
-                this.toggle();
+                if (!this.$event.target.hasAttribute('data-remove-button')) {
+                    this.toggle();
+                }
             },
             [':aria-haspopup']() {
                 return 'listbox';
@@ -156,7 +162,9 @@ function Select(Alpine) {
             ['x-transition:leave-start']: 'opacity-100',
             ['x-transition:leave-end']: 'opacity-0',
             ['x-on:click.outside']() {
-                this.close(this.$refs.button);
+                if (!this.$event.target.hasAttribute('data-remove-button')) {
+                    this.close(this.$refs.button);
+                }
             },
             [':aria-activedescendant']() {
                 return this.activeDescendant;
@@ -171,11 +179,40 @@ function Select(Alpine) {
         },
     }));
 
-    Alpine.directive('select', (el, {}, { cleanup }) => {
+    Alpine.directive('select', (el, {modifiers}, { cleanup }) => {
+        let buttonText = '';
+        let searchbar = '';
+
+        if (-1 !== modifiers.indexOf('tags') && el.multiple) {
+            buttonText = `
+                <span class="flex flex-wrap">
+                    <template x-for="(option, index) in options" :key="option.value">
+                        <span x-show="isSelected(index)" class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800 mr-1.5">
+                            <span x-html="option.label"></span>
+                            <button type="button" data-remove-button class="r-0.5 pl-1.5" x-on:click="choose(index)">
+                                &times;
+                            </button>
+                        </span>
+                    </template>
+                    <span>&nbsp;</span>
+                </span>
+            `;
+        } else {
+            buttonText = `<span class="block truncate" x-html="selectedText() || '&nbsp'"></span>`;
+        }
+
+        if (-1 !== modifiers.indexOf('searchbar')) {
+            searchbar = `
+                <li class="select-none relative py-2 px-3 mb-2">
+                    <input x-model="searchbarValue" type="text" placeholder="..." class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full text-sm border-gray-300 rounded-md disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none">
+                </li>
+            `;
+        }
+
         const selectHtml = `
             <div x-data="select" x-bind="select" class="relative">
                 <button x-bind="selectButton" type="button" class="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                    <span class="block truncate" x-html="selectedText() || '&nbsp'"></span>
+                    ${buttonText}
                     <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                         <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
@@ -184,8 +221,9 @@ function Select(Alpine) {
                 </button>
 
                 <ul x-bind="selectOptions" class="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm" tabindex="-1" role="listbox">
+                    ${searchbar}
                     <template x-for="(option, index) in options" :key="option.value">
-                        <li x-on:click="choose(index)" x-on:mouseenter="activeIndex = index" x-on:mouseleave="activeIndex = null" :id="$id('select') + '-option-' + index" class="cursor-pointer select-none relative py-2 pl-3 pr-9" :class="{'text-white': activeIndex === index, 'text-gray-900': activeIndex !== index, 'bg-indigo-600': activeIndex === index}" role="option">
+                        <li x-show="!searchbarValue.trim().length || -1 !== option.label.search(new RegExp(searchbarValue.trim(), 'i'))" x-on:click="choose(index)" x-on:mouseenter="activeIndex = index" x-on:mouseleave="activeIndex = null" :id="$id('select') + '-option-' + index" class="cursor-pointer select-none relative py-2 pl-3 pr-9" :class="{'text-white': activeIndex === index, 'text-gray-900': activeIndex !== index, 'bg-indigo-600': activeIndex === index}" role="option">
                             <span x-text="option.label" class="text-left font-normal block truncate"></span>
 
                             <span x-show="isSelected(index)" class="absolute inset-y-0 right-0 flex items-center pr-2 text-indigo-600" :class="{'text-white': activeIndex === index, 'text-indigo-600': activeIndex !== index}">

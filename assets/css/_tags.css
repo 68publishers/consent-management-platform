@@ -1,0 +1,28 @@
+.tags {
+    @apply shadow-sm mt-1 block w-full sm:text-sm border border-gray-300 rounded-md bg-white;
+}
+
+.tags.tags-disabled {
+    @apply bg-slate-50 text-slate-500 border-slate-200 shadow-none;
+}
+
+.tags.tags-focused {
+    @apply ring-indigo-500 border-indigo-500 outline-indigo-500 outline-2;
+    outline-style: auto;
+}
+
+.tags .tags-inner {
+    @apply flex flex-wrap py-2 px-3;
+}
+
+.tags .tags-tag {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800 mr-1.5 my-0.5;
+}
+
+.tags .tags-tag-remove {
+    @apply ml-1.5;
+}
+
+.tags .tags-input {
+    @apply inline-flex flex-1 text-sm border-0 focus:border-0 focus:ring-0 focus:outline-0 focus-visible:outline-0 my-0.5;
+}
