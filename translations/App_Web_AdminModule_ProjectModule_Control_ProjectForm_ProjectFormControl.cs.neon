@@ -20,6 +20,9 @@ color:
 active:
 	field: Zapnuto
 
+locales:
+	field: Jazyky překladů
+
 description:
 	field: Popis projektu
 

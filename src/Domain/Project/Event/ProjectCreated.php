@@ -7,6 +7,7 @@ namespace App\Domain\Project\Event;
 use App\Domain\Project\ValueObject\Code;
 use App\Domain\Project\ValueObject\Name;
 use App\Domain\Project\ValueObject\Color;
+use App\Domain\Shared\ValueObject\Locales;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\Project\ValueObject\Description;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Event\AbstractDomainEvent;
@@ -25,6 +26,8 @@ final class ProjectCreated extends AbstractDomainEvent
 
 	private bool $active;
 
+	private Locales $locales;
+
 	/**
 	 * @param \App\Domain\Project\ValueObject\ProjectId   $projectId
 	 * @param \App\Domain\Project\ValueObject\Name        $name
@@ -32,10 +35,11 @@ final class ProjectCreated extends AbstractDomainEvent
 	 * @param \App\Domain\Project\ValueObject\Description $description
 	 * @param \App\Domain\Project\ValueObject\Color       $color
 	 * @param bool                                        $active
+	 * @param \App\Domain\Shared\ValueObject\Locales      $locales
 	 *
 	 * @return static
 	 */
-	public static function create(ProjectId $projectId, Name $name, Code $code, Description $description, Color $color, bool $active): self
+	public static function create(ProjectId $projectId, Name $name, Code $code, Description $description, Color $color, bool $active, Locales $locales): self
 	{
 		$event = self::occur($projectId->toString(), [
 			'name' => $name->value(),
@@ -43,6 +47,7 @@ final class ProjectCreated extends AbstractDomainEvent
 			'description' => $description->value(),
 			'color' => $color->value(),
 			'active' => $active,
+			'locales' => $locales->toArray(),
 		]);
 
 		$event->projectId = $projectId;
@@ -51,6 +56,7 @@ final class ProjectCreated extends AbstractDomainEvent
 		$event->description = $description;
 		$event->color = $color;
 		$event->active = $active;
+		$event->locales = $locales;
 
 		return $event;
 	}
@@ -104,6 +110,14 @@ final class ProjectCreated extends AbstractDomainEvent
 	}
 
 	/**
+	 * @return \App\Domain\Shared\ValueObject\Locales
+	 */
+	public function locales(): Locales
+	{
+		return $this->locales;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	protected function reconstituteState(array $parameters): void
@@ -114,5 +128,6 @@ final class ProjectCreated extends AbstractDomainEvent
 		$this->description = Description::fromValue($parameters['description']);
 		$this->color = Color::fromValue($parameters['color']);
 		$this->active = (bool) $parameters['active'];
+		$this->locales = Locales::reconstitute($parameters['locales']);
 	}
 }

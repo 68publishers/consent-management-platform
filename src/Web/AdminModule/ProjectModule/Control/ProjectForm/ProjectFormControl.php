@@ -16,6 +16,7 @@ use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\Project\Command\CreateProjectCommand;
 use App\Domain\Project\Command\UpdateProjectCommand;
 use App\Domain\Project\Exception\CodeUniquenessException;
+use App\Application\GlobalSettings\GlobalSettingsInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 use App\Web\AdminModule\ProjectModule\Control\ProjectForm\Event\ProjectCreatedEvent;
 use App\Web\AdminModule\ProjectModule\Control\ProjectForm\Event\ProjectUpdatedEvent;
@@ -29,17 +30,21 @@ final class ProjectFormControl extends Control
 
 	private CommandBusInterface $commandBus;
 
+	private GlobalSettingsInterface $globalSettings;
+
 	private ?ProjectView $default;
 
 	/**
 	 * @param \App\Web\Ui\Form\FormFactoryInterface                            $formFactory
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface $commandBus
+	 * @param \App\Application\GlobalSettings\GlobalSettingsInterface          $globalSettings
 	 * @param \App\ReadModel\Project\ProjectView|NULL                          $default
 	 */
-	public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, ?ProjectView $default = NULL)
+	public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, GlobalSettingsInterface $globalSettings, ?ProjectView $default = NULL)
 	{
 		$this->formFactory = $formFactory;
 		$this->commandBus = $commandBus;
+		$this->globalSettings = $globalSettings;
 		$this->default = $default;
 	}
 
@@ -69,6 +74,17 @@ final class ProjectFormControl extends Control
 
 		$form->addCheckbox('active', 'active.field');
 
+		$locales = $this->globalSettings->getNamedLocales();
+
+		foreach ($locales as $locale => $localeName) {
+			$locales[$locale] = sprintf('%s - %s', $localeName, $locale);
+		}
+
+		$form->addMultiSelect('locales', 'locales.field', $locales)
+			->checkDefaultValue(FALSE)
+			->setTranslator(NULL)
+			->setOption('tags', TRUE);
+
 		$form->addTextArea('description', 'description.field', NULL, 4);
 
 		$form->addProtection('//layout.form_protection');
@@ -81,6 +97,7 @@ final class ProjectFormControl extends Control
 				'code' => $this->default->code->value(),
 				'color' => $this->default->color->value(),
 				'active' => $this->default->active,
+				'locales' => $this->default->locales->toArray(),
 				'description' => $this->default->description->value(),
 			]);
 		}
@@ -109,6 +126,7 @@ final class ProjectFormControl extends Control
 				$values->description,
 				$values->color,
 				$values->active,
+				$values->locales,
 				$projectId->toString()
 			);
 		} else {
@@ -118,7 +136,8 @@ final class ProjectFormControl extends Control
 				->withCode($values->code)
 				->withDescription($values->description)
 				->withColor($values->color)
-				->withActive($values->active);
+				->withActive($values->active)
+				->withLocales($values->locales);
 		}
 
 		try {

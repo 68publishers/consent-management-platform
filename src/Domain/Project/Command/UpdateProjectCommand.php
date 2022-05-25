@@ -69,6 +69,14 @@ final class UpdateProjectCommand extends AbstractCommand
 	}
 
 	/**
+	 * @return array|NULL
+	 */
+	public function locales(): ?array
+	{
+		return $this->getParam('locales');
+	}
+
+	/**
 	 * @param string $name
 	 *
 	 * @return $this
@@ -116,5 +124,15 @@ final class UpdateProjectCommand extends AbstractCommand
 	public function withActive(bool $active): self
 	{
 		return $this->withParam('active', $active);
+	}
+
+	/**
+	 * @param array $locales
+	 *
+	 * @return $this
+	 */
+	public function withLocales(array $locales): self
+	{
+		return $this->withParam('locales', $locales);
 	}
 }

@@ -23,6 +23,8 @@
 
         <field name="active" column="active" type="boolean" />
 
+        <field name="locales" column="locales" type="App\Domain\Shared\ValueObject\Locales" />
+
         <field name="version" column="version" type="integer" />
     </entity>
 

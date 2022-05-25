@@ -7,6 +7,7 @@ namespace App\ReadModel\Project;
 use App\Domain\Project\ValueObject\Code;
 use App\Domain\Project\ValueObject\Name;
 use App\Domain\Project\ValueObject\Color;
+use App\Domain\Shared\ValueObject\Locales;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\Project\ValueObject\Description;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\AbstractView;
@@ -25,6 +26,8 @@ final class ProjectView extends AbstractView
 
 	public bool $active;
 
+	public Locales $locales;
+
 	/**
 	 * @return array
 	 */
@@ -37,6 +40,7 @@ final class ProjectView extends AbstractView
 			'color' => $this->color->value(),
 			'description' => $this->description->value(),
 			'active' => $this->active,
+			'locales' => $this->locales->toArray(),
 		];
 	}
 }
