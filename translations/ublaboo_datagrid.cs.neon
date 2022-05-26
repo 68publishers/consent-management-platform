@@ -1,4 +1,4 @@
-no_item_found_reset: Žádné položky. Můžete zkusit resetovat filtr.
+no_item_found_reset: 'Žádné položky. Můžete zkusit <a class="link ajax" href="%link%">resetovat filtr</a>.'
 no_item_found: Žádné položky.
 here: zde
 items: ''

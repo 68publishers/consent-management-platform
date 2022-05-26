@@ -9,15 +9,32 @@
             <index name="idx_user_created_at" columns="created_at" />
         </indexes>
 
+        <unique-constraints>
+            <unique-constraint name="uniq_user_username" columns="username">
+                <options>
+                    <option name="case-insensitive">username</option>
+                    <option name="where">deleted_at IS NULL</option>
+                </options>
+            </unique-constraint>
+            <unique-constraint name="uniq_user_email_address" columns="email_address">
+                <options>
+                    <option name="case-insensitive">email_address</option>
+                    <option name="where">deleted_at IS NULL</option>
+                </options>
+            </unique-constraint>
+        </unique-constraints>
+
         <id name="id" column="id" type="SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId" unique="true" />
 
         <field name="createdAt" column="created_at" type="datetime_immutable" />
 
-        <field name="username" column="username" type="SixtyEightPublishers\UserBundle\Domain\ValueObject\Username" unique="true" />
+        <field name="deletedAt" column="deleted_at" type="datetime_immutable" nullable="true" />
+
+        <field name="username" column="username" type="SixtyEightPublishers\UserBundle\Domain\ValueObject\Username" />
 
         <field name="password" column="password" type="SixtyEightPublishers\UserBundle\Domain\ValueObject\HashedPassword" nullable="true" />
 
-        <field name="emailAddress" column="email_address" type="SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\EmailAddress" unique="true" />
+        <field name="emailAddress" column="email_address" type="SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\EmailAddress" />
 
         <embedded name="name" class="SixtyEightPublishers\UserBundle\Domain\ValueObject\Name" use-column-prefix="false" />
 

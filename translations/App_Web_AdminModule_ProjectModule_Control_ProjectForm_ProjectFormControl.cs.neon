@@ -9,7 +9,7 @@ code:
 	rule_max_length: Maximální povolená délka je %d znaků.
 	error:
 		duplicated_value: 'Projekt s tímto kódem již existuje.'
-	description: 'Povolená jsou pouze malá písmena, číslice, tečka, podrtžítko a pomlčka.'
+	description: 'Povolená jsou pouze malá písmena, číslice, tečka, podtržítko a pomlčka.'
 
 color:
 	field: Barva

@@ -8,6 +8,9 @@ sidebar:
 	user_list: Výpis uživatelů
 	password_request_list: Zapomenutá hesla
 	application_settings: Nastavení aplikace
+	cookies: Cookies
+	category_list: Výpis kategorií cookies
+	cookie_list: Výpis cookies
 	projects: Projekty
 
 sidebar_project:

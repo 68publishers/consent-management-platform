@@ -50,16 +50,17 @@ final class ConsentListControl extends Control
 		$grid = $this->dataGridFactory->create(ConsentsDataGridQuery::create($this->projectId->toString()));
 
 		$grid->setTranslator($this->getPrefixedTranslator());
+		$grid->setTemplateFile(__DIR__ . '/templates/datagrid.latte');
 
 		$grid->setDefaultSort([
-			'created_at' => 'DESC',
+			'last_update_at' => 'DESC',
 		]);
 
 		$grid->addColumnText('user_identifier', 'user_identifier', 'userIdentifier.value')
 			->setSortable('userIdentifier')
 			->setFilterText('userIdentifier');
 
-		$grid->addColumnText('settings_checksum', 'settings_checksum', 'settingsChecksum.value')
+		$grid->addColumnText('settings_checksum', 'settings_checksum')
 			->setSortable('settingsChecksum')
 			->setFilterText('settingsChecksum');
 

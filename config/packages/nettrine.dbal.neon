@@ -8,6 +8,7 @@ nettrine.dbal:
 			- %appDir%
 	connection:
 		driver: pdo_pgsql
+		platform: @68publishers.doctrine_platform
 		host: ::env(DB_HOST)
 		port: ::env(DB_PORT)
 		dbname: ::env(DB_NAME)

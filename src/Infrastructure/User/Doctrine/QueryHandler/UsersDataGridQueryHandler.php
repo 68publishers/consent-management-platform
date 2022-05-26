@@ -41,12 +41,14 @@ final class UsersDataGridQueryHandler implements QueryHandlerInterface
 			function (): QueryBuilder {
 				return $this->em->createQueryBuilder()
 					->select('COUNT(u.id)')
-					->from(User::class, 'u');
+					->from(User::class, 'u')
+					->where('u.deletedAt IS NULL');
 			},
 			function (): QueryBuilder {
 				return $this->em->createQueryBuilder()
 					->select('u')
-					->from(User::class, 'u');
+					->from(User::class, 'u')
+					->where('u.deletedAt IS NULL');
 			},
 			static fn (array $data): UserView => ViewFactory::createUserView($data),
 			[

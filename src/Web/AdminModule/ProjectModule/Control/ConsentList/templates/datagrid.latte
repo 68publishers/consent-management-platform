@@ -1,0 +1,9 @@
+{extends $originalTemplate}
+
+{varType App\ReadModel\Consent\ConsentView $item}
+
+{define col-settings_checksum}
+    {if NULL !== $item->settingsChecksum}
+        <span x-data x-tooltip.interactive.raw="{$item->settingsChecksum->value()}">{$item->settingsChecksum->value()|truncate:8}</span>
+    {/if}
+{/define}

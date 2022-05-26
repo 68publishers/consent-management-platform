@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                                      https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Domain\Category\Category" table="category">
+        <indexes>
+            <index name="idx_category_created_at" columns="created_at" />
+        </indexes>
+
+        <unique-constraints>
+            <unique-constraint name="uniq_category_code" columns="code">
+                <options>
+                    <option name="case-insensitive">code</option>
+                    <option name="where">deleted_at IS NULL</option>
+                </options>
+            </unique-constraint>
+        </unique-constraints>
+
+        <id name="id" column="id" type="App\Domain\Category\ValueObject\CategoryId" unique="true" />
+
+        <field name="createdAt" column="created_at" type="datetime_immutable" />
+
+        <field name="deletedAt" column="deleted_at" type="datetime_immutable" nullable="true" />
+
+        <field name="code" column="code" type="App\Domain\Category\ValueObject\Code" length="70" />
+
+        <field name="active" column="active" type="boolean" />
+
+        <field name="version" column="version" type="integer" />
+
+        <one-to-many field="translations" target-entity="App\Domain\Category\CategoryTranslation" mapped-by="category" orphan-removal="true">
+            <cascade>
+                <cascade-persist />
+                <cascade-remove />
+            </cascade>
+        </one-to-many>
+    </entity>
+
+</doctrine-mapping>

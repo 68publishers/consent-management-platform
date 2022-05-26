@@ -1,4 +1,5 @@
 includes:
+	- category/@default.neon
 	- consent/@default.neon
 	- consent_settings/@default.neon
 	- global_settings/@default.neon

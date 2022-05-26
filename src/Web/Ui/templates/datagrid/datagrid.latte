@@ -4,9 +4,7 @@
     <div class="flex flex-col">
         <div class="overflow-x-auto py-2 sm:rounded-lg bg-gray-50 ring-1 ring-black ring-opacity-5 shadow">
             <div class="inline-block min-w-full align-middle">
-                <div class="overflow-hidden">
-                    {include parent}
-                </div>
+                {include parent}
             </div>
         </div>
     </div>
@@ -31,7 +29,7 @@
     <tr>
         <td colspan="{$control->getColumnsCount()}" n:if="!$control->isTreeView()" class="row-grid-bottom">
             <div class="flex items-center">
-                <div class="col-items">
+                <div class="col-items py-0.5">
                     <p n:if="$control->isPaginated()" class="text-sm text-gray-700">
                         {var $paginator = $control['paginator']->getPaginator()}
                         {if $control->getPerPage() === 'all'}
@@ -41,10 +39,10 @@
                         {/if}
                     </p>
                 </div>
-                <div class="col-pagination text-center">
+                <div class="col-pagination text-center py-0.5">
                     {control paginator}
                 </div>
-                <div class="col-per-page flex items-center text-right">
+                <div class="col-per-page flex items-center text-right py-0.5">
                     <a n:if="$filter_active" n:href="resetFilter!" class="ajax btn btn-danger btn-sm reset-filter">{='ublaboo_datagrid.reset_filter'|translate}</a>
                     {if $control->isPaginated()}
                         {input $filter['perPage'], data-autosubmit-per-page => TRUE, class => 'form-control input-sm form-control-sm'}
@@ -56,19 +54,31 @@
     </tr>
 {/block}
 
+{block noItems}
+    <tr n:if="!$rows">
+        <td colspan="{$control->getColumnsCount()}">
+            {if $filter_active}
+                {='ublaboo_datagrid.no_item_found_reset', ['link' => $control->link('resetFilter!')]|translate|noescape}
+            {else}
+                {='ublaboo_datagrid.no_item_found'|translate}
+            {/if}
+        </td>
+    </tr>
+{/block}
+
 
 {define #filtertype-select, $input, $outer}
     {if $outer}
         <div class="row">
             {label $input class => 'col-sm-3 control-label' /}
             <div class="col-sm-9">
-                <div style="width: 150px">
+                <div style="min-width: 150px">
                     {input $input, x-data => '', x-select => '', x-cloak => ''}
                 </div>
             </div>
         </div>
     {else}
-        <div style="width: 150px">
+        <div style="min-width: 150px">
             {input $input, x-data => '', x-select => '', x-cloak => ''}
         </div>
     {/if}
@@ -79,13 +89,13 @@
         <div class="row">
             {label $input class => 'col-sm-3 control-label' /}
             <div class="col-sm-9">
-                <div style="width: 150px">
+                <div style="min-width: 150px">
                     {input $input, x-data => '', x-select => '', x-cloak => ''}
                 </div>
             </div>
         </div>
     {else}
-        <div style="width: 150px">
+        <div style="min-width: 150px">
             {input $input, x-data => '', x-select => '', x-cloak => ''}
         </div>
     {/if}

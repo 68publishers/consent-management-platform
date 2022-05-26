@@ -45,6 +45,9 @@ services:
 	- App\Web\AdminModule\UserModule\Control\UserForm\UserFormControlFactoryInterface
 	- App\Web\AdminModule\ProfileModule\Control\PasswordChange\PasswordChangeControlFactoryInterface
 
+	# Web\AdminModule\CookieModule
+	- App\Web\AdminModule\CookieModule\Control\CategoryList\CategoryListControlFactoryInterface
+
 	# Web\AdminModule\ProjectModule
 	- App\Web\AdminModule\ProjectModule\Control\ConsentList\ConsentListControlFactoryInterface
 	- App\Web\AdminModule\ProjectModule\Control\ProjectForm\ProjectFormControlFactoryInterface

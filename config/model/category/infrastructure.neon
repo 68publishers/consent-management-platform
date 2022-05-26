@@ -1,0 +1,40 @@
+services:
+	# infra
+	-
+		type: App\Domain\Category\CategoryRepositoryInterface
+		factory: App\Infrastructure\Category\CategoryRepository
+	-
+		type: App\Domain\Category\CheckCodeUniquenessInterface
+		factory: App\Infrastructure\Category\CheckCodeUniqueness
+
+	# infra: doctrine
+	-
+		autowired: no
+		factory: App\Infrastructure\Category\Doctrine\QueryHandler\GetCategoryByIdQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\Category\Doctrine\QueryHandler\GetCategoryByCodeQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\Category\Doctrine\QueryHandler\CategoriesDataGridQueryHandler
+
+# infra: doctrine mapping
+nettrine.orm.xml:
+	mapping:
+		App\Domain\Category: %appDir%/Infrastructure/Category/Doctrine/Mapping
+
+# infra: dbal types
+nettrine.dbal:
+	connection:
+		types:
+			App\Domain\Category\ValueObject\CategoryId:
+				class: App\Infrastructure\Category\Doctrine\DbalType\CategoryIdType
+				commented: yes
+
+			App\Domain\Category\ValueObject\Code:
+				class: App\Infrastructure\Category\Doctrine\DbalType\CodeType
+				commented: yes
+
+			App\Domain\Category\ValueObject\Name:
+				class: App\Infrastructure\Category\Doctrine\DbalType\NameType
+				commented: yes
