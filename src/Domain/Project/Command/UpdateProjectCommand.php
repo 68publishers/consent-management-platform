@@ -77,6 +77,14 @@ final class UpdateProjectCommand extends AbstractCommand
 	}
 
 	/**
+	 * @return string|NULL
+	 */
+	public function defaultLocale(): ?string
+	{
+		return $this->getParam('default_locale');
+	}
+
+	/**
 	 * @param string $name
 	 *
 	 * @return $this
@@ -127,12 +135,14 @@ final class UpdateProjectCommand extends AbstractCommand
 	}
 
 	/**
-	 * @param array $locales
+	 * @param array  $locales
+	 * @param string $defaultLocale
 	 *
 	 * @return $this
 	 */
-	public function withLocales(array $locales): self
+	public function withLocales(array $locales, string $defaultLocale): self
 	{
-		return $this->withParam('locales', $locales);
+		return $this->withParam('locales', $locales)
+			->withParam('default_locale', $defaultLocale);
 	}
 }

@@ -6,7 +6,7 @@ namespace App\ReadModel\GlobalSettings;
 
 use DateTimeImmutable;
 use DateTimeInterface;
-use App\Domain\Shared\ValueObject\Locales;
+use App\Domain\Shared\ValueObject\LocalesConfig;
 use App\Domain\GlobalSettings\ValueObject\GlobalSettingsId;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\AbstractView;
 
@@ -18,7 +18,7 @@ final class GlobalSettingsView extends AbstractView
 
 	public DateTimeImmutable $lastUpdateAt;
 
-	public Locales $locales;
+	public LocalesConfig $locales;
 
 	/**
 	 * @return array
@@ -27,9 +27,10 @@ final class GlobalSettingsView extends AbstractView
 	{
 		return [
 			'id' => $this->id->toString(),
-			'created_at' => $this->createdAt->format(DateTimeInterface::ATOM),
-			'last_update_at' => $this->lastUpdateAt->format(DateTimeInterface::ATOM),
-			'locales' => $this->locales->toArray(),
+			'createdAt' => $this->createdAt->format(DateTimeInterface::ATOM),
+			'lastUpdateAt' => $this->lastUpdateAt->format(DateTimeInterface::ATOM),
+			'locales' => $this->locales->locales()->toArray(),
+			'defaultLocale' => $this->locales->defaultLocale()->value(),
 		];
 	}
 }

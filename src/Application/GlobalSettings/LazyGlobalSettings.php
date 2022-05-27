@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Application\GlobalSettings;
 
-use App\Domain\Shared\ValueObject\Locale;
 use SixtyEightPublishers\i18n\Lists\LanguageList;
 use App\ReadModel\GlobalSettings\GlobalSettingsView;
 use App\ReadModel\GlobalSettings\GetGlobalSettingsQuery;
+use App\Domain\Shared\ValueObject\Locale as LocaleValueObject;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 
 final class LazyGlobalSettings implements GlobalSettingsInterface
@@ -31,9 +31,25 @@ final class LazyGlobalSettings implements GlobalSettingsInterface
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getNamedLocales(): array
+	public function locales(): array
 	{
-		return $this->getInner()->getNamedLocales();
+		return $this->getInner()->locales();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function defaultLocale(): Locale
+	{
+		return $this->getInner()->defaultLocale();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function refresh(): void
+	{
+		$this->inner = NULL;
 	}
 
 	/**
@@ -54,13 +70,18 @@ final class LazyGlobalSettings implements GlobalSettingsInterface
 		$locales = [];
 		$list = $this->languageList->getList();
 
-		foreach ($globalSettingsView->locales->all() as $locale) {
-			assert($locale instanceof Locale);
+		foreach ($globalSettingsView->locales->locales()->all() as $locale) {
+			assert($locale instanceof LocaleValueObject);
 
 			$localeValue = $locale->value();
-			$locales[$localeValue] = $list[$localeValue] ?? $localeValue;
+			$locales[] = Locale::create($localeValue, $list[$localeValue] ?? $localeValue);
 		}
 
-		return $this->inner = new GlobalSettings($locales);
+		$defaultLocaleValue = $globalSettingsView->locales->defaultLocale()->value();
+
+		return $this->inner = new GlobalSettings(
+			$locales,
+			Locale::create($defaultLocaleValue, $list[$defaultLocaleValue] ?? $defaultLocaleValue)
+		);
 	}
 }

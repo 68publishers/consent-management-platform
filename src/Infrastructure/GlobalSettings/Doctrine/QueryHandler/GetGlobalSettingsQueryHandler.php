@@ -38,6 +38,6 @@ final class GetGlobalSettingsQueryHandler implements QueryHandlerInterface
 			->getQuery()
 			->getOneOrNullResult(AbstractQuery::HYDRATE_ARRAY);
 
-		return NULL !== $data ? GlobalSettingsView::fromArray($data) : NULL;
+		return NULL !== $data ? ViewFactory::createGlobalSettingsView($data) : NULL;
 	}
 }

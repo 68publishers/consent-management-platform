@@ -7,6 +7,7 @@ namespace App\Domain\GlobalSettings;
 use DateTimeImmutable;
 use App\Domain\Shared\ValueObject\Locale;
 use App\Domain\Shared\ValueObject\Locales;
+use App\Domain\Shared\ValueObject\LocalesConfig;
 use App\Domain\GlobalSettings\Event\GlobalSettingsCreated;
 use App\Domain\GlobalSettings\Event\GlobalSettingsUpdated;
 use App\Domain\GlobalSettings\ValueObject\GlobalSettingsId;
@@ -25,7 +26,7 @@ final class GlobalSettings implements AggregateRootInterface
 
 	private DateTimeImmutable $lastUpdateAt;
 
-	private Locales $locales;
+	private LocalesConfig $locales;
 
 	/**
 	 * @param \App\Domain\GlobalSettings\Command\StoreGlobalSettingsCommand $command
@@ -36,12 +37,13 @@ final class GlobalSettings implements AggregateRootInterface
 	{
 		$globalSettings = new self();
 		$locales = Locales::empty();
+		$defaultLocale = Locale::fromValue($command->defaultLocale());
 
 		foreach ($command->locales() as $locale) {
 			$locales = $locales->with(Locale::fromValue($locale));
 		}
 
-		$globalSettings->recordThat(GlobalSettingsCreated::create(GlobalSettingsId::new(), $locales));
+		$globalSettings->recordThat(GlobalSettingsCreated::create(GlobalSettingsId::new(), LocalesConfig::create($locales, $defaultLocale)));
 
 		return $globalSettings;
 	}
@@ -54,10 +56,13 @@ final class GlobalSettings implements AggregateRootInterface
 	public function update(StoreGlobalSettingsCommand $command): void
 	{
 		$locales = Locales::empty();
+		$defaultLocale = Locale::fromValue($command->defaultLocale());
 
 		foreach ($command->locales() as $locale) {
 			$locales = $locales->with(Locale::fromValue($locale));
 		}
+
+		$locales = LocalesConfig::create($locales, $defaultLocale);
 
 		if (!$this->locales->equals($locales)) {
 			$this->recordThat(GlobalSettingsUpdated::create($this->id, $locales));
@@ -79,10 +84,10 @@ final class GlobalSettings implements AggregateRootInterface
 	 */
 	protected function whenGlobalSettingsCreated(GlobalSettingsCreated $event): void
 	{
-		$this->id = $event->getGlobalSettingsId();
+		$this->id = $event->globalSettingsId();
 		$this->createdAt = $event->createdAt();
 		$this->lastUpdateAt = $event->createdAt();
-		$this->locales = $event->getLocales();
+		$this->locales = $event->locales();
 	}
 
 	/**
@@ -93,6 +98,6 @@ final class GlobalSettings implements AggregateRootInterface
 	protected function whenGlobalSettingsUpdated(GlobalSettingsUpdated $event): void
 	{
 		$this->lastUpdateAt = $event->createdAt();
-		$this->locales = $event->getLocales();
+		$this->locales = $event->locales();
 	}
 }

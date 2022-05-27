@@ -20,6 +20,8 @@ class DataGrid extends UblabooDataGrid
 {
 	private ?string $sessionNamePostfix = NULL;
 
+	private array $templateVariables = [];
+
 	/**
 	 * @param \Nette\Localization\ITranslator|\Nette\Localization\Translator $translator
 	 *
@@ -39,6 +41,11 @@ class DataGrid extends UblabooDataGrid
 	public function render(): void
 	{
 		$this->getTemplate()->ublabooTemplateFile = parent::getOriginalTemplateFile();
+		$this->getTemplate()->linkFactory = new LinkFactory($this);
+
+		foreach ($this->templateVariables as $name => $value) {
+			$this->getTemplate()->{$name} = $value;
+		}
 
 		parent::render();
 	}
@@ -144,5 +151,17 @@ class DataGrid extends UblabooDataGrid
 	public function getOriginalTemplateFile(): string
 	{
 		return __DIR__ . '/../templates/datagrid/datagrid.latte';
+	}
+
+	/**
+	 * @param array $templateVariables
+	 *
+	 * @return $this
+	 */
+	public function setTemplateVariables(array $templateVariables): self
+	{
+		$this->templateVariables = $templateVariables;
+
+		return $this;
 	}
 }

@@ -33,7 +33,7 @@ trait DataGridQueryHandlerTrait
 	protected function processQuery(DataGridQueryInterface $query, callable $countQueryBuilderFactory, callable $dataQueryBuilderFactory, callable $mapper, array $filterDefinitions, array $sortingDefinitions)
 	{
 		if ($query::MODE_COUNT === $query->mode()) {
-			$qb = $countQueryBuilderFactory();
+			$qb = $countQueryBuilderFactory($query);
 			assert($qb instanceof QueryBuilder);
 
 			$this->applyFilters($query, $qb, $filterDefinitions);
@@ -41,7 +41,7 @@ trait DataGridQueryHandlerTrait
 			return (int) $qb->getQuery()->getSingleScalarResult();
 		}
 
-		$qb = $dataQueryBuilderFactory();
+		$qb = $dataQueryBuilderFactory($query);
 		assert($qb instanceof QueryBuilder);
 
 		$this->applyFilters($query, $qb, $filterDefinitions);
@@ -75,7 +75,14 @@ trait DataGridQueryHandlerTrait
 				continue;
 			}
 
-			[$method, $column] = $definitions[$filterName];
+			$def = $definitions[$filterName];
+
+			if (!isset($def[2])) {
+				$def[2] = [];
+			}
+
+			[$method, $column, $extraArgs] = $def;
+			$extraArgs = is_array($extraArgs) ? $extraArgs : [$extraArgs];
 
 			if ($query::MODE_ONE === $query->mode()) {
 				$this->applyEquals($qb, $column, $value);
@@ -83,7 +90,7 @@ trait DataGridQueryHandlerTrait
 				continue;
 			}
 
-			$this->{$method}($qb, $column, $value);
+			$this->{$method}($qb, $column, $value, ...$extraArgs);
 		}
 	}
 

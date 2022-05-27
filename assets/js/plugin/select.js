@@ -1,6 +1,7 @@
 'use strict';
 
 function Select(Alpine) {
+    require('Vendor/nasext/dependent-select-box/client-side/dependentSelectBox');
 
     Alpine.data('select', () => ({
         selectEl: null,
@@ -111,22 +112,34 @@ function Select(Alpine) {
                 this.selectEl = select;
                 this.multiple = select.multiple || false;
 
-                for (let opt of select.options) {
-                    const option = {
-                        value: opt.value,
-                        label: opt.innerText,
-                    };
+                const init = () => {
+                    this.selected = [];
+                    this.options = [];
 
-                    this.options.push(option);
+                    for (let opt of this.selectEl.options) {
+                        const option = {
+                            value: opt.value,
+                            label: opt.innerText,
+                        };
 
-                    if (opt.selected) {
-                        this.selected.push(this.options.length -1);
+                        this.options.push(option);
+
+                        if (opt.selected) {
+                            this.selected.push(this.options.length -1);
+                        }
                     }
-                }
+                };
+
+                init();
 
                 this.$watch('activeIndex', (() => {
                     this.opened && (null !== this.activeIndex ? this.activeDescendant = this.$refs.options.children[this.activeIndex].id : this.activeDescendant = '')
                 }))
+
+                // dependent select box
+                if (this.selectEl.hasAttribute('data-dependentselectbox')) {
+                    $(this.selectEl).dependentSelectBox(init);
+                }
             },
             ['x-on:keydown.escape.prevent.stop']() {
                 this.close(this.$refs.button);

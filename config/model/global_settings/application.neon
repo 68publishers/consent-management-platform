@@ -2,3 +2,5 @@ services:
 	-
 		type: App\Application\GlobalSettings\GlobalSettingsInterface
 		factory: App\Application\GlobalSettings\LazyGlobalSettings
+
+	- App\Application\GlobalSettings\ValidLocalesProvider

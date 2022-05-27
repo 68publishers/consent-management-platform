@@ -7,9 +7,17 @@ namespace App\Application\GlobalSettings;
 interface GlobalSettingsInterface
 {
 	/**
-	 * [locale => name]
-	 *
-	 * @return array
+	 * @return \App\Application\GlobalSettings\Locale[]
 	 */
-	public function getNamedLocales(): array;
+	public function locales(): array;
+
+	/**
+	 * @return \App\Application\GlobalSettings\Locale
+	 */
+	public function defaultLocale(): Locale;
+
+	/**
+	 * @return void
+	 */
+	public function refresh(): void;
 }

@@ -37,6 +37,6 @@ final class FindAllProjectsQueryHandler implements QueryHandlerInterface
 			->getQuery()
 			->getResult(AbstractQuery::HYDRATE_ARRAY);
 
-		return array_map(static fn (array $row): ProjectView => ProjectView::fromArray($row), $data);
+		return array_map(static fn (array $row): ProjectView => ViewFactory::createProjectView($row), $data);
 	}
 }

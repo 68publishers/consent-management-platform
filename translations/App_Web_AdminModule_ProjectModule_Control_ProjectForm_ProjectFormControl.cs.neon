@@ -22,6 +22,11 @@ active:
 
 locales:
 	field: Jazyky překladů
+	required: Zvolte alespoň jeden jazyk.
+
+default_locale:
+	field: Výchozí jazyk
+	required: Zvolte výchozí jazyk.
 
 description:
 	field: Popis projektu

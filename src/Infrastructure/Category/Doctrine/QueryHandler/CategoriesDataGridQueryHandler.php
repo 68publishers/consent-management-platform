@@ -6,6 +6,7 @@ namespace App\Infrastructure\Category\Doctrine\QueryHandler;
 
 use Doctrine\ORM\QueryBuilder;
 use App\Domain\Category\Category;
+use Doctrine\ORM\Query\Expr\Join;
 use App\ReadModel\Category\CategoryView;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Infrastructure\DataGridQueryHandlerTrait;
@@ -37,21 +38,36 @@ final class CategoriesDataGridQueryHandler implements QueryHandlerInterface
 	{
 		return $this->processQuery(
 			$query,
-			function (): QueryBuilder {
-				return $this->em->createQueryBuilder()
+			function (CategoriesDataGridQuery $query): QueryBuilder {
+				$qb = $this->em->createQueryBuilder()
 					->select('COUNT(c.id)')
 					->from(Category::class, 'c')
 					->where('c.deletedAt IS NULL');
+
+				if (NULL !== $query->locale()) {
+					$qb->leftJoin('c.translations', 'ct', Join::WITH, 'ct.locale = :locale')
+						->setParameter('locale', $query->locale());
+				}
+
+				return $qb;
 			},
-			function (): QueryBuilder {
-				return $this->em->createQueryBuilder()
-					->select('c, ct')
+			function (CategoriesDataGridQuery $query): QueryBuilder {
+				$qb = $this->em->createQueryBuilder()
+					->select('c')
 					->from(Category::class, 'c')
-					->leftJoin('c.translations', 'ct')
 					->where('c.deletedAt IS NULL');
+
+				if (NULL !== $query->locale()) {
+					$qb->addSelect('ct')
+						->leftJoin('c.translations', 'ct', Join::WITH, 'ct.locale = :locale')
+						->setParameter('locale', $query->locale());
+				}
+
+				return $qb;
 			},
 			static fn (array $data): CategoryView => ViewFactory::createCategoryView($data),
 			[
+				'name' => ['applyFilterName', 'ct.name', [$query->locale()]],
 				'code' => ['applyLike', 'c.code'],
 				'createdAt' => ['applyDate', 'c.createdAt'],
 				'active' => ['applyEquals', 'c.active'],
@@ -61,5 +77,20 @@ final class CategoriesDataGridQueryHandler implements QueryHandlerInterface
 				'createdAt' => 'c.createdAt',
 			]
 		);
+	}
+
+	/**
+	 * @param \Doctrine\ORM\QueryBuilder $qb
+	 * @param string                     $column
+	 * @param mixed                      $value
+	 * @param string|NULL                $locale
+	 *
+	 * @return void
+	 */
+	protected function applyFilterName(QueryBuilder $qb, string $column, $value, ?string $locale): void
+	{
+		if (NULL !== $locale) {
+			$this->applyLike($qb, $column, $value);
+		}
 	}
 }

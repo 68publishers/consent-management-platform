@@ -45,6 +45,7 @@ final class EditProjectPresenter extends SelectedProjectPresenter
 
 			$this->refreshProjectView($event->newCode());
 			$this->redrawControl('heading');
+			$this->redrawControl('before_content');
 		});
 
 		$control->addEventListener(ProjectFormProcessingFailedEvent::class, function () {

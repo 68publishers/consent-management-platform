@@ -14,8 +14,18 @@ final class CategoriesDataGridQuery extends AbstractDataGridQuery
 	/**
 	 * @return static
 	 */
-	public static function create(): self
+	public static function create(?string $locale): self
 	{
-		return self::fromParameters([]);
+		return self::fromParameters([
+			'locale' => $locale,
+		]);
+	}
+
+	/**
+	 * @return string|NULL
+	 */
+	public function locale(): ?string
+	{
+		return $this->getParam('locale');
 	}
 }

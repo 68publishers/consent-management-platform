@@ -7,9 +7,11 @@ namespace App\Domain\Project\Event;
 use App\Domain\Project\ValueObject\Code;
 use App\Domain\Project\ValueObject\Name;
 use App\Domain\Project\ValueObject\Color;
+use App\Domain\Shared\ValueObject\Locale;
 use App\Domain\Shared\ValueObject\Locales;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\Project\ValueObject\Description;
+use App\Domain\Shared\ValueObject\LocalesConfig;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Event\AbstractDomainEvent;
 
 final class ProjectCreated extends AbstractDomainEvent
@@ -26,20 +28,20 @@ final class ProjectCreated extends AbstractDomainEvent
 
 	private bool $active;
 
-	private Locales $locales;
+	private LocalesConfig $locales;
 
 	/**
-	 * @param \App\Domain\Project\ValueObject\ProjectId   $projectId
-	 * @param \App\Domain\Project\ValueObject\Name        $name
-	 * @param \App\Domain\Project\ValueObject\Code        $code
-	 * @param \App\Domain\Project\ValueObject\Description $description
-	 * @param \App\Domain\Project\ValueObject\Color       $color
-	 * @param bool                                        $active
-	 * @param \App\Domain\Shared\ValueObject\Locales      $locales
+	 * @param \App\Domain\Project\ValueObject\ProjectId    $projectId
+	 * @param \App\Domain\Project\ValueObject\Name         $name
+	 * @param \App\Domain\Project\ValueObject\Code         $code
+	 * @param \App\Domain\Project\ValueObject\Description  $description
+	 * @param \App\Domain\Project\ValueObject\Color        $color
+	 * @param bool                                         $active
+	 * @param \App\Domain\Shared\ValueObject\LocalesConfig $locales
 	 *
 	 * @return static
 	 */
-	public static function create(ProjectId $projectId, Name $name, Code $code, Description $description, Color $color, bool $active, Locales $locales): self
+	public static function create(ProjectId $projectId, Name $name, Code $code, Description $description, Color $color, bool $active, LocalesConfig $locales): self
 	{
 		$event = self::occur($projectId->toString(), [
 			'name' => $name->value(),
@@ -47,7 +49,8 @@ final class ProjectCreated extends AbstractDomainEvent
 			'description' => $description->value(),
 			'color' => $color->value(),
 			'active' => $active,
-			'locales' => $locales->toArray(),
+			'locales' => $locales->locales()->toArray(),
+			'default_locale' => $locales->defaultLocale()->value(),
 		]);
 
 		$event->projectId = $projectId;
@@ -112,7 +115,7 @@ final class ProjectCreated extends AbstractDomainEvent
 	/**
 	 * @return \App\Domain\Shared\ValueObject\Locales
 	 */
-	public function locales(): Locales
+	public function locales(): LocalesConfig
 	{
 		return $this->locales;
 	}
@@ -128,6 +131,6 @@ final class ProjectCreated extends AbstractDomainEvent
 		$this->description = Description::fromValue($parameters['description']);
 		$this->color = Color::fromValue($parameters['color']);
 		$this->active = (bool) $parameters['active'];
-		$this->locales = Locales::reconstitute($parameters['locales']);
+		$this->locales = LocalesConfig::create(Locales::reconstitute($parameters['locales']), Locale::fromValue($parameters['default_locale']));
 	}
 }

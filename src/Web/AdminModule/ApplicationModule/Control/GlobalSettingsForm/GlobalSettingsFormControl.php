@@ -7,8 +7,11 @@ namespace App\Web\AdminModule\ApplicationModule\Control\GlobalSettingsForm;
 use Throwable;
 use App\Web\Ui\Control;
 use Nette\Application\UI\Form;
+use NasExt\Forms\DependentData;
 use App\Web\Ui\Form\FormFactoryInterface;
+use App\Application\GlobalSettings\Locale;
 use App\Web\Ui\Form\FormFactoryOptionsTrait;
+use NasExt\Forms\Controls\DependentSelectBox;
 use SixtyEightPublishers\i18n\Lists\LanguageList;
 use App\Application\GlobalSettings\GlobalSettingsInterface;
 use App\Domain\GlobalSettings\Command\StoreGlobalSettingsCommand;
@@ -48,21 +51,52 @@ final class GlobalSettingsFormControl extends Control
 	protected function createComponentForm(): Form
 	{
 		$form = $this->formFactory->create($this->getFormFactoryOptions());
+		$localeList = $this->getLocales();
 
 		$form->setTranslator($this->getPrefixedTranslator());
 
-		$form->addMultiSelect('locales', 'locales.field', $this->getLocales())
+		$form->addMultiSelect('locales', 'locales.field', $localeList)
 			->checkDefaultValue(FALSE)
 			->setTranslator(NULL)
 			->setOption('searchbar', TRUE)
-			->setOption('tags', TRUE);
+			->setOption('tags', TRUE)
+			->setRequired('locales.required');
+
+		$form->addComponent(
+			(new DependentSelectBox('default_locale.field', [$form->getComponent('locales')]))
+				->setDependentCallback(function ($values) use ($localeList) {
+					$locales = $values['locales'];
+
+					if (empty($locales)) {
+						return new DependentData([]);
+					}
+
+					$defaultValue = $this->globalSettings->defaultLocale()->code();
+					$defaultValue = in_array($defaultValue, $locales, TRUE) ? $defaultValue : NULL;
+
+					if (NULL === $defaultValue && 0 < count($locales)) {
+						$defaultValue = reset($locales);
+					}
+
+					return new DependentData(
+						array_filter($localeList, static fn (string $loc): bool => in_array($loc, $locales, TRUE), ARRAY_FILTER_USE_KEY),
+						$defaultValue
+					);
+				})
+				->setPrompt('-------')
+				->checkDefaultValue(FALSE)
+				->setTranslator(NULL)
+				->setRequired('default_locale.required'),
+			'default_locale'
+		);
 
 		$form->addProtection('//layout.form_protection');
 
 		$form->addSubmit('save', 'save.field');
 
 		$form->setDefaults([
-			'locales' => array_keys($this->globalSettings->getNamedLocales()),
+			'locales' => array_map(static fn (Locale $locale): string => $locale->code(), $this->globalSettings->locales()),
+			'default_locale' => $this->globalSettings->defaultLocale()->code(),
 		]);
 
 		$form->onSuccess[] = function (Form $form) {
@@ -80,7 +114,7 @@ final class GlobalSettingsFormControl extends Control
 	private function saveGlobalSettings(Form $form): void
 	{
 		$values = $form->values;
-		$command = StoreGlobalSettingsCommand::create($values->locales);
+		$command = StoreGlobalSettingsCommand::create($values->locales, $values->default_locale);
 
 		try {
 			$this->commandBus->dispatch($command);

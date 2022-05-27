@@ -43,6 +43,7 @@ final class DemoProjectFixture extends AbstractFixture implements ContainerAware
 			'#DB2777',
 			TRUE,
 			['en', 'cs'],
+			'en',
 			self::$projectId->toString()
 		));
 

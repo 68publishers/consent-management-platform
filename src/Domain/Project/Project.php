@@ -15,6 +15,7 @@ use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\Project\ValueObject\Description;
 use App\Domain\Project\Event\ProjectCodeChanged;
 use App\Domain\Project\Event\ProjectNameChanged;
+use App\Domain\Shared\ValueObject\LocalesConfig;
 use App\Domain\Project\Event\ProjectColorChanged;
 use App\Domain\Project\Event\ProjectLocalesChanged;
 use App\Domain\Project\Command\CreateProjectCommand;
@@ -43,7 +44,7 @@ final class Project implements AggregateRootInterface
 
 	private bool $active;
 
-	private Locales $locales;
+	private LocalesConfig $locales;
 
 	/**
 	 * @param \App\Domain\Project\Command\CreateProjectCommand $command
@@ -61,6 +62,7 @@ final class Project implements AggregateRootInterface
 		$description = Description::fromValue($command->description());
 		$color = Color::fromValidColor($command->color());
 		$locales = Locales::empty();
+		$defaultLocale = Locale::fromValue($command->defaultLocale());
 
 		foreach ($command->locales() as $locale) {
 			$locales = $locales->with(Locale::fromValue($locale));
@@ -68,7 +70,7 @@ final class Project implements AggregateRootInterface
 
 		$checkCodeUniqueness($projectId, $code);
 
-		$project->recordThat(ProjectCreated::create($projectId, $name, $code, $description, $color, $command->active(), $locales));
+		$project->recordThat(ProjectCreated::create($projectId, $name, $code, $description, $color, $command->active(), LocalesConfig::create($locales, $defaultLocale)));
 
 		return $project;
 	}
@@ -101,14 +103,15 @@ final class Project implements AggregateRootInterface
 			$this->changeActiveState($command->active());
 		}
 
-		if (NULL !== $command->locales()) {
+		if (NULL !== $command->locales() && NULL !== $command->defaultLocale()) {
 			$locales = Locales::empty();
+			$defaultLocale = Locale::fromValue($command->defaultLocale());
 
 			foreach ($command->locales() as $locale) {
 				$locales = $locales->with(Locale::fromValue($locale));
 			}
 
-			$this->changeLocales($locales);
+			$this->changeLocales(LocalesConfig::create($locales, $defaultLocale));
 		}
 	}
 
@@ -187,11 +190,11 @@ final class Project implements AggregateRootInterface
 	}
 
 	/**
-	 * @param \App\Domain\Shared\ValueObject\Locales $locales
+	 * @param \App\Domain\Shared\ValueObject\LocalesConfig $locales
 	 *
 	 * @return void
 	 */
-	public function changeLocales(Locales $locales): void
+	public function changeLocales(LocalesConfig $locales): void
 	{
 		if (!$this->locales->equals($locales)) {
 			$this->recordThat(ProjectLocalesChanged::create($this->id, $locales));

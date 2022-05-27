@@ -15,11 +15,12 @@ final class CreateProjectCommand extends AbstractCommand
 	 * @param string      $color
 	 * @param bool        $active
 	 * @param array       $locales
+	 * @param string      $defaultLocale
 	 * @param string|NULL $projectId
 	 *
 	 * @return static
 	 */
-	public static function create(string $name, string $code, string $description, string $color, bool $active, array $locales, ?string $projectId = NULL): self
+	public static function create(string $name, string $code, string $description, string $color, bool $active, array $locales, string $defaultLocale, ?string $projectId = NULL): self
 	{
 		return self::fromParameters([
 			'name' => $name,
@@ -28,6 +29,7 @@ final class CreateProjectCommand extends AbstractCommand
 			'color' => $color,
 			'active' => $active,
 			'locales' => $locales,
+			'default_locale' => $defaultLocale,
 			'project_id' => $projectId,
 		]);
 	}
@@ -78,6 +80,14 @@ final class CreateProjectCommand extends AbstractCommand
 	public function locales(): array
 	{
 		return $this->getParam('locales');
+	}
+
+	/**
+	 * @return string
+	 */
+	public function defaultLocale(): string
+	{
+		return $this->getParam('default_locale');
 	}
 
 	/**

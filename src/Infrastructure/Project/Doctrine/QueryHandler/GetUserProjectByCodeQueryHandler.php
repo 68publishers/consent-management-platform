@@ -45,6 +45,6 @@ final class GetUserProjectByCodeQueryHandler implements QueryHandlerInterface
 			->getQuery()
 			->getOneOrNullResult(AbstractQuery::HYDRATE_ARRAY);
 
-		return NULL !== $data ? ProjectView::fromArray($data) : NULL;
+		return NULL !== $data ? ViewFactory::createProjectView($data) : NULL;
 	}
 }

@@ -1,3 +1,8 @@
+# infra: doctrine mapping
+nettrine.orm.xml:
+	mapping:
+		App\Domain\Shared: %appDir%/Infrastructure/Shared/Doctrine/Mapping
+
 # infra: dbal types
 nettrine.dbal:
 	connection:

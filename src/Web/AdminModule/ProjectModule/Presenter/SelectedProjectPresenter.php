@@ -82,6 +82,8 @@ abstract class SelectedProjectPresenter extends AdminPresenter
 		parent::beforeRender();
 
 		$this->template->projectView = $this->projectView;
+		$this->template->projectLocales = $this->validLocalesProvider->getValidLocales($this->projectView->locales);
+		$this->template->defaultProjectLocale = $this->validLocalesProvider->getValidDefaultLocale($this->projectView->locales);
 	}
 
 	/**

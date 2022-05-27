@@ -23,7 +23,7 @@
 
         <field name="active" column="active" type="boolean" />
 
-        <field name="locales" column="locales" type="App\Domain\Shared\ValueObject\Locales" />
+        <embedded name="locales" class="App\Domain\Shared\ValueObject\LocalesConfig" use-column-prefix="false" />
 
         <field name="version" column="version" type="integer" />
     </entity>

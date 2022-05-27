@@ -32,7 +32,7 @@ final class GlobalSettingsFixture extends AbstractFixture implements ContainerAw
 	{
 		$commandBus = $this->container->getByType(CommandBusInterface::class);
 
-		$commandBus->dispatch(StoreGlobalSettingsCommand::create(['en', 'cs', 'de']));
+		$commandBus->dispatch(StoreGlobalSettingsCommand::create(['en', 'cs', 'de'], 'en'));
 
 		$manager->clear();
 	}

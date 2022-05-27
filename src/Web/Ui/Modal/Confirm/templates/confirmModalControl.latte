@@ -1,0 +1,22 @@
+{templateType App\Web\Ui\Modal\Confirm\ConfirmModalTemplate}
+
+{extends $layout}
+
+{block #title}
+    {$title}
+{/block}
+
+{block #body}
+    <div class="text-center my-10">
+        {$question}
+    </div>
+{/block}
+
+{block #footer}
+    <a n:href="confirm!, args => $args" class="ajax sm:ml-3 mt-3 w-full inline-flex justify-center sm:flex-1 rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:mt-0 sm:w-auto sm:text-sm">
+        {if NULL !== $yesButtonText}{$yesButtonText}{else}{_yes}{/if}
+    </a>
+    <button x-bind="modalCloseButton" type="button" class="mt-3 w-full inline-flex justify-center sm:flex-1 rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 sm:w-auto sm:text-sm">
+        {if NULL !== $noButtonText}{$noButtonText}{else}{_no}{/if}
+    </button>
+{/block}

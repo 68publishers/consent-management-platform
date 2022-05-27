@@ -22,6 +22,7 @@ services:
 		factory: App\Web\Ui\Modal\Dispatcher\ModalDispatcher
 
 	- App\Web\Ui\Modal\ModalsControlFactoryInterface
+	- App\Web\Ui\Modal\Confirm\ConfirmModalControlFactoryInterface
 
 	# Web\Control
 	-

@@ -11,10 +11,11 @@ final class StoreGlobalSettingsCommand extends AbstractCommand
 	/**
 	 * @return static
 	 */
-	public static function create(array $locales): self
+	public static function create(array $locales, string $defaultLocale): self
 	{
 		return self::fromParameters([
 			'locales' => $locales,
+			'default_locale' => $defaultLocale,
 		]);
 	}
 
@@ -24,5 +25,13 @@ final class StoreGlobalSettingsCommand extends AbstractCommand
 	public function locales(): array
 	{
 		return $this->getParam('locales');
+	}
+
+	/**
+	 * @return string
+	 */
+	public function defaultLocale(): string
+	{
+		return $this->getParam('default_locale');
 	}
 }

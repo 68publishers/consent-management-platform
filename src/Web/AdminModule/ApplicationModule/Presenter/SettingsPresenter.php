@@ -39,6 +39,8 @@ final class SettingsPresenter extends AdminPresenter
 
 		$control->addEventListener(GlobalSettingsUpdatedEvent::class, function () {
 			$this->subscribeFlashMessage(FlashMessage::success('global_settings_updated'));
+			$this->globalSettings->refresh();
+			$this->redrawControl('before_content');
 		});
 
 		$control->addEventListener(GlobalSettingsUpdateFailedEvent::class, function () {

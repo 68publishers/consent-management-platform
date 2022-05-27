@@ -2,3 +2,7 @@ name: Název
 code: Kód
 active: Aktivní
 created_at: Vytvořeno
+
+delete_confirm:
+	title: Odstranit kategorii
+	question: 'Opravdu si přejete odstranit kategorii <strong>"%name%"</strong> (%code%)?'

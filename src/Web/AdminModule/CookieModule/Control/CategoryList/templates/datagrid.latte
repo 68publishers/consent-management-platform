@@ -1,12 +1,11 @@
 {extends $originalTemplate}
 
 {varType App\ReadModel\Category\CategoryView $item}
+{varType App\Application\GlobalSettings\Locale|null $_locale}
 
 {define col-name}
-    {var $name = reset($item->names)}
-
-    {if $name instanceof App\Domain\Category\ValueObject\Name}
-        {$name->value()}
+    {if NULL !== $_locale && isset($item->names[$_locale->code()])}
+        {$item->names[$_locale->code()]->value()}
     {/if}
 {/define}
 

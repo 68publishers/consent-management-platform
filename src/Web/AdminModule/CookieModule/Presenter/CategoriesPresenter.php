@@ -27,6 +27,6 @@ final class CategoriesPresenter extends AdminPresenter
 	 */
 	protected function createComponentList(): CategoryListControl
 	{
-		return $this->categoryListControlFactory->create();
+		return $this->categoryListControlFactory->create($this->validLocalesProvider->getValidDefaultLocale());
 	}
 }

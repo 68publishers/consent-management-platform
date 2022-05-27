@@ -9,6 +9,8 @@ use Nette\HtmlStringable;
 use Nette\Application\UI\Component;
 use Contributte\MenuControl\UI\MenuComponent;
 use Contributte\MenuControl\UI\IMenuComponentFactory;
+use App\Application\GlobalSettings\ValidLocalesProvider;
+use App\Application\GlobalSettings\GlobalSettingsInterface;
 use SixtyEightPublishers\SmartNetteComponent\Annotation\LoggedIn;
 use SixtyEightPublishers\UserBundle\Bridge\Nette\Security\Identity;
 use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
@@ -22,6 +24,10 @@ abstract class AdminPresenter extends Presenter
 	private const MENU_NAME_SIDEBAR = 'sidebar';
 	private const MENU_NAME_PROFILE = 'profile';
 
+	protected GlobalSettingsInterface $globalSettings;
+
+	protected ValidLocalesProvider $validLocalesProvider;
+
 	protected IMenuComponentFactory $menuComponentFactory;
 
 	protected array $customBreadcrumbItems = [];
@@ -29,13 +35,17 @@ abstract class AdminPresenter extends Presenter
 	private GitRepositoryInterface $gitRepository;
 
 	/**
+	 * @param \App\Application\GlobalSettings\GlobalSettingsInterface                 $globalSettings
+	 * @param \App\Application\GlobalSettings\ValidLocalesProvider                    $validLocalesProvider
 	 * @param \Contributte\MenuControl\UI\IMenuComponentFactory                       $menuComponentFactory
 	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface $gitRepository
 	 *
 	 * @return void
 	 */
-	public function injectAdminDependencies(IMenuComponentFactory $menuComponentFactory, GitRepositoryInterface $gitRepository): void
+	public function injectAdminDependencies(GlobalSettingsInterface $globalSettings, ValidLocalesProvider $validLocalesProvider, IMenuComponentFactory $menuComponentFactory, GitRepositoryInterface $gitRepository): void
 	{
+		$this->globalSettings = $globalSettings;
+		$this->validLocalesProvider = $validLocalesProvider;
 		$this->menuComponentFactory = $menuComponentFactory;
 		$this->gitRepository = $gitRepository;
 	}
@@ -67,6 +77,8 @@ abstract class AdminPresenter extends Presenter
 
 		$template->identity = $this->getIdentity()->data();
 		$template->gitRepository = $this->gitRepository;
+		$template->locales = $this->validLocalesProvider->getValidLocales();
+		$template->defaultLocale = $this->validLocalesProvider->getValidDefaultLocale();
 	}
 
 	/**

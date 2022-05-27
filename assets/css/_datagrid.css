@@ -40,6 +40,10 @@
     @apply pl-6;
 }
 
+.datagrid .table > tbody td.col-action > a:not(:first-child) {
+    @apply ml-1.5;
+}
+
 .datagrid input.form-control {
     @apply shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full text-sm border-gray-300 rounded-md;
 }

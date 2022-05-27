@@ -6,21 +6,44 @@ namespace App\Web\AdminModule\UserModule\Control\UserList;
 
 use App\Web\Ui\Control;
 use App\Domain\User\RolesEnum;
+use Nette\InvalidStateException;
 use App\Web\Ui\DataGrid\DataGrid;
+use Nette\Application\UI\Multiplier;
 use App\ReadModel\User\UsersDataGridQuery;
 use App\Web\Ui\DataGrid\Helper\FilterHelper;
 use App\Web\Ui\DataGrid\DataGridFactoryInterface;
+use App\Web\Ui\Modal\Confirm\ConfirmModalControl;
+use SixtyEightPublishers\UserBundle\ReadModel\View\UserView;
+use SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId;
+use App\Web\Ui\Modal\Confirm\ConfirmModalControlFactoryInterface;
+use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
+use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
+use SixtyEightPublishers\UserBundle\Domain\Command\DeleteUserCommand;
+use SixtyEightPublishers\UserBundle\ReadModel\Query\GetUserByIdQuery;
+use SixtyEightPublishers\UserBundle\Domain\Exception\UserNotFoundException;
 
 final class UserListControl extends Control
 {
+	private CommandBusInterface $commandBus;
+
+	private QueryBusInterface $queryBus;
+
 	private DataGridFactoryInterface $dataGridFactory;
 
+	private ConfirmModalControlFactoryInterface $confirmModalControlFactory;
+
 	/**
-	 * @param \App\Web\Ui\DataGrid\DataGridFactoryInterface $dataGridFactory
+	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface $commandBus
+	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface   $queryBus
+	 * @param \App\Web\Ui\DataGrid\DataGridFactoryInterface                    $dataGridFactory
+	 * @param \App\Web\Ui\Modal\Confirm\ConfirmModalControlFactoryInterface    $confirmModalControlFactory
 	 */
-	public function __construct(DataGridFactoryInterface $dataGridFactory)
+	public function __construct(CommandBusInterface $commandBus, QueryBusInterface $queryBus, DataGridFactoryInterface $dataGridFactory, ConfirmModalControlFactoryInterface $confirmModalControlFactory)
 	{
+		$this->commandBus = $commandBus;
+		$this->queryBus = $queryBus;
 		$this->dataGridFactory = $dataGridFactory;
+		$this->confirmModalControlFactory = $confirmModalControlFactory;
 	}
 
 	/**
@@ -60,6 +83,40 @@ final class UserListControl extends Control
 		$grid->addAction('edit', '')
 			->setTemplate(__DIR__ . '/templates/action.edit.latte');
 
+		$grid->addAction('delete', '')
+			->setTemplate(__DIR__ . '/templates/action.delete.latte');
+
 		return $grid;
+	}
+
+	/**
+	 * @return \Nette\Application\UI\Multiplier
+	 */
+	protected function createComponentDeleteConfirm(): Multiplier
+	{
+		return new Multiplier(function (string $id): ConfirmModalControl {
+			$userId = UserId::fromString($id);
+			$userView = $this->queryBus->dispatch(GetUserByIdQuery::create($userId->toString()));
+
+			if (!$userView instanceof UserView) {
+				throw new InvalidStateException('User not found.');
+			}
+
+			$name = $userView->name->name();
+
+			return $this->confirmModalControlFactory->create(
+				'',
+				$this->getPrefixedTranslator()->translate('delete_confirm.question', ['name' => $name]),
+				function () use ($userView) {
+					try {
+						$this->commandBus->dispatch(DeleteUserCommand::create($userView->id->toString()));
+					} catch (UserNotFoundException $e) {
+					}
+
+					$this->getComponent('grid')->reload();
+					$this->closeModal();
+				}
+			);
+		});
 	}
 }

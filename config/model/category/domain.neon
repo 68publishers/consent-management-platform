@@ -5,3 +5,6 @@ services:
 	-
 		autowired: no
 		factory: App\Domain\Category\CommandHandler\UpdateCategoryCommandHandler
+	-
+		autowired: no
+		factory: App\Domain\Category\CommandHandler\DeleteCategoryCommandHandler

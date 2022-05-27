@@ -3,3 +3,6 @@ email_address: Email
 name: Name
 created_at: Vytvořen
 roles: Role
+
+delete_confirm:
+	question: 'Opravdu si přejete odstranit uživatele <strong>"%name%"</strong>?'
