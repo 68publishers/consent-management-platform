@@ -29,6 +29,8 @@ services:
 		implement: App\Web\Control\Gtm\GtmControlFactoryInterface
 		factory: App\Web\Control\Gtm\GtmControl(::env(GTM_CONTAINER_ID, ''))
 
+	- App\Web\Control\Footer\FooterControlFactoryInterface
+
 	# Web\FrontModule
 	- App\Web\FrontModule\Control\SignIn\SignInControlFactoryInterface
 	- App\Web\FrontModule\Control\ForgotPassword\ForgotPasswordControlFactoryInterface
@@ -48,6 +50,7 @@ services:
 
 	# Web\AdminModule\CookieModule
 	- App\Web\AdminModule\CookieModule\Control\CategoryList\CategoryListControlFactoryInterface
+	- App\Web\AdminModule\CookieModule\Control\CategoryForm\CategoryFormControlFactoryInterface
 
 	# Web\AdminModule\ProjectModule
 	- App\Web\AdminModule\ProjectModule\Control\ConsentList\ConsentListControlFactoryInterface

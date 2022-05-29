@@ -57,7 +57,7 @@ final class UpdateCategoryCommand extends AbstractCommand
 	 *
 	 * @return $this
 	 */
-	public function witCode(string $code): self
+	public function withCode(string $code): self
 	{
 		return $this->withParam('code', $code);
 	}

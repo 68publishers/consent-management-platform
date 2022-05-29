@@ -69,6 +69,7 @@ final class CategoryListControl extends Control
 		]);
 
 		$grid->addColumnText('name', 'name')
+			->setSortable('name')
 			->setFilterText('name');
 
 		$grid->addColumnText('code', 'code', 'code.value')
@@ -83,6 +84,9 @@ final class CategoryListControl extends Control
 			->setFormat('j.n.Y H:i:s')
 			->setSortable('createdAt')
 			->setFilterDate('createdAt');
+
+		$grid->addAction('edit', '')
+			->setTemplate(__DIR__ . '/templates/action.edit.latte');
 
 		$grid->addAction('delete', '')
 			->setTemplate(__DIR__ . '/templates/action.delete.latte');

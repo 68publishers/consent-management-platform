@@ -80,7 +80,8 @@ final class ProjectFormControl extends Control
 			->addRule($form::PATTERN, 'color.rule_pattern', '#([a-fA-F0-9]{3}){1,2}\b')
 			->setOption('description', 'color.description');
 
-		$form->addCheckbox('active', 'active.field');
+		$form->addCheckbox('active', 'active.field')
+			->setDefaultValue(TRUE);
 
 		$form->addMultiSelect('locales', 'locales.field', $globalLocales)
 			->checkDefaultValue(FALSE)

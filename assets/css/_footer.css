@@ -1,4 +1,4 @@
 .footer-content > span:not(:last-of-type):after {
     content: '\00b7';
-    @apply inline-block text-sm mx-2;
+    @apply hidden sm:inline-block text-sm mx-2;
 }

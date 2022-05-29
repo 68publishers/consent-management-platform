@@ -1,0 +1,19 @@
+code:
+	field: Kód
+	required: Vyplňte prosím kód.
+	rule_max_length: Maximální povolená délka je %d znaků.
+	error:
+		duplicated_value: 'Kategorie s tímto kódem již existuje.'
+
+active:
+	field: Aktivní
+
+name:
+	field: 'Název (%name%)'
+	required: Vyplňte prosím název.
+
+save:
+	field: Vytvořit kategorii
+
+update:
+	field: Uložit

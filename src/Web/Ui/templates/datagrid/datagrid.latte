@@ -28,8 +28,8 @@
 {block pagination}
     <tr>
         <td colspan="{$control->getColumnsCount()}" n:if="!$control->isTreeView()" class="row-grid-bottom">
-            <div class="flex items-center">
-                <div class="col-items py-0.5">
+            <div class="flex items-center justify-between">
+                <div class="col-items">
                     <p n:if="$control->isPaginated()" class="text-sm text-gray-700">
                         {var $paginator = $control['paginator']->getPaginator()}
                         {if $control->getPerPage() === 'all'}
@@ -39,13 +39,13 @@
                         {/if}
                     </p>
                 </div>
-                <div class="col-pagination text-center py-0.5">
+                <div class="col-pagination">
                     {control paginator}
                 </div>
-                <div class="col-per-page flex items-center text-right py-0.5">
+                <div class="col-per-page">
                     <a n:if="$filter_active" n:href="resetFilter!" class="ajax btn btn-danger btn-sm reset-filter">{='ublaboo_datagrid.reset_filter'|translate}</a>
                     {if $control->isPaginated()}
-                        {input $filter['perPage'], data-autosubmit-per-page => TRUE, class => 'form-control input-sm form-control-sm'}
+                        {input $filter['perPage'], data-autosubmit-per-page => TRUE, class => 'form-control input-sm form-control-sm', x-data => TRUE, x-select => TRUE}
                         {input $filter['perPage_submit'], class => 'datagrid-per-page-submit'}
                     {/if}
                 </div>

@@ -7,13 +7,14 @@ namespace App\Web\AdminModule\Presenter;
 use App\Web\Ui\Presenter;
 use Nette\HtmlStringable;
 use Nette\Application\UI\Component;
+use App\Web\Control\Footer\FooterControl;
 use Contributte\MenuControl\UI\MenuComponent;
 use Contributte\MenuControl\UI\IMenuComponentFactory;
 use App\Application\GlobalSettings\ValidLocalesProvider;
+use App\Web\Control\Footer\FooterControlFactoryInterface;
 use App\Application\GlobalSettings\GlobalSettingsInterface;
 use SixtyEightPublishers\SmartNetteComponent\Annotation\LoggedIn;
 use SixtyEightPublishers\UserBundle\Bridge\Nette\Security\Identity;
-use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
 use SixtyEightPublishers\SmartNetteComponent\Annotation\AuthorizationAnnotationInterface;
 
 /**
@@ -32,22 +33,22 @@ abstract class AdminPresenter extends Presenter
 
 	protected array $customBreadcrumbItems = [];
 
-	private GitRepositoryInterface $gitRepository;
+	private FooterControlFactoryInterface $footerControlFactory;
 
 	/**
-	 * @param \App\Application\GlobalSettings\GlobalSettingsInterface                 $globalSettings
-	 * @param \App\Application\GlobalSettings\ValidLocalesProvider                    $validLocalesProvider
-	 * @param \Contributte\MenuControl\UI\IMenuComponentFactory                       $menuComponentFactory
-	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface $gitRepository
+	 * @param \App\Application\GlobalSettings\GlobalSettingsInterface $globalSettings
+	 * @param \App\Application\GlobalSettings\ValidLocalesProvider    $validLocalesProvider
+	 * @param \Contributte\MenuControl\UI\IMenuComponentFactory       $menuComponentFactory
+	 * @param \App\Web\Control\Footer\FooterControlFactoryInterface   $footerControlFactory
 	 *
 	 * @return void
 	 */
-	public function injectAdminDependencies(GlobalSettingsInterface $globalSettings, ValidLocalesProvider $validLocalesProvider, IMenuComponentFactory $menuComponentFactory, GitRepositoryInterface $gitRepository): void
+	public function injectAdminDependencies(GlobalSettingsInterface $globalSettings, ValidLocalesProvider $validLocalesProvider, IMenuComponentFactory $menuComponentFactory, FooterControlFactoryInterface $footerControlFactory): void
 	{
 		$this->globalSettings = $globalSettings;
 		$this->validLocalesProvider = $validLocalesProvider;
 		$this->menuComponentFactory = $menuComponentFactory;
-		$this->gitRepository = $gitRepository;
+		$this->footerControlFactory = $footerControlFactory;
 	}
 
 	/**
@@ -76,7 +77,6 @@ abstract class AdminPresenter extends Presenter
 		assert($template instanceof AdminTemplate);
 
 		$template->identity = $this->getIdentity()->data();
-		$template->gitRepository = $this->gitRepository;
 		$template->locales = $this->validLocalesProvider->getValidLocales();
 		$template->defaultLocale = $this->validLocalesProvider->getValidDefaultLocale();
 	}
@@ -134,5 +134,13 @@ abstract class AdminPresenter extends Presenter
 	protected function createComponentProfileMenu(): MenuComponent
 	{
 		return $this->menuComponentFactory->create(self::MENU_NAME_PROFILE);
+	}
+
+	/**
+	 * @return \App\Web\Control\Footer\FooterControl
+	 */
+	protected function createComponentFooter(): FooterControl
+	{
+		return $this->footerControlFactory->create();
 	}
 }

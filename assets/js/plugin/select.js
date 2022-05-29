@@ -200,14 +200,14 @@ function Select(Alpine) {
             buttonText = `
                 <span class="flex flex-wrap">
                     <template x-for="(option, index) in options" :key="option.value">
-                        <span x-show="isSelected(index)" class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800 mr-1.5">
+                        <span x-show="isSelected(index)" class="inline-flex items-center px-2.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800 mr-1.5 mb-0.5">
                             <span x-html="option.label"></span>
                             <button type="button" data-remove-button class="r-0.5 pl-1.5" x-on:click="choose(index)">
                                 &times;
                             </button>
                         </span>
                     </template>
-                    <span>&nbsp;</span>
+                    <span class="mb-0.5">&nbsp;</span>
                 </span>
             `;
         } else {

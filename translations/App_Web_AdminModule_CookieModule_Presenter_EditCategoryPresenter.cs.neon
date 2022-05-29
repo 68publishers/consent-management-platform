@@ -1,0 +1,7 @@
+page_title: Upravit kategorii
+back_to_list: Zpět na výpis kategorií
+
+message:
+	category_not_found: Kategorie nebyla nalezena.
+	category_updated: Kategorie byla upravena.
+	category_update_failed: Při upravování kategorie došlo k chybě.
