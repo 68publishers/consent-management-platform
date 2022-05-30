@@ -8,6 +8,11 @@ services:
 		type: SixtyEightPublishers\ArchitectureBundle\EventStore\EventMetadataExtenderInterface
 		factory: App\Application\EventMetadataExtender\CurrentUserExtender
 
+	- App\Application\OpenApiConfiguration(
+		::env(API_DOCS_ENABLED|bool, false),
+		::implode('', [::env(PROJECT_API_URL, ::env(PROJECT_URL)), App\Api\V1\Controller\OpenApiController::ENDPOINT])
+	)
+
 	# Web\Ui
 	- App\Web\Ui\Form\RecaptchaResolver(::env(RECAPTCHA_ENABLED|bool, no))
 	-
