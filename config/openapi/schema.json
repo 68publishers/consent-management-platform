@@ -1,0 +1,431 @@
+{
+	"openapi": "3.0.3",
+	"info": {
+		"title": "CMP - Consent Management Platform",
+		"description": "Public API for Consent Management Platform",
+		"version": "1.0.0",
+		"contact": {
+			"name": "'68publishers",
+			"url": "http://www.68publishers.io",
+			"email": "support@68publishers.io"
+		}
+	},
+	"tags": [
+		{
+			"name": "consent",
+			"description": "Consent operations"
+		},
+		{
+			"name": "consent-settings",
+			"description": "Consent settings operations"
+		},
+		{
+			"name": "another",
+			"description": "Another application operations"
+		}
+	],
+	"paths": {
+		"/api/health-check": {
+			"get": {
+				"tags": [
+					"another"
+				],
+				"description": "Returns statuses of all monitored services.",
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/get-health-check-200"
+					},
+					"503": {
+						"$ref": "#/components/responses/get-health-check-503"
+					}
+				}
+			}
+		},
+		"/api/v1/consent/{project}/{userIdentifier}": {
+			"options": {
+				"tags": [
+					"consent"
+				],
+				"parameters": [
+					{
+						"$ref": "#/components/parameters/project"
+					},
+					{
+						"$ref": "#/components/parameters/userIdentifier"
+					}
+				],
+				"responses": {
+					"204": {
+						"$ref": "#/components/responses/no-content"
+					},
+					"default": {
+						"$ref": "#/components/responses/server-error"
+					}
+				}
+			},
+			"put": {
+				"tags": [
+					"consent"
+				],
+				"parameters": [
+					{
+						"$ref": "#/components/parameters/project"
+					},
+					{
+						"$ref": "#/components/parameters/userIdentifier"
+					}
+				],
+				"requestBody": {
+					"$ref": "#/components/requestBodies/consent"
+				},
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/consent-stored"
+					},
+					"422": {
+						"$ref": "#/components/responses/unprocessable-entity"
+					},
+					"default": {
+						"$ref": "#/components/responses/server-error"
+					}
+				}
+			}
+		},
+		"/api/v1/consent-settings/{project}/{checksum}": {
+			"options": {
+				"tags": [
+					"consent-settings"
+				],
+				"parameters": [
+					{
+						"$ref": "#/components/parameters/project"
+					},
+					{
+						"$ref": "#/components/parameters/checksum"
+					}
+				],
+				"responses": {
+					"204": {
+						"$ref": "#/components/responses/no-content"
+					},
+					"default": {
+						"$ref": "#/components/responses/server-error"
+					}
+				}
+			},
+			"put": {
+				"tags": [
+					"consent-settings"
+				],
+				"parameters": [
+					{
+						"$ref": "#/components/parameters/project"
+					},
+					{
+						"$ref": "#/components/parameters/checksum"
+					}
+				],
+				"requestBody": {
+					"$ref": "#/components/requestBodies/consent-settings"
+				},
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/generic-success"
+					},
+					"422": {
+						"$ref": "#/components/responses/unprocessable-entity"
+					},
+					"default": {
+						"$ref": "#/components/responses/server-error"
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"parameters": {
+			"project": {
+				"name": "project",
+				"in": "path",
+				"description": "Project code",
+				"required": true,
+				"schema": {
+					"type": "string"
+				}
+			},
+			"checksum": {
+				"name": "checksum",
+				"in": "path",
+				"description": "Checksum of passed consent settings",
+				"required": true,
+				"schema": {
+					"type": "string"
+				}
+			},
+			"userIdentifier": {
+				"name": "userIdentifier",
+				"in": "path",
+				"description": "Unique user identifier e.g. uuid, session id",
+				"required": true,
+				"schema": {
+					"type": "string"
+				}
+			}
+		},
+		"responses": {
+			"get-health-check-200": {
+				"description": "All services are running.",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/health-check-response"
+						}
+					}
+				}
+			},
+			"get-health-check-503": {
+				"description": "Some service is unavailable.",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/health-check-response"
+						}
+					}
+				}
+			},
+			"no-content": {
+				"description": "No content"
+			},
+			"consent-stored": {
+				"description": "Consent has been stored",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/consent-response"
+						}
+					}
+				}
+			},
+			"unprocessable-entity": {
+				"description": "Unprocessable entity",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/unprocessable-entity-response"
+						}
+					}
+				}
+			},
+			"client-error": {
+				"description": "Unspecified client error",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/client-error-response"
+						}
+					}
+				}
+			},
+			"server-error": {
+				"description": "Application encountered an internal error",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/server-error-response"
+						}
+					}
+				}
+			},
+			"generic-success": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/generic-success-response"
+						}
+					}
+				}
+			}
+		},
+		"requestBodies": {
+			"consent-settings": {
+				"description": "Settings exported from your cookie consent plugin",
+				"required": true,
+				"content": {
+					"application/json": {
+						"schema": {
+							"type": "object"
+						}
+					}
+				}
+			},
+			"consent": {
+				"description": "Create new or update existing consent",
+				"required": true,
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/consent"
+						}
+					}
+				}
+			}
+		},
+		"schemas": {
+			"consent": {
+				"type": "object",
+				"properties": {
+					"settingsChecksum": {
+						"type": "string",
+						"nullable": true,
+						"example": "checksum"
+					},
+					"consents": {
+						"type": "object",
+						"example": {
+							"functionality_storage": true,
+							"ad_storage": true,
+							"analytics_storage": true
+						}
+					},
+					"attributes": {
+						"type": "object",
+						"example": {
+							"email": "email@example.com"
+						}
+					}
+				},
+				"required": [
+					"consents"
+				]
+			},
+			"consent-response": {
+				"type": "object",
+				"properties": {
+					"status": {
+						"type": "string",
+						"example": "success"
+					},
+					"data": {
+						"type": "object",
+						"properties": {
+							"consentSettingsExists": {
+								"type": "boolean",
+								"example": false,
+								"description": "True if a consent settings exists by checksum provided in a request"
+							}
+						}
+					}
+				}
+			},
+			"health-check-response": {
+				"type": "object",
+				"properties": {
+					"status": {
+						"type": "string",
+						"example": "ok"
+					},
+					"is_ok": {
+						"type": "boolean"
+					},
+					"services": {
+						"type":"array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"example": "my-service"
+								},
+								"is_ok": {
+									"type": "boolean"
+								},
+								"status": {
+									"type": "string",
+									"example": "running"
+								},
+								"error": {
+									"type": "string",
+									"nullable": true,
+									"example": null
+								}
+							}
+						}
+					}
+				}
+			},
+			"client-error-response": {
+				"type": "object",
+				"properties": {
+					"status": {
+						"type": "string",
+						"example": "error"
+					},
+					"data": {
+						"type": "object",
+						"properties": {
+							"code": {
+								"type": "integer",
+								"example": 400
+							},
+							"error": {
+								"type": "string",
+								"example": "An application error."
+							}
+						}
+					}
+				}
+			},
+			"server-error-response": {
+				"type": "object",
+				"properties": {
+					"status": {
+						"type": "string",
+						"example": "error"
+					},
+					"message": {
+						"type": "string",
+						"example": "Application encountered an internal error. Please try again later."
+					}
+				}
+			},
+			"unprocessable-entity-response": {
+				"type": "object",
+				"properties": {
+					"status": {
+						"type": "string",
+						"example": "error"
+					},
+					"data": {
+						"type": "object",
+						"properties": {
+							"code": {
+								"type": "integer",
+								"example": 422
+							},
+							"error": {
+								"type": "string",
+								"example": "Unprocessable entity."
+							}
+						}
+					}
+				}
+			},
+			"generic-success-response": {
+				"type": "object",
+				"properties": {
+					"status": {
+						"type": "string",
+						"example": "success"
+					},
+					"data": {
+						"oneOf": [
+							{"type": "object"},
+							{"type": "array"}
+						]
+					}
+				}
+			}
+		}
+	}
+}

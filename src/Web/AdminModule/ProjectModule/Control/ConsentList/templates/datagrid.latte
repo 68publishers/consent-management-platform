@@ -4,6 +4,6 @@
 
 {define col-settings_checksum}
     {if NULL !== $item->settingsChecksum}
-        <span x-data x-tooltip.interactive.raw="{$item->settingsChecksum->value()}">{$item->settingsChecksum->value()|truncate:8}</span>
+        <span x-data x-tooltip.interactive.html.raw="<span class='break-words'>{$item->settingsChecksum->value()}</span>">{$item->settingsChecksum->value()|substr:0, 8}</span>
     {/if}
 {/define}
