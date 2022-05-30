@@ -419,10 +419,7 @@
 						"example": "success"
 					},
 					"data": {
-						"oneOf": [
-							{"type": "object"},
-							{"type": "array"}
-						]
+						"type": "object"
 					}
 				}
 			}
