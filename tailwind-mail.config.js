@@ -3,6 +3,7 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 module.exports = {
   content: [
     './src/Web/Ui/templates/mail/**/*.latte',
+    './translations/mail.*.neon',
   ],
   theme: {
     extend: {

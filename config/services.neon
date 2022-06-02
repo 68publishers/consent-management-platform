@@ -1,4 +1,11 @@
 services:
+	# Latte
+	- App\Bridge\Latte\InternalCssRenderer(%wwwDir%, %debugMode%)
+
+	nette.latteFactory:
+		setup:
+			- App\Bridge\Latte\AppMacroSet::installOnEngine($service, @App\Bridge\Latte\InternalCssRenderer)
+
 	# Routing
 	routing.router: App\Web\Router\RouterFactory()::create()
 

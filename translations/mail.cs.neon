@@ -1,15 +1,22 @@
 password_change_requested:
-	title: Žádost o změnu hesla
+	subject: Žádost o změnu hesla
+	header_title: Žádost o změnu hesla
 	content: '''
-	<h1>Změna hesla</h1>
-
 	<p>Zažádali jste o změnu hesla. Pokud jste tak opravdu učinili vy, klikněte pro nastavení nového:</p>
-	<p class="btn btn-primary"><a href="%link%">Nastavit Nové Heslo</a></p>
+	<p class="text-center not-prose">
+		<a href="%resetLink%" class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 my-2">Nastavit Nové Heslo</a>
+	</p>
 	<p>Pokud jste nechtěli obnovit heslo, můžete tento e-mail jednoduše ignorovat, vaše heslo se nezmění.</p>
-	<p>Požadavek pro změnu hesla je platný do %expire_at%</p>
-	<div class="faded">
-		<hr>
+	<p>Požadavek pro změnu hesla je platný do <strong>%expireAt%</strong></p>
+	<div class="text-gray-400 text-sm mt-12 border-gray-400 border-t">
 		<p>Tlačíko “Nastavit Nové Heslo” nefugnuje?</p>
-		<p>Jednoduše zkopírujte následujcí odkaz do webového prohlížeče: %link%</p>
+		<p>Jednoduše zkopírujte následujcí odkaz do webového prohlížeče: <span class="text-gray-500">%resetLink%</span></p>
 	</div>
+	'''
+
+password_has_been_reset:
+	subject: Heslo bylo změněno
+	header_title: Heslo bylo změněno
+	content: '''
+	<p>Heslo pro váš účet <strong>%emailAddress%</strong> bylo úspěšně změněno.</p>
 	'''

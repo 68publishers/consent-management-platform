@@ -6,6 +6,7 @@ namespace App\Web\FrontModule\Control\ForgotPassword;
 
 use App\Web\Ui\Control;
 use Nette\Application\UI\Form;
+use App\Web\Ui\Form\RecaptchaResolver;
 use App\Web\Ui\Form\FormFactoryInterface;
 use Nepada\FormRenderer\TemplateRenderer;
 use App\Web\Ui\Form\FormFactoryOptionsTrait;
@@ -24,14 +25,18 @@ final class ForgotPasswordControl extends Control
 
 	private FormFactoryInterface $formFactory;
 
+	private RecaptchaResolver $recaptchaResolver;
+
 	/**
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface $commandBus
 	 * @param \App\Web\Ui\Form\FormFactoryInterface                            $formFactory
+	 * @param \App\Web\Ui\Form\RecaptchaResolver                               $recaptchaResolver
 	 */
-	public function __construct(CommandBusInterface $commandBus, FormFactoryInterface $formFactory)
+	public function __construct(CommandBusInterface $commandBus, FormFactoryInterface $formFactory, RecaptchaResolver $recaptchaResolver)
 	{
 		$this->commandBus = $commandBus;
 		$this->formFactory = $formFactory;
+		$this->recaptchaResolver = $recaptchaResolver;
 	}
 
 	/**
@@ -51,6 +56,13 @@ final class ForgotPasswordControl extends Control
 			->addRule($form::EMAIL, 'email_address.rule')
 			->setHtmlAttribute('placeholder', 'email_address.field')
 			->setHtmlAttribute('autocomplete', 'username');
+
+		if ($this->recaptchaResolver->isEnabled()) {
+			/** @noinspection PhpUndefinedMethodInspection */
+			$form->addInvisibleReCaptcha('recaptcha')
+				->setRequired(TRUE)
+				->setMessage('recaptcha.required');
+		}
 
 		$form->addSubmit('send', 'send.field');
 

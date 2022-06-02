@@ -16,4 +16,6 @@ abstract class DefaultPresenterTemplate extends Template
 	public string $lang;
 
 	public string $pageDescription = '';
+
+	public bool $recaptchaEnabled;
 }

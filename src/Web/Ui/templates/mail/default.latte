@@ -1,0 +1,15 @@
+{layout $_config->layout}
+
+{varType array $_translatorArgs}
+
+{block #title|trim}
+    {_subject, $_translatorArgs}
+{/block}
+
+{block #header_title|trim}
+    {_header_title, $_translatorArgs|noescape}
+{/block}
+
+{block #content}
+    {_content, $_translatorArgs|noescape}
+{/block}

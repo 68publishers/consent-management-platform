@@ -2,3 +2,6 @@ services:
 	-
 		autowired: no
 		factory: App\Subscribers\PasswordRequest\SendPasswordChangeRequestedMail
+	-
+		autowired: no
+		factory: App\Subscribers\PasswordRequest\SendPasswordChangedMail

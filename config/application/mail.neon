@@ -2,6 +2,7 @@ services:
 	-
 		autowired: no
 		factory: App\Application\Mail\CommandHandler\SendMailCommandHandler(
+			::env(PROJECT_URL)
 			%appDir%/Web/Ui/templates/mail,
 			App\Application\Mail\Address::create(::env(MAILER_EMAIL), ::env(MAILER_FROM, ''))
 		)

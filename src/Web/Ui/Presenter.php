@@ -6,6 +6,7 @@ namespace App\Web\Ui;
 
 use Nette\Application\Request;
 use App\Web\Control\Gtm\GtmControl;
+use App\Web\Ui\Form\RecaptchaResolver;
 use Nette\Application\Responses\ForwardResponse;
 use App\Web\Control\Gtm\GtmControlFactoryInterface;
 use App\Web\Ui\Modal\PresenterTrait as ModalPresenterTrait;
@@ -26,18 +27,22 @@ abstract class Presenter extends SmartPresenter implements TranslatorAwareInterf
 
 	private GtmControlFactoryInterface $gtmControlFactory;
 
+	private RecaptchaResolver $recaptchaResolver;
+
 	/**
 	 * @internal
 	 *
 	 * @param \SixtyEightPublishers\TranslationBridge\Localization\TranslatorLocalizerInterface $translatorLocalizer
 	 * @param \App\Web\Control\Gtm\GtmControlFactoryInterface                                   $gtmControlFactory
+	 * @param \App\Web\Ui\Form\RecaptchaResolver                                                $recaptchaResolver
 	 *
 	 * @return void
 	 */
-	public function injectBaseDependencies(TranslatorLocalizerInterface $translatorLocalizer, GtmControlFactoryInterface $gtmControlFactory): void
+	public function injectBaseDependencies(TranslatorLocalizerInterface $translatorLocalizer, GtmControlFactoryInterface $gtmControlFactory, RecaptchaResolver $recaptchaResolver): void
 	{
 		$this->translatorLocalizer = $translatorLocalizer;
 		$this->gtmControlFactory = $gtmControlFactory;
+		$this->recaptchaResolver = $recaptchaResolver;
 	}
 
 	/**
@@ -52,6 +57,7 @@ abstract class Presenter extends SmartPresenter implements TranslatorAwareInterf
 		$template->locale = $this->translatorLocalizer->getLocale();
 		$template->lang = current(explode('_', $this->translatorLocalizer->getLocale()));
 		$template->user = $this->getUser();
+		$template->recaptchaEnabled = $this->recaptchaResolver->isEnabled();
 	}
 
 	/**
