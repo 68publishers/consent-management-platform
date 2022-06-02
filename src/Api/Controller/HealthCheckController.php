@@ -6,11 +6,11 @@ namespace App\Api\Controller;
 
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
-use Apitte\Core\Annotation\Controller as API;
+use Apitte\Core\Annotation\Controller as Api;
 use SixtyEightPublishers\HealthCheck\HealthCheckerInterface;
 
 /**
- * @API\Path("/health-check")
+ * @Api\Path("/health-check")
  */
 final class HealthCheckController extends AbstractController
 {

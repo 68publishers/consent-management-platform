@@ -8,14 +8,14 @@ use DomainException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use App\ReadModel\Project\ProjectView;
-use Apitte\Core\Annotation\Controller as API;
+use Apitte\Core\Annotation\Controller as Api;
 use App\ReadModel\Project\GetProjectByCodeQuery;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use App\Domain\ConsentSettings\Command\StoreConsentSettingsCommand;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 
 /**
- * @API\Path("/consent-settings")
+ * @Api\Path("/consent-settings")
  */
 final class ConsentSettingsController extends AbstractV1Controller
 {
@@ -34,11 +34,11 @@ final class ConsentSettingsController extends AbstractV1Controller
 	}
 
 	/**
-	 * @API\Path("/{project}/{checksum}")
-	 * @API\Method("OPTIONS")
-	 * @API\RequestParameters({
-	 *      @API\RequestParameter(name="project", type="string", in="path", description="Project code"),
-	 *      @API\RequestParameter(name="checksum", type="string", in="path", description="Checksum of passed consent settings"),
+	 * @Api\Path("/{project}/{checksum}")
+	 * @Api\Method("OPTIONS")
+	 * @Api\RequestParameters({
+	 *      @Api\RequestParameter(name="project", type="string", in="path", description="Project code"),
+	 *      @Api\RequestParameter(name="checksum", type="string", in="path", description="Checksum of passed consent settings"),
 	 * })
 	 *
 	 * @param \Apitte\Core\Http\ApiRequest  $request
@@ -56,11 +56,11 @@ final class ConsentSettingsController extends AbstractV1Controller
 	}
 
 	/**
-	 * @API\Path("/{project}/{checksum}")
-	 * @API\Method("PUT")
-	 * @API\RequestParameters({
-	 *      @API\RequestParameter(name="project", type="string", in="path", description="Project code"),
-	 *      @API\RequestParameter(name="checksum", type="string", in="path", description="Checksum of passed consent settings"),
+	 * @Api\Path("/{project}/{checksum}")
+	 * @Api\Method("PUT")
+	 * @Api\RequestParameters({
+	 *      @Api\RequestParameter(name="project", type="string", in="path", description="Project code"),
+	 *      @Api\RequestParameter(name="checksum", type="string", in="path", description="Checksum of passed consent settings"),
 	 * })
 	 *
 	 * @param \Apitte\Core\Http\ApiRequest  $request

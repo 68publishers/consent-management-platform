@@ -8,7 +8,7 @@ use DomainException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use App\ReadModel\Project\ProjectView;
-use Apitte\Core\Annotation\Controller as API;
+use Apitte\Core\Annotation\Controller as Api;
 use App\ReadModel\Project\GetProjectByCodeQuery;
 use App\Domain\Consent\Command\StoreConsentCommand;
 use App\ReadModel\ConsentSettings\ConsentSettingsView;
@@ -17,7 +17,7 @@ use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 use App\ReadModel\ConsentSettings\GetConsentSettingsByProjectIdAndChecksumQuery;
 
 /**
- * @API\Path("/consent")
+ * @Api\Path("/consent")
  */
 final class ConsentController extends AbstractV1Controller
 {
@@ -36,11 +36,11 @@ final class ConsentController extends AbstractV1Controller
 	}
 
 	/**
-	 * @API\Path("/{project}/{userIdentifier}")
-	 * @API\Method("OPTIONS")
-	 * @API\RequestParameters({
-	 *      @API\RequestParameter(name="project", type="string", in="path", description="Project code"),
-	 *      @API\RequestParameter(name="userIdentifier", type="string", in="path", description="Unique user identifier e.g. uuid, session id"),
+	 * @Api\Path("/{project}/{userIdentifier}")
+	 * @Api\Method("OPTIONS")
+	 * @Api\RequestParameters({
+	 *      @Api\RequestParameter(name="project", type="string", in="path", description="Project code"),
+	 *      @Api\RequestParameter(name="userIdentifier", type="string", in="path", description="Unique user identifier e.g. uuid, session id"),
 	 * })
 	 *
 	 * @param \Apitte\Core\Http\ApiRequest  $request
@@ -58,13 +58,13 @@ final class ConsentController extends AbstractV1Controller
 	}
 
 	/**
-	 * @API\Path("/{project}/{userIdentifier}")
-	 * @API\Method("PUT")
-	 * @API\RequestParameters({
-	 *      @API\RequestParameter(name="project", type="string", in="path", description="Project code"),
-	 *      @API\RequestParameter(name="userIdentifier", type="string", in="path", description="Unique user identifier e.g. uuid, session id"),
+	 * @Api\Path("/{project}/{userIdentifier}")
+	 * @Api\Method("PUT")
+	 * @Api\RequestParameters({
+	 *      @Api\RequestParameter(name="project", type="string", in="path", description="Project code"),
+	 *      @Api\RequestParameter(name="userIdentifier", type="string", in="path", description="Unique user identifier e.g. uuid, session id"),
 	 * })
-	 * @API\RequestBody(entity="App\Api\V1\RequestBody\PutConsentRequestBody", required=true)
+	 * @Api\RequestBody(entity="App\Api\V1\RequestBody\PutConsentRequestBody", required=true)
 	 *
 	 * @param \Apitte\Core\Http\ApiRequest  $request
 	 * @param \Apitte\Core\Http\ApiResponse $response

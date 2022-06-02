@@ -5,138 +5,138 @@
 		"description": "Public API for Consent Management Platform",
 		"version": "1.0.0",
 		"contact": {
-			"name": "'68publishers",
+			"name": "'68 Publishers",
 			"url": "http://www.68publishers.io",
 			"email": "support@68publishers.io"
 		}
 	},
 	"tags": [
 		{
-			"name": "consent",
-			"description": "Consent operations"
+			"name": "Consent",
+			"description": "Consent API operations"
 		},
 		{
-			"name": "consent-settings",
-			"description": "Consent settings operations"
+			"name": "Consent settings",
+			"description": "Consent settings API operations"
 		},
 		{
-			"name": "another",
-			"description": "Another application operations"
+			"name": "Another",
+			"description": "Another API operations"
 		}
 	],
 	"paths": {
 		"/api/health-check": {
 			"get": {
 				"tags": [
-					"another"
+					"Another"
 				],
 				"description": "Returns statuses of all monitored services.",
 				"responses": {
 					"200": {
-						"$ref": "#/components/responses/get-health-check-200"
+						"$ref": "#/components/responses/HealthCheckOk"
 					},
 					"503": {
-						"$ref": "#/components/responses/get-health-check-503"
+						"$ref": "#/components/responses/HealthCheckError"
 					}
 				}
 			}
 		},
 		"/api/v1/consent/{project}/{userIdentifier}": {
-			"options": {
+			"put": {
 				"tags": [
-					"consent"
+					"Consent"
 				],
 				"parameters": [
 					{
-						"$ref": "#/components/parameters/project"
+						"$ref": "#/components/parameters/Project"
 					},
 					{
-						"$ref": "#/components/parameters/userIdentifier"
+						"$ref": "#/components/parameters/UserIdentifier"
+					}
+				],
+				"requestBody": {
+					"$ref": "#/components/requestBodies/Consent"
+				},
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/ConsentApiOk"
+					},
+					"422": {
+						"$ref": "#/components/responses/UnprocessableEntityError"
+					},
+					"default": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			},
+			"options": {
+				"tags": [
+					"Consent"
+				],
+				"parameters": [
+					{
+						"$ref": "#/components/parameters/Project"
+					},
+					{
+						"$ref": "#/components/parameters/UserIdentifier"
 					}
 				],
 				"responses": {
 					"204": {
-						"$ref": "#/components/responses/no-content"
+						"$ref": "#/components/responses/NoContent"
 					},
 					"default": {
-						"$ref": "#/components/responses/server-error"
-					}
-				}
-			},
-			"put": {
-				"tags": [
-					"consent"
-				],
-				"parameters": [
-					{
-						"$ref": "#/components/parameters/project"
-					},
-					{
-						"$ref": "#/components/parameters/userIdentifier"
-					}
-				],
-				"requestBody": {
-					"$ref": "#/components/requestBodies/consent"
-				},
-				"responses": {
-					"200": {
-						"$ref": "#/components/responses/consent-stored"
-					},
-					"422": {
-						"$ref": "#/components/responses/unprocessable-entity"
-					},
-					"default": {
-						"$ref": "#/components/responses/server-error"
+						"$ref": "#/components/responses/ServerError"
 					}
 				}
 			}
 		},
 		"/api/v1/consent-settings/{project}/{checksum}": {
-			"options": {
+			"put": {
 				"tags": [
-					"consent-settings"
+					"Consent settings"
 				],
 				"parameters": [
 					{
-						"$ref": "#/components/parameters/project"
+						"$ref": "#/components/parameters/Project"
 					},
 					{
-						"$ref": "#/components/parameters/checksum"
+						"$ref": "#/components/parameters/Checksum"
+					}
+				],
+				"requestBody": {
+					"$ref": "#/components/requestBodies/ConsentSettings"
+				},
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/ConsentSettingsApiOk"
+					},
+					"422": {
+						"$ref": "#/components/responses/UnprocessableEntityError"
+					},
+					"default": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			},
+			"options": {
+				"tags": [
+					"Consent settings"
+				],
+				"parameters": [
+					{
+						"$ref": "#/components/parameters/Project"
+					},
+					{
+						"$ref": "#/components/parameters/Checksum"
 					}
 				],
 				"responses": {
 					"204": {
-						"$ref": "#/components/responses/no-content"
+						"$ref": "#/components/responses/NoContent"
 					},
 					"default": {
-						"$ref": "#/components/responses/server-error"
-					}
-				}
-			},
-			"put": {
-				"tags": [
-					"consent-settings"
-				],
-				"parameters": [
-					{
-						"$ref": "#/components/parameters/project"
-					},
-					{
-						"$ref": "#/components/parameters/checksum"
-					}
-				],
-				"requestBody": {
-					"$ref": "#/components/requestBodies/consent-settings"
-				},
-				"responses": {
-					"200": {
-						"$ref": "#/components/responses/generic-success"
-					},
-					"422": {
-						"$ref": "#/components/responses/unprocessable-entity"
-					},
-					"default": {
-						"$ref": "#/components/responses/server-error"
+						"$ref": "#/components/responses/ServerError"
 					}
 				}
 			}
@@ -144,16 +144,17 @@
 	},
 	"components": {
 		"parameters": {
-			"project": {
+			"Project": {
 				"name": "project",
 				"in": "path",
 				"description": "Project code",
 				"required": true,
 				"schema": {
 					"type": "string"
-				}
+				},
+				"example": "demo"
 			},
-			"checksum": {
+			"Checksum": {
 				"name": "checksum",
 				"in": "path",
 				"description": "Checksum of passed consent settings",
@@ -162,126 +163,128 @@
 					"type": "string"
 				}
 			},
-			"userIdentifier": {
+			"UserIdentifier": {
 				"name": "userIdentifier",
 				"in": "path",
 				"description": "Unique user identifier e.g. uuid, session id",
 				"required": true,
 				"schema": {
 					"type": "string"
-				}
+				},
+				"example": "test-user"
 			}
 		},
 		"responses": {
-			"get-health-check-200": {
+			"HealthCheckOk": {
 				"description": "All services are running.",
 				"content": {
 					"application/json": {
 						"schema": {
-							"$ref": "#/components/schemas/health-check-response"
+							"$ref": "#/components/schemas/HealthCheckResponse"
 						}
 					}
 				}
 			},
-			"get-health-check-503": {
+			"HealthCheckError": {
 				"description": "Some service is unavailable.",
 				"content": {
 					"application/json": {
 						"schema": {
-							"$ref": "#/components/schemas/health-check-response"
+							"$ref": "#/components/schemas/HealthCheckResponse"
 						}
 					}
 				}
 			},
-			"no-content": {
+			"NoContent": {
 				"description": "No content"
 			},
-			"consent-stored": {
+			"ConsentApiOk": {
 				"description": "Consent has been stored",
 				"content": {
 					"application/json": {
 						"schema": {
-							"$ref": "#/components/schemas/consent-response"
+							"$ref": "#/components/schemas/ConsentResponse"
 						}
 					}
 				}
 			},
-			"unprocessable-entity": {
+			"ConsentSettingsApiOk": {
+				"description": "Consent settings has been stored",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/ConsentSettingsResponse"
+						}
+					}
+				}
+			},
+			"UnprocessableEntityError": {
 				"description": "Unprocessable entity",
 				"content": {
 					"application/json": {
 						"schema": {
-							"$ref": "#/components/schemas/unprocessable-entity-response"
+							"$ref": "#/components/schemas/UnprocessableEntityResponse"
 						}
 					}
 				}
 			},
-			"client-error": {
+			"ClientError": {
 				"description": "Unspecified client error",
 				"content": {
 					"application/json": {
 						"schema": {
-							"$ref": "#/components/schemas/client-error-response"
+							"$ref": "#/components/schemas/ClientErrorResponse"
 						}
 					}
 				}
 			},
-			"server-error": {
+			"ServerError": {
 				"description": "Application encountered an internal error",
 				"content": {
 					"application/json": {
 						"schema": {
-							"$ref": "#/components/schemas/server-error-response"
-						}
-					}
-				}
-			},
-			"generic-success": {
-				"description": "OK",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "#/components/schemas/generic-success-response"
+							"$ref": "#/components/schemas/ServerErrorResponse"
 						}
 					}
 				}
 			}
 		},
 		"requestBodies": {
-			"consent-settings": {
+			"Consent": {
+				"required": true,
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/ConsentRequestBody"
+						}
+					}
+				}
+			},
+			"ConsentSettings": {
 				"description": "Settings exported from your cookie consent plugin",
 				"required": true,
 				"content": {
 					"application/json": {
 						"schema": {
-							"type": "object"
-						}
-					}
-				}
-			},
-			"consent": {
-				"description": "Create new or update existing consent",
-				"required": true,
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "#/components/schemas/consent"
+							"$ref": "#/components/schemas/ConsentSettingsRequestBody"
 						}
 					}
 				}
 			}
 		},
 		"schemas": {
-			"consent": {
+			"ConsentRequestBody": {
 				"type": "object",
 				"properties": {
 					"settingsChecksum": {
 						"type": "string",
-						"nullable": true,
-						"example": "checksum"
+						"nullable": true
 					},
 					"consents": {
 						"type": "object",
+						"additionalProperties": {
+							"type": "boolean"
+						},
 						"example": {
 							"functionality_storage": true,
 							"ad_storage": true,
@@ -299,7 +302,7 @@
 					"consents"
 				]
 			},
-			"consent-response": {
+			"ConsentResponse": {
 				"type": "object",
 				"properties": {
 					"status": {
@@ -318,7 +321,25 @@
 					}
 				}
 			},
-			"health-check-response": {
+			"ConsentSettingsRequestBody": {
+				"type": "object",
+				"description": "Settings exported from your cookie consent plugin",
+				"example": {}
+			},
+			"ConsentSettingsResponse": {
+				"type": "object",
+				"properties": {
+					"status": {
+						"type": "string",
+						"example": "success"
+					},
+					"data": {
+						"type": "object",
+						"default": {}
+					}
+				}
+			},
+			"HealthCheckResponse": {
 				"type": "object",
 				"properties": {
 					"status": {
@@ -354,7 +375,7 @@
 					}
 				}
 			},
-			"client-error-response": {
+			"ClientErrorResponse": {
 				"type": "object",
 				"properties": {
 					"status": {
@@ -366,7 +387,7 @@
 						"properties": {
 							"code": {
 								"type": "integer",
-								"example": 400
+								"default": 400
 							},
 							"error": {
 								"type": "string",
@@ -376,7 +397,7 @@
 					}
 				}
 			},
-			"server-error-response": {
+			"ServerErrorResponse": {
 				"type": "object",
 				"properties": {
 					"status": {
@@ -389,7 +410,7 @@
 					}
 				}
 			},
-			"unprocessable-entity-response": {
+			"UnprocessableEntityResponse": {
 				"type": "object",
 				"properties": {
 					"status": {
@@ -401,25 +422,13 @@
 						"properties": {
 							"code": {
 								"type": "integer",
-								"example": 422
+								"default": 422
 							},
 							"error": {
 								"type": "string",
 								"example": "Unprocessable entity."
 							}
 						}
-					}
-				}
-			},
-			"generic-success-response": {
-				"type": "object",
-				"properties": {
-					"status": {
-						"type": "string",
-						"example": "success"
-					},
-					"data": {
-						"type": "object"
 					}
 				}
 			}

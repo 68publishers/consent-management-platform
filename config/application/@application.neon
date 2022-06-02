@@ -2,4 +2,3 @@ includes:
 	- event_metadata_extender.neon
 	- global_settings.neon
 	- mail.neon
-	- open_api.neon

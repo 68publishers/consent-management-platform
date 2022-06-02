@@ -16,22 +16,17 @@ contributte.apitte:
 			autobasepath: no
 		Apitte\Negotiation\DI\NegotiationPlugin:
 			unification: yes
-		Apitte\OpenApi\DI\OpenApiPlugin:
-			definitions:
-				- Apitte\OpenApi\SchemaDefinition\JsonDefinition(%appDir%/../config/openapi/schema.json)
-			swaggerUi:
-				panel: %debugMode%
-				url: null
-				expansion: list
-				filter: true
-				title: CMP API
 
 services:
 	# api/health-check
 	- App\Api\Controller\HealthCheckController(%debugMode%)
 
-	# api/v1/openapi
-	- App\Api\V1\Controller\OpenApiController
+	# api/docs
+	# api/docs/schema/{version}
+	- App\Api\Controller\DocsController(
+		::env(API_DOCS_ENABLED|bool, false),
+		%appDir%/../config/openapi
+	)
 
 	# api/v1/consent-settings
 	- App\Api\V1\Controller\ConsentSettingsController
