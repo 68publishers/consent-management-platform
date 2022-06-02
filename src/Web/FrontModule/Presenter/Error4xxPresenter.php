@@ -22,6 +22,8 @@ final class Error4xxPresenter extends Presenter
 		if (NULL !== $this->getRequest() && !$this->getRequest()->isMethod(Request::FORWARD)) {
 			$this->error();
 		}
+
+		$this->setLayout(FALSE);
 	}
 
 	/**
@@ -31,12 +33,10 @@ final class Error4xxPresenter extends Presenter
 	 */
 	public function renderDefault(BadRequestException $exception): void
 	{
-		// load template 403.latte or 404.latte or ... 4xx.latte
-		$file = __DIR__ . "/templates/Error.{$exception->getCode()}.latte";
-		$file = is_file($file) ? $file : __DIR__ . '/templates/Error.4xx.latte';
+		$errorCode = $exception->getCode();
+		$errorCodeString = in_array($errorCode, [404, 403], TRUE) ? (string) $errorCode : '4xx';
 
-		$template = $this->getTemplate();
-
-		$template->setFile($file);
+		$this->template->errorCode = $errorCode;
+		$this->template->errorCodeString = $errorCodeString;
 	}
 }

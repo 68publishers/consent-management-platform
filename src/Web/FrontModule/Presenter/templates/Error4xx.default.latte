@@ -1,0 +1,57 @@
+{templateType App\Web\FrontModule\Presenter\Error4xxTemplate}
+
+<!DOCTYPE html>
+<html lang="{$lang ?? 'en'}" class="h-full">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="{$pageDescription}">
+        <title>{_$errorCodeString . '.page_title'} | CMP</title>
+
+        {control gtm:script}
+
+        {block #styles}
+            <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+            {encore_css 'app', null, 'app'}
+        {/block}
+
+        {block #head}{/block}
+    </head>
+
+    <body class="h-full">
+        {control gtm:noscript}
+
+        <div class="bg-white min-h-full px-4 py-16 sm:px-6 sm:py-24 md:grid md:place-items-center lg:px-8">
+            <div class="max-w-max mx-auto">
+                <main class="sm:flex">
+                    <p class="text-4xl font-extrabold text-indigo-600 sm:text-5xl">
+                        {$errorCode}
+                    </p>
+                    <div class="sm:ml-6">
+                        <div class="sm:border-l sm:border-gray-200 sm:pl-6">
+                            <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl">
+                                {_$errorCodeString . '.page_title'}
+                            </h1>
+                            <p class="mt-2 text-base text-gray-500">
+                                {block #error_message}
+                                    {_$errorCodeString . '.error_message'|noescape}
+                                {/block}
+                            </p>
+                        </div>
+                        <div class="mt-10 flex space-x-3 sm:border-l sm:border-transparent sm:pl-6">
+                            <a n:href=":Admin:Dashboard:" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">{_go_back_home}</a>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        {block #scripts}
+            {encore_js 'app', null, 'app'}
+        {/block}
+
+        {control flashMessages}
+
+        {encore_js 'nette.ajax.init', null, 'app'}
+    </body>
+</html>

@@ -13,7 +13,7 @@ php:
     date.timezone: UTC
 
 application:
-	errorPresenter: Error
+	errorPresenter: Front:Error
 	mapping:
 		*: App\Web\*Module\Presenter\*Presenter
 
