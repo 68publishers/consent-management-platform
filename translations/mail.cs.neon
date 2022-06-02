@@ -1,0 +1,15 @@
+password_change_requested:
+	title: Žádost o změnu hesla
+	content: '''
+	<h1>Změna hesla</h1>
+
+	<p>Zažádali jste o změnu hesla. Pokud jste tak opravdu učinili vy, klikněte pro nastavení nového:</p>
+	<p class="btn btn-primary"><a href="%link%">Nastavit Nové Heslo</a></p>
+	<p>Pokud jste nechtěli obnovit heslo, můžete tento e-mail jednoduše ignorovat, vaše heslo se nezmění.</p>
+	<p>Požadavek pro změnu hesla je platný do %expire_at%</p>
+	<div class="faded">
+		<hr>
+		<p>Tlačíko “Nastavit Nové Heslo” nefugnuje?</p>
+		<p>Jednoduše zkopírujte následujcí odkaz do webového prohlížeče: %link%</p>
+	</div>
+	'''

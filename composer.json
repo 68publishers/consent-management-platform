@@ -27,6 +27,7 @@
 		"contributte/console": "^0.9.1",
 		"contributte/event-dispatcher": "^0.8.1",
 		"contributte/event-dispatcher-extra": "^0.8.2",
+		"contributte/mailing": "^0.5.2",
 		"contributte/menu-control": "^2.2",
 		"contributte/monolog": "^0.5.0",
 		"contributte/recaptcha": "^3.4",
@@ -55,6 +56,7 @@
 		"nettrine/fixtures": "^0.6.2",
 		"nettrine/migrations": "^0.8.0",
 		"nettrine/orm": "^0.8.3",
+		"nextras/mail-panel": "^2.6",
 		"nextras/migrations": "^3.1",
 		"oro/doctrine-extensions": "^2.0",
 		"scienta/doctrine-json-functions": "^5.0",
@@ -64,7 +66,6 @@
 	},
 	"require-dev": {
 		"friendsofphp/php-cs-fixer": "^2.19",
-		"nextras/mail-panel": "^2.5",
 		"roave/security-advisories": "dev-latest"
 	},
 	"config": {

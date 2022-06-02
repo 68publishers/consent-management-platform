@@ -2,4 +2,6 @@ extensions:
 	68publishers.webpack_encore_bundle: SixtyEightPublishers\WebpackEncoreBundle\DI\WebpackEncoreBundleExtension
 
 68publishers.webpack_encore_bundle:
-	output_path: %wwwDir%/dist
+	builds:
+		app: %wwwDir%/dist/app
+		mail: %wwwDir%/dist/mail

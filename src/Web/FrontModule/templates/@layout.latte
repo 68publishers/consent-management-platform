@@ -12,7 +12,7 @@
 
         {block #styles}
             <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-            {encore_css 'app'}
+            {encore_css 'app', null, 'app'}
         {/block}
 
 		{block #head}{/block}
@@ -50,11 +50,11 @@
         {control modals}
 
         {block #scripts}
-            {encore_js 'app'}
+            {encore_js 'app', null, 'app'}
         {/block}
 
         {control flashMessages}
 
-        {encore_js 'nette.ajax.init'}
+        {encore_js 'nette.ajax.init', null, 'app'}
     </body>
 </html>

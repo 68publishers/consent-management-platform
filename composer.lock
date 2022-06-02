@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "707fadcaf1b0ce96eb14ce91d745fbc9",
+    "content-hash": "158c63b178e9f704f2d6bd7b4865bf51",
     "packages": [
         {
             "name": "68publishers/asset",
@@ -1306,6 +1306,83 @@
                 }
             ],
             "time": "2022-02-10T11:18:58+00:00"
+        },
+        {
+            "name": "contributte/mailing",
+            "version": "v0.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/contributte/mailing.git",
+                "reference": "3a4fe009ddb7d088d36b2a9fd6a8fc768a1b6cfd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/contributte/mailing/zipball/3a4fe009ddb7d088d36b2a9fd6a8fc768a1b6cfd",
+                "reference": "3a4fe009ddb7d088d36b2a9fd6a8fc768a1b6cfd",
+                "shasum": ""
+            },
+            "require": {
+                "latte/latte": "^2.9.2",
+                "nette/application": "^3.1.0",
+                "nette/di": "^3.0.7",
+                "nette/mail": "^3.1.5",
+                "php": ">=7.2"
+            },
+            "conflict": {
+                "nette/di": "<3.0.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.3.3",
+                "ninjify/nunjuck": "^0.4",
+                "ninjify/qa": "^0.12.1",
+                "phpstan/phpstan": "^1.0",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-nette": "^1.0",
+                "phpstan/phpstan-strict-rules": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Contributte\\Mailing\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Milan Felix Šulc",
+                    "homepage": "https://f3l1x.io"
+                }
+            ],
+            "description": "Sending emails with pleasure and prepared templates.",
+            "homepage": "https://github.com/contributte/mailing",
+            "keywords": [
+                "mail",
+                "mailing",
+                "nette"
+            ],
+            "support": {
+                "issues": "https://github.com/contributte/mailing/issues",
+                "source": "https://github.com/contributte/mailing/tree/v0.5.2"
+            },
+            "funding": [
+                {
+                    "url": "https://contributte.org/partners.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/f3l1x",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-01-29T11:40:18+00:00"
         },
         {
             "name": "contributte/menu-control",
@@ -5621,6 +5698,77 @@
                 "source": "https://github.com/nettrine/orm/tree/v0.8.3"
             },
             "time": "2022-02-10T15:54:23+00:00"
+        },
+        {
+            "name": "nextras/mail-panel",
+            "version": "v2.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nextras/mail-panel.git",
+                "reference": "db8febadbdfa572ff859d23b63d46676f96a9477"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nextras/mail-panel/zipball/db8febadbdfa572ff859d23b63d46676f96a9477",
+                "reference": "db8febadbdfa572ff859d23b63d46676f96a9477",
+                "shasum": ""
+            },
+            "require": {
+                "latte/latte": "~2.6 || ~3.0",
+                "nette/http": "~3.0",
+                "nette/mail": "~3.1",
+                "nette/utils": "~3.0",
+                "php": "~7.1 || ~8.0",
+                "tracy/tracy": "~2.4"
+            },
+            "require-dev": {
+                "mockery/mockery": "~1.3.3",
+                "nette/tester": "~2.0",
+                "phpstan/phpstan": "1.4.10"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.6-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Nextras\\MailPanel\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Jan Drábek",
+                    "homepage": "http://www.jandrabek.cz"
+                },
+                {
+                    "name": "Jan Marek",
+                    "homepage": "http://www.janmarek.net"
+                },
+                {
+                    "name": "Jan Škrášek",
+                    "email": "hrach.cz@gmail.com"
+                }
+            ],
+            "description": "MailPanel is extension for Nette Framework which captures sent e-mails in development mode and shows them in debugger bar.",
+            "keywords": [
+                "debugging",
+                "framework",
+                "mail",
+                "mail panel",
+                "mailing",
+                "mailpanel"
+            ],
+            "support": {
+                "issues": "https://github.com/nextras/mail-panel/issues",
+                "source": "https://github.com/nextras/mail-panel/tree/v2.6.1"
+            },
+            "time": "2022-05-30T06:34:36+00:00"
         },
         {
             "name": "nextras/migrations",
@@ -10047,77 +10195,6 @@
                 }
             ],
             "time": "2021-11-15T17:17:55+00:00"
-        },
-        {
-            "name": "nextras/mail-panel",
-            "version": "v2.5.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nextras/mail-panel.git",
-                "reference": "c90c5ec2bee7dacffbfac376833aa6f14d065c9b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nextras/mail-panel/zipball/c90c5ec2bee7dacffbfac376833aa6f14d065c9b",
-                "reference": "c90c5ec2bee7dacffbfac376833aa6f14d065c9b",
-                "shasum": ""
-            },
-            "require": {
-                "latte/latte": "~2.5",
-                "nette/http": "~3.0",
-                "nette/mail": "~3.0",
-                "nette/utils": "~3.0",
-                "php": "~7.1 || ~8.0",
-                "tracy/tracy": "~2.4"
-            },
-            "require-dev": {
-                "mockery/mockery": "~1.3.3",
-                "nette/tester": "~2.0",
-                "phpstan/phpstan": "0.12.58"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.5-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Nextras\\MailPanel\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Jan Drábek",
-                    "homepage": "http://www.jandrabek.cz"
-                },
-                {
-                    "name": "Jan Marek",
-                    "homepage": "http://www.janmarek.net"
-                },
-                {
-                    "name": "Jan Škrášek",
-                    "email": "hrach.cz@gmail.com"
-                }
-            ],
-            "description": "MailPanel is extension for Nette Framework which captures sent e-mails in development mode and shows them in debugger bar.",
-            "keywords": [
-                "debugging",
-                "framework",
-                "mail",
-                "mail panel",
-                "mailing",
-                "mailpanel"
-            ],
-            "support": {
-                "issues": "https://github.com/nextras/mail-panel/issues",
-                "source": "https://github.com/nextras/mail-panel/tree/v2.5.3"
-            },
-            "time": "2020-12-02T15:13:37+00:00"
         },
         {
             "name": "php-cs-fixer/diff",

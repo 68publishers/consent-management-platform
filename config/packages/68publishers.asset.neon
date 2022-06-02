@@ -2,4 +2,8 @@ extensions:
 	68publishers.asset: SixtyEightPublishers\Asset\DI\AssetExtension
 
 68publishers.asset:
-	json_manifest_path: %wwwDir%/dist/manifest.json
+	packages:
+		app:
+			json_manifest_path: %wwwDir%/dist/app/manifest.json
+		mail:
+			json_manifest_path: %wwwDir%/dist/mail/manifest.json

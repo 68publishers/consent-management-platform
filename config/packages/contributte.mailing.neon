@@ -1,0 +1,7 @@
+extensions:
+	contributte.mailing: Contributte\Mailing\DI\MailingExtension
+
+contributte.mailing:
+	template:
+		config:
+			layout: %appDir%/Web/Ui/templates/mail/@layout.latte
