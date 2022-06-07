@@ -23,6 +23,16 @@ final class UsersPresenter extends AdminPresenter
 	}
 
 	/**
+	 * @return void
+	 */
+	protected function startup(): void
+	{
+		parent::startup();
+
+		$this->addBreadcrumbItem($this->getPrefixedTranslator()->translate('page_title'));
+	}
+
+	/**
 	 * @return \App\Web\AdminModule\UserModule\Control\UserList\UserListControl
 	 */
 	protected function createComponentList(): UserListControl

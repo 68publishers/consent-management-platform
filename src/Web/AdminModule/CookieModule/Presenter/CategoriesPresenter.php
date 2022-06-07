@@ -23,6 +23,16 @@ final class CategoriesPresenter extends AdminPresenter
 	}
 
 	/**
+	 * @return void
+	 */
+	protected function startup(): void
+	{
+		parent::startup();
+
+		$this->addBreadcrumbItem($this->getPrefixedTranslator()->translate('page_title'));
+	}
+
+	/**
 	 * @return \App\Web\AdminModule\CookieModule\Control\CategoryList\CategoryListControl
 	 */
 	protected function createComponentList(): CategoryListControl

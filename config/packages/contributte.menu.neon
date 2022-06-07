@@ -16,13 +16,13 @@ contributte.menu:
 					'''
 			layout.sidebar.users:
 				items:
-					layout.sidebar.user_list:
+					layout.sidebar.users_users:
 						action: Admin:User:Users:default
 						include:
 							- '^Admin\:User\:Users\:.+$'
 							- '^Admin\:User\:AddUser\:.+$'
 							- '^Admin\:User\:EditUser\:.+$'
-					layout.sidebar.password_request_list:
+					layout.sidebar.users_password_requests:
 						action: Admin:User:PasswordRequests:default
 						include:
 							- '^Admin\:User\:PasswordRequests\:.+$'
@@ -41,13 +41,19 @@ contributte.menu:
 					'''
 			layout.sidebar.cookies:
 				items:
-					layout.sidebar.category_list:
+					layout.sidebar.cookies_categories:
 						action: Admin:Cookie:Categories:default
 						include:
 							- '^Admin\:Cookie\:Categories\:.+$'
 							- '^Admin\:Cookie\:AddCategory\:.+$'
 							- '^Admin\:Cookie\:EditCategory\:.+$'
-					layout.sidebar.cookie_list:
+					layout.sidebar.cookies_providers:
+						action: Admin:Cookie:Providers:default
+						include:
+							- '^Admin\:Cookie\:Providers\:.+$'
+							- '^Admin\:Cookie\:AddProvider\:.+$'
+							- '^Admin\:Cookie\:EditProvider\:.+$'
+					layout.sidebar.cookies_cookies:
 						action: Admin:Cookie:Cookies:default
 						include:
 							- '^Admin\:Cookie\:Cookies\:.+$'
@@ -80,14 +86,6 @@ contributte.menu:
 				data:
 					icon: '''
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-					'''
-			layout.sidebar_project.providers:
-				action: Admin:Project:Providers:default
-				include:
-					- '^Admin\:Project\:Providers\:.+$'
-				data:
-					icon: '''
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
 					'''
 			layout.sidebar_project.cookies:
 				action: Admin:Project:Cookies:default

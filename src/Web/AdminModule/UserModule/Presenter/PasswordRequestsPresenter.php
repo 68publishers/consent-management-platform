@@ -23,6 +23,16 @@ final class PasswordRequestsPresenter extends AdminPresenter
 	}
 
 	/**
+	 * @return void
+	 */
+	protected function startup(): void
+	{
+		parent::startup();
+
+		$this->addBreadcrumbItem($this->getPrefixedTranslator()->translate('page_title'));
+	}
+
+	/**
 	 * @return \App\Web\AdminModule\UserModule\Control\PasswordRequestList\PasswordRequestListControl
 	 */
 	protected function createComponentList(): PasswordRequestListControl

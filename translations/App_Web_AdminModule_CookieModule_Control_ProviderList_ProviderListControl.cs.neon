@@ -1,0 +1,8 @@
+name: Název
+code: Kód
+type: Typ
+link: Odkaz
+created_at: Vytvořeno
+
+delete_confirm:
+	question: 'Opravdu si přejete odstranit poskytovatele <strong>"%name%"</strong>?'

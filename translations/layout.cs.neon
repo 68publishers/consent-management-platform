@@ -5,17 +5,17 @@ close_sidebar: Zavřít hlavní menu
 sidebar:
 	dashboard: Dashboard
 	users: Uživatelé
-	user_list: Výpis uživatelů
-	password_request_list: Zapomenutá hesla
+	users_users: Uživatelé
+	users_password_requests: Zapomenutá hesla
 	application_settings: Nastavení aplikace
 	cookies: Cookies
-	category_list: Výpis kategorií cookies
-	cookie_list: Výpis cookies
+	cookies_categories: Kategorie cookies
+	cookies_providers: Poskytovatelé cookies
+	cookies_cookies: Cookies
 	projects: Projekty
 
 sidebar_project:
 	consents: Evidence souhlasů
-	providers: Poskytovatelé
 	cookies: Cookies
 	settings: Nastavení
 	edit_project: Upravit projekt
@@ -27,6 +27,10 @@ profile:
 role_name:
 	admin: Admin
 	supervisor: Supervisor
+
+cookie_provider_type:
+	1st_party: 1st party
+	3rd_party: 3rd party
 
 alert:
 	missing_default_locale:

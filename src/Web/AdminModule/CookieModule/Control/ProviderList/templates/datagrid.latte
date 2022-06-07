@@ -1,0 +1,7 @@
+{extends $originalTemplate}
+
+{varType App\ReadModel\CookieProvider\CookieProviderView $item}
+
+{define col-type}
+    {_'//layout.cookie_provider_type.' . $item->type->value()}
+{/define}

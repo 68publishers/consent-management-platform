@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                                      https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Domain\CookieProvider\CookieProvider" table="cookie_provider">
+        <indexes>
+            <index name="idx_cookie_provider_created_at" columns="created_at" />
+        </indexes>
+
+        <unique-constraints>
+            <unique-constraint name="uniq_cookie_provider_code" columns="code">
+                <options>
+                    <option name="case-insensitive">code</option>
+                    <option name="where">deleted_at IS NULL</option>
+                </options>
+            </unique-constraint>
+        </unique-constraints>
+
+        <id name="id" column="id" type="App\Domain\CookieProvider\ValueObject\CookieProviderId" unique="true" />
+
+        <field name="createdAt" column="created_at" type="datetime_immutable" />
+
+        <field name="deletedAt" column="deleted_at" type="datetime_immutable" nullable="true" />
+
+        <field name="code" column="code" type="App\Domain\CookieProvider\ValueObject\Code" length="70" />
+
+        <field name="type" column="type" type="App\Domain\CookieProvider\ValueObject\ProviderType" />
+
+        <field name="name" column="name" type="App\Domain\CookieProvider\ValueObject\Name" />
+
+        <field name="link" column="link" type="App\Domain\CookieProvider\ValueObject\Link" />
+
+        <field name="version" column="version" type="integer" />
+
+        <one-to-many field="translations" target-entity="App\Domain\CookieProvider\CookieProviderTranslation" mapped-by="cookieProvider" orphan-removal="true">
+            <cascade>
+                <cascade-persist />
+                <cascade-remove />
+            </cascade>
+        </one-to-many>
+    </entity>
+
+</doctrine-mapping>

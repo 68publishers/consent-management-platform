@@ -1,0 +1,52 @@
+services:
+	# infra
+	-
+		type: App\Domain\CookieProvider\CookieProviderRepositoryInterface
+		factory: App\Infrastructure\CookieProvider\CookieProviderRepository
+	-
+		type: App\Domain\CookieProvider\CheckCodeUniquenessInterface
+		factory: App\Infrastructure\CookieProvider\CheckCodeUniqueness
+
+	# infra: doctrine
+	-
+		autowired: no
+		factory: App\Infrastructure\CookieProvider\Doctrine\QueryHandler\GetCookieProviderByIdQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\CookieProvider\Doctrine\QueryHandler\GetCookieProviderByCodeQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\CookieProvider\Doctrine\QueryHandler\CookieProviderDataGridQueryHandler
+
+# infra: doctrine mapping
+nettrine.orm.xml:
+	mapping:
+		App\Domain\CookieProvider: %appDir%/Infrastructure/CookieProvider/Doctrine/Mapping
+
+# infra: dbal types
+nettrine.dbal:
+	connection:
+		types:
+			App\Domain\CookieProvider\ValueObject\Code:
+				class: App\Infrastructure\CookieProvider\Doctrine\DbalType\CodeType
+				commented: yes
+
+			App\Domain\CookieProvider\ValueObject\CookieProviderId:
+				class: App\Infrastructure\CookieProvider\Doctrine\DbalType\CookieProviderIdType
+				commented: yes
+
+			App\Domain\CookieProvider\ValueObject\Link:
+				class: App\Infrastructure\CookieProvider\Doctrine\DbalType\LinkType
+				commented: yes
+
+			App\Domain\CookieProvider\ValueObject\Name:
+				class: App\Infrastructure\CookieProvider\Doctrine\DbalType\NameType
+				commented: yes
+
+			App\Domain\CookieProvider\ValueObject\ProviderType:
+				class: App\Infrastructure\CookieProvider\Doctrine\DbalType\ProviderTypeType
+				commented: yes
+
+			App\Domain\CookieProvider\ValueObject\Purpose:
+				class: App\Infrastructure\CookieProvider\Doctrine\DbalType\PurposeType
+				commented: yes

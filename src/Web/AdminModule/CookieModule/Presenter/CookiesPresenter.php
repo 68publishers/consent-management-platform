@@ -8,4 +8,13 @@ use App\Web\AdminModule\Presenter\AdminPresenter;
 
 final class CookiesPresenter extends AdminPresenter
 {
+	/**
+	 * @return void
+	 */
+	protected function startup(): void
+	{
+		parent::startup();
+
+		$this->addBreadcrumbItem($this->getPrefixedTranslator()->translate('page_title'));
+	}
 }
