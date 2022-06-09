@@ -2,7 +2,7 @@ services:
 	# infra: doctrine
 	-
 		autowired: no
-		factory: App\Infrastructure\User\Doctrine\QueryHandler\UsersDataGridQueryHandler
+		factory: App\Infrastructure\User\Doctrine\ReadModel\UsersDataGridQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:

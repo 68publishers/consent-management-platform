@@ -44,6 +44,7 @@ final class DemoProjectFixture extends AbstractFixture implements ContainerAware
 			TRUE,
 			['en', 'cs'],
 			'en',
+			'Europe/Prague',
 			self::$projectId->toString()
 		));
 

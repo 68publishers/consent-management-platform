@@ -34,14 +34,18 @@ final class AdminUserFixture extends AbstractFixture implements ContainerAwareIn
 	{
 		$commandBus = $this->container->getByType(CommandBusInterface::class);
 
-		$commandBus->dispatch(CreateUserCommand::create(
-			'admin@68publishers.io',
-			'admin',
-			'admin@68publishers.io',
-			'Admin',
-			'SixtyEightPublishers',
-			[RolesEnum::ADMIN]
-		)->withParam('project_ids', [DemoProjectFixture::$projectId->toString()]));
+		$commandBus->dispatch(
+			CreateUserCommand::create(
+				'admin@68publishers.io',
+				'admin',
+				'admin@68publishers.io',
+				'Admin',
+				'SixtyEightPublishers',
+				[RolesEnum::ADMIN]
+			)->withParam('project_ids', [DemoProjectFixture::$projectId->toString()])
+				->withParam('profile', 'cs')
+				->withParam('timezone', 'Europe/Prague')
+		);
 
 		$manager->clear();
 	}

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\GlobalSettings;
 
-use SixtyEightPublishers\i18n\Lists\LanguageList;
+use App\Application\Localization\Locales;
 use App\ReadModel\GlobalSettings\GlobalSettingsView;
 use App\ReadModel\GlobalSettings\GetGlobalSettingsQuery;
 use App\Domain\Shared\ValueObject\Locale as LocaleValueObject;
@@ -14,18 +14,18 @@ final class LazyGlobalSettings implements GlobalSettingsInterface
 {
 	private QueryBusInterface $queryBus;
 
-	private LanguageList $languageList;
+	private Locales $locales;
 
 	private ?GlobalSettings $inner = NULL;
 
 	/**
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface $queryBus
-	 * @param \SixtyEightPublishers\i18n\Lists\LanguageList                  $languageList
+	 * @param \App\Application\Localization\Locales                          $locales
 	 */
-	public function __construct(QueryBusInterface $queryBus, LanguageList $languageList)
+	public function __construct(QueryBusInterface $queryBus, Locales $locales)
 	{
 		$this->queryBus = $queryBus;
-		$this->languageList = $languageList;
+		$this->locales = $locales;
 	}
 
 	/**
@@ -68,7 +68,7 @@ final class LazyGlobalSettings implements GlobalSettingsInterface
 		}
 
 		$locales = [];
-		$list = $this->languageList->getList();
+		$list = $this->locales->get();
 
 		foreach ($globalSettingsView->locales->locales()->all() as $locale) {
 			assert($locale instanceof LocaleValueObject);

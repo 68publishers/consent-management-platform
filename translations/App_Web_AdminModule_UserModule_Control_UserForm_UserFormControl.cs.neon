@@ -13,6 +13,14 @@ surname:
 	field: Příjmení
 	required: Vyplňte prosím příjmení
 
+profile:
+	field: Jazyk aplikace
+	required: Zvolte prosím jazyk aplikace.
+
+timezone:
+	field: Časové pásmo
+	required: Zvolte prosím časové pásmo.
+
 roles:
 	field: Role
 	required: Uživatel musí mít alespoň jednu roli.

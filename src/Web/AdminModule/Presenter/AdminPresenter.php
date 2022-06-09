@@ -6,11 +6,13 @@ namespace App\Web\AdminModule\Presenter;
 
 use App\Web\Ui\Presenter;
 use Nette\HtmlStringable;
+use App\ReadModel\User\UserView;
 use Nette\Application\UI\Component;
 use App\Web\Control\Footer\FooterControl;
 use Contributte\MenuControl\UI\MenuComponent;
 use Contributte\MenuControl\UI\IMenuComponentFactory;
 use App\Application\GlobalSettings\ValidLocalesProvider;
+use App\Application\Localization\ApplicationDateTimeZone;
 use App\Web\Control\Footer\FooterControlFactoryInterface;
 use App\Application\GlobalSettings\GlobalSettingsInterface;
 use SixtyEightPublishers\SmartNetteComponent\Annotation\LoggedIn;
@@ -66,6 +68,21 @@ abstract class AdminPresenter extends Presenter
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
+	 * @throws \SixtyEightPublishers\UserBundle\Application\Exception\IdentityException
+	 */
+	protected function startup(): void
+	{
+		parent::startup();
+
+		$userView = $this->getIdentity()->data();
+		assert($userView instanceof UserView);
+
+		ApplicationDateTimeZone::set($userView->timezone);
+	}
+
+	/**
 	 * @return void
 	 * @throws \SixtyEightPublishers\UserBundle\Application\Exception\IdentityException
 	 */
@@ -76,7 +93,10 @@ abstract class AdminPresenter extends Presenter
 		$template = $this->getTemplate();
 		assert($template instanceof AdminTemplate);
 
-		$template->identity = $this->getIdentity()->data();
+		$userView = $this->getIdentity()->data();
+		assert($userView instanceof UserView);
+
+		$template->identity = $userView;
 		$template->locales = $this->validLocalesProvider->getValidLocales();
 		$template->defaultLocale = $this->validLocalesProvider->getValidDefaultLocale();
 	}

@@ -25,6 +25,8 @@
 
         <embedded name="locales" class="App\Domain\Shared\ValueObject\LocalesConfig" use-column-prefix="false" />
 
+        <field name="timezone" column="timezone" type="datetime_zone" />
+
         <field name="version" column="version" type="integer" />
     </entity>
 

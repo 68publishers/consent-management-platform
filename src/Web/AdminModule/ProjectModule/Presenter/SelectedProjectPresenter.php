@@ -11,12 +11,9 @@ use Contributte\MenuControl\UI\MenuComponent;
 use Nette\Application\ForbiddenRequestException;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use App\ReadModel\Project\GetUsersProjectByCodeQuery;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\Layout;
+use App\Application\Localization\ApplicationDateTimeZone;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 
-/**
- * @Layout(path="templates/SelectedProject.@layout.latte")
- */
 abstract class SelectedProjectPresenter extends AdminPresenter
 {
 	private const MENU_NAME_SIDEBAR_PROJECT = 'sidebar_project';
@@ -54,6 +51,17 @@ abstract class SelectedProjectPresenter extends AdminPresenter
 		}
 
 		$this->refreshProjectView($this->project);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	protected function startup(): void
+	{
+		parent::startup();
+
+		ApplicationDateTimeZone::set($this->projectView->timezone);
+		$this->setLayout('layout.selectedProject');
 	}
 
 	/**

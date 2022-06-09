@@ -6,13 +6,13 @@ namespace App\Web\Ui\DataGrid;
 
 use Nette\Localization\ITranslator;
 use Ublaboo\DataGrid\Column\Column;
-use App\Application\CurrentDateTimeZone;
 use Ublaboo\DataGrid\Column\ColumnNumber;
 use App\Web\Ui\DataGrid\Filter\FilterDate;
 use App\Web\Ui\DataGrid\Filter\FilterDateRange;
 use App\Web\Ui\DataGrid\Column\ColumnDateTimeTz;
 use Ublaboo\DataGrid\DataGrid as UblabooDataGrid;
 use App\Web\Ui\DataGrid\Translator\TranslatorProxy;
+use App\Application\Localization\ApplicationDateTimeZone;
 use Ublaboo\DataGrid\Filter\FilterDate as UblabooFilterDate;
 use Ublaboo\DataGrid\Filter\FilterDateRange as UblabooFilterDateRange;
 
@@ -73,7 +73,7 @@ class DataGrid extends UblabooDataGrid
 	{
 		$column = $column ?: $key;
 		$columnDateTimeTz = new ColumnDateTimeTz($this, $key, $column, $name);
-		$timezone = $timezone ?? CurrentDateTimeZone::get()->getName();
+		$timezone = $timezone ?? ApplicationDateTimeZone::get()->getName();
 
 		$columnDateTimeTz->setTimezone($timezone);
 		$this->addColumn($key, $columnDateTimeTz);

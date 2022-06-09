@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\UserModule\Presenter;
 
+use App\ReadModel\User\UserView;
 use App\Web\Ui\Form\FormFactoryInterface;
 use App\Web\AdminModule\Presenter\AdminPresenter;
-use SixtyEightPublishers\UserBundle\ReadModel\View\UserView;
 use SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;

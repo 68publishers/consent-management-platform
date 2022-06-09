@@ -3,10 +3,13 @@ extensions:
 
 contributte.translation:
 	locales:
-		default: cs_CZ
+		whitelist:
+			- cs
+			- en
+		default: cs
 		fallback:
-			- cs_CZ
 			- cs
 	dirs:
 		- %appDir%/../translations
-	localeResolvers: []
+	localeResolvers:
+		- Contributte\Translation\LocalesResolvers\Router

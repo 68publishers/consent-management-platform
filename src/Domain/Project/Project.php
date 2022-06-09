@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Project;
 
+use DateTimeZone;
 use DateTimeImmutable;
 use App\Domain\Project\ValueObject\Code;
 use App\Domain\Project\ValueObject\Name;
@@ -20,6 +21,7 @@ use App\Domain\Project\Event\ProjectColorChanged;
 use App\Domain\Project\Event\ProjectLocalesChanged;
 use App\Domain\Project\Command\CreateProjectCommand;
 use App\Domain\Project\Command\UpdateProjectCommand;
+use App\Domain\Project\Event\ProjectTimezoneChanged;
 use App\Domain\Project\Event\ProjectActiveStateChanged;
 use App\Domain\Project\Event\ProjectDescriptionChanged;
 use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AggregateId;
@@ -46,6 +48,8 @@ final class Project implements AggregateRootInterface
 
 	private LocalesConfig $locales;
 
+	private DateTimeZone $timezone;
+
 	/**
 	 * @param \App\Domain\Project\Command\CreateProjectCommand $command
 	 * @param \App\Domain\Project\CheckCodeUniquenessInterface $checkCodeUniqueness
@@ -63,6 +67,7 @@ final class Project implements AggregateRootInterface
 		$color = Color::fromValidColor($command->color());
 		$locales = Locales::empty();
 		$defaultLocale = Locale::fromValue($command->defaultLocale());
+		$timezone = new DateTimeZone($command->timezone());
 
 		foreach ($command->locales() as $locale) {
 			$locales = $locales->with(Locale::fromValue($locale));
@@ -70,7 +75,7 @@ final class Project implements AggregateRootInterface
 
 		$checkCodeUniqueness($projectId, $code);
 
-		$project->recordThat(ProjectCreated::create($projectId, $name, $code, $description, $color, $command->active(), LocalesConfig::create($locales, $defaultLocale)));
+		$project->recordThat(ProjectCreated::create($projectId, $name, $code, $description, $color, $command->active(), LocalesConfig::create($locales, $defaultLocale), $timezone));
 
 		return $project;
 	}
@@ -112,6 +117,10 @@ final class Project implements AggregateRootInterface
 			}
 
 			$this->changeLocales(LocalesConfig::create($locales, $defaultLocale));
+		}
+
+		if (NULL !== $command->timezone()) {
+			$this->changeTimezone(new DateTimeZone($command->timezone()));
 		}
 	}
 
@@ -202,6 +211,18 @@ final class Project implements AggregateRootInterface
 	}
 
 	/**
+	 * @param \DateTimeZone $timezone
+	 *
+	 * @return void
+	 */
+	public function changeTimezone(DateTimeZone $timezone): void
+	{
+		if ($this->timezone->getName() !== $timezone->getName()) {
+			$this->recordThat(ProjectTimezoneChanged::create($this->id, $timezone));
+		}
+	}
+
+	/**
 	 * @param \App\Domain\Project\Event\ProjectCreated $event
 	 *
 	 * @return void
@@ -216,6 +237,7 @@ final class Project implements AggregateRootInterface
 		$this->description = $event->description();
 		$this->active = $event->active();
 		$this->locales = $event->locales();
+		$this->timezone = $event->timezone();
 	}
 
 	/**
@@ -276,5 +298,15 @@ final class Project implements AggregateRootInterface
 	protected function whenProjectLocalesChanged(ProjectLocalesChanged $event): void
 	{
 		$this->locales = $event->locales();
+	}
+
+	/**
+	 * @param \App\Domain\Project\Event\ProjectTimezoneChanged $event
+	 *
+	 * @return void
+	 */
+	protected function whenProjectTimezoneChanged(ProjectTimezoneChanged $event): void
+	{
+		$this->timezone = $event->timezone();
 	}
 }

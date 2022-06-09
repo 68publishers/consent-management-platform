@@ -9,17 +9,21 @@ services:
 
 	# infra: doctrine
 	-
-		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\QueryHandler\FindAllProjectsQueryHandler
+		autowired: self
+		type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
+		factory: App\Infrastructure\Project\Doctrine\ReadModel\ProjectViewDataTransformer
 	-
 		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\QueryHandler\FindUserProjectsQueryHandler
+		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindAllProjectsQueryHandler
 	-
 		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\QueryHandler\GetProjectByCodeQueryHandler
+		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindUserProjectsQueryHandler
 	-
 		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\QueryHandler\GetUserProjectByCodeQueryHandler
+		factory: App\Infrastructure\Project\Doctrine\ReadModel\GetProjectByCodeQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\Project\Doctrine\ReadModel\GetUserProjectByCodeQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:

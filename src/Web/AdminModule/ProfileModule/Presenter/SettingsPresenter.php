@@ -50,8 +50,12 @@ final class SettingsPresenter extends AdminPresenter
 			FormFactoryInterface::OPTION_AJAX => TRUE,
 		]);
 
-		$control->addEventListener(BasicInformationUpdatedEvent::class, function () {
+		$control->addEventListener(BasicInformationUpdatedEvent::class, function (BasicInformationUpdatedEvent $event) {
 			$this->subscribeFlashMessage(FlashMessage::success('basic_information_edited'));
+
+			if ($event->oldProfile() !== $event->newProfile()) {
+				$this->redirect('this');
+			}
 		});
 
 		$control->addEventListener(BasicInformationUpdateFailedEvent::class, function () {

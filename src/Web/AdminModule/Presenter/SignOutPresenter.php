@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\Presenter;
 
+use App\ReadModel\User\UserView;
 use SixtyEightPublishers\UserBundle\Bridge\Nette\Ui\LogoutPresenterTrait;
 
 final class SignOutPresenter extends AdminPresenter
@@ -12,9 +13,16 @@ final class SignOutPresenter extends AdminPresenter
 
 	/**
 	 * {@inheritDoc}
+	 *
+	 * @throws \SixtyEightPublishers\UserBundle\Application\Exception\IdentityException
 	 */
 	protected function handleUserLoggedOut(): void
 	{
-		$this->redirect(':Front:SignIn:');
+		$userView = $this->getIdentity()->data();
+		assert($userView instanceof UserView);
+
+		$this->redirect(':Front:SignIn:', [
+			'locale' => $userView->profileLocale->value(),
+		]);
 	}
 }

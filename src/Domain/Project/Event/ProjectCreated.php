@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Project\Event;
 
+use DateTimeZone;
 use App\Domain\Project\ValueObject\Code;
 use App\Domain\Project\ValueObject\Name;
 use App\Domain\Project\ValueObject\Color;
@@ -30,6 +31,8 @@ final class ProjectCreated extends AbstractDomainEvent
 
 	private LocalesConfig $locales;
 
+	private DateTimeZone $timezone;
+
 	/**
 	 * @param \App\Domain\Project\ValueObject\ProjectId    $projectId
 	 * @param \App\Domain\Project\ValueObject\Name         $name
@@ -38,10 +41,11 @@ final class ProjectCreated extends AbstractDomainEvent
 	 * @param \App\Domain\Project\ValueObject\Color        $color
 	 * @param bool                                         $active
 	 * @param \App\Domain\Shared\ValueObject\LocalesConfig $locales
+	 * @param \DateTimeZone                                $timezone
 	 *
 	 * @return static
 	 */
-	public static function create(ProjectId $projectId, Name $name, Code $code, Description $description, Color $color, bool $active, LocalesConfig $locales): self
+	public static function create(ProjectId $projectId, Name $name, Code $code, Description $description, Color $color, bool $active, LocalesConfig $locales, DateTimeZone $timezone): self
 	{
 		$event = self::occur($projectId->toString(), [
 			'name' => $name->value(),
@@ -51,6 +55,7 @@ final class ProjectCreated extends AbstractDomainEvent
 			'active' => $active,
 			'locales' => $locales->locales()->toArray(),
 			'default_locale' => $locales->defaultLocale()->value(),
+			'timezone' => $timezone->getName(),
 		]);
 
 		$event->projectId = $projectId;
@@ -60,6 +65,7 @@ final class ProjectCreated extends AbstractDomainEvent
 		$event->color = $color;
 		$event->active = $active;
 		$event->locales = $locales;
+		$event->timezone = $timezone;
 
 		return $event;
 	}
@@ -113,11 +119,19 @@ final class ProjectCreated extends AbstractDomainEvent
 	}
 
 	/**
-	 * @return \App\Domain\Shared\ValueObject\Locales
+	 * @return \App\Domain\Shared\ValueObject\LocalesConfig
 	 */
 	public function locales(): LocalesConfig
 	{
 		return $this->locales;
+	}
+
+	/**
+	 * @return \DateTimeZone
+	 */
+	public function timezone(): DateTimeZone
+	{
+		return $this->timezone;
 	}
 
 	/**
@@ -132,5 +146,6 @@ final class ProjectCreated extends AbstractDomainEvent
 		$this->color = Color::fromValue($parameters['color']);
 		$this->active = (bool) $parameters['active'];
 		$this->locales = LocalesConfig::create(Locales::reconstitute($parameters['locales']), Locale::fromValue($parameters['default_locale']));
+		$this->timezone = new DateTimeZone($parameters['timezone']);
 	}
 }

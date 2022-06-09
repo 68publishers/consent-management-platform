@@ -6,9 +6,20 @@ namespace App\Web\Router;
 
 use Nette\Routing\Route;
 use Nette\Application\Routers\RouteList;
+use App\Application\Localization\Profiles;
 
 final class RouterFactory
 {
+	private Profiles $profiles;
+
+	/**
+	 * @param \App\Application\Localization\Profiles $profiles
+	 */
+	public function __construct(Profiles $profiles)
+	{
+		$this->profiles = $profiles;
+	}
+
 	/**
 	 * @return \Nette\Application\Routers\RouteList
 	 */
@@ -17,17 +28,26 @@ final class RouterFactory
 		$router = new RouteList();
 
 		$router->withModule('Front')
-			->addRoute('<presenter>[/<id>]', [
+			->addRoute('[<locale [a-z]{2}>/]<presenter>[/<id>]', [
 				NULL => [
-					Route::FILTER_IN => static function (array $params) {
-						return in_array($params['presenter'], [
+					Route::FILTER_IN => function (array $params) {
+						if (!in_array($params['presenter'], [
 							'SignIn',
 							'ForgotPassword',
 							'ResetPassword',
-						], TRUE) ? $params : NULL;
+						], TRUE)) {
+							return NULL;
+						}
+
+						if (isset($params['locale']) && !$this->profiles->has($params['locale'])) {
+							$params['locale'] = $this->profiles->default()->locale();
+						}
+
+						return $params;
 					},
 				],
 				'action' => 'default',
+				'locale' => $this->profiles->default()->locale(),
 			]);
 
 		$router->addRoute('project/<project>/[<module>/]<presenter>[/<id>]', [

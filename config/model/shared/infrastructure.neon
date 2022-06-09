@@ -11,6 +11,10 @@ nettrine.dbal:
 				class: App\Infrastructure\Shared\Doctrine\DbalType\ChecksumType
 				commented: yes
 
+			datetime_zone:
+				class: App\Infrastructure\Shared\Doctrine\DbalType\DateTimeZoneType
+				commented: yes
+
 			App\Domain\Shared\ValueObject\Locale:
 				class: App\Infrastructure\Shared\Doctrine\DbalType\LocaleType
 				commented: yes

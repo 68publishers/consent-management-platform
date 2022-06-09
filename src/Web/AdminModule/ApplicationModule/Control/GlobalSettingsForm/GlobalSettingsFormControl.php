@@ -8,11 +8,11 @@ use Throwable;
 use App\Web\Ui\Control;
 use Nette\Application\UI\Form;
 use NasExt\Forms\DependentData;
+use App\Application\Localization\Locales;
 use App\Web\Ui\Form\FormFactoryInterface;
 use App\Application\GlobalSettings\Locale;
 use App\Web\Ui\Form\FormFactoryOptionsTrait;
 use NasExt\Forms\Controls\DependentSelectBox;
-use SixtyEightPublishers\i18n\Lists\LanguageList;
 use App\Application\GlobalSettings\GlobalSettingsInterface;
 use App\Domain\GlobalSettings\Command\StoreGlobalSettingsCommand;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
@@ -29,20 +29,20 @@ final class GlobalSettingsFormControl extends Control
 
 	private GlobalSettingsInterface $globalSettings;
 
-	private LanguageList $languageList;
+	private Locales $locales;
 
 	/**
 	 * @param \App\Web\Ui\Form\FormFactoryInterface                            $formFactory
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface $commandBus
 	 * @param \App\Application\GlobalSettings\GlobalSettingsInterface          $globalSettings
-	 * @param \SixtyEightPublishers\i18n\Lists\LanguageList                    $languageList
+	 * @param \App\Application\Localization\Locales                            $locales
 	 */
-	public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, GlobalSettingsInterface $globalSettings, LanguageList $languageList)
+	public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, GlobalSettingsInterface $globalSettings, Locales $locales)
 	{
 		$this->formFactory = $formFactory;
 		$this->commandBus = $commandBus;
 		$this->globalSettings = $globalSettings;
-		$this->languageList = $languageList;
+		$this->locales = $locales;
 	}
 
 	/**
@@ -134,7 +134,7 @@ final class GlobalSettingsFormControl extends Control
 	 */
 	private function getLocales(): array
 	{
-		$list = $this->languageList->getList();
+		$list = $this->locales->get();
 
 		foreach ($list as $locale => $name) {
 			$list[$locale] = sprintf(

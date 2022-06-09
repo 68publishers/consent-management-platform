@@ -7,10 +7,10 @@ namespace App\Web\AdminModule\ProfileModule\Control\PasswordChange;
 use Throwable;
 use App\Web\Ui\Control;
 use Nette\Application\UI\Form;
+use App\ReadModel\User\UserView;
 use Nette\Forms\Controls\TextInput;
 use App\Web\Ui\Form\FormFactoryInterface;
 use App\Web\Ui\Form\FormFactoryOptionsTrait;
-use SixtyEightPublishers\UserBundle\ReadModel\View\UserView;
 use SixtyEightPublishers\UserBundle\Domain\ValueObject\Password;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 use SixtyEightPublishers\UserBundle\Domain\Command\UpdateUserCommand;
@@ -30,7 +30,7 @@ final class PasswordChangeControl extends Control
 	/**
 	 * @param \App\Web\Ui\Form\FormFactoryInterface                            $formFactory
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface $commandBus
-	 * @param \SixtyEightPublishers\UserBundle\ReadModel\View\UserView         $userView
+	 * @param \App\ReadModel\User\UserView                                     $userView
 	 */
 	public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, UserView $userView)
 	{

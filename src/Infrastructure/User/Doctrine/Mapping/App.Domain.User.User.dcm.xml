@@ -36,6 +36,8 @@
 
         <field name="emailAddress" column="email_address" type="SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\EmailAddress" />
 
+        <field name="profileLocale" column="profile_locale" type="App\Domain\Shared\ValueObject\Locale" />
+
         <embedded name="name" class="SixtyEightPublishers\UserBundle\Domain\ValueObject\Name" use-column-prefix="false" />
 
         <field name="roles" column="roles" type="SixtyEightPublishers\UserBundle\Domain\ValueObject\Roles">
@@ -43,6 +45,8 @@
                 <option name="jsonb">true</option>
             </options>
         </field>
+
+        <field name="timezone" column="timezone" type="datetime_zone" />
 
         <field name="version" column="version" type="integer" />
 

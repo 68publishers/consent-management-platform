@@ -9,14 +9,18 @@ services:
 
 	# infra: doctrine
 	-
-		autowired: no
-		factory: App\Infrastructure\CookieProvider\Doctrine\QueryHandler\GetCookieProviderByIdQueryHandler
+		autowired: self
+		type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
+		factory: App\Infrastructure\CookieProvider\Doctrine\ReadModel\CookieProviderViewDataTransformer
 	-
 		autowired: no
-		factory: App\Infrastructure\CookieProvider\Doctrine\QueryHandler\GetCookieProviderByCodeQueryHandler
+		factory: App\Infrastructure\CookieProvider\Doctrine\ReadModel\GetCookieProviderByIdQueryHandler
 	-
 		autowired: no
-		factory: App\Infrastructure\CookieProvider\Doctrine\QueryHandler\CookieProviderDataGridQueryHandler
+		factory: App\Infrastructure\CookieProvider\Doctrine\ReadModel\GetCookieProviderByCodeQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\CookieProvider\Doctrine\ReadModel\CookieProviderDataGridQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:

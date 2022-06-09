@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\ProfileModule\Control\PasswordChange;
 
-use SixtyEightPublishers\UserBundle\ReadModel\View\UserView;
+use App\ReadModel\User\UserView;
 
 interface PasswordChangeControlFactoryInterface
 {
 	/**
-	 * @param \SixtyEightPublishers\UserBundle\ReadModel\View\UserView $userView
+	 * @param \App\ReadModel\User\UserView $userView
 	 *
 	 * @return \App\Web\AdminModule\ProfileModule\Control\PasswordChange\PasswordChangeControl
 	 */

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\Presenter;
 
+use App\ReadModel\User\UserView;
 use App\Web\Ui\DefaultPresenterTemplate;
 use App\Application\GlobalSettings\Locale;
-use SixtyEightPublishers\UserBundle\ReadModel\View\IdentityView;
 
 abstract class AdminTemplate extends DefaultPresenterTemplate
 {
-	public IdentityView $identity;
+	public UserView $identity;
 
 	/** @var \App\Application\GlobalSettings\Locale[] */
 	public array $locales;

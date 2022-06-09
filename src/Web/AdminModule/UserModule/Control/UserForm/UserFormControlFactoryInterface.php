@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\UserModule\Control\UserForm;
 
-use SixtyEightPublishers\UserBundle\ReadModel\View\UserView;
+use App\ReadModel\User\UserView;
 
 interface UserFormControlFactoryInterface
 {
 	/**
-	 * @param \SixtyEightPublishers\UserBundle\ReadModel\View\UserView|NULL $default
+	 * @param \App\ReadModel\User\UserView|NULL $default
 	 *
 	 * @return \App\Web\AdminModule\UserModule\Control\UserForm\UserFormControl
 	 */

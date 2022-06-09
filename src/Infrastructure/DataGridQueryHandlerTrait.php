@@ -9,34 +9,50 @@ use RuntimeException;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query\Expr\Orx;
+use Doctrine\ORM\EntityManagerInterface;
 use App\ReadModel\DataGridQueryInterface;
-use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\PaginatedResultFactory;
+use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\ReadModel\PaginatedResultFactory;
 
 trait DataGridQueryHandlerTrait
 {
+	protected EntityManagerInterface $em;
+
+	private PaginatedResultFactory $paginatedResultFactory;
+
 	private int $paramsCount = 0;
+
+	/**
+	 * @param \Doctrine\ORM\EntityManagerInterface                                                              $em
+	 * @param \SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\ReadModel\PaginatedResultFactory $paginatedResultFactory
+	 */
+	public function __construct(EntityManagerInterface $em, PaginatedResultFactory $paginatedResultFactory)
+	{
+		$this->em = $em;
+		$this->paginatedResultFactory = $paginatedResultFactory;
+	}
 
 	/**
 	 * @param \App\ReadModel\DataGridQueryInterface $query
 	 * @param callable                              $countQueryBuilderFactory
 	 * @param callable                              $dataQueryBuilderFactory
-	 * @param callable                              $mapper
+	 * @param string                                $viewClassname
 	 * @param array                                 $filterDefinitions
 	 * @param array                                 $sortingDefinitions
 	 *
-	 * @return array|int
+	 * @return int|array
 	 * @throws \Doctrine\ORM\NoResultException
 	 * @throws \Doctrine\ORM\NonUniqueResultException
 	 */
-	protected function processQuery(DataGridQueryInterface $query, callable $countQueryBuilderFactory, callable $dataQueryBuilderFactory, callable $mapper, array $filterDefinitions, array $sortingDefinitions)
+	protected function processQuery(DataGridQueryInterface $query, callable $countQueryBuilderFactory, callable $dataQueryBuilderFactory, string $viewClassname, array $filterDefinitions, array $sortingDefinitions)
 	{
 		if ($query::MODE_COUNT === $query->mode()) {
 			$qb = $countQueryBuilderFactory($query);
 			assert($qb instanceof QueryBuilder);
 
 			$this->applyFilters($query, $qb, $filterDefinitions);
+
+			$this->paramsCount = 0;
 
 			return (int) $qb->getQuery()->getSingleScalarResult();
 		}
@@ -47,10 +63,9 @@ trait DataGridQueryHandlerTrait
 		$this->applyFilters($query, $qb, $filterDefinitions);
 		$this->applySorting($query, $qb, $sortingDefinitions);
 
-		$q = $qb->getQuery()
-			->setHydrationMode(AbstractQuery::HYDRATE_ARRAY);
+		$this->paramsCount = 0;
 
-		return PaginatedResultFactory::create($query, $q, $mapper)->results();
+		return $this->paginatedResultFactory->create($query, $qb->getQuery(), $viewClassname)->results();
 	}
 
 	/**

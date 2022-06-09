@@ -1,4 +1,5 @@
 includes:
 	- event_metadata_extender.neon
 	- global_settings.neon
+	- localization.neon
 	- mail.neon

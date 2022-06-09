@@ -3,10 +3,13 @@ services:
 	-
 		type: App\Domain\GlobalSettings\GlobalSettingsRepositoryInterface
 		factory: App\Infrastructure\GlobalSettings\Doctrine\GlobalSettingsRepository
-
+	-
+		autowired: self
+		type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
+		factory: App\Infrastructure\GlobalSettings\Doctrine\ReadModel\GlobalSettingsViewDataTransformer
 	-
 		autowired: no
-		factory: App\Infrastructure\GlobalSettings\Doctrine\QueryHandler\GetGlobalSettingsQueryHandler
+		factory: App\Infrastructure\GlobalSettings\Doctrine\ReadModel\GetGlobalSettingsQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:

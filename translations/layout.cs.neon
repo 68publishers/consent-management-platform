@@ -39,3 +39,6 @@ alert:
 	missing_default_project_locale:
 		text: Výchozí jazyk pro tento projekt není nastaven.
 		link_text: Nastavte ho prosím v editaci projektu.
+
+message:
+	locale_change_failed: Jazyk aplikace se nepovedlo změnit.

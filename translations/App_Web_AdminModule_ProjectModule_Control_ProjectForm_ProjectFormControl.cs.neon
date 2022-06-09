@@ -28,6 +28,10 @@ default_locale:
 	field: Výchozí jazyk
 	required: Zvolte výchozí jazyk.
 
+timezone:
+	field: Časové pásmo
+	required: Zvolte prosím časové pásmo.
+
 description:
 	field: Popis projektu
 

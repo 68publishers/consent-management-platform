@@ -6,6 +6,7 @@ namespace App\Web\AdminModule\UserModule\Control\UserList;
 
 use App\Web\Ui\Control;
 use App\Domain\User\RolesEnum;
+use App\ReadModel\User\UserView;
 use Nette\InvalidStateException;
 use App\Web\Ui\DataGrid\DataGrid;
 use Nette\Application\UI\Multiplier;
@@ -13,7 +14,6 @@ use App\ReadModel\User\UsersDataGridQuery;
 use App\Web\Ui\DataGrid\Helper\FilterHelper;
 use App\Web\Ui\DataGrid\DataGridFactoryInterface;
 use App\Web\Ui\Modal\Confirm\ConfirmModalControl;
-use SixtyEightPublishers\UserBundle\ReadModel\View\UserView;
 use SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId;
 use App\Web\Ui\Modal\Confirm\ConfirmModalControlFactoryInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;

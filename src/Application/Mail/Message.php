@@ -8,6 +8,8 @@ final class Message
 {
 	private string $templateFile;
 
+	private ?string $locale;
+
 	private array $arguments = [];
 
 	private ?string $subject = NULL;
@@ -34,14 +36,16 @@ final class Message
 	}
 
 	/**
-	 * @param string $templateFile
+	 * @param string      $templateFile
+	 * @param string|NULL $locale
 	 *
 	 * @return static
 	 */
-	public static function create(string $templateFile): self
+	public static function create(string $templateFile, ?string $locale = NULL): self
 	{
 		$message = new self();
 		$message->templateFile = $templateFile;
+		$message->locale = $locale;
 
 		return $message;
 	}
@@ -156,6 +160,14 @@ final class Message
 	public function templateFile(): string
 	{
 		return $this->templateFile;
+	}
+
+	/**
+	 * @return string|NULL
+	 */
+	public function locale(): ?string
+	{
+		return $this->locale;
 	}
 
 	/**

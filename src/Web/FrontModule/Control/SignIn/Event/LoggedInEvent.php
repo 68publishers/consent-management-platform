@@ -4,26 +4,26 @@ declare(strict_types=1);
 
 namespace App\Web\FrontModule\Control\SignIn\Event;
 
+use App\ReadModel\User\UserView;
 use Symfony\Contracts\EventDispatcher\Event;
-use SixtyEightPublishers\UserBundle\ReadModel\View\IdentityView;
 
 final class LoggedInEvent extends Event
 {
-	private IdentityView $identity;
+	private UserView $userView;
 
 	/**
-	 * @param \SixtyEightPublishers\UserBundle\ReadModel\View\IdentityView $identity
+	 * @param \App\ReadModel\User\UserView $userView
 	 */
-	public function __construct(IdentityView $identity)
+	public function __construct(UserView $userView)
 	{
-		$this->identity = $identity;
+		$this->userView = $userView;
 	}
 
 	/**
-	 * @return \SixtyEightPublishers\UserBundle\ReadModel\View\IdentityView
+	 * @return \App\ReadModel\User\UserView
 	 */
-	public function identity(): IdentityView
+	public function userView(): UserView
 	{
-		return $this->identity;
+		return $this->userView;
 	}
 }

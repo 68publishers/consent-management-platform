@@ -133,7 +133,7 @@
 
 {define #input-type-checkboxlist}
     <div class="lfv-message-parent mt-3">
-        <div n:foreach="$control->items as $k => $v" n:class="$control->getSeparatorPrototype()->class, 'flex items-start'">
+        <div n:foreach="$control->items as $k => $v" n:class="$control->getSeparatorPrototype()->class, 'flex items-start mb-2'">
             <div class="flex items-center h-5">
                 <input n:name="$control:$k" n:class="
                     $control->getControlPrototype()->class,
@@ -152,7 +152,7 @@
 
 {define #input-type-radio}
     <div class="lfv-message-parent mt-3">
-        <div n:foreach="$control->items as $k => $v" n:class="$control->getSeparatorPrototype()->class, 'flex items-start'">
+        <div n:foreach="$control->items as $k => $v" n:class="$control->getSeparatorPrototype()->class, 'flex items-start mb-2'">
             <div class="flex items-center h-5">
                 <input n:name="$control:$k" n:class="
                     $control->getControlPrototype()->class,

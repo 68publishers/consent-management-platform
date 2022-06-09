@@ -8,14 +8,17 @@ use Throwable;
 use App\Web\Ui\Control;
 use App\Domain\User\RolesEnum;
 use Nette\Application\UI\Form;
+use App\ReadModel\User\UserView;
 use App\Web\Utils\TranslatorUtils;
 use Nette\Forms\Controls\TextInput;
 use App\ReadModel\Project\ProjectView;
 use App\Web\Ui\Form\FormFactoryInterface;
+use Nepada\FormRenderer\TemplateRenderer;
+use App\Application\Localization\Profiles;
 use App\Web\Ui\Form\FormFactoryOptionsTrait;
 use App\ReadModel\Project\FindAllProjectsQuery;
 use App\ReadModel\Project\FindUserProjectsQuery;
-use SixtyEightPublishers\UserBundle\ReadModel\View\UserView;
+use App\Application\Localization\ApplicationDateTimeZone;
 use SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
@@ -37,19 +40,23 @@ final class UserFormControl extends Control
 
 	private QueryBusInterface $queryBus;
 
+	private Profiles $profiles;
+
 	private ?UserView $default;
 
 	/**
 	 * @param \App\Web\Ui\Form\FormFactoryInterface                            $formFactory
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface $commandBus
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface   $queryBus
-	 * @param \SixtyEightPublishers\UserBundle\ReadModel\View\UserView|NULL    $default
+	 * @param \App\Application\Localization\Profiles                           $profiles
+	 * @param \App\ReadModel\User\UserView|NULL                                $default
 	 */
-	public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, QueryBusInterface $queryBus, ?UserView $default = NULL)
+	public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, QueryBusInterface $queryBus, Profiles $profiles, ?UserView $default = NULL)
 	{
 		$this->formFactory = $formFactory;
 		$this->commandBus = $commandBus;
 		$this->queryBus = $queryBus;
+		$this->profiles = $profiles;
 		$this->default = $default;
 	}
 
@@ -60,8 +67,12 @@ final class UserFormControl extends Control
 	{
 		$form = $this->formFactory->create($this->getFormFactoryOptions());
 		$translator = $this->getPrefixedTranslator();
+		$renderer = $form->getRenderer();
+		assert($renderer instanceof TemplateRenderer);
 
 		$form->setTranslator($translator);
+		$renderer->importTemplate(__DIR__ . '/templates/form.imports.latte');
+		$renderer->getTemplate()->profiles = $this->profiles;
 
 		$emailAddressField = $form->addText('email_address', 'email_address.field')
 			->setHtmlType('email')
@@ -73,6 +84,23 @@ final class UserFormControl extends Control
 
 		$form->addText('surname', 'surname.field')
 			->setRequired('surname.required');
+
+		$profiles = [];
+		foreach ($this->profiles->all() as $profile) {
+			$profiles[$profile->locale()] = $profile->name();
+		}
+
+		$form->addSelect('profile', 'profile.field', $profiles)
+			->setRequired('profile.required')
+			->setTranslator(NULL)
+			->setDefaultValue($this->profiles->active()->locale());
+
+		$form->addSelect('timezone', 'timezone.field')
+			->setItems(ApplicationDateTimeZone::all(), FALSE)
+			->setRequired('timezone.required')
+			->setTranslator(NULL)
+			->setDefaultValue(ApplicationDateTimeZone::get()->getName())
+			->setOption('searchbar', TRUE);
 
 		$form->addCheckboxList('roles', 'roles.field', array_combine(RolesEnum::values(), TranslatorUtils::translateArray($translator, '//layout.role_name.', RolesEnum::values())))
 			->setTranslator(NULL)
@@ -104,6 +132,8 @@ final class UserFormControl extends Control
 				'email_address' => $this->default->emailAddress->value(),
 				'firstname' => $this->default->name->firstname(),
 				'surname' => $this->default->name->surname(),
+				'profile' => $this->default->profileLocale->value(),
+				'timezone' => $this->default->timezone->getName(),
 				'roles' => $this->default->roles->toArray(),
 				'projects' => array_map(
 					static fn (ProjectView $projectView): string => $projectView->id->toString(),
@@ -151,7 +181,10 @@ final class UserFormControl extends Control
 			}
 		}
 
-		$command = $command->withParam('project_ids', $values->projects);
+		$command = $command
+			->withParam('profile', $values->profile)
+			->withParam('timezone', $values->timezone)
+			->withParam('project_ids', $values->projects);
 
 		try {
 			$this->commandBus->dispatch($command);

@@ -5,7 +5,6 @@ includes:
 	- 68publishers.event_dispatcher_extra.neon
 	- 68publishers.flash_message_bundle.neon
 	- 68publishers.forgot_password_bundle.neon
-	- 68publishers.i18n.neon
 	- 68publishers.smart_nette_component.neon
 	- 68publishers.tracy_git_version.neon
 	- 68publishers.translation_bridge.neon

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "158c63b178e9f704f2d6bd7b4865bf51",
+    "content-hash": "3a116b46ccf1f510babb4bb5f1ac5c73",
     "packages": [
         {
             "name": "68publishers/asset",
@@ -312,87 +312,17 @@
             "time": "2022-04-10T15:38:04+00:00"
         },
         {
-            "name": "68publishers/i18n",
-            "version": "v0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/68publishers/i18n.git",
-                "reference": "a33e69af9af1c16ad93c9fcec19299a0f5c96ab1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/68publishers/i18n/zipball/a33e69af9af1c16ad93c9fcec19299a0f5c96ab1",
-                "reference": "a33e69af9af1c16ad93c9fcec19299a0f5c96ab1",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "nette/di": "^3.0.3",
-                "nette/http": "^3.0",
-                "nette/schema": "^1.0.2",
-                "nette/utils": "^3.0",
-                "php": "^7.3",
-                "umpirsky/locale-list": "^1.0"
-            },
-            "require-dev": {
-                "68publishers/translation-bridge": "^1.2.1",
-                "contributte/translation": "^0.8.1",
-                "friendsofphp/php-cs-fixer": "^2.0",
-                "mockery/mockery": "^1.4",
-                "nette/bootstrap": "^3.0",
-                "nette/tester": "^2.3.4",
-                "roave/security-advisories": "dev-master",
-                "tracy/tracy": "^2.6"
-            },
-            "suggest": {
-                "68publishers/translation-bridge": "For integration with Translator component.",
-                "tracy/tracy": "A compiler extension adds a custom Panel if the Tracy is required."
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "SixtyEightPublishers\\i18n\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Vojtěch Lacina",
-                    "email": "MoraviaD1@gmail.com"
-                },
-                {
-                    "name": "Tomáš Glawaty",
-                    "email": "tomasglawaty@icloud.com"
-                }
-            ],
-            "description": "Internationalization and localization your app with a minimum effort.",
-            "keywords": [
-                "68publishers",
-                "environment",
-                "i18n",
-                "nette"
-            ],
-            "support": {
-                "issues": "https://github.com/68publishers/i18n/issues",
-                "source": "https://github.com/68publishers/i18n/tree/v0.2"
-            },
-            "time": "2020-11-20T21:47:43+00:00"
-        },
-        {
             "name": "68publishers/omni",
             "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/68publishers/omni.git",
-                "reference": "61c8cf6a9e7ba266eb2bf112adef5aa30bd7b4e7"
+                "reference": "064a5dcb6729da8356b8d1c6ed143a87c22be002"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/68publishers/omni/zipball/61c8cf6a9e7ba266eb2bf112adef5aa30bd7b4e7",
-                "reference": "61c8cf6a9e7ba266eb2bf112adef5aa30bd7b4e7",
+                "url": "https://api.github.com/repos/68publishers/omni/zipball/064a5dcb6729da8356b8d1c6ed143a87c22be002",
+                "reference": "064a5dcb6729da8356b8d1c6ed143a87c22be002",
                 "shasum": ""
             },
             "require": {
@@ -442,7 +372,7 @@
                 "issues": "https://github.com/68publishers/omni/issues",
                 "source": "https://github.com/68publishers/omni/tree/main"
             },
-            "time": "2022-06-02T17:45:32+00:00"
+            "time": "2022-06-09T00:12:55+00:00"
         },
         {
             "name": "68publishers/smart-nette-component",

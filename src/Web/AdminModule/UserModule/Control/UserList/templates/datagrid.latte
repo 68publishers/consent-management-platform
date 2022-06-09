@@ -1,6 +1,6 @@
 {extends $originalTemplate}
 
-{varType SixtyEightPublishers\UserBundle\ReadModel\View\UserView $item}
+{varType App\ReadModel\User\UserView $item}
 
 {define col-roles}
     {foreach $item->roles->all() as $role}

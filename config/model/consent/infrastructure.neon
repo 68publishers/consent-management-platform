@@ -10,13 +10,13 @@ services:
 	# infra: doctrine
 	-
 		autowired: no
-		factory: App\Infrastructure\Consent\Doctrine\QueryHandler\ConsentsDataGridQueryHandler
+		factory: App\Infrastructure\Consent\Doctrine\ReadModel\ConsentsDataGridQueryHandler
 	-
 		autowired: no
-		factory: App\Infrastructure\Consent\Doctrine\QueryHandler\GetConsentByIdAndProjectIdQueryHandler
+		factory: App\Infrastructure\Consent\Doctrine\ReadModel\GetConsentByIdAndProjectIdQueryHandler
 	-
 		autowired: no
-		factory: App\Infrastructure\Consent\Doctrine\QueryHandler\GetConsentByProjectIdAndUserIdentifierQueryHandler
+		factory: App\Infrastructure\Consent\Doctrine\ReadModel\GetConsentByProjectIdAndUserIdentifierQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:

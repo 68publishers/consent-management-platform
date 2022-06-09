@@ -21,7 +21,14 @@
     <body class="h-full">
         {control gtm:noscript}
 
-        <div
+        {capture $timezoneInfo|spaceless}
+            {var $offset = App\Application\Localization\ApplicationDateTimeZone::get()->getOffset(new DateTimeImmutable('now', new DateTimeZone('UTC')))}
+
+            {App\Application\Localization\ApplicationDateTimeZone::get()->getName()}
+            (GMT{if 0 <= $offset}+{/if}{$offset / 60 / 60})
+        {/capture}
+
+        <div>
             {* Off-canvas menu for mobile *}
             <div x-data="sidebar" x-bind="sidebar" x-cloak id="sidebar-main" class="fixed inset-0 flex z-40 md:hidden" role="dialog" aria-modal="true">
 
@@ -45,6 +52,16 @@
                             {control sidebarMenu}
                         {/block}
                     </div>
+                    <div class="flex-shrink-0 flex border-t border-indigo-800 p-4">
+                        <div class="flex items-center text-white text-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                            </svg>
+                            <span class="ml-2">
+                                {$timezoneInfo}
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="flex-shrink-0 w-14" aria-hidden="true">
@@ -63,6 +80,16 @@
                         {block #sidebar_menu_desktop}
                             {control sidebarMenu}
                         {/block}
+                    </div>
+                    <div class="flex-shrink-0 flex border-t border-indigo-800 p-4">
+                        <div class="flex items-center text-white text-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                            </svg>
+                            <span class="ml-2">
+                                {$timezoneInfo}
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>

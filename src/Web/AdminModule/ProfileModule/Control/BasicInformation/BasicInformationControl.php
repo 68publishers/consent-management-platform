@@ -7,9 +7,12 @@ namespace App\Web\AdminModule\ProfileModule\Control\BasicInformation;
 use Throwable;
 use App\Web\Ui\Control;
 use Nette\Application\UI\Form;
+use App\ReadModel\User\UserView;
 use App\Web\Ui\Form\FormFactoryInterface;
+use Nepada\FormRenderer\TemplateRenderer;
+use App\Application\Localization\Profiles;
 use App\Web\Ui\Form\FormFactoryOptionsTrait;
-use SixtyEightPublishers\UserBundle\ReadModel\View\UserView;
+use App\Application\Localization\ApplicationDateTimeZone;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 use SixtyEightPublishers\UserBundle\Domain\Command\UpdateUserCommand;
 use App\Web\AdminModule\ProfileModule\Control\BasicInformation\Event\BasicInformationUpdatedEvent;
@@ -23,17 +26,21 @@ final class BasicInformationControl extends Control
 
 	private CommandBusInterface $commandBus;
 
+	private Profiles $profiles;
+
 	private UserView $userView;
 
 	/**
 	 * @param \App\Web\Ui\Form\FormFactoryInterface                            $formFactory
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface $commandBus
-	 * @param \SixtyEightPublishers\UserBundle\ReadModel\View\UserView         $userView
+	 * @param \App\Application\Localization\Profiles                           $profiles
+	 * @param \App\ReadModel\User\UserView                                     $userView
 	 */
-	public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, UserView $userView)
+	public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, Profiles $profiles, UserView $userView)
 	{
 		$this->formFactory = $formFactory;
 		$this->commandBus = $commandBus;
+		$this->profiles = $profiles;
 		$this->userView = $userView;
 	}
 
@@ -53,14 +60,33 @@ final class BasicInformationControl extends Control
 	protected function createComponentForm(): Form
 	{
 		$form = $this->formFactory->create($this->getFormFactoryOptions());
+		$renderer = $form->getRenderer();
+		assert($renderer instanceof TemplateRenderer);
 
 		$form->setTranslator($this->getPrefixedTranslator());
+		$renderer->importTemplate(__DIR__ . '/templates/form.imports.latte');
+		$renderer->getTemplate()->profiles = $this->profiles;
 
 		$form->addText('firstname', 'firstname.field')
 			->setRequired('firstname.required');
 
 		$form->addText('surname', 'surname.field')
 			->setRequired('surname.required');
+
+		$profiles = [];
+		foreach ($this->profiles->all() as $profile) {
+			$profiles[$profile->locale()] = $profile->name();
+		}
+
+		$form->addSelect('profile', 'profile.field', $profiles)
+			->setRequired('profile.required')
+			->setTranslator(NULL);
+
+		$form->addSelect('timezone', 'timezone.field')
+			->setItems(ApplicationDateTimeZone::all(), FALSE)
+			->setRequired('timezone.required')
+			->setTranslator(NULL)
+			->setOption('searchbar', TRUE);
 
 		$form->addProtection('//layout.form_protection');
 
@@ -69,6 +95,8 @@ final class BasicInformationControl extends Control
 		$form->setDefaults([
 			'firstname' => $this->userView->name->firstname(),
 			'surname' => $this->userView->name->surname(),
+			'profile' => $this->userView->profileLocale->value(),
+			'timezone' => $this->userView->timezone->getName(),
 		]);
 
 		$form->onSuccess[] = function (Form $form) {
@@ -88,7 +116,9 @@ final class BasicInformationControl extends Control
 		$values = $form->values;
 		$command = UpdateUserCommand::create($this->userView->id->toString())
 			->withFirstname($values->firstname)
-			->withSurname($values->surname);
+			->withSurname($values->surname)
+			->withParam('profile', $values->profile)
+			->withParam('timezone', $values->timezone);
 
 		try {
 			$this->commandBus->dispatch($command);
@@ -99,7 +129,7 @@ final class BasicInformationControl extends Control
 			return;
 		}
 
-		$this->dispatchEvent(new BasicInformationUpdatedEvent($this->userView->id));
+		$this->dispatchEvent(new BasicInformationUpdatedEvent($this->userView->id, $this->userView->profileLocale->value(), $values->profile));
 		$this->redrawControl();
 	}
 }

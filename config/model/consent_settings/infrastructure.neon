@@ -10,7 +10,7 @@ services:
 	# infra: doctrine
 	-
 		autowired: no
-		factory: App\Infrastructure\ConsentSettings\Doctrine\QueryHandler\GetConsentSettingByProjectIdAndChecksumQueryHandler
+		factory: App\Infrastructure\ConsentSettings\Doctrine\ReadModel\GetConsentSettingByProjectIdAndChecksumQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:

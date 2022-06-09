@@ -9,14 +9,18 @@ services:
 
 	# infra: doctrine
 	-
-		autowired: no
-		factory: App\Infrastructure\Category\Doctrine\QueryHandler\GetCategoryByIdQueryHandler
+		autowired: self
+		type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
+		factory: App\Infrastructure\Category\Doctrine\ReadModel\CategoryViewDataTransformer
 	-
 		autowired: no
-		factory: App\Infrastructure\Category\Doctrine\QueryHandler\GetCategoryByCodeQueryHandler
+		factory: App\Infrastructure\Category\Doctrine\ReadModel\GetCategoryByIdQueryHandler
 	-
 		autowired: no
-		factory: App\Infrastructure\Category\Doctrine\QueryHandler\CategoriesDataGridQueryHandler
+		factory: App\Infrastructure\Category\Doctrine\ReadModel\GetCategoryByCodeQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\Category\Doctrine\ReadModel\CategoriesDataGridQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:

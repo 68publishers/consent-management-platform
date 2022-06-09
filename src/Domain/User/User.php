@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace App\Domain\User;
 
+use DateTimeZone;
+use DomainException;
+use App\Domain\Shared\ValueObject\Locale;
 use Doctrine\Common\Collections\Collection;
 use App\Domain\Project\ValueObject\ProjectId;
+use App\Domain\User\Event\UserProfileChanged;
 use App\Domain\User\Event\UserProjectsChanged;
+use App\Domain\User\Event\UserTimezoneChanged;
 use Doctrine\Common\Collections\ArrayCollection;
+use SixtyEightPublishers\UserBundle\Domain\Event\UserCreated;
 use SixtyEightPublishers\UserBundle\Domain\Command\CreateUserCommand;
 use SixtyEightPublishers\UserBundle\Domain\Command\UpdateUserCommand;
 use SixtyEightPublishers\UserBundle\Domain\Aggregate\User as BaseUser;
@@ -17,6 +23,10 @@ use SixtyEightPublishers\UserBundle\Domain\CheckEmailAddressUniquenessInterface;
 
 final class User extends BaseUser
 {
+	private Locale $profileLocale;
+
+	private DateTimeZone $timezone;
+
 	/** @var \Doctrine\Common\Collections\Collection|\App\Domain\User\UserHasProject[] */
 	private Collection $projects;
 
@@ -26,7 +36,19 @@ final class User extends BaseUser
 	public static function create(CreateUserCommand $command, PasswordHashAlgorithmInterface $algorithm, CheckEmailAddressUniquenessInterface $checkEmailAddressUniqueness, CheckUsernameUniquenessInterface $checkUsernameUniqueness): self
 	{
 		$user = parent::create($command, $algorithm, $checkEmailAddressUniqueness, $checkUsernameUniqueness);
-		$user->projects = new ArrayCollection();
+
+		if (!$command->hasParam('profile')) {
+			throw new DomainException(sprintf(
+				'Missing required parameter "profile" in the command %s.',
+				CreateUserCommand::class
+			));
+		}
+
+		$user->recordThat(UserProfileChanged::create($user->id, Locale::fromValue($command->getParam('profile'))));
+
+		if ($command->hasParam('timezone')) {
+			$user->changeTimezone(new DateTimeZone($command->getParam('timezone')));
+		}
 
 		if ($command->hasParam('project_ids') && !empty($command->getParam('project_ids'))) {
 			$projectIds = array_map(static fn (string $projectId): ProjectId => ProjectId::fromString($projectId), $command->getParam('project_ids'));
@@ -49,8 +71,40 @@ final class User extends BaseUser
 	{
 		parent::update($command, $algorithm, $checkEmailAddressUniqueness, $checkUsernameUniqueness);
 
+		if ($command->hasParam('profile')) {
+			$this->changeProfile(Locale::fromValue($command->getParam('profile')));
+		}
+
+		if ($command->hasParam('timezone')) {
+			$this->changeTimezone(new DateTimeZone($command->getParam('timezone')));
+		}
+
 		if ($command->hasParam('project_ids')) {
 			$this->changeProjects(array_map(static fn (string $projectId): ProjectId => ProjectId::fromString($projectId), $command->getParam('project_ids')));
+		}
+	}
+
+	/**
+	 * @param \App\Domain\Shared\ValueObject\Locale $profileLocale
+	 *
+	 * @return void
+	 */
+	public function changeProfile(Locale $profileLocale): void
+	{
+		if (!$this->profileLocale->equals($profileLocale)) {
+			$this->recordThat(UserProfileChanged::create($this->id, $profileLocale));
+		}
+	}
+
+	/**
+	 * @param \DateTimeZone $timezone
+	 *
+	 * @return void
+	 */
+	public function changeTimezone(DateTimeZone $timezone): void
+	{
+		if ($this->timezone->getName() !== $timezone->getName()) {
+			$this->recordThat(UserTimezoneChanged::create($this->id, $timezone));
 		}
 	}
 
@@ -90,6 +144,37 @@ final class User extends BaseUser
 		if (!$this->areProjectsEqual($currentProjectIds, $newProjectIds)) {
 			$this->recordThat(UserProjectsChanged::create($this->id, $newProjectIds));
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	protected function whenUserCreated(UserCreated $event): void
+	{
+		parent::whenUserCreated($event);
+
+		$this->timezone = new DateTimeZone('UTC');
+		$this->projects = new ArrayCollection();
+	}
+
+	/**
+	 * @param \App\Domain\User\Event\UserProfileChanged $event
+	 *
+	 * @return void
+	 */
+	protected function whenUserProfileChanged(UserProfileChanged $event): void
+	{
+		$this->profileLocale = $event->profileLocale();
+	}
+
+	/**
+	 * @param \App\Domain\User\Event\UserTimezoneChanged $event
+	 *
+	 * @return void
+	 */
+	protected function whenUserTimezoneChanged(UserTimezoneChanged $event): void
+	{
+		$this->timezone = $event->timezone();
 	}
 
 	/**

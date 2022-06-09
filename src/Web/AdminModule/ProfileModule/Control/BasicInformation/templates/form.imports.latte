@@ -1,0 +1,20 @@
+{varType App\Application\Localization\Profiles $profiles}
+
+{define #input-name-profile}
+    {var $htmlData = []}
+
+    {foreach $control->items as $k => $v}
+        {capture $html|spaceless}
+            <span class="flex items-center">
+                <span class="rounded-full">{$profiles->get($k)->icon()|noescape}</span>
+                <span class="ml-3">{=$control->translate($v)}</span>
+            </span>
+        {/capture}
+
+        {do $htmlData[$k] = $html}
+    {/foreach}
+
+    {do $control->setOptionAttribute('data-html:', $htmlData)}
+
+    {include #input-type-select, control => $control}
+{/define}
