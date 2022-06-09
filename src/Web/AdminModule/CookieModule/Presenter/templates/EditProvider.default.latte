@@ -1,0 +1,16 @@
+{block #heading_actions}
+    <a n:href="Providers:" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+        {_back_to_list}
+    </a>
+{/block}
+
+{block #content}
+
+<div class="bg-white shadow sm:rounded-lg">
+    <div class="max-w-2xl px-4 py-8 sm:px-6 mx-auto">
+        {control providerForm}
+    </div>
+</div>

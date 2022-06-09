@@ -81,8 +81,8 @@ final class ProviderListControl extends Control
 			->setSortable('createdAt')
 			->setFilterDate('createdAt');
 
-		/*$grid->addAction('edit', '')
-			->setTemplate(__DIR__ . '/templates/action.edit.latte');*/
+		$grid->addAction('edit', '')
+			->setTemplate(__DIR__ . '/templates/action.edit.latte');
 
 		$grid->addAction('delete', '')
 			->setTemplate(__DIR__ . '/templates/action.delete.latte');

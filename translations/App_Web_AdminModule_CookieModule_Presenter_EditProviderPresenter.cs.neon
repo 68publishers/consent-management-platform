@@ -1,0 +1,7 @@
+page_title: Upravit poskytovatele
+back_to_list: Zpět na výpis poskytovatelů
+
+message:
+	provider_not_found: Poskytovatel nebyl nalezen.
+	provider_updated: Poskytovatel byl upraven.
+	provider_update_failed: Při upravování poskytovatele došlo k chybě.

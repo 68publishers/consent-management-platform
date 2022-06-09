@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Web\AdminModule\CookieModule\Control\CategoryForm;
 
 use Throwable;
+use Nette\Utils\Html;
 use App\Web\Ui\Control;
 use Nette\Application\UI\Form;
 use Nette\Forms\Controls\TextInput;
@@ -69,7 +70,7 @@ final class CategoryFormControl extends Control
 		$namesContainer = $form->addContainer('names');
 
 		foreach ($this->validLocalesProvider->getValidLocales() as $locale) {
-			$namesContainer->addText($locale->code(), $translator->translate('name.field', ['code' => $locale->code(), 'name' => $locale->name()]))
+			$namesContainer->addText($locale->code(), Html::fromText($translator->translate('name.field', ['code' => $locale->code(), 'name' => $locale->name()])))
 				->setRequired('name.required');
 		}
 
