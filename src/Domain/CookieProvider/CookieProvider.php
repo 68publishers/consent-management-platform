@@ -92,6 +92,10 @@ final class CookieProvider implements AggregateRootInterface
 			$this->changeType(ProviderType::fromValue($command->type()));
 		}
 
+		if (NULL !== $command->link()) {
+			$this->changeLink(Link::withValidation($command->link()));
+		}
+
 		if (NULL !== $command->purposes()) {
 			foreach ($command->purposes() as $locale => $purpose) {
 				$this->changePurpose(Locale::fromValue($locale), Purpose::fromValue($purpose));
