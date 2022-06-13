@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3a116b46ccf1f510babb4bb5f1ac5c73",
+    "content-hash": "6f6d110d0f4536069957dbe1738f06cf",
     "packages": [
         {
             "name": "68publishers/asset",
@@ -3612,16 +3612,16 @@
         },
         {
             "name": "latte/latte",
-            "version": "v2.11.0",
+            "version": "v2.11.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/latte.git",
-                "reference": "a815687bfadaf3af51ae99f92edb4ea310c43426"
+                "reference": "3a5ed09d92b3bb2c428814bb919c2f8637bc49b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/latte/zipball/a815687bfadaf3af51ae99f92edb4ea310c43426",
-                "reference": "a815687bfadaf3af51ae99f92edb4ea310c43426",
+                "url": "https://api.github.com/repos/nette/latte/zipball/3a5ed09d92b3bb2c428814bb919c2f8637bc49b1",
+                "reference": "3a5ed09d92b3bb2c428814bb919c2f8637bc49b1",
                 "shasum": ""
             },
             "require": {
@@ -3634,9 +3634,9 @@
             },
             "require-dev": {
                 "nette/php-generator": "^3.3.4",
-                "nette/tester": "~2.0",
+                "nette/tester": "^2.0",
                 "nette/utils": "^3.0",
-                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan": "^1",
                 "tracy/tracy": "^2.3"
             },
             "suggest": {
@@ -3690,9 +3690,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nette/latte/issues",
-                "source": "https://github.com/nette/latte/tree/v2.11.0"
+                "source": "https://github.com/nette/latte/tree/v2.11.4"
             },
-            "time": "2022-02-22T18:39:58+00:00"
+            "time": "2022-05-30T13:34:15+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -10870,5 +10870,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.3.0"
 }
