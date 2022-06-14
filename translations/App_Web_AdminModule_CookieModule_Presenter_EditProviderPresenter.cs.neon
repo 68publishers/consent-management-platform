@@ -1,7 +1,11 @@
 page_title: Upravit poskytovatele
 back_to_list: Zpět na výpis poskytovatelů
+cookies: Cookies
+add_new_cookie: Přidat novou cookie
 
 message:
 	provider_not_found: Poskytovatel nebyl nalezen.
 	provider_updated: Poskytovatel byl upraven.
 	provider_update_failed: Při upravování poskytovatele došlo k chybě.
+	cookie_created: Cookie byla vytvořena.
+	cookie_creation_failed: Při vytváření cookie došlo k chybě.

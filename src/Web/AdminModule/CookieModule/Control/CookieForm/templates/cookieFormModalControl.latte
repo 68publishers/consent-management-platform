@@ -1,0 +1,18 @@
+{templateType App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalTemplate}
+
+{extends $layout}
+
+{block #title}
+    {if NULL !== $default}
+        {_edit_cookie, [name => $default->name->value()]}
+    {else}
+        {_create_cookie}
+    {/if}
+{/block}
+
+{block #footer}
+{/block}
+
+{block #body}
+
+{control cookieForm}

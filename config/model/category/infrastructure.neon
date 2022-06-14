@@ -21,6 +21,9 @@ services:
 	-
 		autowired: no
 		factory: App\Infrastructure\Category\Doctrine\ReadModel\CategoriesDataGridQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\Category\Doctrine\ReadModel\AllCategoriesQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:

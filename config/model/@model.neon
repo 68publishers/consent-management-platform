@@ -2,6 +2,7 @@ includes:
 	- category/@default.neon
 	- consent/@default.neon
 	- consent_settings/@default.neon
+	- cookie/@default.neon
 	- cookie_provider/@default.neon
 	- global_settings/@default.neon
 	- password_request/@default.neon

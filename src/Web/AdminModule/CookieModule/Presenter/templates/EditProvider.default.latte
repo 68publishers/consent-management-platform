@@ -9,8 +9,19 @@
 
 {block #content}
 
-<div class="bg-white shadow sm:rounded-lg">
+<div class="bg-white shadow sm:rounded-lg mb-12">
     <div class="max-w-2xl px-4 py-8 sm:px-6 mx-auto">
         {control providerForm}
     </div>
+</div>
+
+<div class="mb-8 pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
+    <h3 class="text-lg leading-6 font-medium text-gray-900">{_cookies}</h3>
+    <div class="mt-3 sm:mt-0 sm:ml-4">
+        <a n:href="openModal! cookieModal" class="ajax inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">{_add_new_cookie}</a>
+    </div>
+</div>
+
+<div n:snippet="cookie_list">
+    {control cookieList}
 </div>

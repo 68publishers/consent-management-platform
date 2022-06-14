@@ -7,6 +7,7 @@ namespace App\Infrastructure\GlobalSettings\Doctrine\ReadModel;
 use App\Domain\Shared\ValueObject\LocalesConfig;
 use App\ReadModel\GlobalSettings\GlobalSettingsView;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataInterface;
+use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewFactoryInterface;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface;
 use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\ReadModel\DoctrineViewData;
 
@@ -23,7 +24,7 @@ final class GlobalSettingsViewDataTransformer implements ViewDataTransformerInte
 	/**
 	 * {@inheritDoc}
 	 */
-	public function transform(ViewDataInterface $viewData): ViewDataInterface
+	public function transform(ViewDataInterface $viewData, ViewFactoryInterface $viewFactory): ViewDataInterface
 	{
 		return $viewData
 			->with('locales', LocalesConfig::create($viewData->get('locales.locales'), $viewData->get('locales.defaultLocale')))

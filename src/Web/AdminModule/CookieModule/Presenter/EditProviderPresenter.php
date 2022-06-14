@@ -11,28 +11,42 @@ use App\Domain\CookieProvider\ValueObject\CookieProviderId;
 use App\ReadModel\CookieProvider\GetCookieProviderByIdQuery;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
+use App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControl;
 use App\Web\AdminModule\CookieModule\Control\ProviderForm\ProviderFormControl;
+use App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControl;
+use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieCreatedEvent;
 use App\Web\AdminModule\CookieModule\Control\ProviderForm\Event\ProviderUpdatedEvent;
+use App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControlFactoryInterface;
+use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieFormProcessingFailedEvent;
 use App\Web\AdminModule\CookieModule\Control\ProviderForm\ProviderFormControlFactoryInterface;
+use App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControlFactoryInterface;
 use App\Web\AdminModule\CookieModule\Control\ProviderForm\Event\ProviderFormProcessingFailedEvent;
 
 final class EditProviderPresenter extends AdminPresenter
 {
 	private ProviderFormControlFactoryInterface $providerFormControlFactory;
 
+	private CookieListControlFactoryInterface $cookieListControlFactory;
+
+	private CookieFormModalControlFactoryInterface $cookieFormModalControlFactory;
+
 	private QueryBusInterface $queryBus;
 
 	private CookieProviderView $cookieProviderView;
 
 	/**
-	 * @param \App\Web\AdminModule\CookieModule\Control\ProviderForm\ProviderFormControlFactoryInterface $providerFormControlFactory
-	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface                             $queryBus
+	 * @param \App\Web\AdminModule\CookieModule\Control\ProviderForm\ProviderFormControlFactoryInterface  $providerFormControlFactory
+	 * @param \App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControlFactoryInterface      $cookieListControlFactory
+	 * @param \App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControlFactoryInterface $cookieFormModalControlFactory
+	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface                              $queryBus
 	 */
-	public function __construct(ProviderFormControlFactoryInterface $providerFormControlFactory, QueryBusInterface $queryBus)
+	public function __construct(ProviderFormControlFactoryInterface $providerFormControlFactory, CookieListControlFactoryInterface $cookieListControlFactory, CookieFormModalControlFactoryInterface $cookieFormModalControlFactory, QueryBusInterface $queryBus)
 	{
 		parent::__construct();
 
 		$this->providerFormControlFactory = $providerFormControlFactory;
+		$this->cookieListControlFactory = $cookieListControlFactory;
+		$this->cookieFormModalControlFactory = $cookieFormModalControlFactory;
 		$this->queryBus = $queryBus;
 	}
 
@@ -83,6 +97,39 @@ final class EditProviderPresenter extends AdminPresenter
 
 		$control->addEventListener(ProviderFormProcessingFailedEvent::class, function () {
 			$this->subscribeFlashMessage(FlashMessage::error('provider_update_failed'));
+		});
+
+		return $control;
+	}
+
+	/**
+	 * @return \App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControl
+	 */
+	protected function createComponentCookieList(): CookieListControl
+	{
+		return $this->cookieListControlFactory->create($this->cookieProviderView->id, $this->validLocalesProvider->getValidDefaultLocale());
+	}
+
+	/**
+	 * @return \App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControl
+	 */
+	protected function createComponentCookieModal(): CookieFormModalControl
+	{
+		$control = $this->cookieFormModalControlFactory->create($this->cookieProviderView->id);
+		$inner = $control->getInnerControl();
+
+		$inner->setFormFactoryOptions([
+			FormFactoryInterface::OPTION_AJAX => TRUE,
+		]);
+
+		$inner->addEventListener(CookieCreatedEvent::class, function () {
+			$this->subscribeFlashMessage(FlashMessage::success('cookie_created'));
+			$this->redrawControl('cookie_list');
+			$this->closeModal();
+		});
+
+		$inner->addEventListener(CookieFormProcessingFailedEvent::class, function () {
+			$this->subscribeFlashMessage(FlashMessage::error('cookie_creation_failed'));
 		});
 
 		return $control;

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                                      https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Domain\Cookie\Cookie" table="cookie">
+        <indexes>
+            <index name="idx_cookie_created_at" columns="created_at" />
+            <index name="idx_cookie_category_id" columns="category_id" />
+            <index name="idx_cookie_cookie_provider_id" columns="cookie_provider_id" />
+        </indexes>
+
+        <id name="id" column="id" type="App\Domain\Cookie\ValueObject\CookieId" unique="true" />
+
+        <field name="categoryId" column="category_id" type="App\Domain\Category\ValueObject\CategoryId" />
+
+        <field name="cookieProviderId" column="cookie_provider_id" type="App\Domain\CookieProvider\ValueObject\CookieProviderId" />
+
+        <field name="createdAt" column="created_at" type="datetime_immutable" />
+
+        <field name="deletedAt" column="deleted_at" type="datetime_immutable" nullable="true" />
+
+        <field name="name" column="name" type="App\Domain\Cookie\ValueObject\Name" />
+
+        <field name="version" column="version" type="integer" />
+
+        <one-to-many field="translations" target-entity="App\Domain\Cookie\CookieTranslation" mapped-by="cookie" orphan-removal="true">
+            <cascade>
+                <cascade-persist />
+                <cascade-remove />
+            </cascade>
+        </one-to-many>
+    </entity>
+
+</doctrine-mapping>

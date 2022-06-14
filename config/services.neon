@@ -55,6 +55,9 @@ services:
 	- App\Web\AdminModule\CookieModule\Control\CategoryForm\CategoryFormControlFactoryInterface
 	- App\Web\AdminModule\CookieModule\Control\ProviderList\ProviderListControlFactoryInterface
 	- App\Web\AdminModule\CookieModule\Control\ProviderForm\ProviderFormControlFactoryInterface
+	- App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControlFactoryInterface
+	- App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormControlFactoryInterface
+	- App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControlFactoryInterface
 
 	# Web\AdminModule\ProjectModule
 	- App\Web\AdminModule\ProjectModule\Control\ConsentList\ConsentListControlFactoryInterface

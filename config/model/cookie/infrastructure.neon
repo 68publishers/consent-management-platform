@@ -1,0 +1,48 @@
+services:
+	# infra
+	-
+		type: App\Domain\Cookie\CookieRepositoryInterface
+		factory: App\Infrastructure\Cookie\CookieRepository
+	-
+		type: App\Domain\Cookie\CheckCategoryExistsInterface
+		factory: App\Infrastructure\Cookie\CheckCategoryExists
+	-
+		type: App\Domain\Cookie\CheckCookieProviderExistsInterface
+		factory: App\Infrastructure\Cookie\CheckCookieProviderExists
+
+	# infra: doctrine
+	-
+		autowired: self
+		type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
+		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\CookieViewDataTransformer
+	-
+		autowired: no
+		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\GetCookieByIdQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\CookiesDataGridQueryHandler
+
+# infra: doctrine mapping
+nettrine.orm.xml:
+	mapping:
+		App\Domain\Cookie\: %appDir%/Infrastructure/Cookie/Doctrine/Mapping
+
+# infra: dbal types
+nettrine.dbal:
+	connection:
+		types:
+			App\Domain\Cookie\ValueObject\CookieId:
+				class: App\Infrastructure\Cookie\Doctrine\DbalType\CookieIdType
+				commented: yes
+
+			App\Domain\Cookie\ValueObject\Name:
+				class: App\Infrastructure\Cookie\Doctrine\DbalType\NameType
+				commented: yes
+
+			App\Domain\Cookie\ValueObject\ProcessingTime:
+				class: App\Infrastructure\Cookie\Doctrine\DbalType\ProcessingTimeType
+				commented: yes
+
+			App\Domain\Cookie\ValueObject\Purpose:
+				class: App\Infrastructure\Cookie\Doctrine\DbalType\PurposeType
+				commented: yes

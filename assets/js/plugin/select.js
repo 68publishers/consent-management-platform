@@ -43,7 +43,7 @@ function Select(Alpine) {
 
             this.$nextTick((() => {
                 this.$refs.options.focus();
-                this.$refs.options.children[this.activeIndex].scrollIntoView({
+                this.$refs.options.getElementsByTagName('ul')[0].children[this.activeIndex].scrollIntoView({
                     block: 'nearest'
                 })
             }));
@@ -134,7 +134,7 @@ function Select(Alpine) {
                 init();
 
                 this.$watch('activeIndex', (() => {
-                    this.opened && (null !== this.activeIndex ? this.activeDescendant = this.$refs.options.children[this.activeIndex].id : this.activeDescendant = '')
+                    this.opened && (null !== this.activeIndex ? this.activeDescendant = this.$refs.options.getElementsByTagName('ul')[0].children[this.activeIndex].id : this.activeDescendant = '')
                 }))
 
                 // dependent select box

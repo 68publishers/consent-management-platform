@@ -11,13 +11,10 @@ sidebar:
 	cookies: Cookies
 	cookies_categories: Kategorie cookies
 	cookies_providers: Poskytovatelé cookies
-	cookies_cookies: Cookies
 	projects: Projekty
 
 sidebar_project:
 	consents: Evidence souhlasů
-	cookies: Cookies
-	settings: Nastavení
 	edit_project: Upravit projekt
 
 profile:

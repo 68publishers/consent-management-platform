@@ -1,0 +1,19 @@
+name:
+	field: Název
+	required: Vyplňte prosím název.
+
+category:
+	field: Kategorie
+	required: Zvolte prosím kategorii.
+
+purpose:
+	field: 'Účel (%name%)'
+
+processing_time:
+	field: 'Doba zpracování (%name%)'
+
+save:
+	field: Vytvořit cookie
+
+update:
+	field: Uložit

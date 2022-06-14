@@ -6,6 +6,7 @@ namespace App\Infrastructure\Category\Doctrine\ReadModel;
 
 use App\ReadModel\Category\CategoryView;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataInterface;
+use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewFactoryInterface;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface;
 use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\ReadModel\DoctrineViewData;
 
@@ -22,7 +23,7 @@ final class CategoryViewDataTransformer implements ViewDataTransformerInterface
 	/**
 	 * {@inheritDoc}
 	 */
-	public function transform(ViewDataInterface $viewData): ViewDataInterface
+	public function transform(ViewDataInterface $viewData, ViewFactoryInterface $viewFactory): ViewDataInterface
 	{
 		$names = [];
 

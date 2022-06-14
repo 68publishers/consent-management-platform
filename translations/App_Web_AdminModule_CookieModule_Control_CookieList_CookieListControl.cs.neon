@@ -1,0 +1,11 @@
+name: Název
+category_name: Kategorie
+processing_time: Doba zpracování
+created_at: Vytvořeno
+
+delete_confirm:
+	question: 'Opravdu si přejete odstranit cookie <strong>"%name%"</strong>?'
+
+message:
+	cookie_updated: Cookie byla upravena.
+	cookie_update_failed: Při upravování cookie došlo k chybě.

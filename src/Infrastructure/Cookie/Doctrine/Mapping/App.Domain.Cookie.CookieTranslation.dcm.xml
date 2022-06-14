@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                                      https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Domain\Cookie\CookieTranslation" table="cookie_translation">
+        <unique-constraints>
+            <unique-constraint name="uniq_cookie_translation_cookie_id_locale" columns="cookie_id,locale" />
+        </unique-constraints>
+
+        <id name="id" column="id" type="bigint">
+            <generator strategy="AUTO" />
+        </id>
+
+        <many-to-one field="cookie" target-entity="App\Domain\Cookie\Cookie">
+            <join-column name="cookie_id" referenced-column-name="id" nullable="false" on-delete="CASCADE" />
+        </many-to-one>
+
+        <field name="locale" column="locale" type="App\Domain\Shared\ValueObject\Locale" />
+
+        <field name="purpose" column="purpose" type="App\Domain\Cookie\ValueObject\Purpose" />
+
+        <field name="processingTime" column="processing_time" type="App\Domain\Cookie\ValueObject\ProcessingTime" />
+    </entity>
+
+</doctrine-mapping>

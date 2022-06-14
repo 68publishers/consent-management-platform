@@ -317,12 +317,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/68publishers/omni.git",
-                "reference": "064a5dcb6729da8356b8d1c6ed143a87c22be002"
+                "reference": "93cd1b58acff3376b94c1d1f85ad96de6b516c03"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/68publishers/omni/zipball/064a5dcb6729da8356b8d1c6ed143a87c22be002",
-                "reference": "064a5dcb6729da8356b8d1c6ed143a87c22be002",
+                "url": "https://api.github.com/repos/68publishers/omni/zipball/93cd1b58acff3376b94c1d1f85ad96de6b516c03",
+                "reference": "93cd1b58acff3376b94c1d1f85ad96de6b516c03",
                 "shasum": ""
             },
             "require": {
@@ -372,7 +372,7 @@
                 "issues": "https://github.com/68publishers/omni/issues",
                 "source": "https://github.com/68publishers/omni/tree/main"
             },
-            "time": "2022-06-09T00:12:55+00:00"
+            "time": "2022-06-14T01:03:38+00:00"
         },
         {
             "name": "68publishers/smart-nette-component",

@@ -1,0 +1,10 @@
+services:
+	-
+		autowired: no
+		factory: App\Domain\Cookie\CommandHandler\CreateCookieCommandHandler
+	-
+		autowired: no
+		factory: App\Domain\Cookie\CommandHandler\UpdateCookieCommandHandler
+	-
+		autowired: no
+		factory: App\Domain\Cookie\CommandHandler\DeleteCookieCommandHandler

@@ -1,0 +1,15 @@
+{extends $originalTemplate}
+
+{varType App\ReadModel\Cookie\CookieItemView $item}
+
+{define col-category_name}
+    {if NULL !== $item->categoryName}
+        {$item->categoryName->value()}
+    {/if}
+{/define}
+
+{define col-processing_time}
+    {if NULL !== $item->processingTime}
+        {$item->processingTime->value()}
+    {/if}
+{/define}
