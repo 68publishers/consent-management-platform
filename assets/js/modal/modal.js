@@ -61,6 +61,8 @@ const Bridge = require('./modal-bridge');
                 opened[name] = data;
 
                 document.body.appendChild(wrapper);
+
+                return data;
             },
             close(names) {
                 for (let i in names) {
@@ -92,7 +94,11 @@ const Bridge = require('./modal-bridge');
                 }
 
                 const modalDef = payload.modals_to_show[name];
-                Modals.open(name, modalDef.content, modalDef.metadata);
+                const data = Modals.open(name, modalDef.content, modalDef.metadata);
+
+                data.wrapper.querySelectorAll('form').forEach(function (form) {
+                    window.Nette.initForm(form);
+                });
             }
         }
     }

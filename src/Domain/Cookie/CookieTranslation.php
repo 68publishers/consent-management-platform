@@ -6,7 +6,6 @@ namespace App\Domain\Cookie;
 
 use App\Domain\Shared\ValueObject\Locale;
 use App\Domain\Cookie\ValueObject\Purpose;
-use App\Domain\Cookie\ValueObject\ProcessingTime;
 
 final class CookieTranslation
 {
@@ -19,27 +18,23 @@ final class CookieTranslation
 
 	private Purpose $purpose;
 
-	private ProcessingTime $processingTime;
-
 	private function __construct()
 	{
 	}
 
 	/**
-	 * @param \App\Domain\Cookie\Cookie                     $cookie
-	 * @param \App\Domain\Shared\ValueObject\Locale         $locale
-	 * @param \App\Domain\Cookie\ValueObject\Purpose        $purpose
-	 * @param \App\Domain\Cookie\ValueObject\ProcessingTime $processingTime
+	 * @param \App\Domain\Cookie\Cookie              $cookie
+	 * @param \App\Domain\Shared\ValueObject\Locale  $locale
+	 * @param \App\Domain\Cookie\ValueObject\Purpose $purpose
 	 *
 	 * @return static
 	 */
-	public static function create(Cookie $cookie, Locale $locale, Purpose $purpose, ProcessingTime $processingTime): self
+	public static function create(Cookie $cookie, Locale $locale, Purpose $purpose): self
 	{
 		$cookieTranslation = new self();
 		$cookieTranslation->cookie = $cookie;
 		$cookieTranslation->locale = $locale;
 		$cookieTranslation->purpose = $purpose;
-		$cookieTranslation->processingTime = $processingTime;
 
 		return $cookieTranslation;
 	}
@@ -69,14 +64,6 @@ final class CookieTranslation
 	}
 
 	/**
-	 * @return \App\Domain\Cookie\ValueObject\ProcessingTime
-	 */
-	public function processingTime(): ProcessingTime
-	{
-		return $this->processingTime;
-	}
-
-	/**
 	 * @param \App\Domain\Cookie\ValueObject\Purpose $purpose
 	 *
 	 * @return void
@@ -84,13 +71,5 @@ final class CookieTranslation
 	public function setPurpose(Purpose $purpose): void
 	{
 		$this->purpose = $purpose;
-	}
-
-	/**
-	 * @param \App\Domain\Cookie\ValueObject\ProcessingTime $processingTime
-	 */
-	public function setProcessingTime(ProcessingTime $processingTime): void
-	{
-		$this->processingTime = $processingTime;
 	}
 }

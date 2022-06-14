@@ -53,11 +53,11 @@ final class UpdateCookieCommand extends AbstractCommand
 	}
 
 	/**
-	 * @return string[]
+	 * @return string|NULL
 	 */
-	public function processingTimes(): ?array
+	public function processingTime(): ?string
 	{
-		return $this->getParam('processing_times');
+		return $this->getParam('processing_time');
 	}
 
 	/**
@@ -91,12 +91,12 @@ final class UpdateCookieCommand extends AbstractCommand
 	}
 
 	/**
-	 * @param string[] $processingTimes
+	 * @param string $processingTime
 	 *
 	 * @return $this
 	 */
-	public function withProcessingTimes(array $processingTimes): self
+	public function withProcessingTime(string $processingTime): self
 	{
-		return $this->withParam('processing_times', $processingTimes);
+		return $this->withParam('processing_time', $processingTime);
 	}
 }

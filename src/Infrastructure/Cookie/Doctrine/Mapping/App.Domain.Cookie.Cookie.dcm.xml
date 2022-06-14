@@ -23,6 +23,8 @@
 
         <field name="name" column="name" type="App\Domain\Cookie\ValueObject\Name" />
 
+        <field name="processingTime" column="processing_time" type="App\Domain\Cookie\ValueObject\ProcessingTime" />
+
         <field name="version" column="version" type="integer" />
 
         <one-to-many field="translations" target-entity="App\Domain\Cookie\CookieTranslation" mapped-by="cookie" orphan-removal="true">

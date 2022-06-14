@@ -39,6 +39,8 @@ final class Cookie implements AggregateRootInterface
 
 	private Name $name;
 
+	private ProcessingTime $processingTime;
+
 	private Collection $translations;
 
 	/**
@@ -56,13 +58,13 @@ final class Cookie implements AggregateRootInterface
 		$categoryId = CategoryId::fromString($command->categoryId());
 		$cookieProviderId = CookieProviderId::fromString($command->cookieProviderId());
 		$name = Name::fromValue($command->name());
+		$processingTime = ProcessingTime::withValidation($command->processingTime());
 		$purposes = array_map(static fn (string $purpose): Purpose => Purpose::fromValue($purpose), $command->purposes());
-		$processingTimes = array_map(static fn (string $processingTime): ProcessingTime => ProcessingTime::fromValue($processingTime), $command->processingTimes());
 
 		$checkCategoryExists($categoryId);
 		$checkCookieProviderExists($cookieProviderId);
 
-		$cookie->recordThat(CookieCreated::create($id, $categoryId, $cookieProviderId, $name, $purposes, $processingTimes));
+		$cookie->recordThat(CookieCreated::create($id, $categoryId, $cookieProviderId, $name, $processingTime, $purposes));
 
 		return $cookie;
 	}
@@ -83,15 +85,13 @@ final class Cookie implements AggregateRootInterface
 			$this->changeName(Name::fromValue($command->name()));
 		}
 
+		if (NULL !== $command->processingTime()) {
+			$this->changeProcessingTime(ProcessingTime::withValidation($command->processingTime()));
+		}
+
 		if (NULL !== $command->purposes()) {
 			foreach ($command->purposes() as $locale => $purpose) {
 				$this->changePurpose(Locale::fromValue($locale), Purpose::fromValue($purpose));
-			}
-		}
-
-		if (NULL !== $command->processingTimes()) {
-			foreach ($command->processingTimes() as $locale => $processingTime) {
-				$this->changeProcessingTime(Locale::fromValue($locale), ProcessingTime::fromValue($processingTime));
 			}
 		}
 	}
@@ -146,17 +146,14 @@ final class Cookie implements AggregateRootInterface
 	}
 
 	/**
-	 * @param \App\Domain\Shared\ValueObject\Locale         $locale
 	 * @param \App\Domain\Cookie\ValueObject\ProcessingTime $processingTime
 	 *
 	 * @return void
 	 */
-	public function changeProcessingTime(Locale $locale, ProcessingTime $processingTime): void
+	public function changeProcessingTime(ProcessingTime $processingTime): void
 	{
-		$translation = $this->filterTranslation($locale);
-
-		if (!$translation instanceof CookieTranslation || !$translation->processingTime()->equals($processingTime)) {
-			$this->recordThat(CookieProcessingTimeChanged::create($this->id, $locale, $processingTime));
+		if (!$this->processingTime->equals($processingTime)) {
+			$this->recordThat(CookieProcessingTimeChanged::create($this->id, $processingTime));
 		}
 	}
 
@@ -172,16 +169,11 @@ final class Cookie implements AggregateRootInterface
 		$this->cookieProviderId = $event->cookieProviderId();
 		$this->createdAt = $event->createdAt();
 		$this->name = $event->name();
+		$this->processingTime = $event->processingTime();
 		$this->translations = new ArrayCollection();
-		$locales = array_unique(array_merge(array_keys($event->purposes()), array_keys($event->processingTimes())));
 
-		foreach ($locales as $locale) {
-			$this->translations->add(CookieTranslation::create(
-				$this,
-				Locale::fromValue($locale),
-				$event->purposes()[$locale] ?? Purpose::fromValue(''),
-				$event->processingTimes()[$locale] ?? ProcessingTime::fromValue('')
-			));
+		foreach ($event->purposes() as $locale => $purpose) {
+			$this->translations->add(CookieTranslation::create($this, Locale::fromValue($locale), $purpose));
 		}
 	}
 
@@ -206,6 +198,16 @@ final class Cookie implements AggregateRootInterface
 	}
 
 	/**
+	 * @param \App\Domain\Cookie\Event\CookieProcessingTimeChanged $event
+	 *
+	 * @return void
+	 */
+	protected function whenCookieProcessingTimeChanged(CookieProcessingTimeChanged $event): void
+	{
+		$this->processingTime = $event->processingTime();
+	}
+
+	/**
 	 * @param \App\Domain\Cookie\Event\CookiePurposeChanged $event
 	 *
 	 * @return void
@@ -220,25 +222,7 @@ final class Cookie implements AggregateRootInterface
 			return;
 		}
 
-		$this->translations->add(CookieTranslation::create($this, $event->locale(), $event->purpose(), ProcessingTime::fromValue('')));
-	}
-
-	/**
-	 * @param \App\Domain\Cookie\Event\CookieProcessingTimeChanged $event
-	 *
-	 * @return void
-	 */
-	protected function whenCookieProcessingTimeChanged(CookieProcessingTimeChanged $event): void
-	{
-		$translation = $this->filterTranslation($event->locale());
-
-		if ($translation instanceof CookieTranslation) {
-			$translation->setProcessingTime($event->processingTime());
-
-			return;
-		}
-
-		$this->translations->add(CookieTranslation::create($this, $event->locale(), Purpose::fromValue(''), $event->processingTime()));
+		$this->translations->add(CookieTranslation::create($this, $event->locale(), $event->purpose()));
 	}
 
 	/**

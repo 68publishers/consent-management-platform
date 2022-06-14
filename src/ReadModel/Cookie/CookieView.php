@@ -28,11 +28,10 @@ final class CookieView extends AbstractView
 
 	public Name $name;
 
+	public ProcessingTime $processingTime;
+
 	/** @var \App\Domain\Cookie\ValueObject\Purpose[]  */
 	public array $purposes;
-
-	/** @var \App\Domain\Cookie\ValueObject\ProcessingTime[]  */
-	public array $processingTimes;
 
 	/**
 	 * @return array
@@ -46,8 +45,8 @@ final class CookieView extends AbstractView
 			'createdAt' => $this->createdAt->format(DateTimeInterface::ATOM),
 			'deletedAt' => NULL !== $this->deletedAt ? $this->deletedAt->format(DateTimeInterface::ATOM) : NULL,
 			'name' => $this->name->value(),
+			'processingTime' => $this->processingTime->value(),
 			'purposes' => array_map(static fn (Purpose $purpose): string => $purpose->value(), $this->purposes),
-			'processingTimes' => array_map(static fn (ProcessingTime $processingTime): string => $processingTime->value(), $this->processingTimes),
 		];
 	}
 }

@@ -75,7 +75,11 @@ final class CookieListControl extends Control
 		$grid = $this->dataGridFactory->create(CookiesDataGridQuery::create($this->cookieProviderId->toString(), NULL !== $this->locale ? $this->locale->code() : NULL));
 
 		$grid->setTranslator($this->getPrefixedTranslator());
+		$grid->setSessionNamePostfix($this->cookieProviderId->toString());
 		$grid->setTemplateFile(__DIR__ . '/templates/datagrid.latte');
+		$grid->setTemplateVariables([
+			'_locale' => $this->locale,
+		]);
 
 		$grid->setDefaultSort([
 			'created_at' => 'DESC',

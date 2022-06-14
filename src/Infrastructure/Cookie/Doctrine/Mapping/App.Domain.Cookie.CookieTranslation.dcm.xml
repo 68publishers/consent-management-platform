@@ -20,8 +20,6 @@
         <field name="locale" column="locale" type="App\Domain\Shared\ValueObject\Locale" />
 
         <field name="purpose" column="purpose" type="App\Domain\Cookie\ValueObject\Purpose" />
-
-        <field name="processingTime" column="processing_time" type="App\Domain\Cookie\ValueObject\ProcessingTime" />
     </entity>
 
 </doctrine-mapping>

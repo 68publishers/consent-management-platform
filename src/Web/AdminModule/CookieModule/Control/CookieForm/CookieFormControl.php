@@ -15,6 +15,7 @@ use App\Domain\Cookie\ValueObject\Purpose;
 use App\Domain\Cookie\ValueObject\CookieId;
 use App\Web\Ui\Form\FormFactoryOptionsTrait;
 use App\ReadModel\Category\AllCategoriesQuery;
+use App\Domain\Cookie\ValueObject\ProcessingTime;
 use App\Domain\Cookie\Command\CreateCookieCommand;
 use App\Domain\Cookie\Command\UpdateCookieCommand;
 use App\Application\GlobalSettings\ValidLocalesProvider;
@@ -78,13 +79,24 @@ final class CookieFormControl extends Control
 			->setTranslator(NULL)
 			->checkDefaultValue(FALSE);
 
-		$translationsContainer = $form->addContainer('translations');
+		$form->addRadioList('processing_time', 'processing_time.field')
+			->setItems([ProcessingTime::PERSISTENT, ProcessingTime::SESSION, 'expiration'], FALSE)
+			->setRequired('processing_time.required')
+			->setDefaultValue(ProcessingTime::PERSISTENT)
+			->addCondition($form::EQUAL, 'expiration')
+				->toggle('#' . $this->getUniqueId() . '-processing_time_mask');
+
+		$form->addText('processing_time_mask', 'processing_time_mask.field')
+			->setOption('id', $this->getUniqueId() . '-processing_time_mask')
+			->setOption('description', 'processing_time_mask.description')
+			->addConditionOn($form->getComponent('processing_time'), $form::EQUAL, 'expiration')
+				->setRequired('processing_time_mask.required')
+				->addRule($form::PATTERN, 'processing_time_mask.rule_pattern', '(?:(?<years>\d+)y\s*)?(?:(?<months>\d+)m\s*)?(?:(?<days>\d+)d\s*)?(?:(?<hours>\d+)h\s*)?');
+
+		$purposesContainer = $form->addContainer('purposes');
 
 		foreach ($this->validLocalesProvider->getValidLocales() as $locale) {
-			$localeContainer = $translationsContainer->addContainer($locale->code());
-
-			$localeContainer->addTextArea('purpose', Html::fromText($translator->translate('purpose.field', ['code' => $locale->code(), 'name' => $locale->name()])));
-			$localeContainer->addText('processing_time', Html::fromText($translator->translate('processing_time.field', ['code' => $locale->code(), 'name' => $locale->name()])));
+			$purposesContainer->addTextArea($locale->code(), Html::fromText($translator->translate('purpose.field', ['code' => $locale->code(), 'name' => $locale->name()])), NULL, 4);
 		}
 
 		$form->addProtection('//layout.form_protection');
@@ -92,16 +104,14 @@ final class CookieFormControl extends Control
 		$form->addSubmit('save', NULL === $this->default ? 'save.field' : 'update.field');
 
 		if (NULL !== $this->default) {
-			$translations = array_map(static fn (Purpose $purpose): array => ['purpose' => $purpose->value()], $this->default->purposes);
-
-			foreach ($this->default->processingTimes as $locale => $processingTime) {
-				$translations[$locale]['processing_time'] = $processingTime->value();
-			}
+			$isExpiration = !in_array($this->default->processingTime->value(), [ProcessingTime::PERSISTENT, ProcessingTime::SESSION], TRUE);
 
 			$form->setDefaults([
 				'name' => $this->default->name->value(),
 				'category' => $this->default->categoryId->toString(),
-				'translations' => $translations,
+				'processing_time' => !$isExpiration ? $this->default->processingTime->value() : 'expiration',
+				'processing_time_mask' => $isExpiration ? $this->default->processingTime->value() : '',
+				'purposes' => array_map(static fn (Purpose $purpose): string => $purpose->value(), $this->default->purposes),
 			]);
 		}
 
@@ -120,13 +130,6 @@ final class CookieFormControl extends Control
 	private function saveCookie(Form $form): void
 	{
 		$values = $form->values;
-		$purposes = [];
-		$processingTimes = [];
-
-		foreach ($values->translations as $locale => $translations) {
-			$purposes[$locale] = $translations->purpose;
-			$processingTimes[$locale] = $translations->processing_time;
-		}
 
 		if (NULL === $this->default) {
 			$cookieId = CookieId::new();
@@ -134,8 +137,8 @@ final class CookieFormControl extends Control
 				$values->category,
 				$this->cookieProviderId->toString(),
 				$values->name,
-				$purposes,
-				$processingTimes,
+				'expiration' === $values->processing_time ? $values->processing_time_mask : $values->processing_time,
+				(array) $values->purposes,
 				$cookieId->toString()
 			);
 		} else {
@@ -143,8 +146,8 @@ final class CookieFormControl extends Control
 			$command = UpdateCookieCommand::create($cookieId->toString())
 				->withCategoryId($values->category)
 				->withName($values->name)
-				->withPurposes($purposes)
-				->withProcessingTimes($processingTimes);
+				->withProcessingTime('expiration' === $values->processing_time ? $values->processing_time_mask : $values->processing_time)
+				->withPurposes((array) $values->purposes);
 		}
 
 		try {

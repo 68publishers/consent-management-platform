@@ -26,18 +26,15 @@ final class CookieViewDataTransformer implements ViewDataTransformerInterface
 	public function transform(ViewDataInterface $viewData, ViewFactoryInterface $viewFactory): ViewDataInterface
 	{
 		$purposes = [];
-		$processingTimes = [];
 
 		if ($viewData->has('translations')) {
 			foreach ($viewData->get('translations') as $translation) {
 				$purposes[$translation['locale']->value()] = $translation['purpose'];
-				$processingTimes[$translation['locale']->value()] = $translation['processingTime'];
 			}
 
 			$viewData = $viewData->without('translations');
 		}
 
-		return $viewData->with('purposes', $purposes)
-			->with('processingTimes', $processingTimes);
+		return $viewData->with('purposes', $purposes);
 	}
 }

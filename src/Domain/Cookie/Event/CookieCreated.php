@@ -20,38 +20,38 @@ final class CookieCreated extends AbstractDomainEvent
 
 	private CookieProviderId $cookieProviderId;
 
+	private ProcessingTime $processingTime;
+
 	private Name $name;
 
 	private array $purposes;
-
-	private array $processingTimes;
 
 	/**
 	 * @param \App\Domain\Cookie\ValueObject\CookieId                 $cookieId
 	 * @param \App\Domain\Category\ValueObject\CategoryId             $categoryId
 	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId $cookieProviderId
 	 * @param \App\Domain\Cookie\ValueObject\Name                     $name
+	 * @param \App\Domain\Cookie\ValueObject\ProcessingTime           $processingTime
 	 * @param \App\Domain\Cookie\ValueObject\Purpose[]                $purposes
-	 * @param \App\Domain\Cookie\ValueObject\ProcessingTime[]         $processingTimes
 	 *
 	 * @return static
 	 */
-	public static function create(CookieId $cookieId, CategoryId $categoryId, CookieProviderId $cookieProviderId, Name $name, array $purposes, array $processingTimes): self
+	public static function create(CookieId $cookieId, CategoryId $categoryId, CookieProviderId $cookieProviderId, Name $name, ProcessingTime $processingTime, array $purposes): self
 	{
 		$event = self::occur($cookieId->toString(), [
 			'category_id' => $categoryId->toString(),
 			'cookie_provider_id' => $cookieProviderId->toString(),
 			'name' => $name->value(),
+			'processing_time' => $processingTime->value(),
 			'purposes' => array_map(static fn (Purpose $purpose): string => $purpose->value(), $purposes),
-			'processing_times' => array_map(static fn (ProcessingTime $processingTime): string => $processingTime->value(), $processingTimes),
 		]);
 
 		$event->cookieId = $cookieId;
 		$event->categoryId = $categoryId;
 		$event->cookieProviderId = $cookieProviderId;
 		$event->name = $name;
+		$event->processingTime = $processingTime;
 		$event->purposes = $purposes;
-		$event->processingTimes = $processingTimes;
 
 		return $event;
 	}
@@ -89,19 +89,19 @@ final class CookieCreated extends AbstractDomainEvent
 	}
 
 	/**
+	 * @return \App\Domain\Cookie\ValueObject\ProcessingTime
+	 */
+	public function processingTime(): ProcessingTime
+	{
+		return $this->processingTime;
+	}
+
+	/**
 	 * @return \App\Domain\Cookie\ValueObject\Purpose[]
 	 */
 	public function purposes(): array
 	{
 		return $this->purposes;
-	}
-
-	/**
-	 * @return \App\Domain\Cookie\ValueObject\ProcessingTime[]
-	 */
-	public function processingTimes(): array
-	{
-		return $this->processingTimes;
 	}
 
 	/**
@@ -115,7 +115,7 @@ final class CookieCreated extends AbstractDomainEvent
 		$this->categoryId = CategoryId::fromString($parameters['category_id']);
 		$this->cookieProviderId = CookieProviderId::fromString($parameters['cookie_provider_id']);
 		$this->name = Name::fromValue($parameters['name']);
+		$this->processingTime = ProcessingTime::fromValue($parameters['processing_time']);
 		$this->purposes = array_map(static fn (string $purpose): Purpose => Purpose::fromValue($purpose), $parameters['purposes']);
-		$this->processingTimes = array_map(static fn (string $processingTime): ProcessingTime => ProcessingTime::fromValue($processingTime), $parameters['processing_times']);
 	}
 }
