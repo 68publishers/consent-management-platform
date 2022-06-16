@@ -5799,16 +5799,16 @@
         },
         {
             "name": "nextras/migrations",
-            "version": "v3.1.5",
+            "version": "v3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nextras/migrations.git",
-                "reference": "ac0adea6928a4069fe3ab8249ff4b828c33794ca"
+                "reference": "c1013ffde270f92cae841ce45ad82a1334a52086"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nextras/migrations/zipball/ac0adea6928a4069fe3ab8249ff4b828c33794ca",
-                "reference": "ac0adea6928a4069fe3ab8249ff4b828c33794ca",
+                "url": "https://api.github.com/repos/nextras/migrations/zipball/c1013ffde270f92cae841ce45ad82a1334a52086",
+                "reference": "c1013ffde270f92cae841ce45ad82a1334a52086",
                 "shasum": ""
             },
             "require": {
@@ -5825,11 +5825,12 @@
                 "nette/di": "~2.3.12 | ~2.4",
                 "nette/tester": "~1.7 | ~2.0",
                 "nette/utils": "~2.3",
-                "nextras/dbal": "~1.0 | ~2.0 | ~3.0 | ~4.0",
-                "symfony/config": "~2.6 | ~3.0 | ~4.0",
-                "symfony/console": "~2.6 | ~3.0 | ~4.0",
-                "symfony/dependency-injection": "~2.6 | ~3.0 | ~4.0",
-                "symfony/http-kernel": "~2.6 | ~3.0 | ~4.0",
+                "nextras/dbal": "~1.0 | ~2.0 | ~3.0 | ~4.0 | ~5.0@dev",
+                "symfony/config": "~2.6 | ~3.0 | ~4.0 | ~5.0 | ~6.0",
+                "symfony/console": "~2.6 | ~3.0 | ~4.0 | ~5.0 | ~6.0",
+                "symfony/dependency-injection": "~2.6 | ~3.0 | ~4.0 | ~5.0 | ~6.0",
+                "symfony/framework-bundle": "~2.6 | ~3.0 | ~4.0 | ~5.0 | ~6.0",
+                "symfony/http-kernel": "~2.6 | ~3.0 | ~4.0 | ~5.0 | ~6.0",
                 "tracy/tracy": "^2.2"
             },
             "suggest": {
@@ -5862,9 +5863,9 @@
             "description": "Database migrations runner",
             "support": {
                 "issues": "https://github.com/nextras/migrations/issues",
-                "source": "https://github.com/nextras/migrations/tree/v3.1.5"
+                "source": "https://github.com/nextras/migrations/tree/v3.2.0"
             },
-            "time": "2022-04-04T15:13:14+00:00"
+            "time": "2022-06-14T19:31:05+00:00"
         },
         {
             "name": "oro/doctrine-extensions",
