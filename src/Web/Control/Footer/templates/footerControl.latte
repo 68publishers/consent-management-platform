@@ -7,17 +7,15 @@
 
             <span class="{$footerItemClassname}">Developed by&nbsp;<a href="http://www.68publishers.io" target="_blank" class="text-indigo-700">'68 Publishers</a></span>
 
-            {var $tag = $gitRepository->handle(new SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand())}
+            {var $tag = $gitRepository->supports(SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand::class) ? $gitRepository->handle(new SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand()) : NULL}
 
             {if $tag instanceof SixtyEightPublishers\TracyGitVersion\Repository\Entity\Tag}
                 <span x-data x-tooltip.interactive.raw="{$tag->getCommitHash()->getValue()}" class="{$footerItemClassname}">{$tag->getName()}</span>
             {else}
-            {var $head = $gitRepository->handle(new SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand())}
+                {var $head = $gitRepository->supports(SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand::class) ? $gitRepository->handle(new SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand()) : NULL}
 
                 {if $head instanceof SixtyEightPublishers\TracyGitVersion\Repository\Entity\Head && NULL !== $head->getCommitHash()}
                     <span x-data x-tooltip.interactive.raw="{$head->getCommitHash()->getValue()}" class="{$footerItemClassname}">{$head->getCommitHash()->getValue()|substr:0, 7}</span>
-                {else}
-                    <span class="{$footerItemClassname}">unknown</span>
                 {/if}
             {/if}
         </div>
