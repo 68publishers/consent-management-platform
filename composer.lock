@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1ae0529f9b098615e43ac36abc63f2c0",
+    "content-hash": "9ae1fcdf1f48bd3dd2cc5b348723d605",
     "packages": [
         {
             "name": "68publishers/asset",
@@ -5798,75 +5798,6 @@
             "time": "2022-05-30T06:34:36+00:00"
         },
         {
-            "name": "nextras/migrations",
-            "version": "v3.1.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nextras/migrations.git",
-                "reference": "ac0adea6928a4069fe3ab8249ff4b828c33794ca"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nextras/migrations/zipball/ac0adea6928a4069fe3ab8249ff4b828c33794ca",
-                "reference": "ac0adea6928a4069fe3ab8249ff4b828c33794ca",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4"
-            },
-            "require-dev": {
-                "dibi/dibi": "~3.0 | ~4.0",
-                "doctrine/cache": "~1.5",
-                "doctrine/dbal": "~2.5 | ~3.0",
-                "doctrine/orm": "~2.5",
-                "ext-openssl": "*",
-                "mockery/mockery": "~0.9 | ~1.0",
-                "nette/database": "~2.2",
-                "nette/di": "~2.3.12 | ~2.4",
-                "nette/tester": "~1.7 | ~2.0",
-                "nette/utils": "~2.3",
-                "nextras/dbal": "~1.0 | ~2.0 | ~3.0 | ~4.0",
-                "symfony/config": "~2.6 | ~3.0 | ~4.0",
-                "symfony/console": "~2.6 | ~3.0 | ~4.0",
-                "symfony/dependency-injection": "~2.6 | ~3.0 | ~4.0",
-                "symfony/http-kernel": "~2.6 | ~3.0 | ~4.0",
-                "tracy/tracy": "^2.2"
-            },
-            "suggest": {
-                "dibi/dibi": "to use DibiAdapter",
-                "doctrine/dbal": "to use DoctrineAdapter",
-                "doctrine/orm": "to generate migrations with Doctrine SchemaTool",
-                "nette/database": "to use NetteAdapter",
-                "nextras/dbal": "to use NextrasAdapter",
-                "symfony/console": "to use Symfony commands"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Nextras\\Migrations\\": "src/"
-                },
-                "classmap": [
-                    "src/exceptions.php",
-                    "src/deprecated"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "Database migrations runner",
-            "support": {
-                "issues": "https://github.com/nextras/migrations/issues",
-                "source": "https://github.com/nextras/migrations/tree/v3.1.5"
-            },
-            "time": "2022-04-04T15:13:14+00:00"
-        },
-        {
             "name": "oro/doctrine-extensions",
             "version": "2.0.2",
             "source": {
@@ -10967,5 +10898,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.0.0"
 }

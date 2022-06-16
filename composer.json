@@ -57,7 +57,6 @@
 		"nettrine/migrations": "^0.8.0",
 		"nettrine/orm": "^0.8.3",
 		"nextras/mail-panel": "^2.6",
-		"nextras/migrations": "^3.1",
 		"oro/doctrine-extensions": "^2.0",
 		"scienta/doctrine-json-functions": "^5.0",
 		"sentry/sdk": "^3.1",
