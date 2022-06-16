@@ -11,12 +11,14 @@ use App\Domain\Project\ValueObject\Name;
 use App\Domain\Project\ValueObject\Color;
 use App\Domain\Shared\ValueObject\Locale;
 use App\Domain\Shared\ValueObject\Locales;
+use Doctrine\Common\Collections\Collection;
 use App\Domain\Project\Event\ProjectCreated;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\Project\ValueObject\Description;
 use App\Domain\Project\Event\ProjectCodeChanged;
 use App\Domain\Project\Event\ProjectNameChanged;
 use App\Domain\Shared\ValueObject\LocalesConfig;
+use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Project\Event\ProjectColorChanged;
 use App\Domain\Project\Event\ProjectLocalesChanged;
 use App\Domain\Project\Command\CreateProjectCommand;
@@ -24,6 +26,9 @@ use App\Domain\Project\Command\UpdateProjectCommand;
 use App\Domain\Project\Event\ProjectTimezoneChanged;
 use App\Domain\Project\Event\ProjectActiveStateChanged;
 use App\Domain\Project\Event\ProjectDescriptionChanged;
+use App\Domain\Project\Event\ProjectCookieProviderAdded;
+use App\Domain\Project\Event\ProjectCookieProviderRemoved;
+use App\Domain\CookieProvider\ValueObject\CookieProviderId;
 use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AggregateId;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Aggregate\AggregateRootTrait;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Aggregate\AggregateRootInterface;
@@ -49,6 +54,9 @@ final class Project implements AggregateRootInterface
 	private LocalesConfig $locales;
 
 	private DateTimeZone $timezone;
+
+	/** @var \Doctrine\Common\Collections\Collection|\App\Domain\User\ProjectHasCookieProvider[] */
+	private Collection $cookieProviders;
 
 	/**
 	 * @param \App\Domain\Project\Command\CreateProjectCommand $command
@@ -76,6 +84,7 @@ final class Project implements AggregateRootInterface
 		$checkCodeUniqueness($projectId, $code);
 
 		$project->recordThat(ProjectCreated::create($projectId, $name, $code, $description, $color, $command->active(), LocalesConfig::create($locales, $defaultLocale), $timezone));
+		$project->setCookieProviders(array_map(static fn (string $cookieProviderId): CookieProviderId => CookieProviderId::fromString($cookieProviderId), $command->cookieProviderIds()));
 
 		return $project;
 	}
@@ -121,6 +130,10 @@ final class Project implements AggregateRootInterface
 
 		if (NULL !== $command->timezone()) {
 			$this->changeTimezone(new DateTimeZone($command->timezone()));
+		}
+
+		if (NULL !== $command->cookieProviderIds()) {
+			$this->setCookieProviders(array_map(static fn (string $cookieProviderId): CookieProviderId => CookieProviderId::fromString($cookieProviderId), $command->cookieProviderIds()));
 		}
 	}
 
@@ -223,6 +236,36 @@ final class Project implements AggregateRootInterface
 	}
 
 	/**
+	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId[] $cookieProviderIds
+	 *
+	 * @return void
+	 */
+	public function setCookieProviders(array $cookieProviderIds): void
+	{
+		foreach ($this->cookieProviders as $projectHasCookieProvider) {
+			if (!$this->hasCookieProvider($cookieProviderIds, $projectHasCookieProvider->cookieProviderId())) {
+				$this->recordThat(ProjectCookieProviderRemoved::create($this->id, $projectHasCookieProvider->cookieProviderId()));
+			}
+		}
+
+		foreach ($cookieProviderIds as $cookieProviderId) {
+			$this->addCookieProvider($cookieProviderId);
+		}
+	}
+
+	/**
+	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId $cookieProviderId
+	 *
+	 * @return void
+	 */
+	public function addCookieProvider(CookieProviderId $cookieProviderId): void
+	{
+		if (!$this->hasCookieProvider($this->cookieProviders, $cookieProviderId)) {
+			$this->recordThat(ProjectCookieProviderAdded::create($this->id, $cookieProviderId));
+		}
+	}
+
+	/**
 	 * @param \App\Domain\Project\Event\ProjectCreated $event
 	 *
 	 * @return void
@@ -238,6 +281,7 @@ final class Project implements AggregateRootInterface
 		$this->active = $event->active();
 		$this->locales = $event->locales();
 		$this->timezone = $event->timezone();
+		$this->cookieProviders = new ArrayCollection();
 	}
 
 	/**
@@ -308,5 +352,52 @@ final class Project implements AggregateRootInterface
 	protected function whenProjectTimezoneChanged(ProjectTimezoneChanged $event): void
 	{
 		$this->timezone = $event->timezone();
+	}
+
+	/**
+	 * @param \App\Domain\Project\Event\ProjectCookieProviderAdded $event
+	 *
+	 * @return void
+	 */
+	protected function whenProjectCookieProviderAdded(ProjectCookieProviderAdded $event): void
+	{
+		$this->cookieProviders->add(ProjectHasCookieProvider::create($this, $event->cookieProviderId()));
+	}
+
+	/**
+	 * @param \App\Domain\Project\Event\ProjectCookieProviderRemoved $event
+	 *
+	 * @return void
+	 */
+	protected function whenProjectCookieProviderRemoved(ProjectCookieProviderRemoved $event): void
+	{
+		$projectHasCookieProvider = $this->hasCookieProvider($this->cookieProviders, $event->cookieProviderId());
+
+		if ($projectHasCookieProvider instanceof ProjectHasCookieProvider) {
+			$this->cookieProviders->removeElement($projectHasCookieProvider);
+		}
+	}
+
+	/**
+	 * @param \Doctrine\Common\Collections\Collection|\App\Domain\CookieProvider\ValueObject\CookieProviderId[] $collection
+	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId                                           $cookieProviderId
+	 *
+	 * @return object|FALSE
+	 */
+	private function hasCookieProvider(iterable $collection, CookieProviderId $cookieProviderId)
+	{
+		foreach ($collection as $item) {
+			$id = $item;
+
+			if ($item instanceof ProjectHasCookieProvider) {
+				$id = $item->cookieProviderId();
+			}
+
+			if ($id->equals($cookieProviderId)) {
+				return $item;
+			}
+		}
+
+		return FALSE;
 	}
 }

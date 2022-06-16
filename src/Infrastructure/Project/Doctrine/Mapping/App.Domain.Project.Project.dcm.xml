@@ -28,6 +28,13 @@
         <field name="timezone" column="timezone" type="datetime_zone" />
 
         <field name="version" column="version" type="integer" />
+
+        <one-to-many field="cookieProviders" target-entity="App\Domain\Project\ProjectHasCookieProvider" mapped-by="project" orphan-removal="true">
+            <cascade>
+                <cascade-persist />
+                <cascade-remove />
+            </cascade>
+        </one-to-many>
     </entity>
 
 </doctrine-mapping>

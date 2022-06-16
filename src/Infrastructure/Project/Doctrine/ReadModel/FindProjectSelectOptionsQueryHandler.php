@@ -6,14 +6,16 @@ namespace App\Infrastructure\Project\Doctrine\ReadModel;
 
 use App\Domain\Project\Project;
 use Doctrine\ORM\AbstractQuery;
-use App\ReadModel\Project\ProjectView;
+use Doctrine\ORM\Query\Expr\Join;
+use App\Domain\User\UserHasProject;
 use Doctrine\ORM\EntityManagerInterface;
-use App\ReadModel\Project\FindAllProjectsQuery;
+use App\ReadModel\Project\ProjectSelectOptionView;
+use App\ReadModel\Project\FindProjectSelectOptionsQuery;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewFactoryInterface;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\QueryHandlerInterface;
 use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\ReadModel\DoctrineViewData;
 
-final class FindAllProjectsQueryHandler implements QueryHandlerInterface
+final class FindProjectSelectOptionsQueryHandler implements QueryHandlerInterface
 {
 	private EntityManagerInterface $em;
 
@@ -30,19 +32,25 @@ final class FindAllProjectsQueryHandler implements QueryHandlerInterface
 	}
 
 	/**
-	 * @param \App\ReadModel\Project\FindAllProjectsQuery $query
+	 * @param \App\ReadModel\Project\FindProjectSelectOptionsQuery $query
 	 *
-	 * @return \App\ReadModel\Project\ProjectView[]
+	 * @return \App\ReadModel\Project\ProjectSelectOptionView[]
 	 */
-	public function __invoke(FindAllProjectsQuery $query): array
+	public function __invoke(FindProjectSelectOptionsQuery $query): array
 	{
-		$data = $this->em->createQueryBuilder()
-			->select('p')
+		$qb = $this->em->createQueryBuilder()
+			->select('p.id, p.name')
 			->from(Project::class, 'p')
-			->orderBy('p.createdAt', 'DESC')
-			->getQuery()
+			->orderBy('p.name', 'ASC');
+
+		if (NULL !== $query->userId()) {
+			$qb->join(UserHasProject::class, 'uhp', Join::WITH, 'uhp.projectId = p.id AND uhp.user = :userId')
+				->setParameter('userId', $query->userId());
+		}
+
+		$data = $qb->getQuery()
 			->getResult(AbstractQuery::HYDRATE_ARRAY);
 
-		return array_map(fn (array $row): ProjectView => $this->viewFactory->create(ProjectView::class, DoctrineViewData::create($row)), $data);
+		return array_map(fn (array $row): ProjectSelectOptionView => $this->viewFactory->create(ProjectSelectOptionView::class, DoctrineViewData::create($row)), $data);
 	}
 }

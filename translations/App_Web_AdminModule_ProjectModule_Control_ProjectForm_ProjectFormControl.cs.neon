@@ -35,6 +35,9 @@ timezone:
 description:
 	field: Popis projektu
 
+cookie_providers:
+	field: Poskytovatele cookies
+
 save:
 	field: Vytvořit projekt
 

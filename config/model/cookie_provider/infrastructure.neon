@@ -21,6 +21,9 @@ services:
 	-
 		autowired: no
 		factory: App\Infrastructure\CookieProvider\Doctrine\ReadModel\CookieProviderDataGridQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\CookieProvider\Doctrine\ReadModel\FindCookieProviderSelectOptionsQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:

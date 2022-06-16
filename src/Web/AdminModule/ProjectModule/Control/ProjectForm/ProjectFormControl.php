@@ -20,7 +20,10 @@ use App\Domain\Project\Command\UpdateProjectCommand;
 use App\Application\Localization\ApplicationDateTimeZone;
 use App\Domain\Project\Exception\CodeUniquenessException;
 use App\Application\GlobalSettings\GlobalSettingsInterface;
+use App\ReadModel\CookieProvider\CookieProviderSelectOptionView;
+use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
+use App\ReadModel\CookieProvider\FindCookieProviderSelectOptionsQuery;
 use App\Web\AdminModule\ProjectModule\Control\ProjectForm\Event\ProjectCreatedEvent;
 use App\Web\AdminModule\ProjectModule\Control\ProjectForm\Event\ProjectUpdatedEvent;
 use App\Web\AdminModule\ProjectModule\Control\ProjectForm\Event\ProjectFormProcessingFailedEvent;
@@ -33,6 +36,8 @@ final class ProjectFormControl extends Control
 
 	private CommandBusInterface $commandBus;
 
+	private QueryBusInterface $queryBus;
+
 	private GlobalSettingsInterface $globalSettings;
 
 	private ?ProjectView $default;
@@ -40,13 +45,15 @@ final class ProjectFormControl extends Control
 	/**
 	 * @param \App\Web\Ui\Form\FormFactoryInterface                            $formFactory
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface $commandBus
+	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface   $queryBus
 	 * @param \App\Application\GlobalSettings\GlobalSettingsInterface          $globalSettings
 	 * @param \App\ReadModel\Project\ProjectView|NULL                          $default
 	 */
-	public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, GlobalSettingsInterface $globalSettings, ?ProjectView $default = NULL)
+	public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, QueryBusInterface $queryBus, GlobalSettingsInterface $globalSettings, ?ProjectView $default = NULL)
 	{
 		$this->formFactory = $formFactory;
 		$this->commandBus = $commandBus;
+		$this->queryBus = $queryBus;
 		$this->globalSettings = $globalSettings;
 		$this->default = $default;
 	}
@@ -127,6 +134,13 @@ final class ProjectFormControl extends Control
 
 		$form->addTextArea('description', 'description.field', NULL, 4);
 
+		$form->addMultiSelect('cookie_providers', 'cookie_providers.field')
+			->setItems($this->getCookieProviderOptions())
+			->checkDefaultValue(FALSE)
+			->setTranslator(NULL)
+			->setOption('searchbar', TRUE)
+			->setOption('tags', TRUE);
+
 		$form->addProtection('//layout.form_protection');
 
 		$form->addSubmit('save', NULL === $this->default ? 'save.field' : 'update.field');
@@ -141,6 +155,7 @@ final class ProjectFormControl extends Control
 				'default_locale' => $this->default->locales->defaultLocale()->value(),
 				'timezone' => $this->default->timezone->getName(),
 				'description' => $this->default->description->value(),
+				'cookie_providers' => array_map(static fn (CookieProviderSelectOptionView $view): string => $view->id->toString(), $this->queryBus->dispatch(FindCookieProviderSelectOptionsQuery::byProject($this->default->id->toString()))),
 			]);
 		}
 
@@ -185,6 +200,8 @@ final class ProjectFormControl extends Control
 				->withTimezone($values->timezone);
 		}
 
+		$command = $command->withCookieProviderIds($values->cookie_providers);
+
 		try {
 			$this->commandBus->dispatch($command);
 		} catch (CodeUniquenessException $e) {
@@ -203,5 +220,20 @@ final class ProjectFormControl extends Control
 
 		$this->dispatchEvent(NULL === $this->default ? new ProjectCreatedEvent($projectId, $values->code) : new ProjectUpdatedEvent($projectId, $this->default->code->value(), $values->code));
 		$this->redrawControl();
+	}
+
+	/**
+	 * @return array
+	 */
+	private function getCookieProviderOptions(): array
+	{
+		$options = [];
+
+		/** @var \App\ReadModel\CookieProvider\CookieProviderSelectOptionView $cookieProviderSelectOptionView */
+		foreach ($this->queryBus->dispatch(FindCookieProviderSelectOptionsQuery::all()) as $cookieProviderSelectOptionView) {
+			$options += $cookieProviderSelectOptionView->toOption();
+		}
+
+		return $options;
 	}
 }

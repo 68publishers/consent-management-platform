@@ -93,6 +93,14 @@ final class UpdateProjectCommand extends AbstractCommand
 	}
 
 	/**
+	 * @return string[]|NULL
+	 */
+	public function cookieProviderIds(): ?array
+	{
+		return $this->getParam('cookie_provider_ids');
+	}
+
+	/**
 	 * @param string $name
 	 *
 	 * @return $this
@@ -162,5 +170,15 @@ final class UpdateProjectCommand extends AbstractCommand
 	public function withTimezone(string $timezone): self
 	{
 		return $this->withParam('timezone', $timezone);
+	}
+
+	/**
+	 * @param string[] $cookieProviderIds
+	 *
+	 * @return $this
+	 */
+	public function withCookieProviderIds(array $cookieProviderIds): self
+	{
+		return $this->withParam('cookie_provider_ids', $cookieProviderIds);
 	}
 }

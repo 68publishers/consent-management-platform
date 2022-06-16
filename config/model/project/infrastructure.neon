@@ -14,7 +14,7 @@ services:
 		factory: App\Infrastructure\Project\Doctrine\ReadModel\ProjectViewDataTransformer
 	-
 		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindAllProjectsQueryHandler
+		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindProjectSelectOptionsQueryHandler
 	-
 		autowired: no
 		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindUserProjectsQueryHandler

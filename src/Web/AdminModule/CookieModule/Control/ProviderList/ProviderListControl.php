@@ -73,7 +73,6 @@ final class ProviderListControl extends Control
 			->setFilterSelect(FilterHelper::select(ProviderType::values(), FALSE, $grid->getTranslator(), '//layout.cookie_provider_type.'), 'type');
 
 		$grid->addColumnText('link', 'link', 'link.value')
-			->setSortable('link')
 			->setFilterText('link');
 
 		$grid->addColumnDateTimeTz('created_at', 'created_at', 'createdAt')

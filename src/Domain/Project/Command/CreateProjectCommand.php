@@ -33,7 +33,18 @@ final class CreateProjectCommand extends AbstractCommand
 			'default_locale' => $defaultLocale,
 			'timezone' => $timezone,
 			'project_id' => $projectId,
+			'cookie_provider_ids' => [],
 		]);
+	}
+
+	/**
+	 * @param string[] $cookieProviderIds
+	 *
+	 * @return $this
+	 */
+	public function withCookieProviderIds(array $cookieProviderIds): self
+	{
+		return $this->withParam('cookie_provider_ids', $cookieProviderIds);
 	}
 
 	/**
@@ -98,6 +109,14 @@ final class CreateProjectCommand extends AbstractCommand
 	public function timezone(): string
 	{
 		return $this->getParam('timezone');
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function cookieProviderIds(): array
+	{
+		return $this->getParam('cookie_provider_ids');
 	}
 
 	/**

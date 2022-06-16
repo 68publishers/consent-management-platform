@@ -11,13 +11,12 @@ use Nette\Application\UI\Form;
 use App\ReadModel\User\UserView;
 use App\Web\Utils\TranslatorUtils;
 use Nette\Forms\Controls\TextInput;
-use App\ReadModel\Project\ProjectView;
 use App\Web\Ui\Form\FormFactoryInterface;
 use Nepada\FormRenderer\TemplateRenderer;
 use App\Application\Localization\Profiles;
 use App\Web\Ui\Form\FormFactoryOptionsTrait;
-use App\ReadModel\Project\FindAllProjectsQuery;
-use App\ReadModel\Project\FindUserProjectsQuery;
+use App\ReadModel\Project\ProjectSelectOptionView;
+use App\ReadModel\Project\FindProjectSelectOptionsQuery;
 use App\Application\Localization\ApplicationDateTimeZone;
 use SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
@@ -109,16 +108,11 @@ final class UserFormControl extends Control
 		$form->addPassword('password', 'password.field')
 			->setOption('description', NULL === $this->default ? 'password.description.add' : 'password.description.edit');
 
-		$projects = [];
-
-		foreach ($this->queryBus->dispatch(FindAllProjectsQuery::create()) as $projectView) {
-			assert($projectView instanceof ProjectView);
-			$projects[$projectView->id->toString()] = $projectView->name->value();
-		}
-
-		$form->addCheckboxList('projects', 'projects.field', $projects)
+		$form->addMultiSelect('projects', 'projects.field', $this->getProjectOptions())
 			->checkDefaultValue(FALSE)
-			->setTranslator(NULL);
+			->setTranslator(NULL)
+			->setOption('tags', TRUE)
+			->setOption('searchbar', TRUE);
 
 		$form->addProtection('//layout.form_protection');
 
@@ -136,8 +130,8 @@ final class UserFormControl extends Control
 				'timezone' => $this->default->timezone->getName(),
 				'roles' => $this->default->roles->toArray(),
 				'projects' => array_map(
-					static fn (ProjectView $projectView): string => $projectView->id->toString(),
-					$this->queryBus->dispatch(FindUserProjectsQuery::create($this->default->id->toString()))
+					static fn (ProjectSelectOptionView $view): string => $view->id->toString(),
+					$this->queryBus->dispatch(FindProjectSelectOptionsQuery::byUser($this->default->id->toString()))
 				),
 			]);
 		}
@@ -204,5 +198,20 @@ final class UserFormControl extends Control
 
 		$this->dispatchEvent(NULL === $this->default ? new UserCreatedEvent($userId) : new UserUpdatedEvent($userId));
 		$this->redrawControl();
+	}
+
+	/***
+	 * @return array
+	 */
+	private function getProjectOptions(): array
+	{
+		$options = [];
+
+		/** @var \App\ReadModel\Project\ProjectSelectOptionView $projectSelectOptionView */
+		foreach ($this->queryBus->dispatch(FindProjectSelectOptionsQuery::all()) as $projectSelectOptionView) {
+			$options += $projectSelectOptionView->toOption();
+		}
+
+		return $options;
 	}
 }
