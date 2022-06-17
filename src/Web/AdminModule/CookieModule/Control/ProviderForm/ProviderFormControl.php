@@ -13,14 +13,19 @@ use App\Web\Ui\Form\FormFactoryInterface;
 use App\Web\Ui\Form\FormFactoryOptionsTrait;
 use App\Domain\CookieProvider\ValueObject\Code;
 use App\Domain\CookieProvider\ValueObject\Purpose;
+use App\ReadModel\Project\ProjectSelectOptionView;
 use App\ReadModel\CookieProvider\CookieProviderView;
 use App\Domain\CookieProvider\ValueObject\ProviderType;
 use App\Application\GlobalSettings\ValidLocalesProvider;
+use App\ReadModel\Project\FindProjectSelectOptionsQuery;
 use App\Domain\CookieProvider\ValueObject\CookieProviderId;
 use App\Domain\CookieProvider\Exception\CodeUniquenessException;
 use App\Domain\CookieProvider\Command\CreateCookieProviderCommand;
 use App\Domain\CookieProvider\Command\UpdateCookieProviderCommand;
+use App\Domain\Project\Command\AddCookieProvidersToProjectCommand;
+use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
+use App\Domain\Project\Command\RemoveCookieProvidersFromProjectCommand;
 use App\Web\AdminModule\CookieModule\Control\ProviderForm\Event\ProviderCreatedEvent;
 use App\Web\AdminModule\CookieModule\Control\ProviderForm\Event\ProviderUpdatedEvent;
 use App\Web\AdminModule\CookieModule\Control\ProviderForm\Event\ProviderFormProcessingFailedEvent;
@@ -33,6 +38,8 @@ final class ProviderFormControl extends Control
 
 	private CommandBusInterface $commandBus;
 
+	private QueryBusInterface $queryBus;
+
 	private ValidLocalesProvider $validLocalesProvider;
 
 	private ?CookieProviderView $default;
@@ -40,13 +47,15 @@ final class ProviderFormControl extends Control
 	/**
 	 * @param \App\Web\Ui\Form\FormFactoryInterface                            $formFactory
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface $commandBus
+	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface   $queryBus
 	 * @param \App\Application\GlobalSettings\ValidLocalesProvider             $validLocalesProvider
-	 * @param \App\ReadModel\CookieProvider\CookieProviderView|NULL            $default
+	 * @param \App\ReadModel\CookieProvider\CookieProviderView|null            $default
 	 */
-	public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, ValidLocalesProvider $validLocalesProvider, ?CookieProviderView $default = NULL)
+	public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, QueryBusInterface $queryBus, ValidLocalesProvider $validLocalesProvider, ?CookieProviderView $default = NULL)
 	{
 		$this->formFactory = $formFactory;
 		$this->commandBus = $commandBus;
+		$this->queryBus = $queryBus;
 		$this->validLocalesProvider = $validLocalesProvider;
 		$this->default = $default;
 	}
@@ -77,6 +86,12 @@ final class ProviderFormControl extends Control
 			->setRequired('link.required')
 			->addRule($form::URL, 'link.rule_url');
 
+		$form->addMultiSelect('projects', 'projects.field', $this->getProjectOptions())
+			->checkDefaultValue(FALSE)
+			->setTranslator(NULL)
+			->setOption('tags', TRUE)
+			->setOption('searchbar', TRUE);
+
 		$namesContainer = $form->addContainer('purposes');
 
 		foreach ($this->validLocalesProvider->getValidLocales() as $locale) {
@@ -93,6 +108,7 @@ final class ProviderFormControl extends Control
 				'name' => $this->default->name->value(),
 				'type' => $this->default->type->value(),
 				'link' => $this->default->link->value(),
+				'projects' => $this->getDefaultProjectIds(),
 				'purposes' => array_map(static fn (Purpose $purpose): string => $purpose->value(), $this->default->purposes),
 			]);
 		}
@@ -135,6 +151,7 @@ final class ProviderFormControl extends Control
 
 		try {
 			$this->commandBus->dispatch($command);
+			$this->saveProjects((array) $values->projects);
 		} catch (CodeUniquenessException $e) {
 			$emailAddressField = $form->getComponent('code');
 			assert($emailAddressField instanceof TextInput);
@@ -151,5 +168,53 @@ final class ProviderFormControl extends Control
 
 		$this->dispatchEvent(NULL === $this->default ? new ProviderCreatedEvent($cookieProviderId, $values->code) : new ProviderUpdatedEvent($cookieProviderId, $this->default->code->value(), $values->code));
 		$this->redrawControl();
+	}
+
+	/**
+	 * @param string[] $projectIds
+	 *
+	 * @return void
+	 */
+	private function saveProjects(array $projectIds): void
+	{
+		$default = $this->getDefaultProjectIds();
+
+		foreach ($default as $projectId) {
+			if (!in_array($projectId, $projectIds, TRUE)) {
+				$this->commandBus->dispatch(RemoveCookieProvidersFromProjectCommand::create($projectId, $this->default->id->toString()));
+			}
+		}
+
+		foreach ($projectIds as $projectId) {
+			if (!in_array($projectId, $default, TRUE)) {
+				$this->commandBus->dispatch(AddCookieProvidersToProjectCommand::create($projectId, $this->default->id->toString()));
+			}
+		}
+	}
+
+	/**
+	 * @return array
+	 */
+	private function getProjectOptions(): array
+	{
+		$options = [];
+
+		/** @var \App\ReadModel\Project\ProjectSelectOptionView $projectSelectOptionView */
+		foreach ($this->queryBus->dispatch(FindProjectSelectOptionsQuery::all()) as $projectSelectOptionView) {
+			$options += $projectSelectOptionView->toOption();
+		}
+
+		return $options;
+	}
+
+	/**
+	 * @return array
+	 */
+	private function getDefaultProjectIds(): array
+	{
+		return array_map(
+			static fn (ProjectSelectOptionView $view): string => $view->id->toString(),
+			$this->queryBus->dispatch(FindProjectSelectOptionsQuery::byCookieProviderId($this->default->id->toString()))
+		);
 	}
 }

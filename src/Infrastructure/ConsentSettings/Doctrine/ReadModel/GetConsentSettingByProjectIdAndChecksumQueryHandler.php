@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\ConsentSettings\Doctrine\ReadModel;
 
+use App\Domain\Project\Project;
 use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Domain\ConsentSettings\ConsentSettings;
 use App\ReadModel\ConsentSettings\ConsentSettingsView;
@@ -40,8 +42,8 @@ final class GetConsentSettingByProjectIdAndChecksumQueryHandler implements Query
 		$data = $this->em->createQueryBuilder()
 			->select('cs')
 			->from(ConsentSettings::class, 'cs')
-			->where('cs.projectId = :projectId')
-			->andWhere('cs.checksum = :checksum')
+			->join(Project::class, 'p', Join::WITH, 'cd.projectId = p.id AND p.id = :projectId AND p.deletedAt IS NULL')
+			->where('cs.checksum = :checksum')
 			->setParameters([
 				'projectId' => $query->projectId(),
 				'checksum' => $query->checksum(),

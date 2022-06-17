@@ -5,3 +5,12 @@ services:
 	-
 		autowired: no
 		factory: App\Domain\Project\CommandHandler\UpdateProjectCommandHandler
+	-
+		autowired: no
+		factory: App\Domain\Project\CommandHandler\DeleteProjectCommandHandler
+	-
+		autowired: no
+		factory: App\Domain\Project\CommandHandler\AddCookieProvidersToProjectCommandHandler
+	-
+		autowired: no
+		factory: App\Domain\Project\CommandHandler\RemoveCookieProvidersFromProjectCommandHandler

@@ -46,6 +46,7 @@ final class FindCookieProviderSelectOptionsQueryHandler implements QueryHandlerI
 
 		if (NULL !== $query->projectId()) {
 			$qb->join(ProjectHasCookieProvider::class, 'phc', Join::WITH, 'phc.cookieProviderId = c.id AND phc.project = :projectId')
+				->join('phc.project', 'p', Join::WITH, 'p.deletedAt IS NULL')
 				->setParameter('projectId', $query->projectId());
 		}
 

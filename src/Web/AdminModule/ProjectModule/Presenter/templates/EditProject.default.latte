@@ -1,7 +1,17 @@
 {block #content}
 
-<div class="bg-white shadow sm:rounded-lg">
+<div class="bg-white shadow sm:rounded-lg mb-12">
     <div class="max-w-2xl px-4 py-8 sm:px-6 mx-auto">
         {control projectForm}
+    </div>
+</div>
+
+<div class="mb-8 pb-5 px-4 sm:px-0 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
+    <h3 class="text-lg leading-6 font-medium text-red-700">{_danger_zone}</h3>
+</div>
+
+<div class="bg-white shadow sm:rounded-lg">
+    <div class="max-w-2xl px-4 py-8 sm:px-6 mx-auto">
+        {control delete}
     </div>
 </div>

@@ -30,12 +30,12 @@ use App\Domain\Project\Event\ProjectCookieProviderAdded;
 use App\Domain\Project\Event\ProjectCookieProviderRemoved;
 use App\Domain\CookieProvider\ValueObject\CookieProviderId;
 use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AggregateId;
-use SixtyEightPublishers\ArchitectureBundle\Domain\Aggregate\AggregateRootTrait;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Aggregate\AggregateRootInterface;
+use SixtyEightPublishers\ArchitectureBundle\Domain\Aggregate\DeletableAggregateRootTrait;
 
 final class Project implements AggregateRootInterface
 {
-	use AggregateRootTrait;
+	use DeletableAggregateRootTrait;
 
 	private ProjectId $id;
 
@@ -55,7 +55,7 @@ final class Project implements AggregateRootInterface
 
 	private DateTimeZone $timezone;
 
-	/** @var \Doctrine\Common\Collections\Collection|\App\Domain\User\ProjectHasCookieProvider[] */
+	/** @var \Doctrine\Common\Collections\Collection|\App\Domain\Project\ProjectHasCookieProvider[] */
 	private Collection $cookieProviders;
 
 	/**
@@ -262,6 +262,18 @@ final class Project implements AggregateRootInterface
 	{
 		if (!$this->hasCookieProvider($this->cookieProviders, $cookieProviderId)) {
 			$this->recordThat(ProjectCookieProviderAdded::create($this->id, $cookieProviderId));
+		}
+	}
+
+	/**
+	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId $cookieProviderId
+	 *
+	 * @return void
+	 */
+	public function removeCookieProvider(CookieProviderId $cookieProviderId): void
+	{
+		if ($this->hasCookieProvider($this->cookieProviders, $cookieProviderId)) {
+			$this->recordThat(ProjectCookieProviderRemoved::create($this->id, $cookieProviderId));
 		}
 	}
 

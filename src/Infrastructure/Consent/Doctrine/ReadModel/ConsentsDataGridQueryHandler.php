@@ -6,6 +6,8 @@ namespace App\Infrastructure\Consent\Doctrine\ReadModel;
 
 use Doctrine\ORM\QueryBuilder;
 use App\Domain\Consent\Consent;
+use App\Domain\Project\Project;
+use Doctrine\ORM\Query\Expr\Join;
 use App\ReadModel\Consent\ConsentView;
 use App\ReadModel\Consent\ConsentsDataGridQuery;
 use App\Infrastructure\DataGridQueryHandlerTrait;
@@ -30,14 +32,14 @@ final class ConsentsDataGridQueryHandler implements QueryHandlerInterface
 				return $this->em->createQueryBuilder()
 					->select('COUNT(c.id)')
 					->from(Consent::class, 'c')
-					->where('c.projectId = :projectId')
+					->join(Project::class, 'p', Join::WITH, 'c.projectId = p.id AND p.id = :projectId AND p.deletedAt IS NULL')
 					->setParameter('projectId', $query->projectId());
 			},
 			function () use ($query): QueryBuilder {
 				return $this->em->createQueryBuilder()
 					->select('c')
 					->from(Consent::class, 'c')
-					->where('c.projectId = :projectId')
+					->join(Project::class, 'p', Join::WITH, 'c.projectId = p.id AND p.id = :projectId AND p.deletedAt IS NULL')
 					->setParameter('projectId', $query->projectId());
 			},
 			ConsentView::class,

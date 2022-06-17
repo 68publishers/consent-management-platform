@@ -64,3 +64,4 @@ services:
 	- App\Web\AdminModule\ProjectModule\Control\ProjectForm\ProjectFormControlFactoryInterface
 	- App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryControlFactoryInterface
 	- App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryModalControlFactoryInterface
+	- App\Web\AdminModule\ProjectModule\Control\DeleteProject\DeleteProjectControlFactoryInterface

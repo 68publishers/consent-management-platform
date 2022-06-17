@@ -1,0 +1,8 @@
+title: Odstranit projekt
+description: 'Jakmile project odstraníte, není cesty zpět. Buďte si prosím jistí, zda to checte udělat.'
+
+delete:
+	field: Odstranit projekt
+
+delete_confirm:
+	question: 'Opravdu si přejete odstranit projekt <strong>"%name%"</strong>?'

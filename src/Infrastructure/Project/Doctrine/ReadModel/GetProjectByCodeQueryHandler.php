@@ -41,6 +41,7 @@ final class GetProjectByCodeQueryHandler implements QueryHandlerInterface
 			->select('p')
 			->from(Project::class, 'p')
 			->where('p.code = :code')
+			->andWhere('p.deletedAt IS NULL')
 			->setParameter('code', $query->code())
 			->getQuery()
 			->getOneOrNullResult(AbstractQuery::HYDRATE_ARRAY);

@@ -41,11 +41,17 @@ final class FindProjectSelectOptionsQueryHandler implements QueryHandlerInterfac
 		$qb = $this->em->createQueryBuilder()
 			->select('p.id, p.name')
 			->from(Project::class, 'p')
+			->where('p.deletedAt IS NULL')
 			->orderBy('p.name', 'ASC');
 
 		if (NULL !== $query->userId()) {
 			$qb->join(UserHasProject::class, 'uhp', Join::WITH, 'uhp.projectId = p.id AND uhp.user = :userId')
 				->setParameter('userId', $query->userId());
+		}
+
+		if (NULL !== $query->cookieProviderId()) {
+			$qb->join('p.cookieProviders', 'phc', Join::WITH, 'phc.cookieProviderId = :cookieProviderId')
+				->setParameter('cookieProviderId', $query->cookieProviderId());
 		}
 
 		$data = $qb->getQuery()

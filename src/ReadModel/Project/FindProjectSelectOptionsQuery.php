@@ -29,10 +29,30 @@ final class FindProjectSelectOptionsQuery extends AbstractQuery
 	}
 
 	/**
+	 * @param string $cookieProviderId
+	 *
+	 * @return static
+	 */
+	public static function byCookieProviderId(string $cookieProviderId): self
+	{
+		return self::fromParameters([
+			'cookie_provider_id' => $cookieProviderId,
+		]);
+	}
+
+	/**
 	 * @return string|NULL
 	 */
 	public function userId(): ?string
 	{
 		return $this->getParam('user_id');
+	}
+
+	/**
+	 * @return string|NULL
+	 */
+	public function cookieProviderId(): ?string
+	{
+		return $this->getParam('cookie_provider_id');
 	}
 }

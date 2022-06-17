@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Infrastructure\Consent\Doctrine\ReadModel;
 
 use App\Domain\Consent\Consent;
+use App\Domain\Project\Project;
 use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\Query\Expr\Join;
 use App\ReadModel\Consent\ConsentView;
 use Doctrine\ORM\EntityManagerInterface;
 use App\ReadModel\Consent\GetConsentByProjectIdAndUserIdentifierQuery;
@@ -40,8 +42,8 @@ final class GetConsentByProjectIdAndUserIdentifierQueryHandler implements QueryH
 		$data = $this->em->createQueryBuilder()
 			->select('c')
 			->from(Consent::class, 'c')
-			->where('c.projectId = :projectId')
-			->andWhere('c.userIdentifier = :userIdentifier')
+			->join(Project::class, 'p', Join::WITH, 'c.projectId = p.id AND p.id = :projectId AND p.deletedAt IS NULL')
+			->where('c.userIdentifier = :userIdentifier')
 			->setParameters([
 				'projectId' => $query->projectId(),
 				'userIdentifier' => $query->userIdentifier(),

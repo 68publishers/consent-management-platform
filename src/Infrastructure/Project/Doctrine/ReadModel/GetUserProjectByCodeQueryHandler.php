@@ -44,6 +44,7 @@ final class GetUserProjectByCodeQueryHandler implements QueryHandlerInterface
 			->from(Project::class, 'p')
 			->join(UserHasProject::class, 'uhp', Join::WITH, 'uhp.projectId = p.id AND uhp.user = :userId')
 			->where('p.code = :code')
+			->andWhere('p.deletedAt IS NULL')
 			->setParameters([
 				'userId' => $query->userId(),
 				'code' => $query->code(),

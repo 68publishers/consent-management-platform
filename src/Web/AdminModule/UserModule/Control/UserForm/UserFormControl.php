@@ -200,7 +200,7 @@ final class UserFormControl extends Control
 		$this->redrawControl();
 	}
 
-	/***
+	/**
 	 * @return array
 	 */
 	private function getProjectOptions(): array

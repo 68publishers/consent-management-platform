@@ -18,6 +18,9 @@ link:
 	required: Vyplňte prosím odkaz.
 	rule_url: Odkaz není validní URL.
 
+projects:
+	field: Přiřazené projekty
+
 purpose:
 	field: 'Účel (%name%)'
 

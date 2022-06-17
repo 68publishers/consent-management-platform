@@ -1,5 +1,8 @@
 page_title: Upravit projekt
+danger_zone: Danger Zone
 
 message:
 	project_edited: Projekt byl upraven.
 	project_edit_failed: Při úpravě projektu došlo k chybě.
+	project_deleted: Projekt byl odstraněn.
+	project_deletion_failed: Při odstraňování projektu došlo k chybě.
