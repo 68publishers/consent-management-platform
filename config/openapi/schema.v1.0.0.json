@@ -20,6 +20,10 @@
 			"description": "Consent settings API operations"
 		},
 		{
+			"name": "Cookies",
+			"description": "Cookie and provider operations"
+		},
+		{
 			"name": "Another",
 			"description": "Another API operations"
 		}
@@ -140,6 +144,106 @@
 					}
 				}
 			}
+		},
+		"/api/v1/cookie-providers/{project}": {
+			"get": {
+				"tags": [
+					"Cookies"
+				],
+				"parameters": [
+					{
+						"$ref": "#/components/parameters/Project"
+					},
+					{
+						"$ref": "#/components/parameters/Locale"
+					}
+				],
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/CookieProvidersApiOk"
+					},
+					"422": {
+						"$ref": "#/components/responses/UnprocessableEntityError"
+					},
+					"default": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			},
+			"options": {
+				"tags": [
+					"Cookies"
+				],
+				"parameters": [
+					{
+						"$ref": "#/components/parameters/Project"
+					},
+					{
+						"$ref": "#/components/parameters/Locale"
+					}
+				],
+				"responses": {
+					"204": {
+						"$ref": "#/components/responses/NoContent"
+					},
+					"default": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
+		"/api/v1/cookies/{project}": {
+			"get": {
+				"tags": [
+					"Cookies"
+				],
+				"parameters": [
+					{
+						"$ref": "#/components/parameters/Project"
+					},
+					{
+						"$ref": "#/components/parameters/Locale"
+					},
+					{
+						"$ref": "#/components/parameters/Category"
+					}
+				],
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/CookiesApiOk"
+					},
+					"422": {
+						"$ref": "#/components/responses/UnprocessableEntityError"
+					},
+					"default": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			},
+			"options": {
+				"tags": [
+					"Cookies"
+				],
+				"parameters": [
+					{
+						"$ref": "#/components/parameters/Project"
+					},
+					{
+						"$ref": "#/components/parameters/Locale"
+					},
+					{
+						"$ref": "#/components/parameters/Category"
+					}
+				],
+				"responses": {
+					"204": {
+						"$ref": "#/components/responses/NoContent"
+					},
+					"default": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
 		}
 	},
 	"components": {
@@ -172,6 +276,29 @@
 					"type": "string"
 				},
 				"example": "test-user"
+			},
+			"Locale": {
+				"name": "locale",
+				"in": "query",
+				"description": "Locale for translations, by default the project's default locale is used if the parameter isn't declared",
+				"required": false,
+				"schema": {
+					"type": "string"
+				},
+				"example": "cs"
+			},
+			"Category": {
+				"name": "category[]",
+				"in": "query",
+				"description": "Code of a category or array of codes. Cookies for all categories are returned if the parameter is omitted.",
+				"required": false,
+				"schema": {
+					"type": "array",
+					"items": {
+						"type": "string",
+						"example": "functionality_storage"
+					}
+				}
 			}
 		},
 		"responses": {
@@ -214,6 +341,26 @@
 					"application/json": {
 						"schema": {
 							"$ref": "#/components/schemas/ConsentSettingsResponse"
+						}
+					}
+				}
+			},
+			"CookieProvidersApiOk": {
+				"description": "Returns the list of cookie providers for the project",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/CookieProvidersResponse"
+						}
+					}
+				}
+			},
+			"CookiesApiOk": {
+				"description": "Returns the list of cookies for the project",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/CookiesResponse"
 						}
 					}
 				}
@@ -336,6 +483,94 @@
 					"data": {
 						"type": "object",
 						"default": {}
+					}
+				}
+			},
+			"CookieProvidersResponse": {
+				"type": "object",
+				"properties": {
+					"status": {
+						"type": "string",
+						"example": "success"
+					},
+					"data": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CookieProvider"
+						}
+					}
+				}
+			},
+			"CookieProvider": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string",
+						"enum": ["1st_party", "3rd_party"]
+					},
+					"link": {
+						"type": "string"
+					},
+					"purpose": {
+						"type": "string"
+					}
+				}
+			},
+			"CookiesResponse": {
+				"type": "object",
+				"properties": {
+					"status": {
+						"type": "string",
+						"example": "success"
+					},
+					"data": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/Cookie"
+						}
+					}
+				}
+			},
+			"Cookie": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"purpose": {
+						"type": "string"
+					},
+					"processingTime": {
+						"type": "string"
+					},
+					"cookieProvider": {
+						"type": "object",
+						"properties": {
+							"name": {
+								"type": "string"
+							},
+							"type": {
+								"type": "string",
+								"enum": ["1st_party", "3rd_party"]
+							},
+							"link": {
+								"type": "string"
+							}
+						}
+					},
+					"category": {
+						"type": "object",
+						"properties": {
+							"name": {
+								"type": "string"
+							},
+							"code": {
+								"type": "string"
+							}
+						}
 					}
 				}
 			},

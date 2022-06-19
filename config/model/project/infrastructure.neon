@@ -24,6 +24,9 @@ services:
 	-
 		autowired: no
 		factory: App\Infrastructure\Project\Doctrine\ReadModel\GetUserProjectByCodeQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\Project\Doctrine\ReadModel\ProjectExistsQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:
