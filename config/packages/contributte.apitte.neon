@@ -34,8 +34,5 @@ services:
 	# api/v1/consent/{project}/{userIdentifier}
 	- App\Api\V1\Controller\ConsentController
 
-	# api/v1/cookie-providers/{project}
-	- App\Api\V1\Controller\CookieProvidersController
-
 	# api/v1/cookies/{project}
 	- App\Api\V1\Controller\CookiesController

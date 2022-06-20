@@ -16,6 +16,10 @@ services:
 		type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
 		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\CookieViewDataTransformer
 	-
+		autowired: self
+		type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
+		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\CookieApiViewDataTransformer
+	-
 		autowired: no
 		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\GetCookieByIdQueryHandler
 	-

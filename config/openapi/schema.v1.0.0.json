@@ -145,53 +145,6 @@
 				}
 			}
 		},
-		"/api/v1/cookie-providers/{project}": {
-			"get": {
-				"tags": [
-					"Cookies"
-				],
-				"parameters": [
-					{
-						"$ref": "#/components/parameters/Project"
-					},
-					{
-						"$ref": "#/components/parameters/Locale"
-					}
-				],
-				"responses": {
-					"200": {
-						"$ref": "#/components/responses/CookieProvidersApiOk"
-					},
-					"422": {
-						"$ref": "#/components/responses/UnprocessableEntityError"
-					},
-					"default": {
-						"$ref": "#/components/responses/ServerError"
-					}
-				}
-			},
-			"options": {
-				"tags": [
-					"Cookies"
-				],
-				"parameters": [
-					{
-						"$ref": "#/components/parameters/Project"
-					},
-					{
-						"$ref": "#/components/parameters/Locale"
-					}
-				],
-				"responses": {
-					"204": {
-						"$ref": "#/components/responses/NoContent"
-					},
-					"default": {
-						"$ref": "#/components/responses/ServerError"
-					}
-				}
-			}
-		},
 		"/api/v1/cookies/{project}": {
 			"get": {
 				"tags": [
@@ -345,16 +298,6 @@
 					}
 				}
 			},
-			"CookieProvidersApiOk": {
-				"description": "Returns the list of cookie providers for the project",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "#/components/schemas/CookieProvidersResponse"
-						}
-					}
-				}
-			},
 			"CookiesApiOk": {
 				"description": "Returns the list of cookies for the project",
 				"content": {
@@ -486,7 +429,7 @@
 					}
 				}
 			},
-			"CookieProvidersResponse": {
+			"CookiesResponse": {
 				"type": "object",
 				"properties": {
 					"status": {
@@ -494,9 +437,20 @@
 						"example": "success"
 					},
 					"data": {
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/CookieProvider"
+						"type": "object",
+						"properties": {
+							"providers": {
+								"type": "array",
+								"items": {
+									"$ref": "#/components/schemas/CookieProvider"
+								}
+							},
+							"cookies": {
+								"type": "array",
+								"items": {
+									"$ref": "#/components/schemas/Cookie"
+								}
+							}
 						}
 					}
 				}
@@ -504,6 +458,9 @@
 			"CookieProvider": {
 				"type": "object",
 				"properties": {
+					"code": {
+						"type": "string"
+					},
 					"name": {
 						"type": "string"
 					},
@@ -516,21 +473,6 @@
 					},
 					"purpose": {
 						"type": "string"
-					}
-				}
-			},
-			"CookiesResponse": {
-				"type": "object",
-				"properties": {
-					"status": {
-						"type": "string",
-						"example": "success"
-					},
-					"data": {
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/Cookie"
-						}
 					}
 				}
 			},
@@ -549,6 +491,9 @@
 					"cookieProvider": {
 						"type": "object",
 						"properties": {
+							"code": {
+								"type": "string"
+							},
 							"name": {
 								"type": "string"
 							},
