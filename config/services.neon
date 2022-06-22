@@ -65,3 +65,5 @@ services:
 	- App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryControlFactoryInterface
 	- App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryModalControlFactoryInterface
 	- App\Web\AdminModule\ProjectModule\Control\DeleteProject\DeleteProjectControlFactoryInterface
+	- App\Web\AdminModule\ProjectModule\Control\ProviderForm\ProviderFormControlFactoryInterface
+	- App\Web\AdminModule\ProjectModule\Control\OtherProvidersForm\OtherProvidersFormControlFactoryInterface

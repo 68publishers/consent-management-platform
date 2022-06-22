@@ -70,16 +70,17 @@ $fixtures['category'] = [
 ];
 
 $fixtures['cookie_provider'] = [
-	'acme' => [
+	'demo' => [
 		'cookie_provider_id' => CookieProviderId::new()->toString(),
-		'code' => 'acme',
+		'code' => 'demo',
 		'type' => ProviderType::FIRST_PARTY,
-		'name' => 'Acme website',
-		'link' => 'https://www.acme.com',
+		'name' => 'Demo website',
+		'link' => 'https://www.demo.io',
 		'purposes' => [
 			'cs' => 'Naše vlastní cookies, které jsou nutné pro provoz našeho webu.',
 			'en' => 'Our own cookies that are necessary for the operation of our website.',
 		],
+		'private' => TRUE,
 	],
 	'facebook_login' => [
 		'cookie_provider_id' => CookieProviderId::new()->toString(),
@@ -91,6 +92,7 @@ $fixtures['cookie_provider'] = [
 			'cs' => 'Platforma pro přihlášení skrze Facebook.',
 			'en' => 'Facebook login platform.',
 		],
+		'private' => FALSE,
 	],
 	'google_ads' => [
 		'cookie_provider_id' => CookieProviderId::new()->toString(),
@@ -102,6 +104,7 @@ $fixtures['cookie_provider'] = [
 			'cs' => 'Platforma pro reklamu, retargeting a měření konverzí.',
 			'en' => 'The platform for advertising, retargeting, and conversion measurement.',
 		],
+		'private' => FALSE,
 	],
 ];
 
@@ -109,7 +112,7 @@ $fixtures['cookie'] = [
 	[
 		'cookie_id' => CookieId::new()->toString(),
 		'category_id' => $fixtures['category']['functionality_storage']['category_id'],
-		'cookie_provider_id' => $fixtures['cookie_provider']['acme']['cookie_provider_id'],
+		'cookie_provider_id' => $fixtures['cookie_provider']['demo']['cookie_provider_id'],
 		'name' => 'PHPSESSID',
 		'processing_time' => ProcessingTime::SESSION,
 		'purposes' => [
@@ -152,8 +155,8 @@ $fixtures['project'] = [
 		'locales' => ['en', 'cs'],
 		'default_locale' => 'en',
 		'timezone' => 'Europe/Prague',
+		'cookie_provider_id' => $fixtures['cookie_provider']['demo']['cookie_provider_id'],
 		'cookie_provider_ids' => [
-			$fixtures['cookie_provider']['acme']['cookie_provider_id'],
 			$fixtures['cookie_provider']['facebook_login']['cookie_provider_id'],
 			$fixtures['cookie_provider']['google_ads']['cookie_provider_id'],
 		],

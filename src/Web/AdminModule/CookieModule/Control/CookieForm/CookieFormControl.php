@@ -115,7 +115,7 @@ final class CookieFormControl extends Control
 			]);
 		}
 
-		$form->onSuccess[] = function (Form $form) {
+		$form->onSuccess[] = function (Form $form): void {
 			$this->saveCookie($form);
 		};
 

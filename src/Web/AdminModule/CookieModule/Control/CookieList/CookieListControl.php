@@ -11,7 +11,6 @@ use App\ReadModel\Cookie\CookieView;
 use Nette\Application\UI\Multiplier;
 use App\ReadModel\Category\CategoryView;
 use App\Web\Ui\Form\FormFactoryInterface;
-use App\Application\GlobalSettings\Locale;
 use App\Domain\Cookie\ValueObject\CookieId;
 use App\ReadModel\Cookie\GetCookieByIdQuery;
 use App\ReadModel\Category\AllCategoriesQuery;
@@ -19,6 +18,7 @@ use App\ReadModel\Cookie\CookiesDataGridQuery;
 use App\Web\Ui\DataGrid\DataGridFactoryInterface;
 use App\Web\Ui\Modal\Confirm\ConfirmModalControl;
 use App\Domain\Cookie\Command\DeleteCookieCommand;
+use App\Application\GlobalSettings\ValidLocalesProvider;
 use App\Domain\CookieProvider\ValueObject\CookieProviderId;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use App\Web\Ui\Modal\Confirm\ConfirmModalControlFactoryInterface;
@@ -34,7 +34,7 @@ final class CookieListControl extends Control
 {
 	private CookieProviderId $cookieProviderId;
 
-	private ?Locale $locale;
+	private ValidLocalesProvider $validLocalesProvider;
 
 	private CommandBusInterface $commandBus;
 
@@ -48,17 +48,17 @@ final class CookieListControl extends Control
 
 	/**
 	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId                                     $cookieProviderId
-	 * @param \App\Application\GlobalSettings\Locale|NULL                                                 $locale
+	 * @param \App\Application\GlobalSettings\ValidLocalesProvider                                        $validLocalesProvider
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface                            $commandBus
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface                              $queryBus
 	 * @param \App\Web\Ui\DataGrid\DataGridFactoryInterface                                               $dataGridFactory
 	 * @param \App\Web\Ui\Modal\Confirm\ConfirmModalControlFactoryInterface                               $confirmModalControlFactory
 	 * @param \App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControlFactoryInterface $cookieFormModalControlFactory
 	 */
-	public function __construct(CookieProviderId $cookieProviderId, ?Locale $locale, CommandBusInterface $commandBus, QueryBusInterface $queryBus, DataGridFactoryInterface $dataGridFactory, ConfirmModalControlFactoryInterface $confirmModalControlFactory, CookieFormModalControlFactoryInterface $cookieFormModalControlFactory)
+	public function __construct(CookieProviderId $cookieProviderId, ValidLocalesProvider $validLocalesProvider, CommandBusInterface $commandBus, QueryBusInterface $queryBus, DataGridFactoryInterface $dataGridFactory, ConfirmModalControlFactoryInterface $confirmModalControlFactory, CookieFormModalControlFactoryInterface $cookieFormModalControlFactory)
 	{
 		$this->cookieProviderId = $cookieProviderId;
-		$this->locale = $locale;
+		$this->validLocalesProvider = $validLocalesProvider;
 		$this->commandBus = $commandBus;
 		$this->queryBus = $queryBus;
 		$this->dataGridFactory = $dataGridFactory;
@@ -72,13 +72,14 @@ final class CookieListControl extends Control
 	 */
 	protected function createComponentGrid(): DataGrid
 	{
-		$grid = $this->dataGridFactory->create(CookiesDataGridQuery::create($this->cookieProviderId->toString(), NULL !== $this->locale ? $this->locale->code() : NULL));
+		$locale = $this->validLocalesProvider->getValidDefaultLocale();
+		$grid = $this->dataGridFactory->create(CookiesDataGridQuery::create($this->cookieProviderId->toString(), NULL !== $locale ? $locale->code() : NULL));
 
 		$grid->setTranslator($this->getPrefixedTranslator());
 		$grid->setSessionNamePostfix($this->cookieProviderId->toString());
 		$grid->setTemplateFile(__DIR__ . '/templates/datagrid.latte');
 		$grid->setTemplateVariables([
-			'_locale' => $this->locale,
+			'_locale' => $locale,
 		]);
 
 		$grid->setDefaultSort([
@@ -150,7 +151,7 @@ final class CookieListControl extends Control
 				throw new InvalidStateException('Cookie provider not found.');
 			}
 
-			$control = $this->cookieFormModalControlFactory->create($this->cookieProviderId, $cookieView);
+			$control = $this->cookieFormModalControlFactory->create($this->validLocalesProvider, $this->cookieProviderId, $cookieView);
 			$inner = $control->getInnerControl();
 
 			$inner->setFormFactoryOptions([
@@ -176,12 +177,13 @@ final class CookieListControl extends Control
 	 */
 	private function getCategories(): array
 	{
+		$locale = $this->validLocalesProvider->getValidDefaultLocale();
 		$categories = [];
 
 		foreach ($this->queryBus->dispatch(AllCategoriesQuery::create()) as $categoryView) {
 			assert($categoryView instanceof CategoryView);
 
-			$categories[$categoryView->id->toString()] = NULL !== $this->locale && isset($categoryView->names[$this->locale->code()]) ? $categoryView->names[$this->locale->code()]->value() : $categoryView->code->value();
+			$categories[$categoryView->id->toString()] = NULL !== $locale && isset($categoryView->names[$locale->code()]) ? $categoryView->names[$locale->code()]->value() : $categoryView->code->value();
 		}
 
 		return $categories;

@@ -101,15 +101,19 @@ abstract class SelectedProjectPresenter extends AdminPresenter
 	{
 		$items = $this->menuContainer->getMenu(self::MENU_NAME_SIDEBAR_PROJECT)->getItems();
 
-		($setupItems = function (array $items) use (&$setupItems) {
+		$setupItems = function (array $items) use (&$setupItems) {
 			foreach ($items as $item) {
-				$item->setAction($item->getAction(), [
-					'project' => $this->project,
-				]);
+				if (NULL !== $item->getAction()) {
+					$item->setAction($item->getAction(), [
+						'project' => $this->project,
+					]);
+				}
 
 				$setupItems($item->getItems());
 			}
-		})($items);
+		};
+
+		$setupItems($items);
 
 		$control = new MenuComponent($this->menuContainer, self::MENU_NAME_SIDEBAR_PROJECT);
 

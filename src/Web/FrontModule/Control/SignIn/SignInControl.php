@@ -54,7 +54,7 @@ final class SignInControl extends Control
 
 		$form->addSubmit('login', 'login.field');
 
-		$form->onSuccess[] = function (Form $form) {
+		$form->onSuccess[] = function (Form $form): void {
 			$this->login($form);
 		};
 

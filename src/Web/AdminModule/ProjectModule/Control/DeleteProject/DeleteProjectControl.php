@@ -53,7 +53,7 @@ final class DeleteProjectControl extends Control
 		$form->addProtection('//layout.form_protection');
 		$form->addSubmit('delete', 'delete.field');
 
-		$form->onSuccess[] = function () {
+		$form->onSuccess[] = function (): void {
 			$this->handleOpenModal('deleteConfirm');
 		};
 

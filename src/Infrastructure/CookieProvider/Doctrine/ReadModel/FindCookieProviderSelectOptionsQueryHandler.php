@@ -42,6 +42,7 @@ final class FindCookieProviderSelectOptionsQueryHandler implements QueryHandlerI
 			->select('c.id, c.name')
 			->from(CookieProvider::class, 'c')
 			->andWhere('c.deletedAt IS NULL')
+			->andWhere('c.private = false')
 			->orderBy('c.name', 'ASC');
 
 		if (NULL !== $query->projectId()) {

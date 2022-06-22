@@ -60,7 +60,7 @@ final class EditProviderPresenter extends AdminPresenter
 	{
 		$cookieProviderView = CookieProviderId::isValid($id) ? $this->queryBus->dispatch(GetCookieProviderByIdQuery::create($id)) : NULL;
 
-		if (!$cookieProviderView instanceof CookieProviderView || NULL !== $cookieProviderView->deletedAt) {
+		if (!$cookieProviderView instanceof CookieProviderView || NULL !== $cookieProviderView->deletedAt || $cookieProviderView->private) {
 			$this->subscribeFlashMessage(FlashMessage::warning('provider_not_found'));
 			$this->redirect('Providers:');
 		}
@@ -107,7 +107,7 @@ final class EditProviderPresenter extends AdminPresenter
 	 */
 	protected function createComponentCookieList(): CookieListControl
 	{
-		return $this->cookieListControlFactory->create($this->cookieProviderView->id, $this->validLocalesProvider->getValidDefaultLocale());
+		return $this->cookieListControlFactory->create($this->cookieProviderView->id, $this->validLocalesProvider);
 	}
 
 	/**
@@ -115,7 +115,7 @@ final class EditProviderPresenter extends AdminPresenter
 	 */
 	protected function createComponentCookieModal(): CookieFormModalControl
 	{
-		$control = $this->cookieFormModalControlFactory->create($this->cookieProviderView->id);
+		$control = $this->cookieFormModalControlFactory->create($this->validLocalesProvider, $this->cookieProviderView->id);
 		$inner = $control->getInnerControl();
 
 		$inner->setFormFactoryOptions([

@@ -11,11 +11,14 @@ use App\Domain\Project\ValueObject\Color;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\Project\ValueObject\Description;
 use App\Domain\Shared\ValueObject\LocalesConfig;
+use App\Domain\CookieProvider\ValueObject\CookieProviderId;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\AbstractView;
 
 final class ProjectView extends AbstractView
 {
 	public ProjectId $id;
+
+	public CookieProviderId $cookieProviderId;
 
 	public Name $name;
 
@@ -38,6 +41,7 @@ final class ProjectView extends AbstractView
 	{
 		return [
 			'id' => $this->id->toString(),
+			'cookieProviderId' => $this->cookieProviderId->toString(),
 			'name' => $this->name->value(),
 			'code' => $this->code->value(),
 			'color' => $this->color->value(),

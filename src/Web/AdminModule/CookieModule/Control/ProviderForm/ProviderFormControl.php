@@ -113,7 +113,7 @@ final class ProviderFormControl extends Control
 			]);
 		}
 
-		$form->onSuccess[] = function (Form $form) {
+		$form->onSuccess[] = function (Form $form): void {
 			$this->saveProvider($form);
 		};
 
@@ -137,6 +137,7 @@ final class ProviderFormControl extends Control
 				$values->name,
 				$values->link,
 				(array) $values->purposes,
+				FALSE,
 				$cookieProviderId->toString()
 			);
 		} else {
@@ -212,6 +213,10 @@ final class ProviderFormControl extends Control
 	 */
 	private function getDefaultProjectIds(): array
 	{
+		if (NULL === $this->default) {
+			return [];
+		}
+
 		return array_map(
 			static fn (ProjectSelectOptionView $view): string => $view->id->toString(),
 			$this->queryBus->dispatch(FindProjectSelectOptionsQuery::byCookieProviderId($this->default->id->toString()))

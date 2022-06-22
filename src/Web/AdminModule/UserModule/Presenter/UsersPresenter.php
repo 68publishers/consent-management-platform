@@ -23,7 +23,7 @@ final class UsersPresenter extends AdminPresenter
 	}
 
 	/**
-	 * @return void
+	 * {@inheritDoc}
 	 */
 	protected function startup(): void
 	{

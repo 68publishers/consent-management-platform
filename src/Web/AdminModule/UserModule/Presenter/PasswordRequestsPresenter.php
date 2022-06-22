@@ -23,7 +23,7 @@ final class PasswordRequestsPresenter extends AdminPresenter
 	}
 
 	/**
-	 * @return void
+	 * {@inheritDoc}
 	 */
 	protected function startup(): void
 	{

@@ -99,7 +99,7 @@ final class GlobalSettingsFormControl extends Control
 			'default_locale' => $this->globalSettings->defaultLocale()->code(),
 		]);
 
-		$form->onSuccess[] = function (Form $form) {
+		$form->onSuccess[] = function (Form $form): void {
 			$this->saveGlobalSettings($form);
 		};
 

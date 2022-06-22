@@ -19,6 +19,8 @@
 
         <id name="id" column="id" type="App\Domain\Project\ValueObject\ProjectId" unique="true" />
 
+        <field name="cookieProviderId" column="cookie_provider_id" type="App\Domain\CookieProvider\ValueObject\CookieProviderId" />
+
         <field name="createdAt" column="created_at" type="datetime_immutable" />
 
         <field name="deletedAt" column="deleted_at" type="datetime_immutable" nullable="true" />

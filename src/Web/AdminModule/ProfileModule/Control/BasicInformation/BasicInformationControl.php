@@ -99,7 +99,7 @@ final class BasicInformationControl extends Control
 			'timezone' => $this->userView->timezone->getName(),
 		]);
 
-		$form->onSuccess[] = function (Form $form) {
+		$form->onSuccess[] = function (Form $form): void {
 			$this->saveBasicInformation($form);
 		};
 

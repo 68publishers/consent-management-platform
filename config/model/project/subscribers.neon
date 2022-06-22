@@ -2,3 +2,9 @@ services:
 	-
 		autowired: no
 		factory: App\Subscribers\Project\AssignCreatedProjectToLoggedUser
+	-
+		autowired: no
+		factory: App\Subscribers\Project\CreateCookieProviderWhenProjectCreated
+	-
+		autowired: no
+		factory: App\Subscribers\Project\DeleteCookieProviderWhenProjectDeleted

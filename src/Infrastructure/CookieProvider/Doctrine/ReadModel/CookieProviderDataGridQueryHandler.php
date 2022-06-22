@@ -30,13 +30,15 @@ final class CookieProviderDataGridQueryHandler implements QueryHandlerInterface
 				return $this->em->createQueryBuilder()
 					->select('COUNT(c.id)')
 					->from(CookieProvider::class, 'c')
-					->where('c.deletedAt IS NULL');
+					->where('c.deletedAt IS NULL')
+					->andWhere('c.private = false');
 			},
 			function (): QueryBuilder {
 				return $this->em->createQueryBuilder()
 					->select('c')
 					->from(CookieProvider::class, 'c')
-					->where('c.deletedAt IS NULL');
+					->where('c.deletedAt IS NULL')
+					->andWhere('c.private = false');
 			},
 			CookieProviderView::class,
 			[

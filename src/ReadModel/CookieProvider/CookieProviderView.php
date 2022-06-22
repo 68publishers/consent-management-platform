@@ -33,6 +33,8 @@ final class CookieProviderView extends AbstractView
 	/** @var \App\Domain\CookieProvider\ValueObject\Purpose[] */
 	public array $purposes;
 
+	public bool $private;
+
 	/**
 	 * @return array
 	 */
@@ -47,6 +49,7 @@ final class CookieProviderView extends AbstractView
 			'name' => $this->name->value(),
 			'link' => $this->link->value(),
 			'purposes' => array_map(static fn (Purpose $purpose): string => $purpose->value(), $this->purposes),
+			'private' => $this->private,
 		];
 	}
 }

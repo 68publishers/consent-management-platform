@@ -86,7 +86,7 @@ final class CategoryFormControl extends Control
 			]);
 		}
 
-		$form->onSuccess[] = function (Form $form) {
+		$form->onSuccess[] = function (Form $form): void {
 			$this->saveCategory($form);
 		};
 

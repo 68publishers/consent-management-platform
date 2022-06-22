@@ -15,6 +15,9 @@ sidebar:
 
 sidebar_project:
 	consents: Evidence souhlasů
+	cookies: Cookies
+	cookies_providers: Poskytovatelé cookies
+	cookies_cookies: Cookies projektu
 	edit_project: Upravit projekt
 
 profile:

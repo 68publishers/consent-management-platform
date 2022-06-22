@@ -136,7 +136,7 @@ final class UserFormControl extends Control
 			]);
 		}
 
-		$form->onSuccess[] = function (Form $form) {
+		$form->onSuccess[] = function (Form $form): void {
 			$this->saveUser($form);
 		};
 

@@ -63,7 +63,7 @@ final class PasswordChangeControl extends Control
 
 		$form->addSubmit('save', 'save.field');
 
-		$form->onSuccess[] = function (Form $form) {
+		$form->onSuccess[] = function (Form $form): void {
 			$this->changePassword($form);
 		};
 

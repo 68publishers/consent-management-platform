@@ -6,6 +6,7 @@ namespace App\Infrastructure\Cookie\Doctrine\ReadModel;
 
 use Generator;
 use App\Domain\Cookie\Cookie;
+use App\Domain\Project\Project;
 use App\Domain\Category\Category;
 use Doctrine\ORM\Query\Expr\Join;
 use App\ReadModel\Cookie\CookieApiView;
@@ -44,11 +45,12 @@ final class FindCookiesForApiQueryHandler implements QueryHandlerInterface
 			->addSelect('cp.code AS cookieProviderCode, cp.name AS cookieProviderName, cp.type AS cookieProviderType, cp.link AS cookieProviderLink')
 			->addSelect('cat.code AS categoryCode')
 			->from(Cookie::class, 'c')
+			->join(Project::class, 'p', Join::WITH, 'p.id = :projectId AND p.deletedAt IS NULL')
 			->join(Category::class, 'cat', Join::WITH, 'cat.id = c.categoryId AND cat.deletedAt IS NULL AND cat.active = true')
 			->join(CookieProvider::class, 'cp', Join::WITH, 'cp.id = c.cookieProviderId AND cp.deletedAt IS NULL')
-			->join(ProjectHasCookieProvider::class, 'phc', Join::WITH, 'phc.cookieProviderId = cp.id AND phc.project = :projectId')
-			->join('phc.project', 'p', Join::WITH, 'p.deletedAt IS NULL')
+			->leftJoin(ProjectHasCookieProvider::class, 'phc', Join::WITH, 'phc.cookieProviderId = cp.id AND phc.project = p')
 			->where('c.deletedAt IS NULL')
+			->andWhere('(phc.id IS NOT NULL OR cp.id = p.cookieProviderId)')
 			->orderBy('LOWER(c.name)', 'ASC')
 			->setParameter('projectId', $query->projectId());
 

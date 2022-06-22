@@ -1,1 +1,6 @@
-page_title: Cookies
+page_title: Výpis cookies projektu
+add_new_cookie: Přidat novou cookie
+
+message:
+	cookie_created: Cookie byla vytvořena.
+	cookie_creation_failed: Při vytváření cookie došlo k chybě.

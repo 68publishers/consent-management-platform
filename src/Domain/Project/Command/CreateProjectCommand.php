@@ -18,10 +18,11 @@ final class CreateProjectCommand extends AbstractCommand
 	 * @param string      $defaultLocale
 	 * @param string      $timezone
 	 * @param string|NULL $projectId
+	 * @param string|NULL $cookieProviderId
 	 *
 	 * @return static
 	 */
-	public static function create(string $name, string $code, string $description, string $color, bool $active, array $locales, string $defaultLocale, string $timezone, ?string $projectId = NULL): self
+	public static function create(string $name, string $code, string $description, string $color, bool $active, array $locales, string $defaultLocale, string $timezone, ?string $projectId = NULL, ?string $cookieProviderId = NULL): self
 	{
 		return self::fromParameters([
 			'name' => $name,
@@ -33,6 +34,7 @@ final class CreateProjectCommand extends AbstractCommand
 			'default_locale' => $defaultLocale,
 			'timezone' => $timezone,
 			'project_id' => $projectId,
+			'cookie_provider_id' => $cookieProviderId,
 			'cookie_provider_ids' => [],
 		]);
 	}
@@ -125,5 +127,13 @@ final class CreateProjectCommand extends AbstractCommand
 	public function projectId(): ?string
 	{
 		return $this->getParam('project_id');
+	}
+
+	/**
+	 * @return string|NULL
+	 */
+	public function cookieProviderId(): ?string
+	{
+		return $this->getParam('cookie_provider_id');
 	}
 }

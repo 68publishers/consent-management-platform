@@ -42,6 +42,8 @@ final class CookieProvider implements AggregateRootInterface
 
 	private Link $link;
 
+	private bool $private;
+
 	private Collection $translations;
 
 	/**
@@ -58,12 +60,12 @@ final class CookieProvider implements AggregateRootInterface
 		$code = Code::withValidation($command->code());
 		$type = ProviderType::fromValue($command->type());
 		$name = Name::fromValue($command->name());
-		$link = Link::fromValue($command->link());
+		$link = Link::withValidation($command->link());
 		$purposes = array_map(static fn (string $purpose): Purpose => Purpose::fromValue($purpose), $command->purposes());
 
 		$checkCodeUniqueness($id, $code);
 
-		$cookieProvider->recordThat(CookieProviderCreated::create($id, $code, $type, $name, $link, $purposes));
+		$cookieProvider->recordThat(CookieProviderCreated::create($id, $code, $type, $name, $link, $purposes, $command->private()));
 
 		return $cookieProvider;
 	}
@@ -190,6 +192,7 @@ final class CookieProvider implements AggregateRootInterface
 		$this->type = $event->type();
 		$this->name = $event->name();
 		$this->link = $event->link();
+		$this->private = $event->private();
 		$this->translations = new ArrayCollection();
 
 		foreach ($event->purposes() as $locale => $purpose) {

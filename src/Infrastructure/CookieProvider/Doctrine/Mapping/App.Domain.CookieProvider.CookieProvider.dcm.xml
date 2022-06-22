@@ -32,6 +32,8 @@
 
         <field name="link" column="link" type="App\Domain\CookieProvider\ValueObject\Link" />
 
+        <field name="private" column="private" type="boolean" />
+
         <field name="version" column="version" type="integer" />
 
         <one-to-many field="translations" target-entity="App\Domain\CookieProvider\CookieProviderTranslation" mapped-by="cookieProvider" orphan-removal="true">

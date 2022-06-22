@@ -1,0 +1,9 @@
+page_title: Poskytovatelé cookies
+main_provider: 1st party poskytovatel
+other_providers: Ostatní poskytovatelé
+
+message:
+	provider_updated: Poskytovatel byl upraven.
+	provider_updated_failed: Při ukládání poskytovatele došlo k chybě.
+	other_providers_updated: Poskytovatelé byli uloženi.
+	other_providers_update_failed: Při ukládaní poskytovatelů došlo k chybě.

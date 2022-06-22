@@ -11,12 +11,16 @@ final class ValidLocalesProvider
 {
 	private GlobalSettingsInterface $globalSettings;
 
+	private ?LocalesConfig $localesConfig;
+
 	/**
 	 * @param \App\Application\GlobalSettings\GlobalSettingsInterface $globalSettings
+	 * @param \App\Domain\Shared\ValueObject\LocalesConfig|NULL       $localesConfig
 	 */
-	public function __construct(GlobalSettingsInterface $globalSettings)
+	public function __construct(GlobalSettingsInterface $globalSettings, ?LocalesConfig $localesConfig = NULL)
 	{
 		$this->globalSettings = $globalSettings;
+		$this->localesConfig = $localesConfig;
 	}
 
 	/**
@@ -27,6 +31,7 @@ final class ValidLocalesProvider
 	public function getValidLocales(?LocalesConfig $localesConfig = NULL): array
 	{
 		$globalLocales = $this->globalSettings->locales();
+		$localesConfig = $localesConfig ?? $this->localesConfig;
 
 		if (NULL === $localesConfig) {
 			return $globalLocales;
@@ -56,6 +61,8 @@ final class ValidLocalesProvider
 	 */
 	public function getValidDefaultLocale(?LocalesConfig $localesConfig = NULL): ?Locale
 	{
+		$localesConfig = $localesConfig ?? $this->localesConfig;
+
 		if (NULL === $localesConfig) {
 			$defaultGlobalLocale = $this->globalSettings->defaultLocale();
 
@@ -71,5 +78,15 @@ final class ValidLocalesProvider
 		}
 
 		return NULL;
+	}
+
+	/**
+	 * @param \App\Domain\Shared\ValueObject\LocalesConfig|NULL $localesConfig
+	 *
+	 * @return $this
+	 */
+	public function withLocalesConfig(?LocalesConfig $localesConfig): self
+	{
+		return new self($this->globalSettings, $localesConfig);
 	}
 }

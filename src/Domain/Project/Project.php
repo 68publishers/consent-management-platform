@@ -39,7 +39,9 @@ final class Project implements AggregateRootInterface
 
 	private ProjectId $id;
 
-	protected DateTimeImmutable $createdAt;
+	private CookieProviderId $cookieProviderId;
+
+	private DateTimeImmutable $createdAt;
 
 	private Name $name;
 
@@ -69,6 +71,7 @@ final class Project implements AggregateRootInterface
 		$project = new self();
 
 		$projectId = NULL !== $command->projectId() ? ProjectId::fromString($command->projectId()) : ProjectId::new();
+		$cookieProviderId = NULL !== $command->cookieProviderId() ? CookieProviderId::fromString($command->cookieProviderId()) : CookieProviderId::new();
 		$name = Name::fromValue($command->name());
 		$code = Code::fromValidCode($command->code());
 		$description = Description::fromValue($command->description());
@@ -83,7 +86,7 @@ final class Project implements AggregateRootInterface
 
 		$checkCodeUniqueness($projectId, $code);
 
-		$project->recordThat(ProjectCreated::create($projectId, $name, $code, $description, $color, $command->active(), LocalesConfig::create($locales, $defaultLocale), $timezone));
+		$project->recordThat(ProjectCreated::create($projectId, $cookieProviderId, $name, $code, $description, $color, $command->active(), LocalesConfig::create($locales, $defaultLocale), $timezone));
 		$project->setCookieProviders(array_map(static fn (string $cookieProviderId): CookieProviderId => CookieProviderId::fromString($cookieProviderId), $command->cookieProviderIds()));
 
 		return $project;
@@ -285,6 +288,7 @@ final class Project implements AggregateRootInterface
 	protected function whenProjectCreated(ProjectCreated $event): void
 	{
 		$this->id = $event->projectId();
+		$this->cookieProviderId = $event->cookieProviderId();
 		$this->createdAt = $event->createdAt();
 		$this->name = $event->name();
 		$this->code = $event->code();

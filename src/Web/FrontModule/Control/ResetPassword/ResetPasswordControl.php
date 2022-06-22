@@ -62,7 +62,7 @@ final class ResetPasswordControl extends Control
 
 		$form->addSubmit('send', 'send.field');
 
-		$form->onSuccess[] = function (Form $form) {
+		$form->onSuccess[] = function (Form $form): void {
 			$this->resetPassword($form);
 		};
 
