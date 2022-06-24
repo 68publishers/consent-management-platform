@@ -1,0 +1,3 @@
+.CodeMirror.cm-s-default {
+    @apply shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 w-full border border-gray-300 rounded-md;
+}

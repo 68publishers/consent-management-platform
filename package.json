@@ -13,6 +13,7 @@
     "@tailwindcss/typography": "^0.5.2",
     "alpinejs": "^3.10.2",
     "autoprefixer": "^10.4.5",
+    "codemirror": "^5.65.1",
     "core-js": "^3.22.2",
     "flatpickr": "^4.6.13",
     "jquery": "^3.6.0",

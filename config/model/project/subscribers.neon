@@ -8,3 +8,6 @@ services:
 	-
 		autowired: no
 		factory: App\Subscribers\Project\DeleteCookieProviderWhenProjectDeleted
+	-
+		autowired: no
+		factory: App\Subscribers\Project\CreateDefaultTemplateWhenProjectCreated

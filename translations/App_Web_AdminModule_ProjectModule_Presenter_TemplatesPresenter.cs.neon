@@ -1,0 +1,7 @@
+page_title: Šablony tabulky cookies
+including: Vložení tabulky do webu
+including_text: 'Pro vložení tabulky cookies na vaší stránce zkopírujte následující script a vložte ho přesně na místo, kde chcete tabulku zobrazit.'
+
+message:
+	templates_updated: Šablony byly uloženy.
+	templates_updated_failed: Při ukládání šablon došlo k chybě.

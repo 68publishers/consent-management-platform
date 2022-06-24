@@ -51,7 +51,7 @@ final class FindCookiesForApiQueryHandler implements QueryHandlerInterface
 			->leftJoin(ProjectHasCookieProvider::class, 'phc', Join::WITH, 'phc.cookieProviderId = cp.id AND phc.project = p')
 			->where('c.deletedAt IS NULL')
 			->andWhere('(phc.id IS NOT NULL OR cp.id = p.cookieProviderId)')
-			->orderBy('LOWER(c.name)', 'ASC')
+			->orderBy('c.createdAt', 'ASC')
 			->setParameter('projectId', $query->projectId());
 
 		$qb->leftJoin('c.translations', 'ct_default', Join::WITH, 'ct_default.locale = p.locales.defaultLocale')
@@ -59,9 +59,9 @@ final class FindCookiesForApiQueryHandler implements QueryHandlerInterface
 			->leftJoin('cp.translations', 'cpt_default', Join::WITH, 'cpt_default.locale = p.locales.defaultLocale');
 
 		if (NULL !== $query->locale()) {
-			$qb->addSelect('COALESCE(ct.purpose, ct_default.purpose, \'\') AS cookiePurpose')
-				->addSelect('COALESCE(cpt.purpose, cpt_default.purpose, \'\') AS cookieProviderPurpose')
-				->addSelect('COALESCE(catt.name, catt_default.name, \'\') AS categoryName')
+			$qb->addSelect('COALESCE(NULLIF(ct.purpose, \'\'), ct_default.purpose, \'\') AS cookiePurpose')
+				->addSelect('COALESCE(NULLIF(cpt.purpose, \'\'), cpt_default.purpose, \'\') AS cookieProviderPurpose')
+				->addSelect('COALESCE(NULLIF(catt.name, \'\'), catt_default.name, \'\') AS categoryName')
 				->leftJoin('c.translations', 'ct', Join::WITH, 'ct.locale = :locale')
 				->leftJoin('cat.translations', 'catt', Join::WITH, 'catt.locale = :locale')
 				->leftJoin('cp.translations', 'cpt', Join::WITH, 'cpt.locale = :locale')

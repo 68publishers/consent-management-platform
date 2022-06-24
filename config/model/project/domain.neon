@@ -14,3 +14,6 @@ services:
 	-
 		autowired: no
 		factory: App\Domain\Project\CommandHandler\RemoveCookieProvidersFromProjectCommandHandler
+	-
+		autowired: no
+		factory: App\Domain\Project\CommandHandler\UpdateProjectTemplatesCommandHandler

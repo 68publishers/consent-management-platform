@@ -1,0 +1,4 @@
+services:
+	-
+		type: App\Application\Cookie\TemplateRendererInterface
+		factory: App\Application\Cookie\TemplateRenderer

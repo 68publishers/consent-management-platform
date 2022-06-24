@@ -1,0 +1,24 @@
+<div id="cookie-providers-table">
+    <table>
+        <thead>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Link</th>
+        </thead>
+        <tbody>
+            <tr n:foreach="$providers as $provider">
+                <td>{$provider->name}</td>
+                <td>
+                    {if '1st_party' === $provider->type}
+                        1st party
+                    {else}
+                        3rd party
+                    {/if}
+                </td>
+                <td>{$provider->purpose}</td>
+                <td>{$provider->link}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -6,6 +6,9 @@ services:
 	-
 		type: App\Domain\Project\CheckCodeUniquenessInterface
 		factory: App\Infrastructure\Project\CheckCodeUniqueness
+	-
+		type: App\Domain\Project\TemplateValidatorInterface
+		factory: App\Infrastructure\Project\TemplateValidator
 
 	# infra: doctrine
 	-
@@ -13,8 +16,15 @@ services:
 		type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
 		factory: App\Infrastructure\Project\Doctrine\ReadModel\ProjectViewDataTransformer
 	-
+		autowired: self
+		type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
+		factory: App\Infrastructure\Project\Doctrine\ReadModel\ProjectTemplateViewDataTransformer
+	-
 		autowired: no
 		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindProjectSelectOptionsQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindProjectTemplatesQueryHandler
 	-
 		autowired: no
 		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindUserProjectsQueryHandler
@@ -27,6 +37,9 @@ services:
 	-
 		autowired: no
 		factory: App\Infrastructure\Project\Doctrine\ReadModel\GetUserProjectByCodeQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\Project\Doctrine\ReadModel\GetProjectTemplateByCodeAndLocaleWithFallbackQueryHandler
 	-
 		autowired: no
 		factory: App\Infrastructure\Project\Doctrine\ReadModel\ProjectExistsQueryHandler
@@ -58,4 +71,8 @@ nettrine.dbal:
 
 			App\Domain\Project\ValueObject\ProjectId:
 				class: App\Infrastructure\Project\Doctrine\DbalType\ProjectIdType
+				commented: yes
+
+			App\Domain\Project\ValueObject\Template:
+				class: App\Infrastructure\Project\Doctrine\DbalType\TemplateType
 				commented: yes

@@ -47,6 +47,13 @@
                 <cascade-remove />
             </cascade>
         </one-to-many>
+
+        <one-to-many field="translations" target-entity="App\Domain\Project\ProjectTranslation" mapped-by="project" orphan-removal="true">
+            <cascade>
+                <cascade-persist />
+                <cascade-remove />
+            </cascade>
+        </one-to-many>
     </entity>
 
 </doctrine-mapping>

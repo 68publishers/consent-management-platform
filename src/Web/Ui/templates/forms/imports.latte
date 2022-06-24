@@ -9,13 +9,23 @@
 
 {define #controls}
     {if}
-        {foreach $group->getControls() as $control}
-            {continueIf $control->getOption('rendered') || $control->getOption('type') === 'hidden'}
-            {if $control instanceof Nette\Forms\Controls\CheckboxList && 'checkbox' === $control->getOption('type')}
-                {do $control->setOption('type', 'checkboxlist')}
-            {/if}
+        {var $controls = $group instanceof Nette\Forms\Container ? $group->getComponents() : $group->getControls()}
 
-            {include #helpers-override-split, blockNamePrefix => pair, control => $control, parameters => [controlsIterator => $iterator]}
+        {foreach $controls as $control}
+            {if $control instanceof Nette\Forms\Control}
+                {continueIf $control->getOption('rendered') || $control->getOption('type') === 'hidden'}
+                {if $control instanceof Nette\Forms\Controls\CheckboxList && 'checkbox' === $control->getOption('type')}
+                    {do $control->setOption('type', 'checkboxlist')}
+                {/if}
+
+                {include #helpers-override-split, blockNamePrefix => pair, control => $control, parameters => [controlsIterator => $iterator]}
+            {elseif $control instanceof Nette\Forms\Container}
+                {ifset #'container-name-' . $control->getName()}
+                    {include #'container-name-' . $control->getName(), container => $control}
+                {else}
+                    {include #controls, group => $control}
+                {/ifset}
+            {/if}
         {/foreach}
     {/if $iterations}
 {/define}
@@ -91,10 +101,12 @@
 {/define}
 
 {define #input-type-textarea}
+    {var $codemirror = $control->getOption('codemirror', NULL)}
+
     <textarea n:name="$control" n:class="
         $control->getControlPrototype()->class,
         'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none'
-    " x-data x-autosize></textarea>
+    " x-data n:attr="'x-autosize' => !$codemirror, 'x-codemirror' => $codemirror"></textarea>
 {/define}
 
 {define #input-type-select}

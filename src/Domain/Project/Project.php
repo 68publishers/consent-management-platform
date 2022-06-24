@@ -13,6 +13,7 @@ use App\Domain\Shared\ValueObject\Locale;
 use App\Domain\Shared\ValueObject\Locales;
 use Doctrine\Common\Collections\Collection;
 use App\Domain\Project\Event\ProjectCreated;
+use App\Domain\Project\ValueObject\Template;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\Project\ValueObject\Description;
 use App\Domain\Project\Event\ProjectCodeChanged;
@@ -23,6 +24,7 @@ use App\Domain\Project\Event\ProjectColorChanged;
 use App\Domain\Project\Event\ProjectLocalesChanged;
 use App\Domain\Project\Command\CreateProjectCommand;
 use App\Domain\Project\Command\UpdateProjectCommand;
+use App\Domain\Project\Event\ProjectTemplateChanged;
 use App\Domain\Project\Event\ProjectTimezoneChanged;
 use App\Domain\Project\Event\ProjectActiveStateChanged;
 use App\Domain\Project\Event\ProjectDescriptionChanged;
@@ -57,8 +59,11 @@ final class Project implements AggregateRootInterface
 
 	private DateTimeZone $timezone;
 
-	/** @var \Doctrine\Common\Collections\Collection|\App\Domain\Project\ProjectHasCookieProvider[] */
+	/** @var \Doctrine\Common\Collections\Collection|\App\Domain\Project\ProjectHasCookieProvider[]  */
 	private Collection $cookieProviders;
+
+	/** @var \Doctrine\Common\Collections\Collection|\App\Domain\Project\ProjectTranslation[]  */
+	private Collection $translations;
 
 	/**
 	 * @param \App\Domain\Project\Command\CreateProjectCommand $command
@@ -281,6 +286,24 @@ final class Project implements AggregateRootInterface
 	}
 
 	/**
+	 * @param \App\Domain\Shared\ValueObject\Locale          $locale
+	 * @param \App\Domain\Project\ValueObject\Template       $template
+	 * @param \App\Domain\Project\TemplateValidatorInterface $templateValidator
+	 *
+	 * @return void
+	 */
+	public function changeTemplate(Locale $locale, Template $template, TemplateValidatorInterface $templateValidator): void
+	{
+		$translation = $this->translations->filter(static fn (ProjectTranslation $translation): bool => $translation->locale()->equals($locale))->first();
+
+		if (!$translation instanceof ProjectTranslation || !$translation->template()->equals($template)) {
+			$templateValidator($this->id, $template, $locale);
+
+			$this->recordThat(ProjectTemplateChanged::create($this->id, $template, $locale));
+		}
+	}
+
+	/**
 	 * @param \App\Domain\Project\Event\ProjectCreated $event
 	 *
 	 * @return void
@@ -298,6 +321,7 @@ final class Project implements AggregateRootInterface
 		$this->locales = $event->locales();
 		$this->timezone = $event->timezone();
 		$this->cookieProviders = new ArrayCollection();
+		$this->translations = new ArrayCollection();
 	}
 
 	/**
@@ -392,6 +416,24 @@ final class Project implements AggregateRootInterface
 		if ($projectHasCookieProvider instanceof ProjectHasCookieProvider) {
 			$this->cookieProviders->removeElement($projectHasCookieProvider);
 		}
+	}
+
+	/**
+	 * @param \App\Domain\Project\Event\ProjectTemplateChanged $event
+	 *
+	 * @return void
+	 */
+	protected function whenProjectTemplateChanged(ProjectTemplateChanged $event): void
+	{
+		$translation = $this->translations->filter(static fn (ProjectTranslation $translation): bool => $translation->locale()->equals($event->locale()))->first();
+
+		if ($translation instanceof ProjectTranslation) {
+			$translation->setTemplate($event->template());
+
+			return;
+		}
+
+		$this->translations->add(ProjectTranslation::create($this, $event->locale(), $event->template()));
 	}
 
 	/**
