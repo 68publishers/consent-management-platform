@@ -60,6 +60,7 @@ final class CookiesController extends AbstractV1Controller
 			->withHeader('Access-Control-Allow-Origin', '*')
 			->withHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
 			->withHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+			->withHeader('Content-Type', 'application/json')
 			->withStatus($response::S204_NO_CONTENT);
 	}
 
@@ -82,6 +83,7 @@ final class CookiesController extends AbstractV1Controller
 			->withHeader('Access-Control-Allow-Origin', '*')
 			->withHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
 			->withHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+			->withHeader('Content-Type', 'text/html')
 			->withStatus($response::S204_NO_CONTENT);
 	}
 
@@ -100,6 +102,7 @@ final class CookiesController extends AbstractV1Controller
 	 */
 	public function getJson(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
+		$response = $response->withHeader('Access-Control-Allow-Origin', '*');
 		$project = $this->queryBus->dispatch(GetProjectByCodeQuery::create($request->getParameter('project')));
 
 		$requestEntity = $request->getEntity();
@@ -143,6 +146,7 @@ final class CookiesController extends AbstractV1Controller
 	 */
 	public function getTemplate(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
+		$response = $response->withHeader('Access-Control-Allow-Origin', '*');
 		$requestEntity = $request->getEntity();
 		assert($requestEntity instanceof CookiesRequestBody);
 

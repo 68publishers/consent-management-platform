@@ -14,6 +14,7 @@ use App\Domain\Project\ValueObject\ProjectId;
 use App\ReadModel\Project\ProjectTemplateView;
 use App\ReadModel\Project\FindProjectTemplatesQuery;
 use App\Application\GlobalSettings\ValidLocalesProvider;
+use App\Domain\Project\Exception\InvalidTemplateException;
 use App\Domain\Project\Command\UpdateProjectTemplatesCommand;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
@@ -108,6 +109,11 @@ final class TemplatesFormControl extends Control
 
 		try {
 			$this->commandBus->dispatch($command);
+		} catch (InvalidTemplateException $e) {
+			$form->addError($e->getMessage(), FALSE);
+			$this->redrawControl();
+
+			return;
 		} catch (Throwable $e) {
 			$this->logger->error((string) $e);
 			$this->dispatchEvent(new TemplatesFormProcessingFailedEvent($e));
@@ -116,6 +122,7 @@ final class TemplatesFormControl extends Control
 		}
 
 		$this->dispatchEvent(new TemplatesUpdatedEvent());
+		$this->redrawControl();
 	}
 
 	/**

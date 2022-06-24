@@ -39,11 +39,7 @@ final class InvalidTemplateException extends DomainException
 	 */
 	public static function fromPrevious(ProjectId $projectId, Locale $locale, Throwable $e): self
 	{
-		return new self($projectId, $locale, sprintf(
-			'Can\'t render template for project %s and locale %s',
-			$projectId->toString(),
-			$locale->value()
-		), $e->getCode(), $e);
+		return new self($projectId, $locale, $e->getMessage(), $e->getCode(), $e);
 	}
 
 	/**
