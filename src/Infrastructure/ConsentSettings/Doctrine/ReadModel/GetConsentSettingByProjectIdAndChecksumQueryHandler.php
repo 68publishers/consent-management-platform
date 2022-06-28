@@ -42,7 +42,7 @@ final class GetConsentSettingByProjectIdAndChecksumQueryHandler implements Query
 		$data = $this->em->createQueryBuilder()
 			->select('cs')
 			->from(ConsentSettings::class, 'cs')
-			->join(Project::class, 'p', Join::WITH, 'cd.projectId = p.id AND p.id = :projectId AND p.deletedAt IS NULL')
+			->join(Project::class, 'p', Join::WITH, 'cs.projectId = p.id AND p.id = :projectId AND p.deletedAt IS NULL')
 			->where('cs.checksum = :checksum')
 			->setParameters([
 				'projectId' => $query->projectId(),
@@ -51,6 +51,6 @@ final class GetConsentSettingByProjectIdAndChecksumQueryHandler implements Query
 			->getQuery()
 			->getOneOrNullResult(AbstractQuery::HYDRATE_ARRAY);
 
-		return NULL !== $data ? $this->viewFactory->create(ConsentSettings::class, DoctrineViewData::create($data)) : NULL;
+		return NULL !== $data ? $this->viewFactory->create(ConsentSettingsView::class, DoctrineViewData::create($data)) : NULL;
 	}
 }
