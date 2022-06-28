@@ -197,6 +197,59 @@
 					}
 				}
 			}
+		},
+		"/api/v1/cookies/{project}/template": {
+			"get": {
+				"tags": [
+					"Cookies"
+				],
+				"parameters": [
+					{
+						"$ref": "#/components/parameters/Project"
+					},
+					{
+						"$ref": "#/components/parameters/Locale"
+					},
+					{
+						"$ref": "#/components/parameters/Category"
+					}
+				],
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/CookiesTemplateApiOk"
+					},
+					"422": {
+						"$ref": "#/components/responses/UnprocessableEntityError"
+					},
+					"default": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			},
+			"options": {
+				"tags": [
+					"Cookies"
+				],
+				"parameters": [
+					{
+						"$ref": "#/components/parameters/Project"
+					},
+					{
+						"$ref": "#/components/parameters/Locale"
+					},
+					{
+						"$ref": "#/components/parameters/Category"
+					}
+				],
+				"responses": {
+					"204": {
+						"$ref": "#/components/responses/NoContent"
+					},
+					"default": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
 		}
 	},
 	"components": {
@@ -306,6 +359,12 @@
 							"$ref": "#/components/schemas/CookiesResponse"
 						}
 					}
+				}
+			},
+			"CookiesTemplateApiOk": {
+				"description": "Returns HTML with cookies/cookie providers table.",
+				"content": {
+					"text/html": {}
 				}
 			},
 			"UnprocessableEntityError": {
