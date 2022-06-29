@@ -152,7 +152,7 @@ final class ProviderFormControl extends Control
 
 		try {
 			$this->commandBus->dispatch($command);
-			$this->saveProjects((array) $values->projects);
+			$this->saveProjects((array) $values->projects, $cookieProviderId);
 		} catch (CodeUniquenessException $e) {
 			$emailAddressField = $form->getComponent('code');
 			assert($emailAddressField instanceof TextInput);
@@ -172,23 +172,24 @@ final class ProviderFormControl extends Control
 	}
 
 	/**
-	 * @param string[] $projectIds
+	 * @param string[]                                                $projectIds
+	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId $cookieProviderId
 	 *
 	 * @return void
 	 */
-	private function saveProjects(array $projectIds): void
+	private function saveProjects(array $projectIds, CookieProviderId $cookieProviderId): void
 	{
 		$default = $this->getDefaultProjectIds();
 
 		foreach ($default as $projectId) {
 			if (!in_array($projectId, $projectIds, TRUE)) {
-				$this->commandBus->dispatch(RemoveCookieProvidersFromProjectCommand::create($projectId, $this->default->id->toString()));
+				$this->commandBus->dispatch(RemoveCookieProvidersFromProjectCommand::create($projectId, $cookieProviderId->toString()));
 			}
 		}
 
 		foreach ($projectIds as $projectId) {
 			if (!in_array($projectId, $default, TRUE)) {
-				$this->commandBus->dispatch(AddCookieProvidersToProjectCommand::create($projectId, $this->default->id->toString()));
+				$this->commandBus->dispatch(AddCookieProvidersToProjectCommand::create($projectId, $cookieProviderId->toString()));
 			}
 		}
 	}

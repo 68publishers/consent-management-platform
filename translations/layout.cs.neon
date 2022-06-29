@@ -27,7 +27,7 @@ profile:
 
 role_name:
 	admin: Admin
-	supervisor: Supervisor
+	manager: Manager
 
 cookie_provider_type:
 	1st_party: 1st party

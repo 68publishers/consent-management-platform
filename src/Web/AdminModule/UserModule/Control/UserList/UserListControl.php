@@ -10,6 +10,7 @@ use App\ReadModel\User\UserView;
 use Nette\InvalidStateException;
 use App\Web\Ui\DataGrid\DataGrid;
 use Nette\Application\UI\Multiplier;
+use App\Application\Acl\UserResource;
 use App\ReadModel\User\UsersDataGridQuery;
 use App\Web\Ui\DataGrid\Helper\FilterHelper;
 use App\Web\Ui\DataGrid\DataGridFactoryInterface;
@@ -94,6 +95,10 @@ final class UserListControl extends Control
 	 */
 	protected function createComponentDeleteConfirm(): Multiplier
 	{
+		if (!$this->getUser()->isAllowed(UserResource::class, UserResource::DELETE)) {
+			throw new InvalidStateException('The user is not allowed to delete users.');
+		}
+
 		return new Multiplier(function (string $id): ConfirmModalControl {
 			$userId = UserId::fromString($id);
 			$userView = $this->queryBus->dispatch(GetUserByIdQuery::create($userId->toString()));

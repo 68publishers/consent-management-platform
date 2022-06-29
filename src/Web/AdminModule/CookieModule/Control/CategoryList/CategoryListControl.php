@@ -9,6 +9,7 @@ use Nette\InvalidStateException;
 use App\Web\Ui\DataGrid\DataGrid;
 use Nette\Application\UI\Multiplier;
 use App\ReadModel\Category\CategoryView;
+use App\Application\Acl\CategoryResource;
 use App\Application\GlobalSettings\Locale;
 use App\Web\Ui\DataGrid\Helper\FilterHelper;
 use App\Domain\Category\ValueObject\CategoryId;
@@ -99,6 +100,10 @@ final class CategoryListControl extends Control
 	 */
 	protected function createComponentDeleteConfirm(): Multiplier
 	{
+		if (!$this->getUser()->isAllowed(CategoryResource::class, CategoryResource::DELETE)) {
+			throw new InvalidStateException('The user is not allowed to delete categories.');
+		}
+
 		return new Multiplier(function (string $id): ConfirmModalControl {
 			$categoryId = CategoryId::fromString($id);
 			$categoryView = $this->queryBus->dispatch(GetCategoryByIdQuery::create($categoryId->toString()));

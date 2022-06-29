@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\CookieModule\Presenter;
 
+use App\Application\Acl\CookieProviderResource;
 use App\Web\AdminModule\Presenter\AdminPresenter;
+use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\CookieModule\Control\ProviderList\ProviderListControl;
 use App\Web\AdminModule\CookieModule\Control\ProviderList\ProviderListControlFactoryInterface;
 
+/**
+ * @IsAllowed(resource=CookieProviderResource::class, privilege=CookieProviderResource::READ)
+ */
 final class ProvidersPresenter extends AdminPresenter
 {
 	private ProviderListControlFactoryInterface $providerListControlFactory;

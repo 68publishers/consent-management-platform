@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\ProjectModule\Presenter;
 
+use App\Application\Acl\ProjectResource;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
+use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\ProjectModule\Control\ProjectForm\ProjectFormControl;
 use App\Web\AdminModule\ProjectModule\Control\ProjectForm\Event\ProjectCreatedEvent;
 use App\Web\AdminModule\ProjectModule\Control\ProjectForm\ProjectFormControlFactoryInterface;
 use App\Web\AdminModule\ProjectModule\Control\ProjectForm\Event\ProjectFormProcessingFailedEvent;
 
+/**
+ * @IsAllowed(resource=ProjectResource::class, privilege=ProjectResource::CREATE)
+ */
 final class AddProjectPresenter extends AdminPresenter
 {
 	private ProjectFormControlFactoryInterface $projectFormControlFactory;
@@ -42,7 +47,7 @@ final class AddProjectPresenter extends AdminPresenter
 
 		$control->addEventListener(ProjectCreatedEvent::class, function (ProjectCreatedEvent $event) {
 			$this->subscribeFlashMessage(FlashMessage::success('project_created'));
-			$this->redirect('EditProject:', ['project' => $event->code()]);
+			$this->redirect('Consents:', ['project' => $event->code()]);
 		});
 
 		$control->addEventListener(ProjectFormProcessingFailedEvent::class, function () {

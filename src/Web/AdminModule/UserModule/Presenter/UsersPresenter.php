@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\UserModule\Presenter;
 
+use App\Application\Acl\UserResource;
 use App\Web\AdminModule\Presenter\AdminPresenter;
+use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\UserModule\Control\UserList\UserListControl;
 use App\Web\AdminModule\UserModule\Control\UserList\UserListControlFactoryInterface;
 
+/**
+ * @IsAllowed(resource=UserResource::class, privilege=UserResource::READ)
+ */
 final class UsersPresenter extends AdminPresenter
 {
 	private UserListControlFactoryInterface $userListControlFactory;

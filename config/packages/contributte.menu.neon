@@ -1,9 +1,16 @@
 extensions:
 	contributte.menu: Contributte\MenuControl\DI\MenuExtension
 
+services:
+	menu_authorizator:
+		type: Contributte\MenuControl\Security\IAuthorizator
+		factory: App\Web\Ui\Menu\MenuAuthorizator
+		autowired: no
+
 contributte.menu:
 	sidebar:
 		translator: yes
+		authorizator: @menu_authorizator
 		templates:
 			menu: %appDir%/Web/Ui/templates/menu/sidebar.latte
 			breadcrumbs: %appDir%/Web/Ui/templates/menu/breadcrumbs.latte
@@ -69,6 +76,7 @@ contributte.menu:
 
 	sidebar_project:
 		translator: yes
+		authorizator: @menu_authorizator
 		templates:
 			menu: %appDir%/Web/Ui/templates/menu/sidebar.latte
 			breadcrumbs: %appDir%/Web/Ui/templates/menu/breadcrumbs.latte

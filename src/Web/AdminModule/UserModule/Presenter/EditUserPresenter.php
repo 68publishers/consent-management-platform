@@ -5,17 +5,22 @@ declare(strict_types=1);
 namespace App\Web\AdminModule\UserModule\Presenter;
 
 use App\ReadModel\User\UserView;
+use App\Application\Acl\UserResource;
 use App\Web\Ui\Form\FormFactoryInterface;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
+use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\UserModule\Control\UserForm\UserFormControl;
 use SixtyEightPublishers\UserBundle\ReadModel\Query\GetUserByIdQuery;
 use App\Web\AdminModule\UserModule\Control\UserForm\Event\UserUpdatedEvent;
 use App\Web\AdminModule\UserModule\Control\UserForm\UserFormControlFactoryInterface;
 use App\Web\AdminModule\UserModule\Control\UserForm\Event\UserFormProcessingFailedEvent;
 
+/**
+ * @IsAllowed(resource=UserResource::class, privilege=UserResource::UPDATE)
+ */
 final class EditUserPresenter extends AdminPresenter
 {
 	private UserFormControlFactoryInterface $userFormControlFactory;

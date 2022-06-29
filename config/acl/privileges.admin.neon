@@ -1,0 +1,5 @@
+services:
+	acl:
+		setup:
+			# everything
+			- allow(App\Domain\User\RolesEnum::ADMIN)

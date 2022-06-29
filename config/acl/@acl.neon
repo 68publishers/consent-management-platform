@@ -1,2 +1,4 @@
 includes:
 	- definitions.neon
+	- privileges.manager.neon
+	- privileges.admin.neon

@@ -1,7 +1,7 @@
 {templateType App\Web\AdminModule\ProjectModule\Presenter\ProjectsTemplate}
 
 {block #heading_actions}
-    <a n:href="AddProject:" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">{_add_new_project}</a>
+    <a n:if="$user->isAllowed(App\Application\Acl\ProjectResource::class, App\Application\Acl\ProjectResource::CREATE)" n:href="AddProject:" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">{_add_new_project}</a>
 {/block}
 
 {block #before_content}
@@ -27,17 +27,28 @@
 <ul role="list" class="grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 px-4 sm:px-0">
     <li n:foreach="$projects as $project" class="col-span-1 shadow-sm rounded-md">
         <div class="flex h-full">
-            <a n:href="Consents: project => $project->code->value()" class="flex-shrink-0 flex items-center justify-center w-16 text-white text-lg font-medium rounded-l-md py-6 border border-gray-200" style="background-color: {$project->color->value()|noescape} !important;">
-                {$project->name->value()|substr: 0, 1|upper}
-            </a>
-            <div class="flex-1 flex flex-wrap items-center border-t border-r border-b border-gray-200 bg-white rounded-r-md">
-                <a n:href="Consents: project => $project->code->value()" class="flex flex-1 flex-wrap justify-between px-4 py-2 text-sm rounded-tr-md">
-                    <span class="text-gray-900 font-medium text-lg hover:text-gray-600 break-words">
-                        {$project->name->value()}
-                    </span>
-                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 break-all">{$project->code->value()}</span>
+            {if $user->isAllowed(App\Application\Acl\ProjectConsentResource::class, App\Application\Acl\ProjectConsentResource::READ)}
+                <a n:href="Consents: project => $project->code->value()" class="flex-shrink-0 flex items-center justify-center w-16 text-white text-lg font-medium rounded-l-md py-6 border border-gray-200" style="background-color: {$project->color->value()|noescape} !important;">
+                    {$project->name->value()|substr: 0, 1|upper}
                 </a>
-                <div class="flex justify-end bg-white px-4 py-2 w-full border-t border-gray-200 rounded-br-md">
+            {else}
+                <span class="flex-shrink-0 flex items-center justify-center w-16 text-white text-lg font-medium rounded-l-md py-6 border border-gray-200" style="background-color: {$project->color->value()|noescape} !important;">
+                    {$project->name->value()|substr: 0, 1|upper}
+                </span>
+            {/if}
+            <div class="flex-1 flex flex-wrap items-stretch border-t border-r border-b border-gray-200 bg-white rounded-r-md">
+                {if $user->isAllowed(App\Application\Acl\ProjectConsentResource::class, App\Application\Acl\ProjectConsentResource::READ)}
+                    <a n:href="Consents: project => $project->code->value()" class="flex flex-1 flex-wrap justify-between items-center px-4 py-2 text-sm rounded-tr-md">
+                        <span class="text-gray-900 font-medium text-lg hover:text-gray-600 break-words">{$project->name->value()}</span>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 break-all">{$project->code->value()}</span>
+                    </a>
+                {else}
+                    <span class="flex flex-1 flex-wrap justify-between items-center px-4 py-2 text-sm rounded-tr-md">
+                        <span class="text-gray-900 font-medium text-lg hover:text-gray-600 break-words">{$project->name->value()}</span>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 break-all">{$project->code->value()}</span>
+                    </span>
+                {/if}
+                <div n:if="$user->isAllowed(App\Application\Acl\ProjectResource::class, App\Application\Acl\ProjectResource::UPDATE)" class="flex justify-end bg-white px-4 py-2 w-full border-t border-gray-200 rounded-br-md">
                     <a n:href="EditProject: project => $project->code->value()" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />

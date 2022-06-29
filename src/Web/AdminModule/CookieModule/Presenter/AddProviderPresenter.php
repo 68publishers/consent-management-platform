@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\CookieModule\Presenter;
 
+use App\Application\Acl\CookieProviderResource;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
+use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\CookieModule\Control\ProviderForm\ProviderFormControl;
 use App\Web\AdminModule\CookieModule\Control\ProviderForm\Event\ProviderCreatedEvent;
 use App\Web\AdminModule\CookieModule\Control\ProviderForm\ProviderFormControlFactoryInterface;
 use App\Web\AdminModule\CookieModule\Control\ProviderForm\Event\ProviderFormProcessingFailedEvent;
 
+/**
+ * @IsAllowed(resource=CookieProviderResource::class, privilege=CookieProviderResource::CREATE)
+ */
 final class AddProviderPresenter extends AdminPresenter
 {
 	private ProviderFormControlFactoryInterface $providerFormControlFactory;

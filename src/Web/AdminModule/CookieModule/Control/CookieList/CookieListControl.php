@@ -46,6 +46,12 @@ final class CookieListControl extends Control
 
 	private CookieFormModalControlFactoryInterface $cookieFormModalControlFactory;
 
+	private array $acl = [
+		'resource' => NULL,
+		'update' => NULL,
+		'delete' => NULL,
+	];
+
 	/**
 	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId                                     $cookieProviderId
 	 * @param \App\Application\GlobalSettings\ValidLocalesProvider                                        $validLocalesProvider
@@ -64,6 +70,20 @@ final class CookieListControl extends Control
 		$this->dataGridFactory = $dataGridFactory;
 		$this->confirmModalControlFactory = $confirmModalControlFactory;
 		$this->cookieFormModalControlFactory = $cookieFormModalControlFactory;
+	}
+
+	/**
+	 * @param string      $resource
+	 * @param string|NULL $updatePrivilege
+	 * @param string|NULL $deletePrivilege
+	 *
+	 * @return void
+	 */
+	public function configureAclChecks(string $resource, ?string $updatePrivilege, ?string $deletePrivilege): void
+	{
+		$this->acl['resource'] = $resource;
+		$this->acl['update'] = $updatePrivilege;
+		$this->acl['delete'] = $deletePrivilege;
 	}
 
 	/**
@@ -102,10 +122,14 @@ final class CookieListControl extends Control
 			->setFilterDate('createdAt');
 
 		$grid->addAction('edit', '')
-			->setTemplate(__DIR__ . '/templates/action.edit.latte');
+			->setTemplate(__DIR__ . '/templates/action.edit.latte', [
+				'_acl' => $this->acl,
+			]);
 
 		$grid->addAction('delete', '')
-			->setTemplate(__DIR__ . '/templates/action.delete.latte');
+			->setTemplate(__DIR__ . '/templates/action.delete.latte', [
+				'_acl' => $this->acl,
+			]);
 
 		return $grid;
 	}
@@ -115,6 +139,10 @@ final class CookieListControl extends Control
 	 */
 	protected function createComponentDeleteConfirm(): Multiplier
 	{
+		if (isset($this->acl['resource'], $this->acl['delete']) && !$this->getUser()->isAllowed($this->acl['resource'], $this->acl['delete'])) {
+			throw new InvalidStateException('The user is not allowed to delete cookies.');
+		}
+
 		return new Multiplier(function (string $id): ConfirmModalControl {
 			$cookieId = CookieId::fromString($id);
 			$cookieView = $this->queryBus->dispatch(GetCookieByIdQuery::create($cookieId->toString()));
@@ -141,8 +169,15 @@ final class CookieListControl extends Control
 		});
 	}
 
+	/**
+	 * @return \Nette\Application\UI\Multiplier
+	 */
 	protected function createComponentEditModal(): Multiplier
 	{
+		if (isset($this->acl['resource'], $this->acl['update']) && !$this->getUser()->isAllowed($this->acl['resource'], $this->acl['update'])) {
+			throw new InvalidStateException('The user is not allowed to update cookies.');
+		}
+
 		return new Multiplier(function (string $id): CookieFormModalControl {
 			$cookieId = CookieId::fromString($id);
 			$cookieView = $this->queryBus->dispatch(GetCookieByIdQuery::create($cookieId->toString()));

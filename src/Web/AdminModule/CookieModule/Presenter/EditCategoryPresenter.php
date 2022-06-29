@@ -5,17 +5,22 @@ declare(strict_types=1);
 namespace App\Web\AdminModule\CookieModule\Presenter;
 
 use App\ReadModel\Category\CategoryView;
+use App\Application\Acl\CategoryResource;
 use App\Web\Ui\Form\FormFactoryInterface;
 use App\Domain\Category\ValueObject\CategoryId;
 use App\ReadModel\Category\GetCategoryByIdQuery;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
+use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\CookieModule\Control\CategoryForm\CategoryFormControl;
 use App\Web\AdminModule\CookieModule\Control\CategoryForm\Event\CategoryUpdatedEvent;
 use App\Web\AdminModule\CookieModule\Control\CategoryForm\CategoryFormControlFactoryInterface;
 use App\Web\AdminModule\CookieModule\Control\CategoryForm\Event\CategoryFormProcessingFailedEvent;
 
+/**
+ * @IsAllowed(resource=CategoryResource::class, privilege=CategoryResource::UPDATE)
+ */
 final class EditCategoryPresenter extends AdminPresenter
 {
 	private CategoryFormControlFactoryInterface $categoryFormControlFactory;

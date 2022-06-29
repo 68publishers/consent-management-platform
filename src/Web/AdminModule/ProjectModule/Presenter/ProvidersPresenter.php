@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Web\AdminModule\ProjectModule\Presenter;
 
 use App\Web\Ui\Form\FormFactoryInterface;
+use App\Application\Acl\ProjectCookieProviderResource;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
+use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\ProjectModule\Control\ProviderForm\ProviderFormControl;
 use App\Web\AdminModule\ProjectModule\Control\ProviderForm\Event\ProviderUpdatedEvent;
 use App\Web\AdminModule\ProjectModule\Control\OtherProvidersForm\OtherProvidersFormControl;
@@ -15,6 +17,9 @@ use App\Web\AdminModule\ProjectModule\Control\ProviderForm\Event\ProviderFormPro
 use App\Web\AdminModule\ProjectModule\Control\OtherProvidersForm\OtherProvidersFormControlFactoryInterface;
 use App\Web\AdminModule\ProjectModule\Control\OtherProvidersForm\Event\OtherProvidersFormProcessingFailedEvent;
 
+/**
+ * @IsAllowed(resource=ProjectCookieProviderResource::class, privilege=ProjectCookieProviderResource::UPDATE)
+ */
 final class ProvidersPresenter extends SelectedProjectPresenter
 {
 	private ProviderFormControlFactoryInterface $providerFormControlFactory;

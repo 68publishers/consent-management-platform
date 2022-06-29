@@ -6,12 +6,17 @@ namespace App\Web\AdminModule\ApplicationModule\Presenter;
 
 use App\Web\Ui\Form\FormFactoryInterface;
 use App\Web\AdminModule\Presenter\AdminPresenter;
+use App\Application\Acl\ApplicationSettingsResource;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
+use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\ApplicationModule\Control\GlobalSettingsForm\GlobalSettingsFormControl;
 use App\Web\AdminModule\ApplicationModule\Control\GlobalSettingsForm\Event\GlobalSettingsUpdatedEvent;
 use App\Web\AdminModule\ApplicationModule\Control\GlobalSettingsForm\Event\GlobalSettingsUpdateFailedEvent;
 use App\Web\AdminModule\ApplicationModule\Control\GlobalSettingsForm\GlobalSettingsFormControlFactoryInterface;
 
+/**
+ * @IsAllowed(resource=ApplicationSettingsResource::class, privilege=ApplicationSettingsResource::UPDATE)
+ */
 final class SettingsPresenter extends AdminPresenter
 {
 	private GlobalSettingsFormControlFactoryInterface $globalSettingsFormControlFactory;

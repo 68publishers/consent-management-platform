@@ -9,6 +9,7 @@ use Nette\InvalidStateException;
 use App\Web\Ui\DataGrid\DataGrid;
 use Nette\Application\UI\Multiplier;
 use App\Web\Ui\DataGrid\Helper\FilterHelper;
+use App\Application\Acl\CookieProviderResource;
 use App\Web\Ui\DataGrid\DataGridFactoryInterface;
 use App\Web\Ui\Modal\Confirm\ConfirmModalControl;
 use App\ReadModel\CookieProvider\CookieProviderView;
@@ -94,6 +95,10 @@ final class ProviderListControl extends Control
 	 */
 	protected function createComponentDeleteConfirm(): Multiplier
 	{
+		if (!$this->getUser()->isAllowed(CookieProviderResource::class, CookieProviderResource::DELETE)) {
+			throw new InvalidStateException('The user is not allowed to delete cookie providers.');
+		}
+
 		return new Multiplier(function (string $id): ConfirmModalControl {
 			$cookieProviderId = CookieProviderId::fromString($id);
 			$cookieProviderView = $this->queryBus->dispatch(GetCookieProviderByIdQuery::create($cookieProviderId->toString()));

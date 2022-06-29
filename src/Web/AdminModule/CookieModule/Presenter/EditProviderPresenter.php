@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\CookieModule\Presenter;
 
+use Nette\InvalidStateException;
+use App\Application\Acl\CookieResource;
 use App\Web\Ui\Form\FormFactoryInterface;
+use App\Application\Acl\CookieProviderResource;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use App\ReadModel\CookieProvider\CookieProviderView;
 use App\Domain\CookieProvider\ValueObject\CookieProviderId;
 use App\ReadModel\CookieProvider\GetCookieProviderByIdQuery;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
+use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControl;
 use App\Web\AdminModule\CookieModule\Control\ProviderForm\ProviderFormControl;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControl;
@@ -22,6 +26,9 @@ use App\Web\AdminModule\CookieModule\Control\ProviderForm\ProviderFormControlFac
 use App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControlFactoryInterface;
 use App\Web\AdminModule\CookieModule\Control\ProviderForm\Event\ProviderFormProcessingFailedEvent;
 
+/**
+ * @IsAllowed(resource=CookieProviderResource::class, privilege=CookieProviderResource::UPDATE)
+ */
 final class EditProviderPresenter extends AdminPresenter
 {
 	private ProviderFormControlFactoryInterface $providerFormControlFactory;
@@ -107,7 +114,15 @@ final class EditProviderPresenter extends AdminPresenter
 	 */
 	protected function createComponentCookieList(): CookieListControl
 	{
-		return $this->cookieListControlFactory->create($this->cookieProviderView->id, $this->validLocalesProvider);
+		if (!$this->getUser()->isAllowed(CookieResource::class, CookieResource::READ)) {
+			throw new InvalidStateException('The user is not allowed to read cookies.');
+		}
+
+		$control = $this->cookieListControlFactory->create($this->cookieProviderView->id, $this->validLocalesProvider);
+
+		$control->configureAclChecks(CookieResource::class, CookieResource::UPDATE, CookieResource::DELETE);
+
+		return $control;
 	}
 
 	/**
@@ -115,6 +130,10 @@ final class EditProviderPresenter extends AdminPresenter
 	 */
 	protected function createComponentCookieModal(): CookieFormModalControl
 	{
+		if (!$this->getUser()->isAllowed(CookieResource::class, CookieResource::CREATE)) {
+			throw new InvalidStateException('The user is not allowed to create cookies.');
+		}
+
 		$control = $this->cookieFormModalControlFactory->create($this->validLocalesProvider, $this->cookieProviderView->id);
 		$inner = $control->getInnerControl();
 

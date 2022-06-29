@@ -6,6 +6,7 @@ namespace App\Domain\User;
 
 final class RolesEnum
 {
+	public const MANAGER = 'manager';
 	public const ADMIN = 'admin';
 
 	private function __construct()
@@ -18,6 +19,7 @@ final class RolesEnum
 	public static function values(): array
 	{
 		return [
+			self::MANAGER,
 			self::ADMIN,
 		];
 	}

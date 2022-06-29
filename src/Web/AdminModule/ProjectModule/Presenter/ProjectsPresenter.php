@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\ProjectModule\Presenter;
 
+use App\Application\Acl\ProjectResource;
 use App\ReadModel\Project\FindUserProjectsQuery;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
+use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 
+/**
+ * @IsAllowed(resource=ProjectResource::class, privilege=ProjectResource::READ)
+ */
 final class ProjectsPresenter extends AdminPresenter
 {
 	private QueryBusInterface $queryBus;

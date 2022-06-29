@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\ProjectModule\Presenter;
 
+use Nette\InvalidStateException;
+use App\Application\Acl\ProjectResource;
 use App\Web\Ui\Form\FormFactoryInterface;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
+use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\ProjectModule\Control\ProjectForm\ProjectFormControl;
 use App\Web\AdminModule\ProjectModule\Control\DeleteProject\DeleteProjectControl;
 use App\Web\AdminModule\ProjectModule\Control\ProjectForm\Event\ProjectUpdatedEvent;
@@ -15,6 +18,9 @@ use App\Web\AdminModule\ProjectModule\Control\ProjectForm\ProjectFormControlFact
 use App\Web\AdminModule\ProjectModule\Control\DeleteProject\DeleteProjectControlFactoryInterface;
 use App\Web\AdminModule\ProjectModule\Control\ProjectForm\Event\ProjectFormProcessingFailedEvent;
 
+/**
+ * @IsAllowed(resource=ProjectResource::class, privilege=ProjectResource::UPDATE)
+ */
 final class EditProjectPresenter extends SelectedProjectPresenter
 {
 	private ProjectFormControlFactoryInterface $projectFormControlFactory;
@@ -68,6 +74,10 @@ final class EditProjectPresenter extends SelectedProjectPresenter
 	 */
 	protected function createComponentDelete(): DeleteProjectControl
 	{
+		if (!$this->getUser()->isAllowed(ProjectResource::class, ProjectResource::DELETE)) {
+			throw new InvalidStateException('The user is not allowed to delete projects.');
+		}
+
 		$control = $this->deleteProjectControlFactory->create($this->projectView);
 
 		$control->addEventListener(ProjectDeletedEvent::class, function () {

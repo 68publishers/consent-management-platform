@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\ProjectModule\Presenter;
 
+use App\Application\Acl\ProjectConsentResource;
+use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\ProjectModule\Control\ConsentList\ConsentListControl;
 use App\Web\AdminModule\ProjectModule\Control\ConsentList\ConsentListControlFactoryInterface;
 
+/**
+ * @IsAllowed(resource=ProjectConsentResource::class, privilege=ProjectConsentResource::READ)
+ */
 final class ConsentsPresenter extends SelectedProjectPresenter
 {
 	private ConsentListControlFactoryInterface $consentListControlFactory;
