@@ -16,5 +16,5 @@ services:
 			- addResource(App\Application\Acl\ProjectCookieProviderResource)
 			- addResource(App\Application\Acl\ProjectCookieResource)
 			- addResource(App\Application\Acl\ProjectResource)
-			- addResource(App\Application\Acl\ProjectTemplateResource)
+			- addResource(App\Application\Acl\ProjectIntegrationResource)
 			- addResource(App\Application\Acl\UserResource)

@@ -9,7 +9,7 @@ active:
 	field: Aktivní
 
 name:
-	field: 'Název (%name%)'
+	field: 'Název - %name%'
 	required: Vyplňte prosím název.
 
 save:

@@ -2,6 +2,7 @@ module.exports = {
   content: [
     './src/**/*.latte',
     './assets/js/**/*.js',
+    './translations/**/*.neon',
   ],
   safelist: [
     {

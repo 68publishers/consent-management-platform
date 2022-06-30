@@ -6,7 +6,7 @@ namespace App\Web\AdminModule\ProjectModule\Presenter;
 
 use Nette\InvalidStateException;
 use App\Web\Ui\Form\FormFactoryInterface;
-use App\Application\Acl\ProjectTemplateResource;
+use App\Application\Acl\ProjectIntegrationResource;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\ProjectModule\Control\TemplatesForm\TemplatesFormControl;
@@ -15,9 +15,9 @@ use App\Web\AdminModule\ProjectModule\Control\TemplatesForm\TemplatesFormControl
 use App\Web\AdminModule\ProjectModule\Control\TemplatesForm\Event\TemplatesFormProcessingFailedEvent;
 
 /**
- * @IsAllowed(resource=ProjectTemplateResource::class, privilege=ProjectTemplateResource::READ)
+ * @IsAllowed(resource=ProjectIntegrationResource::class, privilege=ProjectIntegrationResource::READ)
  */
-final class TemplatesPresenter extends SelectedProjectPresenter
+final class IntegrationPresenter extends SelectedProjectPresenter
 {
 	private TemplatesFormControlFactoryInterface $templatesFormControlFactory;
 
@@ -46,11 +46,11 @@ final class TemplatesPresenter extends SelectedProjectPresenter
 	 */
 	protected function createComponentTemplatesForm(): TemplatesFormControl
 	{
-		if (!$this->getUser()->isAllowed(ProjectTemplateResource::class, ProjectTemplateResource::UPDATE)) {
+		if (!$this->getUser()->isAllowed(ProjectIntegrationResource::class, ProjectIntegrationResource::UPDATE)) {
 			throw new InvalidStateException('The user is not allowed to update project\'s templates.');
 		}
 
-		$control = $this->templatesFormControlFactory->create($this->projectView->id, $this->validLocalesProvider->withLocalesConfig($this->projectView->locales));
+		$control = $this->templatesFormControlFactory->create($this->projectView, $this->validLocalesProvider->withLocalesConfig($this->projectView->locales));
 
 		$control->setFormFactoryOptions([
 			FormFactoryInterface::OPTION_AJAX => TRUE,

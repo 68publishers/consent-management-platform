@@ -13,6 +13,6 @@ services:
 
 			- allow(App\Domain\User\RolesEnum::MANAGER, App\Application\Acl\ProjectCookieResource, App\Application\Acl\ProjectCookieResource::privileges())
 
-			- allow(App\Domain\User\RolesEnum::MANAGER, App\Application\Acl\ProjectTemplateResource, [
-				App\Application\Acl\ProjectTemplateResource::READ
+			- allow(App\Domain\User\RolesEnum::MANAGER, App\Application\Acl\ProjectIntegrationResource, [
+				App\Application\Acl\ProjectIntegrationResource::READ
 			])

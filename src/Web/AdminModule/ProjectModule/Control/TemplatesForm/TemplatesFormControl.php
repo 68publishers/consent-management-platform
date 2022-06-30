@@ -7,10 +7,10 @@ namespace App\Web\AdminModule\ProjectModule\Control\TemplatesForm;
 use Throwable;
 use App\Web\Ui\Control;
 use Nette\Application\UI\Form;
+use App\ReadModel\Project\ProjectView;
 use App\Web\Ui\Form\FormFactoryInterface;
 use Nepada\FormRenderer\TemplateRenderer;
 use App\Web\Ui\Form\FormFactoryOptionsTrait;
-use App\Domain\Project\ValueObject\ProjectId;
 use App\ReadModel\Project\ProjectTemplateView;
 use App\ReadModel\Project\FindProjectTemplatesQuery;
 use App\Application\GlobalSettings\ValidLocalesProvider;
@@ -25,7 +25,7 @@ final class TemplatesFormControl extends Control
 {
 	use FormFactoryOptionsTrait;
 
-	private ProjectId $projectId;
+	private ProjectView $projectView;
 
 	private ValidLocalesProvider $validLocalesProvider;
 
@@ -36,15 +36,15 @@ final class TemplatesFormControl extends Control
 	private QueryBusInterface $queryBus;
 
 	/**
-	 * @param \App\Domain\Project\ValueObject\ProjectId                        $projectId
+	 * @param \App\ReadModel\Project\ProjectView                               $projectView
 	 * @param \App\Application\GlobalSettings\ValidLocalesProvider             $validLocalesProvider
 	 * @param \App\Web\Ui\Form\FormFactoryInterface                            $formFactory
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface $commandBus
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface   $queryBus
 	 */
-	public function __construct(ProjectId $projectId, ValidLocalesProvider $validLocalesProvider, FormFactoryInterface $formFactory, CommandBusInterface $commandBus, QueryBusInterface $queryBus)
+	public function __construct(ProjectView $projectView, ValidLocalesProvider $validLocalesProvider, FormFactoryInterface $formFactory, CommandBusInterface $commandBus, QueryBusInterface $queryBus)
 	{
-		$this->projectId = $projectId;
+		$this->projectView = $projectView;
 		$this->validLocalesProvider = $validLocalesProvider;
 		$this->formFactory = $formFactory;
 		$this->commandBus = $commandBus;
@@ -70,6 +70,7 @@ final class TemplatesFormControl extends Control
 		$form->setTranslator($translator);
 		$renderer->importTemplate(__DIR__ . '/templates/form.imports.latte');
 		$renderer->getTemplate()->locales = $locales;
+		$renderer->getTemplate()->projectCode = $this->projectView->code->value();
 
 		$templatesContainer = $form->addContainer('templates');
 
@@ -101,7 +102,7 @@ final class TemplatesFormControl extends Control
 	private function saveTemplates(Form $form): void
 	{
 		$values = $form->values;
-		$command = UpdateProjectTemplatesCommand::create($this->projectId->toString());
+		$command = UpdateProjectTemplatesCommand::create($this->projectView->id->toString());
 
 		foreach ($values->templates as $locale => $template) {
 			$command = $command->withTemplate($locale, $template);
@@ -132,7 +133,7 @@ final class TemplatesFormControl extends Control
 	{
 		$templates = [];
 
-		foreach ($this->queryBus->dispatch(FindProjectTemplatesQuery::create($this->projectId->toString())) as $projectTemplateView) {
+		foreach ($this->queryBus->dispatch(FindProjectTemplatesQuery::create($this->projectView->id->toString())) as $projectTemplateView) {
 			assert($projectTemplateView instanceof ProjectTemplateView);
 
 			$templates[$projectTemplateView->templateLocale->value()] = $projectTemplateView->template->value();

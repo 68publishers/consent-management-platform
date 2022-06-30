@@ -42,6 +42,21 @@ final class CookiesController extends AbstractV1Controller
 	}
 
 	/**
+	 * @param string      $projectCode
+	 * @param string|NULL $locale
+	 *
+	 * @return string
+	 */
+	public static function getTemplateUrl(string $projectCode, ?string $locale = NULL): string
+	{
+		return sprintf(
+			'/api/v1/cookies/%s/template%s',
+			$projectCode,
+			NULL !== $locale ? '?locale=' . $locale : ''
+		);
+	}
+
+	/**
 	 * @Api\Path("/{project}")
 	 * @Api\Method("OPTIONS")
 	 * @Api\RequestParameters({

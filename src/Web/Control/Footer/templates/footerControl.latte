@@ -5,7 +5,7 @@
         <div class="flex flex-wrap items-center justify-center text-sm text-gray-400 w-full footer-content">
             {var $footerItemClassname = 'w-full sm:w-auto mb-1 sm:mb-0 text-center'}
 
-            <span class="{$footerItemClassname}">Developed by&nbsp;<a href="http://www.68publishers.io" target="_blank" class="text-indigo-700">'68 Publishers</a></span>
+            <span class="{$footerItemClassname}">Developed by&nbsp;<a href="http://www.68publishers.io" target="_blank" class="text-indigo-700" x-data x-tooltip.raw="Born to Develop">'68 Publishers</a></span>
 
             {var $tag = $gitRepository->supports(SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand::class) ? $gitRepository->handle(new SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand()) : NULL}
 
@@ -18,6 +18,8 @@
                     <span x-data x-tooltip.interactive.raw="{$head->getCommitHash()->getValue()}" class="{$footerItemClassname}">{$head->getCommitHash()->getValue()|substr:0, 7}</span>
                 {/if}
             {/if}
+
+            <span class="{$footerItemClassname}"></span>
         </div>
     </div>
 </footer>

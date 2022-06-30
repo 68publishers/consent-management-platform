@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\ProfileModule\Presenter;
 
+use App\ReadModel\User\UserView;
 use App\Web\Ui\Form\FormFactoryInterface;
 use App\Web\AdminModule\Presenter\AdminPresenter;
+use App\Application\Localization\ApplicationDateTimeZone;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use SixtyEightPublishers\UserBundle\Bridge\Nette\Security\Identity;
 use App\Web\AdminModule\ProfileModule\Control\PasswordChange\PasswordChangeControl;
@@ -56,6 +58,18 @@ final class SettingsPresenter extends AdminPresenter
 			if ($event->oldProfile() !== $event->newProfile()) {
 				$this->redirect('this');
 			}
+
+			$identity = $this->getIdentity();
+			$identity->reload();
+
+			$data = $identity->data();
+			assert($data instanceof UserView);
+
+			ApplicationDateTimeZone::set($data->timezone);
+
+			$this->redrawControl('timezone-desktop');
+			$this->redrawControl('timezone-mobile');
+			$this->redrawControl('profile-menu');
 		});
 
 		$control->addEventListener(BasicInformationUpdateFailedEvent::class, function () {

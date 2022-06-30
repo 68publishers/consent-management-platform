@@ -18,7 +18,7 @@ sidebar_project:
 	cookies: Cookies
 	cookies_providers: Poskytovatelé cookies
 	cookies_cookies: Cookies projektu
-	templates: Šablony tabulky cookies
+	integration: Integrace
 	edit_project: Upravit projekt
 
 profile:
@@ -42,4 +42,4 @@ alert:
 		link_text: Nastavte ho prosím v editaci projektu.
 
 message:
-	locale_change_failed: Jazyk aplikace se nepovedlo změnit.
+	locale_change_failed: Jazyk se nepovedlo změnit.

@@ -36,16 +36,33 @@ function Select(Alpine) {
             this.opened = true;
 
             if (this.multiple) {
+                this.$nextTick((() => {
+                    if (this.$refs.searchbar) {
+                        this.$refs.searchbar.focus();
+                    }
+                }));
+
                 return;
             }
 
             this.activeIndex = this.selected.length ? this.selected.slice(0, 1)[0] : null;
 
             this.$nextTick((() => {
+                const children = this.$refs.options.getElementsByTagName('ul')[0].children;
+                let child = children[this.activeIndex + 1];
+
+                if (!child) {
+                    child = children[this.activeIndex];
+                }
+
                 this.$refs.options.focus();
-                this.$refs.options.getElementsByTagName('ul')[0].children[this.activeIndex].scrollIntoView({
+                child.scrollIntoView({
                     block: 'nearest'
-                })
+                });
+
+                if (this.$refs.searchbar) {
+                    this.$refs.searchbar.focus();
+                }
             }));
         },
 
@@ -191,6 +208,11 @@ function Select(Alpine) {
                 return this.$id('select');
             },
         },
+
+        searchbar: {
+            ['x-ref']: 'searchbar',
+            ['x-model']: 'searchbarValue',
+        }
     }));
 
     Alpine.directive('select', (el, {modifiers}, { cleanup }) => {
@@ -199,16 +221,16 @@ function Select(Alpine) {
 
         if (-1 !== modifiers.indexOf('tags') && el.multiple) {
             buttonText = `
-                <span class="flex flex-wrap">
+                <span class="flex flex-wrap -mb-2.5 sm:-mb-1.5">
                     <template x-for="(option, index) in options" :key="option.value">
-                        <span x-show="isSelected(index)" class="inline-flex items-center px-2.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800 mr-1.5 mb-0.5">
+                        <span x-show="isSelected(index)" class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800 mr-1.5 mb-1.5 h-full">
                             <span x-html="option.html"></span>
                             <button type="button" data-remove-button class="r-0.5 pl-1.5" x-on:click="choose(index)">
                                 &times;
                             </button>
                         </span>
                     </template>
-                    <span class="mb-0.5">&nbsp;</span>
+                    <span class="mb-1.5 py-0.5 h-full">&nbsp;</span>
                 </span>
             `;
         } else {
@@ -218,7 +240,7 @@ function Select(Alpine) {
         if (-1 !== modifiers.indexOf('searchbar')) {
             searchbar = `
                 <div class="select-none relative py-2 px-3 mb-2">
-                    <input x-model="searchbarValue" type="text" placeholder="..." class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full text-sm border-gray-300 rounded-md disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none">
+                    <input x-bind="searchbar" type="text" placeholder="..." class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full text-sm border-gray-300 rounded-md disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none">
                 </div>
             `;
         }

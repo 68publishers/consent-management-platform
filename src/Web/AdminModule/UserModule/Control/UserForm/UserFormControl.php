@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Web\AdminModule\UserModule\Control\UserForm;
 
 use Throwable;
+use Nette\Utils\Html;
 use App\Web\Ui\Control;
 use App\Domain\User\RolesEnum;
 use Nette\Application\UI\Form;
@@ -106,7 +107,9 @@ final class UserFormControl extends Control
 			->setRequired('roles.required');
 
 		$form->addPassword('password', 'password.field')
-			->setOption('description', NULL === $this->default ? 'password.description.add' : 'password.description.edit');
+			->setOption('description', Html::el()->setHtml(
+				$translator->translate(NULL === $this->default ? 'password.description.create_user' : ('password.description.update_user.' . (NULL === $this->default->password ? 'create_password': 'change_password')))
+			));
 
 		$form->addMultiSelect('projects', 'projects.field', $this->getProjectOptions())
 			->checkDefaultValue(FALSE)

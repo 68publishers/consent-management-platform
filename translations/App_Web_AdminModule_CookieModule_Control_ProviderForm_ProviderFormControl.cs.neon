@@ -22,7 +22,7 @@ projects:
 	field: Přiřazené projekty
 
 purpose:
-	field: 'Účel (%name%)'
+	field: 'Účel - %name%'
 
 save:
 	field: Vytvořit poskytovatele

@@ -21,7 +21,7 @@ processing_time_mask:
 	description: 'Jsou povoleny modifikátory "y" (rok), "m" (měsíc), "d" (den), "h" (hodina). Například expirace "1y 6m" znamená, že cookie má expiraci jeden rok a 6 měsíců.'
 
 purpose:
-	field: 'Účel (%name%)'
+	field: 'Účel - %name%'
 
 save:
 	field: Vytvořit cookie

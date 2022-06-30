@@ -7,11 +7,11 @@ firstname:
 
 surname:
 	field: Příjmení
-	required: Vyplňte prosím příjmení
+	required: Vyplňte prosím příjmení.
 
 profile:
-	field: Jazyk aplikace
-	required: Zvolte prosím jazyk aplikace.
+	field: Jazyk
+	required: Zvolte prosím jazyk.
 
 timezone:
 	field: Časové pásmo

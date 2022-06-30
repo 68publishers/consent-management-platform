@@ -1,5 +1,6 @@
 page_title: Upravit projekt
-danger_zone: Danger Zone
+heading_basic: Základní informace
+heading_danger_zone: Danger Zone
 
 message:
 	project_edited: Projekt byl upraven.
