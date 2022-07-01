@@ -16,7 +16,7 @@
     </div>
 
     <div x-bind="dropdownPanel" x-cloak class="origin-top-left absolute left-0 mt-2 w-36 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="locales-menu" tabindex="-1">
-        <a n:foreach="$profiles->all() as $profile" n:href="change! $profile->locale()" n:class="'ajax flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-gray-100 focus:bg-gray-100', $profile === $active ? 'bg-gray-100' : ''" role="menuitem" tabindex="-1">
+        <a n:foreach="$profiles->all() as $profile" n:href="change! $profile->locale()" n:class="'ajax flex items-center mx-1 my-0.5 px-3 py-2 rounded text-sm text-gray-700 hover:bg-gray-100 active:bg-gray-100 focus:bg-gray-100', $profile === $active ? 'bg-gray-100' : ''" role="menuitem" tabindex="-1">
             <span class="rounded-full">{$profile->icon()|noescape}</span>
             <span class="ml-3">{$profile->name()}</span>
         </a>

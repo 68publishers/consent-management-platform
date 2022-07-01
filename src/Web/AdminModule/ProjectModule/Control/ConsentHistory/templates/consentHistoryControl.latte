@@ -83,8 +83,8 @@
                             <th colspan="2" scope="colgroup" class="bg-gray-50 px-2 py-2 text-left text-sm font-medium text-gray-900">{_consents}</th>
                         </tr>
                         <tr n:foreach="$consents->values() as $storage => $val" class="border-t border-gray-200">
-                            <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-500">{$storage}</td>
-                            <td class="whitespace-nowrap px-2 py-2 text-sm text-right">
+                            <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-500 w-px">{$storage}</td>
+                            <td class="whitespace-nowrap pl-8 pr-2 py-2 text-sm text-left">
                                 {if $val}
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-700" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
@@ -100,14 +100,20 @@
                             <th colspan="2" scope="colgroup" class="bg-gray-50 px-2 py-2 text-left text-sm font-medium text-gray-900">{_attributes}</th>
                         </tr>
                         <tr n:foreach="$attributes->values() as $attr => $val" class="border-t border-gray-200">
-                            <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-500">{$attr}</td>
-                            <td class="whitespace-nowrap px-2 py-2 text-sm text-right">{$val}</td>
+                            <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-500 w-px">{$attr}</td>
+                            <td class="whitespace-nowrap pl-8 pr-2 py-2 text-sm text-left">{$val}</td>
                         </tr>
                         <tr class="border-t border-gray-200">
                             <th colspan="2" scope="colgroup" class="bg-gray-50 px-2 py-2 text-left text-sm font-medium text-gray-900">{_settings_checksum}</th>
                         </tr>
                         <tr class="border-t border-gray-200">
-                            <td colspan="2" class="whitespace-nowrap px-2 py-2 text-sm text-left">{$settingsChecksum !== NULL ? $settingsChecksum->value() : '-'}</td>
+                            <td colspan="2" class="whitespace-nowrap px-2 py-2 text-sm text-left">
+                                {if NULL !== $settingsChecksum}
+                                    <span x-data x-tooltip.interactive.html.raw="<span class='break-words'>{$settingsChecksum->value()}</span>">{$settingsChecksum->value()|substr:0, 8}</span>
+                                {else}
+                                    -
+                                {/if}
+                            </td>
                         </tr>
                     </tbody>
                 </table>

@@ -2,7 +2,8 @@
 
 import 'nette.ajax.js';
 import 'ublaboo-datagrid/assets/datagrid'
-import 'ublaboo-datagrid/assets/datagrid-spinners'
+//import 'ublaboo-datagrid/assets/datagrid-spinners'
+import './js/datagrid-spinners';
 import 'ublaboo-datagrid/assets/datagrid-instant-url-refresh'
 import Toastr from 'toastr';
 

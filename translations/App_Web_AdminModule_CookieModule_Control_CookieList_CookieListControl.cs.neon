@@ -3,6 +3,9 @@ category_name: Kategorie
 processing_time: Doba zpracování
 created_at: Vytvořeno
 
+session: Session
+persistent: Persistent
+
 delete_confirm:
 	question: 'Opravdu si přejete odstranit cookie <strong>"%name%"</strong>?'
 

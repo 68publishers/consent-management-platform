@@ -11,6 +11,15 @@
 
 {define col-processing_time}
     {if NULL !== $item->processingTime && NULL !== $_locale}
-        {$item->processingTime->print($_locale->code())}
+        {var $processingTime = $item->processingTime->print($_locale->code())}
+
+        {switch $processingTime}
+            {case App\Domain\Cookie\ValueObject\ProcessingTime::PERSISTENT}
+                {_persistent}
+            {case App\Domain\Cookie\ValueObject\ProcessingTime::SESSION}
+                {_session}
+            {default}
+                {$processingTime}
+        {/switch}
     {/if}
 {/define}
