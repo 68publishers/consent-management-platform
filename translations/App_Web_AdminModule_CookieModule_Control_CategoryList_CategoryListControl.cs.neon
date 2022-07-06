@@ -3,6 +3,9 @@ code: Kód
 active: Aktivní
 created_at: Vytvořeno
 
+active_value: aktivní
+inactive_value: neaktivní
+
 delete_confirm:
 	title: Odstranit kategorii
 	question: 'Opravdu si přejete odstranit kategorii <strong>"%name%"</strong> (%code%)?'

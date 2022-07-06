@@ -84,8 +84,8 @@
     @apply flex items-center text-right py-0.5 w-auto relative;
 }
 
-.datagrid .row-grid-bottom .col-per-page > select {
-    @apply ml-1 min-w-[60px];
+.datagrid .row-grid-bottom .col-per-page > [x-data="select"] {
+    @apply min-w-[80px];
 }
 
 .datagrid .table > thead th a, .datagrid .table > thead td a {
