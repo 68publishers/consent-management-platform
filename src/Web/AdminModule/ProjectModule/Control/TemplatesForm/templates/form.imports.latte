@@ -13,7 +13,8 @@
                 {include #helpers-override-split, blockNamePrefix => pair, control => $container[$locale]}
                 <div class="mt-4">
                     {var $link = App\Api\V1\Controller\CookiesController::getTemplateUrl($projectCode, $locale)}
-                    {$container[$locale]->translate(open_template, [link => $link])|noescape}
+                    <div class="mb-1">{$container[$locale]->translate(open_template, [link => $link])|noescape}</div>
+                    <div>{$container[$locale]->translate(more_about_syntax)|noescape}</div>
                 </div>
             </div>
         {/formContainer}

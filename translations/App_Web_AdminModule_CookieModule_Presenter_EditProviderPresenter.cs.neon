@@ -2,7 +2,7 @@ page_title: Upravit poskytovatele
 heading_basic: Základní informace
 heading_cookies: Cookies
 back_to_list: Zpět na výpis poskytovatelů
-add_new_cookie: Přidat novou cookie
+add_new_cookie: Přidat cookie
 
 message:
 	provider_not_found: Poskytovatel nebyl nalezen.

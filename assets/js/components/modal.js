@@ -1,6 +1,7 @@
 'use strict';
 
 const Bridge = require('../modal/modal-bridge');
+const bodyScrollLock = require('body-scroll-lock');
 
 module.exports = () => ({
     opened: false,
@@ -11,13 +12,20 @@ module.exports = () => ({
             return;
         }
 
+        this.$nextTick((() => {
+            bodyScrollLock.disableBodyScroll(this.$refs.scrollElement);
+        }));
+
         this.opened = true;
         Bridge.dispatchOpened(this);
     },
+
     close() {
         if (!this.opened) {
             return;
         }
+
+        bodyScrollLock.enableBodyScroll(this.$refs.scrollElement);
 
         this.opened = false;
 
@@ -25,6 +33,7 @@ module.exports = () => ({
             Bridge.dispatchClosed(this);
         }, 200);
     },
+
     destroy() {
         this.$el.remove();
     },
@@ -64,6 +73,15 @@ module.exports = () => ({
         },
     },
 
+    scrollElement: {
+        ['x-ref']: 'scrollElement',
+        ['x-on:click']() {
+            if (this.$event.target === this.$refs.scrollElement) {
+                this.close();
+            }
+        },
+    },
+
     modalDialog: {
         ['x-transition:enter']: 'ease-out duration-300',
         ['x-transition:enter-start']: 'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95',
@@ -71,12 +89,10 @@ module.exports = () => ({
         ['x-transition:leave']: 'ease-in duration-200',
         ['x-transition:leave-start']: 'opacity-100 translate-y-0 sm:scale-100',
         ['x-transition:leave-end']: 'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95',
-        ['x-on:click.outside']() {
-            this.close();
-        },
         ['x-show']() {
-            return this.opened
+            return this.opened;
         },
+        ['x-ref']: 'modalDialog',
     },
 
     modalCloseButton: {

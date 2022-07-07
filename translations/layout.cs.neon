@@ -7,16 +7,16 @@ sidebar:
 	users: Uživatelé
 	users_users: Uživatelé
 	users_password_requests: Zapomenutá hesla
-	application_settings: Nastavení aplikace
+	application_settings: Nastavení
 	cookies: Cookies
-	cookies_categories: Kategorie cookies
-	cookies_providers: Poskytovatelé cookies
+	cookies_categories: Kategorie
+	cookies_providers: Poskytovatelé
 	projects: Projekty
 
 sidebar_project:
 	consents: Evidence souhlasů
 	cookies: Cookies
-	cookies_providers: Poskytovatelé cookies
+	cookies_providers: Poskytovatelé
 	cookies_cookies: Cookies projektu
 	integration: Integrace
 	edit_project: Upravit projekt

@@ -5,6 +5,7 @@ function Select(Alpine) {
 
     let watchedComponentIds = [];
     let autoincrement = 0;
+    const isTouchScreen = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
 
     window.addEventListener('resize', () => {
         watchedComponentIds.forEach(cid => {
@@ -21,32 +22,72 @@ function Select(Alpine) {
                 this.$watch(`$store.${this.cid}.opened`, (() => {
                     this.$refs.button.focus();
                 }));
-            }
+            },
         },
         selectButton: {
             ['x-ref']: 'button',
-            ['x-on:click']() {
-                if (!this.$event.target.hasAttribute('data-remove-button')) {
-                    this.$store[this.cid].toggle();
-                }
-            },
             [':aria-haspopup']() {
                 return 'listbox';
             },
             [':aria-expanded']() {
                 return this.$store[this.cid].opened;
-            }
+            },
+            ['x-on:click']() {
+                if (!this.$event.target.hasAttribute('data-remove-button')) {
+                    this.$store[this.cid].toggle();
+                }
+            },
         },
     }));
 
     Alpine.data('selectOptions', () => ({
         cid: null,
+        focusItem(index) {
+            const item = this.$el.querySelectorAll('ul > li')[index];
+
+            if (!item) {
+                return null;
+            }
+
+            item.scrollIntoView({
+                block: 'nearest'
+            });
+
+            if (!isTouchScreen) {
+                item.getElementsByTagName('button')[0].focus();
+            }
+
+            return item;
+        },
+        matchVisibleItems(search) {
+            search = search.trim();
+
+            for (let i in this.$store[this.cid].options) {
+                const option = this.$store[this.cid].options[i];
+
+                option.visible = (!search.length || -1 !== option.label.search(new RegExp(search, 'i')));
+            }
+        },
         selectOptions: {
             ['x-init']() {
                 this.cid = this.$el.getAttribute('data-cid');
 
                 this.$watch(`$store.${this.cid}.activeIndex`, (() => {
-                    this.$store[this.cid].opened && (null !== this.$store[this.cid].activeIndex ? this.$store[this.cid].activeDescendant = this.$el.getElementsByTagName('ul')[0].children[this.$store[this.cid].activeIndex].id : this.$store[this.cid].activeDescendant = '')
+                    if (!this.$store[this.cid].opened) {
+                        return;
+                    }
+
+                    if (null === this.$store[this.cid].activeIndex) {
+                        this.$store[this.cid].activeDescendant = '';
+
+                        return;
+                    }
+
+                    const item = this.focusItem(this.$store[this.cid].activeIndex);
+
+                    if (item) {
+                        this.$store[this.cid].activeDescendant = item.id;
+                    }
                 }));
 
                 this.$watch(`$store.${this.cid}.selected`, (() => {
@@ -56,6 +97,18 @@ function Select(Alpine) {
 
                     this.$nextTick((() => {
                         this.$store[this.cid].recalculateOptionsPosition();
+
+                        if (null !== this.$store[this.cid].activeIndex) {
+                            this.focusItem(this.$store[this.cid].activeIndex);
+
+                            return;
+                        }
+
+                        if (this.$refs.searchbar) {
+                            this.$refs.searchbar.focus();
+                        } else {
+                            this.$el.focus();
+                        }
                     }));
                 }));
 
@@ -70,26 +123,16 @@ function Select(Alpine) {
 
                     this.$nextTick((() => {
                         this.$el.focus();
-
-                        if (!this.$store[this.cid].multiple) {
-                            const children = this.$el.getElementsByTagName('ul')[0].children;
-                            let child = children[this.$store[this.cid].activeIndex + 1];
-
-                            if (!child) {
-                                child = children[this.$store[this.cid].activeIndex];
-                            }
-
-                            if (child) {
-                                child.scrollIntoView({
-                                    block: 'nearest'
-                                });
-                            }
-                        }
+                        this.$el.getElementsByTagName('ul')[0].scrollTo(0, 0);
 
                         if (this.$refs.searchbar) {
                             this.$refs.searchbar.focus();
                         }
                     }));
+                }));
+
+                this.$watch(`$store.${this.cid}.searchbarValue`, ((searchbarValue) => {
+                    this.matchVisibleItems(searchbarValue);
                 }));
             },
             ['x-transition:enter']: '',
@@ -116,6 +159,74 @@ function Select(Alpine) {
             },
             ['x-show']() {
                 return this.$store[this.cid].opened;
+            },
+            ['x-on:keydown.up.prevent.stop']() {
+                const options = this.$store[this.cid].options;
+
+                let index = this.$store[this.cid].activeIndex;
+
+                if (null === index || (!options[index] || !options[index].visible)) {
+                    this.$store[this.cid].activeIndex = null;
+
+                    return;
+                }
+
+                let prevIndex = null;
+
+                for (let i in options) {
+                    i = parseInt(i);
+                    const option = options[i];
+
+                    if (!option.visible) {
+                        continue;
+                    }
+
+                    if (index === i) {
+                        index = prevIndex;
+
+                        break;
+                    }
+
+                    prevIndex = i;
+                }
+
+                if (index !== null) {
+                    this.$store[this.cid].activeIndex = index;
+                } else if (this.$refs.searchbar) {
+                    this.$store[this.cid].activeIndex = index;
+                    this.$refs.searchbar.focus();
+                }
+            },
+            ['x-on:keydown.down.prevent.stop']() {
+                const options = this.$store[this.cid].options;
+                let index = this.$store[this.cid].activeIndex;
+
+                if (null !== index && (!options[index] || !options[index].visible)) {
+                    index = null;
+                }
+
+                let currentFound = null === index;
+
+                for (let i in options) {
+                    i = parseInt(i);
+                    const option = options[i];
+
+                    if (!option.visible) {
+                        continue;
+                    }
+
+                    if (currentFound) {
+                        index = i;
+
+                        break;
+                    }
+
+                    if (index === i) {
+                        currentFound = true;
+                    }
+                }
+
+                this.$store[this.cid].activeIndex = index;
             },
             ['x-id']: '["selectOptions"]',
         },
@@ -176,14 +287,16 @@ function Select(Alpine) {
                 ${searchbar}
                 <ul class="max-h-60 overflow-auto" role="listbox">
                     <template x-for="(option, index) in $store.${cid}.options" :key="option.value">
-                        <li x-show="!$store.${cid}.searchbarValue.trim().length || -1 !== option.label.search(new RegExp($store.${cid}.searchbarValue.trim(), 'i'))" x-on:click="$store.${cid}.choose(index)" x-on:mouseenter="$store.${cid}.activeIndex = index" x-on:mouseleave="$store.${cid}.activeIndex = null" :id="$id('selectOptions') + index" class="cursor-pointer select-none relative py-2 pl-3 pr-9 mx-1 rounded" :class="{'text-white': $store.${cid}.activeIndex === index, 'text-gray-900': $store.${cid}.activeIndex !== index, 'bg-indigo-600': $store.${cid}.activeIndex === index}" role="option">
-                            <span x-html="option.html" class="text-left font-normal block truncate"></span>
-    
-                            <span x-show="$store.${cid}.isSelected(index)" class="absolute inset-y-0 right-0 flex items-center pr-2 text-indigo-600" :class="{'text-white': $store.${cid}.activeIndex === index, 'text-indigo-600': $store.${cid}.activeIndex !== index}">
-                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                </svg>
-                            </span>
+                        <li x-show="option.visible" :id="$id('selectOptions') + index" class="flex mx-1" role="option">
+                            <button x-on:click="$store.${cid}.choose(index)" x-on:mouseenter="$store.${cid}.activeIndex = index" class="group w-full cursor-pointer select-none relative py-2 pl-3 pr-9 rounded text-gray-900 focus:text-white focus:bg-indigo-600 focus:outline-none">
+                                <span x-html="option.html" class="text-left font-normal block truncate"></span>
+        
+                                <span x-show="$store.${cid}.isSelected(index)" class="absolute inset-y-0 right-0 flex items-center pr-2 text-indigo-600 text-indigo-600 group-focus:text-white">
+                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                </span>
+                            </button>
                         </li>
                     </template>
                 </ul>
@@ -193,20 +306,23 @@ function Select(Alpine) {
         optionsEl.setAttribute('x-data', 'selectOptions');
         optionsEl.setAttribute('x-bind', 'selectOptions');
         optionsEl.setAttribute('data-cid', cid);
-        optionsEl.setAttribute('class', 'absolute flex flex-col justify-end pointer-events-none z-10 mt-1 w-full text-base focus:outline-none sm:text-sm');
+        optionsEl.setAttribute('class', 'absolute flex flex-col justify-start pointer-events-none z-10 mt-1 w-full text-base focus:outline-none sm:text-sm');
         optionsEl.setAttribute('tabindex', '-1');
+
+        const containerEl = el.closest('[data-plugin-container]') || null;
 
         Alpine.store(cid, {
             cid: cid,
             el: el,
             selectEl: selectEl,
             optionsEl: optionsEl,
+            containerEl: containerEl,
             opened: false,
             multiple: el.multiple || false,
             selected: [],
             options: [],
             selectText: '',
-            activeIndex: '',
+            activeIndex: null,
             activeDescendant: '',
             searchbarValue: '',
 
@@ -220,6 +336,7 @@ function Select(Alpine) {
                             value: opt.value,
                             label: opt.innerText,
                             html: opt.hasAttribute('data-html') ? opt.getAttribute('data-html') : opt.innerText,
+                            visible: true,
                         };
 
                         this.options.push(option);
@@ -246,13 +363,16 @@ function Select(Alpine) {
 
             recalculateOptionsPosition() {
                 const bounds = this.selectEl.getBoundingClientRect();
+                const scrollY = this.containerEl ? this.containerEl.scrollTop : window.scrollY;
+
                 const left = Math.round(window.scrollX + bounds.left);
-                let top = Math.round(window.scrollY + bounds.top + this.selectEl.offsetHeight);
+                let top = Math.round(scrollY + bounds.top + this.selectEl.offsetHeight);
                 let flexDirection = 'column';
+                let justifyContent = 'flex-start';
 
                 const optionsVisibility = this.optionsEl.style.visibility;
                 const optionsDisplay = this.optionsEl.style.display;
-                const documentHeight = document.documentElement.scrollHeight;
+                const documentHeight = this.containerEl ? this.containerEl.scrollHeight : document.documentElement.scrollHeight;
 
                 this.optionsEl.style.visibility = 'hidden';
                 this.optionsEl.style.display = 'block';
@@ -261,6 +381,7 @@ function Select(Alpine) {
                 if ((documentHeight - top) < (this.optionsEl.offsetHeight + 10)) {
                     top = top - this.optionsEl.offsetHeight - this.selectEl.offsetHeight - (4 * 2);
                     flexDirection = 'column-reverse';
+                    justifyContent = 'flex-end';
                 }
 
                 const height = this.optionsEl.offsetHeight;
@@ -273,6 +394,7 @@ function Select(Alpine) {
                 this.optionsEl.style.left = left + 'px';
                 this.optionsEl.style.top = top + 'px';
                 this.optionsEl.style.height = height + 'px';
+                this.optionsEl.style.justifyContent = justifyContent;
 
                 this.optionsEl.children[0].style.flexDirection = flexDirection;
             },
@@ -285,10 +407,6 @@ function Select(Alpine) {
                 this.recalculateOptionsPosition();
 
                 this.opened = true;
-
-                if (!this.multiple) {
-                    this.activeIndex = this.selected.length ? this.selected.slice(0, 1)[0] : null;
-                }
             },
 
             close(focusAfter) {
@@ -297,12 +415,9 @@ function Select(Alpine) {
                 }
 
                 this.opened = false;
+                this.activeIndex = null;
 
                 focusAfter && focusAfter.focus();
-            },
-
-            active() {
-                return this.options[this.activeIndex];
             },
 
             choose(index) {
@@ -365,7 +480,12 @@ function Select(Alpine) {
 
         el.style.display = 'none';
         el.insertAdjacentElement('beforebegin', selectEl);
-        document.body.insertAdjacentElement('beforeend', optionsEl);
+
+        if (containerEl) {
+            containerEl.insertAdjacentElement('beforeend', optionsEl);
+        } else {
+            document.body.insertAdjacentElement('beforeend', optionsEl);
+        }
 
         watchedComponentIds.push(cid);
 
