@@ -362,11 +362,20 @@ function Select(Alpine) {
             },
 
             recalculateOptionsPosition() {
-                const bounds = this.selectEl.getBoundingClientRect();
+                const selectBounds = this.selectEl.getBoundingClientRect();
                 const scrollY = this.containerEl ? this.containerEl.scrollTop : window.scrollY;
+                const scrollX = this.containerEl ? this.containerEl.scrollLeft : window.scrollX;
+                let selectTop = selectBounds.top;
+                let selectLeft = selectBounds.left;
 
-                const left = Math.round(window.scrollX + bounds.left);
-                let top = Math.round(scrollY + bounds.top + this.selectEl.offsetHeight);
+                if (this.containerEl) {
+                    const containerBounds = this.containerEl.getBoundingClientRect();
+                    selectTop -= containerBounds.top;
+                    selectLeft -= containerBounds.left;
+                }
+
+                const left = Math.round(scrollX + selectLeft);
+                let top = Math.round(scrollY + selectTop + this.selectEl.offsetHeight);
                 let flexDirection = 'column';
                 let justifyContent = 'flex-start';
 

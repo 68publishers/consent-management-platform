@@ -71,6 +71,9 @@ module.exports = () => ({
         ['x-show']() {
             return this.opened;
         },
+        ['x-on:click']() {
+            this.close();
+        },
     },
 
     scrollElement: {
