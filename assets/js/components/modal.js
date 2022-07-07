@@ -1,7 +1,7 @@
 'use strict';
 
 const Bridge = require('../modal/modal-bridge');
-const bodyScrollLock = require('body-scroll-lock');
+const BodyScrollLock = require('../body-scroll-lock');
 
 module.exports = () => ({
     opened: false,
@@ -13,7 +13,7 @@ module.exports = () => ({
         }
 
         this.$nextTick((() => {
-            bodyScrollLock.disableBodyScroll(this.$refs.scrollElement);
+            BodyScrollLock.lock(true);
         }));
 
         this.opened = true;
@@ -25,7 +25,7 @@ module.exports = () => ({
             return;
         }
 
-        bodyScrollLock.enableBodyScroll(this.$refs.scrollElement);
+        BodyScrollLock.unlock();
 
         this.opened = false;
 
