@@ -1,0 +1,11 @@
+{templateType App\Web\AdminModule\ProjectModule\Control\ConsentSettingsDetail\ConsentSettingsDetailModalTemplate}
+
+{extends $layout}
+
+{block #title}
+    <span class="flex items-center">{_title, [checksum => ($consentSettingsView->checksum->value()|substr:0, 8)]|noescape}</span>
+{/block}
+
+{block #body}
+
+{control consentSettingsDetail}

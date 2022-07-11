@@ -3,7 +3,7 @@
 {extends $layout}
 
 {block #title}
-    {_title, [user_identifier => $consentView->userIdentifier->value()]}
+    <span class="break-words">{_title, [user_identifier => $consentView->userIdentifier->value()]}</span>
 {/block}
 
 {block #body}

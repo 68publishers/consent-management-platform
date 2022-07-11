@@ -10,6 +10,12 @@ services:
 	# infra: doctrine
 	-
 		autowired: no
+		factory: App\Infrastructure\ConsentSettings\Doctrine\ReadModel\ConsentSettingsDataGridQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\ConsentSettings\Doctrine\ReadModel\GetConsentSettingByIdAndProjectIdQueryHandler
+	-
+		autowired: no
 		factory: App\Infrastructure\ConsentSettings\Doctrine\ReadModel\GetConsentSettingByProjectIdAndChecksumQueryHandler
 
 # infra: doctrine mapping

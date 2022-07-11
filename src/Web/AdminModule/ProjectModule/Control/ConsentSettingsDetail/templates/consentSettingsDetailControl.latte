@@ -1,0 +1,24 @@
+{templateType App\Web\AdminModule\ProjectModule\Control\ConsentSettingsDetail\ConsentSettingsDetailTemplate}
+
+<div class="flow-root">
+    <ul role="list" class="-mb-8">
+        <li n:foreach="$consentSettingsView->settings->all() as $settings">
+            {varType App\Domain\ConsentSettings\ValueObject\Settings $settings}
+            <div class="relative pb-8">
+                <span n:if="!$iterator->isLast()" class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
+                <div class="relative">
+                    <div class="w-full mb-4 text-right whitespace-nowrap text-sm text-gray-500">
+                        {var $createdAt = (new \DateTimeImmutable($settings->get('metadata')['created_at']))->setTimezone(App\Application\Localization\ApplicationDateTimeZone::get())}
+                        <time datetime="{$createdAt->format('Y-m-d H:i:s')}">{$createdAt->format('j.n.Y H:i:s')}</time>
+                    </div>
+                    <div class="w-full mb-4 break-words text-sm text-gray-500">
+                        {$consentSettingsView->checksum->value()}
+                    </div>
+                    <div class="w-full">
+                        <textarea x-data x-codemirror.readonly.wrap="javascript" class="codemirror-h-auto">{Nette\Utils\Json::encode($settings->get('settings'), Nette\Utils\Json::PRETTY)}</textarea>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

@@ -6,7 +6,7 @@ sidebar:
 	dashboard: Dashboard
 	users: Uživatelé
 	users_users: Uživatelé
-	users_password_requests: Zapomenutá hesla
+	users_password_requests: Žádosti o nové heslo
 	application_settings: Nastavení
 	cookies: Cookies
 	cookies_categories: Kategorie
@@ -15,6 +15,7 @@ sidebar:
 
 sidebar_project:
 	consents: Evidence souhlasů
+	consent_settings: Cookie lišty
 	cookies: Cookies
 	cookies_providers: Poskytovatelé
 	cookies_cookies: Cookies projektu

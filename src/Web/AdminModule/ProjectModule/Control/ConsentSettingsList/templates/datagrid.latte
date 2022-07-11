@@ -1,0 +1,9 @@
+{extends $originalTemplate}
+
+{varType App\ReadModel\ConsentSettings\ConsentSettingsView $item}
+
+{define col-checksum}
+    {if NULL !== $item->checksum}
+        <span x-data x-tooltip.interactive.html.raw="<span class='break-words'>{$item->checksum->value()}</span>">{$item->checksum->value()|substr:0, 8}</span>
+    {/if}
+{/define}

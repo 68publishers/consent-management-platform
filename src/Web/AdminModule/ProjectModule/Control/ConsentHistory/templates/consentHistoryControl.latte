@@ -17,7 +17,8 @@
                                 {include block 'title_' . $name, $event, $name}
                             </div>
                             <div class="text-right whitespace-nowrap text-sm text-gray-500">
-                                <time datetime="{$event->createdAt()->format('Y-m-d H:i:s')}">{$event->createdAt()->format('j.n.Y h:i:s')}</time>
+                                {var $createdAt = $event->createdAt()->setTimezone(App\Application\Localization\ApplicationDateTimeZone::get())}
+                                <time datetime="{$createdAt->format('Y-m-d H:i:s')}">{$createdAt->format('j.n.Y H:i:s')}</time>
                             </div>
                         </div>
                         <div>

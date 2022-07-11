@@ -61,9 +61,12 @@ services:
 
 	# Web\AdminModule\ProjectModule
 	- App\Web\AdminModule\ProjectModule\Control\ConsentList\ConsentListControlFactoryInterface
-	- App\Web\AdminModule\ProjectModule\Control\ProjectForm\ProjectFormControlFactoryInterface
+	- App\Web\AdminModule\ProjectModule\Control\ConsentSettingsList\ConsentSettingsListControlFactoryInterface
 	- App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryControlFactoryInterface
 	- App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryModalControlFactoryInterface
+	- App\Web\AdminModule\ProjectModule\Control\ConsentSettingsDetail\ConsentSettingsDetailControlFactoryInterface
+	- App\Web\AdminModule\ProjectModule\Control\ConsentSettingsDetail\ConsentSettingsDetailModalControlFactoryInterface
+	- App\Web\AdminModule\ProjectModule\Control\ProjectForm\ProjectFormControlFactoryInterface
 	- App\Web\AdminModule\ProjectModule\Control\DeleteProject\DeleteProjectControlFactoryInterface
 	- App\Web\AdminModule\ProjectModule\Control\ProviderForm\ProviderFormControlFactoryInterface
 	- App\Web\AdminModule\ProjectModule\Control\OtherProvidersForm\OtherProvidersFormControlFactoryInterface

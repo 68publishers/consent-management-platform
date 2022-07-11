@@ -12,10 +12,14 @@ use App\ReadModel\Consent\ConsentView;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\ReadModel\Consent\ConsentsDataGridQuery;
 use App\Web\Ui\DataGrid\DataGridFactoryInterface;
+use App\ReadModel\ConsentSettings\ConsentSettingsView;
 use App\ReadModel\Consent\GetConsentByIdAndProjectIdQuery;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
+use App\ReadModel\ConsentSettings\GetConsentSettingsByProjectIdAndChecksumQuery;
 use App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryModalControl;
+use App\Web\AdminModule\ProjectModule\Control\ConsentSettingsDetail\ConsentSettingsDetailModalControl;
 use App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryModalControlFactoryInterface;
+use App\Web\AdminModule\ProjectModule\Control\ConsentSettingsDetail\ConsentSettingsDetailModalControlFactoryInterface;
 
 final class ConsentListControl extends Control
 {
@@ -25,19 +29,23 @@ final class ConsentListControl extends Control
 
 	private ConsentHistoryModalControlFactoryInterface $consentHistoryModalControlFactory;
 
+	private ConsentSettingsDetailModalControlFactoryInterface $consentSettingsDetailModalControlFactory;
+
 	private QueryBusInterface $queryBus;
 
 	/**
-	 * @param \App\Domain\Project\ValueObject\ProjectId                                                            $projectId
-	 * @param \App\Web\Ui\DataGrid\DataGridFactoryInterface                                                        $dataGridFactory
-	 * @param \App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryModalControlFactoryInterface $consentHistoryModalControlFactory
-	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface                                       $queryBus
+	 * @param \App\Domain\Project\ValueObject\ProjectId                                                                          $projectId
+	 * @param \App\Web\Ui\DataGrid\DataGridFactoryInterface                                                                      $dataGridFactory
+	 * @param \App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryModalControlFactoryInterface               $consentHistoryModalControlFactory
+	 * @param \App\Web\AdminModule\ProjectModule\Control\ConsentSettingsDetail\ConsentSettingsDetailModalControlFactoryInterface $consentSettingsDetailModalControlFactory
+	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface                                                     $queryBus
 	 */
-	public function __construct(ProjectId $projectId, DataGridFactoryInterface $dataGridFactory, ConsentHistoryModalControlFactoryInterface $consentHistoryModalControlFactory, QueryBusInterface $queryBus)
+	public function __construct(ProjectId $projectId, DataGridFactoryInterface $dataGridFactory, ConsentHistoryModalControlFactoryInterface $consentHistoryModalControlFactory, ConsentSettingsDetailModalControlFactoryInterface $consentSettingsDetailModalControlFactory, QueryBusInterface $queryBus)
 	{
 		$this->projectId = $projectId;
 		$this->dataGridFactory = $dataGridFactory;
 		$this->consentHistoryModalControlFactory = $consentHistoryModalControlFactory;
+		$this->consentSettingsDetailModalControlFactory = $consentSettingsDetailModalControlFactory;
 		$this->queryBus = $queryBus;
 	}
 
@@ -98,6 +106,25 @@ final class ConsentListControl extends Control
 			}
 
 			return $this->consentHistoryModalControlFactory->create($consentView);
+		});
+	}
+
+	/**
+	 * @return \Nette\Application\UI\Multiplier
+	 */
+	protected function createComponentConsentSettingsDetail(): Multiplier
+	{
+		return new Multiplier(function (string $consentSettingsChecksum): ConsentSettingsDetailModalControl {
+			$consentSettingsView = $this->queryBus->dispatch(GetConsentSettingsByProjectIdAndChecksumQuery::create($this->projectId->toString(), $consentSettingsChecksum));
+
+			if (!$consentSettingsView instanceof ConsentSettingsView) {
+				throw new InvalidStateException(sprintf(
+					'Consent settings for checksum %s not found.',
+					$consentSettingsChecksum
+				));
+			}
+
+			return $this->consentSettingsDetailModalControlFactory->create($consentSettingsView);
 		});
 	}
 }
