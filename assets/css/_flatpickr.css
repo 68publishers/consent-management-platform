@@ -10,37 +10,116 @@
     @apply hidden;
 }
 
-.flatpickr-day.selected,
-.flatpickr-day.startRange,
-.flatpickr-day.endRange,
-.flatpickr-day.selected.inRange,
-.flatpickr-day.startRange.inRange,
-.flatpickr-day.endRange.inRange,
-.flatpickr-day.selected:focus,
-.flatpickr-day.startRange:focus,
-.flatpickr-day.endRange:focus,
-.flatpickr-day.selected:hover,
-.flatpickr-day.startRange:hover,
-.flatpickr-day.endRange:hover,
-.flatpickr-day.selected.prevMonthDay,
-.flatpickr-day.startRange.prevMonthDay,
-.flatpickr-day.endRange.prevMonthDay,
-.flatpickr-day.selected.nextMonthDay,
-.flatpickr-day.startRange.nextMonthDay,
-.flatpickr-day.endRange.nextMonthDay {
-    @apply bg-indigo-700 text-white border-indigo-700;
-}
-
 span.flatpickr-day.today:not(.selected),
 span.flatpickr-day.prevMonthDay.today:not(.selected),
 span.flatpickr-day.nextMonthDay.today:not(.selected) {
-    @apply border-b-indigo-700 bg-indigo-200;
+    position: relative;
+    border-bottom-color: #e9e9e9;
+}
+
+span.flatpickr-day.today:hover {
+    border-color: #e9e9e9;
 }
 
 span.flatpickr-day.today:not(.selected):hover,
 span.flatpickr-day.prevMonthDay.today:not(.selected):hover,
 span.flatpickr-day.nextMonthDay.today:not(.selected):hover {
-    @apply bg-indigo-500 text-white border-indigo-500 border-b-indigo-700;
+    background: #e9e9e9;
+    border-color: #e9e9e9;
+    color: #404848;
+}
+
+span.flatpickr-day.selected,
+span.flatpickr-day.startRange,
+span.flatpickr-day.endRange,
+span.flatpickr-day.selected.inRange,
+span.flatpickr-day.startRange.inRange,
+span.flatpickr-day.endRange.inRange,
+span.flatpickr-day.selected:focus,
+span.flatpickr-day.startRange:focus,
+span.flatpickr-day.endRange:focus,
+span.flatpickr-day.selected:hover,
+span.flatpickr-day.startRange:hover,
+span.flatpickr-day.endRange:hover,
+span.flatpickr-day.selected.prevMonthDay,
+span.flatpickr-day.startRange.prevMonthDay,
+span.flatpickr-day.endRange.prevMonthDay,
+span.flatpickr-day.selected.nextMonthDay,
+span.flatpickr-day.startRange.nextMonthDay,
+span.flatpickr-day.endRange.nextMonthDay,
+
+span.flatpickr-day.today:not(.selected).startRange,
+span.flatpickr-day.today:not(.selected).endRange,
+span.flatpickr-day.prevMonthDay.today:not(.selected).startRange:hover,
+span.flatpickr-day.prevMonthDay.today:not(.selected).endRange:hover,
+span.flatpickr-day.nextMonthDay.today:not(.selected).startRange:hover,
+span.flatpickr-day.nextMonthDay.today:not(.selected).endRange:hover {
+    @apply bg-indigo-700 text-white border-indigo-700;
+}
+
+span.flatpickr-day.flatpickr-disabled,
+span.flatpickr-day.flatpickr-disabled:hover,
+span.flatpickr-day.prevMonthDay,
+span.flatpickr-day.nextMonthDay,
+span.flatpickr-day.notAllowed,
+span.flatpickr-day.notAllowed.prevMonthDay,
+span.flatpickr-day.notAllowed.nextMonthDay {
+    @apply border-r-transparent;
+}
+
+span.flatpickr-day.today:after {
+    content: '';
+    @apply absolute w-3/4 h-3/4 top-2/4 left-2/4 translate-y-[-50%] translate-x-[-50%] bg-gray-200 rounded-full;
+    z-index: -1;
+}
+
+span.flatpickr-day.today:not(.selected):not(.startRange):not(.endRange):not(.inRange):hover:after {
+    @apply bg-gray-100;
+}
+
+span.flatpickr-day.today.selected:after,
+span.flatpickr-day.today.selected:hover:after,
+span.flatpickr-day.today.selected:hover:after,
+span.flatpickr-day.today.startRange:after,
+span.flatpickr-day.today.endRange:after,
+span.flatpickr-day.today.startRange:hover:after,
+span.flatpickr-day.today.endRange:hover:after {
+    @apply bg-indigo-500;
+}
+
+span.flatpickr-day.today.inRange:after {
+    @apply bg-indigo-200;
+}
+
+span.flatpickr-day.startRange:not(.endRange) {
+    border-top-left-radius: 1rem !important;
+    border-bottom-left-radius: 1rem !important;
+}
+
+span.flatpickr-day.endRange:not(.startRange) {
+    border-top-right-radius: 1rem !important;
+    border-bottom-right-radius: 1rem !important;
+}
+
+span.flatpickr-day.inRange,
+span.flatpickr-day.prevMonthDay.inRange,
+span.flatpickr-day.nextMonthDay.inRange,
+span.flatpickr-day.today.inRange,
+span.flatpickr-day.prevMonthDay.today.inRange,
+span.flatpickr-day.nextMonthDay.today.inRange,
+span.flatpickr-day.inRange:hover,
+span.flatpickr-day.prevMonthDay.inRange:hover,
+span.flatpickr-day.nextMonthDay.inRange:hover,
+span.flatpickr-day.today.inRange:hover,
+span.flatpickr-day.prevMonthDay.today.inRange:hover,
+span.flatpickr-day.nextMonthDay.today.inRange:hover {
+    @apply shadow-none bg-indigo-100;
+}
+
+span.flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n+1)),
+span.flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n+1)),
+span.flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n+1)) {
+    @apply shadow-none;
 }
 
 .flatpickr-current-month,

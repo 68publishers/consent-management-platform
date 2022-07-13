@@ -16,7 +16,7 @@ function Flatpickr(Alpine) {
     `;
 
     Alpine.directive('flatpickr', (el, {}, { cleanup }) => {
-        const mode = el.getAttribute('flatpickr-mode');
+        const mode = el.getAttribute('data-mode');
         const options = {
             mode: mode ? mode : 'single',
         };
@@ -25,6 +25,11 @@ function Flatpickr(Alpine) {
 
         if (null !== translations) {
             options['locale'] = translations;
+        }
+
+        if ('range' === mode && el.hasAttribute('data-default-date')) {
+            options['defaultDate'] = JSON.parse(el.getAttribute('data-default-date'));
+            el.removeAttribute('data-default-date');
         }
 
         const fp = flatpickr(el, options);

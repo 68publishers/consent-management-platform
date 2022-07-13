@@ -36,3 +36,6 @@ services:
 
 	# api/v1/cookies/{project}
 	- App\Api\V1\Controller\CookiesController
+
+	# api/internal/statistics/projects
+	- App\Api\Internal\Controller\StatisticsController

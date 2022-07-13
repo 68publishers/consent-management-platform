@@ -18,6 +18,7 @@ Alpine.plugin(Tags);
 Alpine.plugin(Codemirror);
 
 Alpine.data('collapse', require('./components/collapse'));
+Alpine.data('dashboard', require('./components/dashboard'));
 Alpine.data('dropdown', require('./components/dropdown'));
 Alpine.data('modal', require('./components/modal'));
 Alpine.data('sidebar', require('./components/sidebar'));

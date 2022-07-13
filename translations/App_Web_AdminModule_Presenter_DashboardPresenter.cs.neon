@@ -1,1 +1,13 @@
 page_title: Dashboard
+
+last_30_days: Posledních 30 dní
+last_14_days: Posledních 14 dní
+last_7_days: Posledních 7 dní
+
+all_consents: Souhlasy
+unique_consents: 'Souhlasy (unikátní)'
+all_positive: Pozitivita
+unique_positive: 'Pozitivita (unikátní)'
+last_consent: Poslední souhlas
+providers: Poskytovatelé
+cokoies: Cookies

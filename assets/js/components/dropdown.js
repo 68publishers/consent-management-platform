@@ -24,7 +24,7 @@ module.exports = () => ({
             this.close();
         },
         ['x-on:focusin.window']() {
-            !this.$refs.panel.contains(this.$event.target) && this.close();
+            !this.$refs.panel.contains(this.$event.target) && !this.$refs.button.contains(this.$event.target) && this.close();
         },
         ['x-id']: '["dropdown"]',
     },
