@@ -17,13 +17,13 @@
             <div x-bind="dropdownPanel" x-cloak class="origin-top-right absolute right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none p-2 sm:p-4 z-10" role="menu" aria-orientation="vertical" aria-labelledby="dashboard-range-button" tabindex="-1">
                 <div class="flex w-full flex-col md:flex-row md:flex-nowrap items-start space-y-4 md:space-y-0 md:space-x-4">
                     <div class="w-full md:w-auto space-y-2 flex flex-col">
-                        <a x-bind="rangeButton" data-day-diff="30" class="whitespace-nowrap w-full inline-flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                        <a x-bind="rangeButton" data-day-diff="29" class="whitespace-nowrap w-full inline-flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
                             {{_last_30_days}}
                         </a>
-                        <a x-bind="rangeButton" data-day-diff="14" class="whitespace-nowrap w-full inline-flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                        <a x-bind="rangeButton" data-day-diff="13" class="whitespace-nowrap w-full inline-flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
                             {{_last_14_days}}
                         </a>
-                        <a x-bind="rangeButton" data-day-diff="7" class="whitespace-nowrap w-full inline-flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                        <a x-bind="rangeButton" data-day-diff="6" class="whitespace-nowrap w-full inline-flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
                             {{_last_7_days}}
                         </a>
                     </div>
@@ -56,7 +56,7 @@
                     <div :class="{'spinner': STATUS_LOADING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
                         <div class="text-sm font-medium text-gray-500 truncate">{{_all_consents}}</div>
 
-                        <div x-show="STATUS_LOADED() === project.status && !!project.data.allConsents.value">
+                        <div x-show="STATUS_LOADED() === project.status && null !== project.data.allConsents.value">
                             <div x-text="project.data.allConsents.value" class="mt-2 text-xl font-semibold text-gray-900"></div>
 
                             <p x-show="null !== project.data.allConsents.percentageDiff" :class="{'text-green-600': 0 <= project.data.allConsents.percentageDiff, 'text-red-600': 0 > project.data.allConsents.percentageDiff}" class="mt-4 flex items-baseline text-sm font-semibold">
@@ -74,7 +74,7 @@
                     <div :class="{'spinner': STATUS_LOADING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
                         <div class="text-sm font-medium text-gray-500 truncate">{{_unique_consents}}</div>
 
-                        <div x-show="STATUS_LOADED() === project.status && !!project.data.uniqueConsents.value">
+                        <div x-show="STATUS_LOADED() === project.status && null !== project.data.uniqueConsents.value">
                             <div x-text="project.data.uniqueConsents.value" class="mt-2 text-xl font-semibold text-gray-900"></div>
 
                             <p x-show="null !== project.data.uniqueConsents.percentageDiff" :class="{'text-green-600': 0 <= project.data.uniqueConsents.percentageDiff, 'text-red-600': 0 > project.data.uniqueConsents.percentageDiff}" class="mt-4 flex items-baseline text-sm font-semibold">
@@ -92,7 +92,7 @@
                     <div :class="{'spinner': STATUS_LOADING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
                         <div class="text-sm font-medium text-gray-500 truncate">{{_all_positive}}</div>
 
-                        <div x-show="STATUS_LOADED() === project.status && !!project.data.allPositive.value">
+                        <div x-show="STATUS_LOADED() === project.status && null !== project.data.allPositive.value">
                             <div x-text="project.data.allPositive.value + '%'" class="mt-2 text-xl font-semibold text-gray-900"></div>
 
                             <p x-show="null !== project.data.allPositive.percentageDiff" :class="{'text-green-600': 0 <= project.data.allPositive.percentageDiff, 'text-red-600': 0 > project.data.allPositive.percentageDiff}" class="mt-4 flex items-baseline text-sm font-semibold">
@@ -110,7 +110,7 @@
                     <div :class="{'spinner': STATUS_LOADING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
                         <div class="text-sm font-medium text-gray-500 truncate">{{_unique_positive}}</div>
 
-                        <div x-show="STATUS_LOADED() === project.status && !!project.data.uniquePositive.value">
+                        <div x-show="STATUS_LOADED() === project.status && null !== project.data.uniquePositive.value">
                             <div x-text="project.data.uniquePositive.value + '%'" class="mt-2 text-xl font-semibold text-gray-900"></div>
 
                             <p x-show="null !== project.data.uniquePositive.percentageDiff" :class="{'text-green-600': 0 <= project.data.uniquePositive.percentageDiff, 'text-red-600': 0 > project.data.uniquePositive.percentageDiff}" class="mt-4 flex items-baseline text-sm font-semibold">
@@ -128,21 +128,21 @@
                     <div :class="{'spinner': STATUS_LOADING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
                         <div class="text-sm font-medium text-gray-500 truncate">{{_last_consent}}</div>
 
-                        <div x-data x-tooltip.interactive.placement.bottom="project.data.lastConsent.formattedValue" x-show="STATUS_LOADED() === project.status && !!project.data.lastConsent.value" x-text="project.data.lastConsent.text" class="mt-2 text-lg font-semibold text-gray-900"></div>
+                        <div x-data x-tooltip.interactive.placement.bottom="project.data.lastConsent.formattedValue" x-show="STATUS_LOADED() === project.status && null !== project.data.lastConsent.value" x-text="project.data.lastConsent.text" class="mt-2 text-lg font-semibold text-gray-900"></div>
                     </div>
 
                     <div :class="{'spinner': STATUS_LOADING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
                         <div class="text-sm font-medium text-gray-500 truncate">{{_providers}}</div>
 
-                        <div x-show="STATUS_LOADED() === project.status && !!project.data.providers.value" x-text="project.data.providers.value" class="mt-2 text-xl font-semibold text-gray-900"></div>
+                        <div x-show="STATUS_LOADED() === project.status && null !== project.data.providers.value" x-text="project.data.providers.value" class="mt-2 text-xl font-semibold text-gray-900"></div>
                     </div>
 
                     <div :class="{'spinner': STATUS_LOADING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
                         <div class="text-sm font-medium text-gray-500 truncate">{{_cokoies}}</div>
 
-                        <div x-show="STATUS_LOADED() === project.status && !!project.data.cookies.commonValue" class="mt-2 text-xl font-semibold text-gray-900">
+                        <div x-show="STATUS_LOADED() === project.status && null !== project.data.cookies.commonValue" class="mt-2 text-xl font-semibold text-gray-900">
                             <span x-text="project.data.cookies.commonValue"></span>
-                            <span x-show="!!project.data.cookies.privateValue" x-text="'(' + project.data.cookies.privateValue + ')'"></span>
+                            <span x-show="null !== project.data.cookies.privateValue" x-text="'(' + project.data.cookies.privateValue + ')'"></span>
                         </div>
                     </div>
                 </div>

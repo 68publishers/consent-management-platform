@@ -52,7 +52,7 @@ module.exports = () => ({
         }
 
         // setup the default range
-        const range = this.createRangeFromToday(7);
+        const range = this.createRangeFromToday(6);
         this.setRange(range[0], range[1]);
 
         // watch range changes

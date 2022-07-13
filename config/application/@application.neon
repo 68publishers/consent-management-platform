@@ -4,3 +4,4 @@ includes:
 	- global_settings.neon
 	- localization.neon
 	- mail.neon
+	- statistics.neon

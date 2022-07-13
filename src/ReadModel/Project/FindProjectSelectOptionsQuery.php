@@ -6,6 +6,9 @@ namespace App\ReadModel\Project;
 
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
+/**
+ * Returns array of ProjectSelectOptionsView
+ */
 final class FindProjectSelectOptionsQuery extends AbstractQuery
 {
 	/**

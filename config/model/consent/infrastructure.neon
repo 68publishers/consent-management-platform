@@ -10,6 +10,9 @@ services:
 	# infra: doctrine
 	-
 		autowired: no
+		factory: App\Infrastructure\Consent\Doctrine\ReadModel\CalculateConsentTotalsPerPeriodQueryHandler
+	-
+		autowired: no
 		factory: App\Infrastructure\Consent\Doctrine\ReadModel\ConsentsDataGridQueryHandler
 	-
 		autowired: no
