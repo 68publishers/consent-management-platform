@@ -29,7 +29,7 @@ final class UpdateCategoryCommand extends AbstractCommand
 	}
 
 	/**
-	 * @return string
+	 * @return string|NULL
 	 */
 	public function code(): ?string
 	{
@@ -37,7 +37,7 @@ final class UpdateCategoryCommand extends AbstractCommand
 	}
 
 	/**
-	 * @return array
+	 * @return array|NULL
 	 */
 	public function names(): ?array
 	{
@@ -45,11 +45,19 @@ final class UpdateCategoryCommand extends AbstractCommand
 	}
 
 	/**
-	 * @return bool
+	 * @return bool|NULL
 	 */
 	public function active(): ?bool
 	{
 		return $this->getParam('active');
+	}
+
+	/**
+	 * @return bool|NULL
+	 */
+	public function necessary(): ?bool
+	{
+		return $this->getParam('necessary');
 	}
 
 	/**
@@ -80,5 +88,15 @@ final class UpdateCategoryCommand extends AbstractCommand
 	public function withActive(bool $active): self
 	{
 		return $this->withParam('active', $active);
+	}
+
+	/**
+	 * @param bool $necessary
+	 *
+	 * @return $this
+	 */
+	public function withNecessary(bool $necessary): self
+	{
+		return $this->withParam('necessary', $necessary);
 	}
 }

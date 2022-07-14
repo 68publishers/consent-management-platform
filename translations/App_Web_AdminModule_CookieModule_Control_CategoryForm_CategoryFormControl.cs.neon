@@ -8,6 +8,9 @@ code:
 active:
 	field: Aktivní
 
+necessary:
+	field: Povinná kategorie
+
 name:
 	field: 'Název - %name%'
 	required: Vyplňte prosím název.

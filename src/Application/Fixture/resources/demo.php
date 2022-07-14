@@ -30,6 +30,7 @@ $fixtures['category'] = [
 			'en' => 'Functionality cookies',
 		],
 		'active' => TRUE,
+		'necessary' => TRUE,
 	],
 	'personalization_storage' => [
 		'category_id' => CategoryId::new()->toString(),
@@ -39,6 +40,7 @@ $fixtures['category'] = [
 			'en' => 'Personalization cookies',
 		],
 		'active' => TRUE,
+		'necessary' => FALSE,
 	],
 	'security_storage' => [
 		'category_id' => CategoryId::new()->toString(),
@@ -48,6 +50,7 @@ $fixtures['category'] = [
 			'en' => 'Security cookies',
 		],
 		'active' => TRUE,
+		'necessary' => FALSE,
 	],
 	'ad_storage' => [
 		'category_id' => CategoryId::new()->toString(),
@@ -57,6 +60,7 @@ $fixtures['category'] = [
 			'en' => 'Ad cookies',
 		],
 		'active' => TRUE,
+		'necessary' => FALSE,
 	],
 	'analytics_storage' => [
 		'category_id' => CategoryId::new()->toString(),
@@ -66,6 +70,7 @@ $fixtures['category'] = [
 			'en' => 'Analytics cookies',
 		],
 		'active' => TRUE,
+		'necessary' => FALSE,
 	],
 ];
 

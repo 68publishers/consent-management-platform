@@ -40,17 +40,16 @@ final class CalculateConsentTotalsPerPeriodQueryHandler implements QueryHandlerI
 	public function __invoke(CalculateConsentTotalsPerPeriodQuery $query): array
 	{
 		$sql = "
-		SELECT c.project_id, COUNT(DISTINCT es.id) AS total, COUNT(DISTINCT c.user_identifier) AS \"unique\"
+		SELECT p.id, COUNT(DISTINCT es.id) AS total, COUNT(DISTINCT c.user_identifier) AS \"unique\"
 		FROM consent_event_stream es
 		JOIN consent c ON c.id = es.aggregate_id
-			AND c.project_id IN (:projectIds)
-			AND es.event_name IN (:eventNames)
-		WHERE es.created_at BETWEEN :startDate AND :endDate
-		GROUP BY c.project_id;
+		JOIN project p ON p.id = c.project_id AND p.id IN (:projectIds) AND p.deleted_at IS NULL
+		WHERE es.event_name IN (:eventNames) AND es.created_at BETWEEN :startDate AND :endDate
+		GROUP BY p.id;
 		";
 
 		$rsm = new ResultSetMappingBuilder($this->em);
-		$rsm->addScalarResult('project_id', 'projectId', ProjectId::class);
+		$rsm->addScalarResult('id', 'projectId', ProjectId::class);
 		$rsm->addScalarResult('total', 'total', 'integer');
 		$rsm->addScalarResult('unique', 'unique', 'integer');
 

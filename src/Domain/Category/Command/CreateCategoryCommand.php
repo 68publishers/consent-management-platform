@@ -12,16 +12,18 @@ final class CreateCategoryCommand extends AbstractCommand
 	 * @param string      $code
 	 * @param array       $names
 	 * @param bool        $active
+	 * @param bool        $necessary
 	 * @param string|NULL $categoryId
 	 *
 	 * @return static
 	 */
-	public static function create(string $code, array $names, bool $active, ?string $categoryId = NULL): self
+	public static function create(string $code, array $names, bool $active, bool $necessary, ?string $categoryId = NULL): self
 	{
 		return self::fromParameters([
 			'code' => $code,
 			'names' => $names,
 			'active' => $active,
+			'necessary' => $necessary,
 			'category_id' => $categoryId,
 		]);
 	}
@@ -48,6 +50,14 @@ final class CreateCategoryCommand extends AbstractCommand
 	public function active(): bool
 	{
 		return $this->getParam('active');
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function necessary(): bool
+	{
+		return $this->getParam('necessary');
 	}
 
 	/**

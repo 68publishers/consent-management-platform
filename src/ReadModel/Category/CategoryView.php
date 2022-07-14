@@ -23,6 +23,8 @@ final class CategoryView extends AbstractView
 
 	public bool $active;
 
+	public bool $necessary;
+
 	/** @var Name[] */
 	public array $names;
 
@@ -37,6 +39,7 @@ final class CategoryView extends AbstractView
 			'deletedAt' => NULL !== $this->deletedAt ? $this->deletedAt->format(DateTimeInterface::ATOM) : NULL,
 			'code' => $this->code->value(),
 			'active' => $this->active,
+			'necessary' => $this->necessary,
 			'names' => array_map(static fn (Name $name): string => $name->value(), $this->names),
 		];
 	}

@@ -18,6 +18,15 @@ interface ProjectStatisticsCalculatorInterface
 	public function calculateConsentPeriodStatistics(array $projectIds, DateTimeImmutable $startDate, DateTimeImmutable $endDate): MultiProjectConsentPeriodStatistics;
 
 	/**
+	 * @param array              $projectIds
+	 * @param \DateTimeImmutable $startDate
+	 * @param \DateTimeImmutable $endDate
+	 *
+	 * @return \App\Application\Statistics\MultiProjectConsentPeriodStatistics
+	 */
+	public function calculatePositiveConsentPeriodStatistics(array $projectIds, DateTimeImmutable $startDate, DateTimeImmutable $endDate): MultiProjectConsentPeriodStatistics;
+
+	/**
 	 * @param string[] $projectIds
 	 *
 	 * @return \App\Application\Statistics\MultiProjectCookieStatistics

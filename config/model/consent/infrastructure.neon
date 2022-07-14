@@ -27,6 +27,9 @@ services:
 	-
 		autowired: no
 		factory: App\Infrastructure\Consent\Doctrine\ReadModel\GetConsentByProjectIdAndUserIdentifierQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\Consent\Doctrine\ReadModel\ScrollThroughConsentsPerPeriodQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:

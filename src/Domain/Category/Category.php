@@ -16,6 +16,7 @@ use App\Domain\Category\Event\CategoryCodeChanged;
 use App\Domain\Category\Event\CategoryNameUpdated;
 use App\Domain\Category\Command\CreateCategoryCommand;
 use App\Domain\Category\Command\UpdateCategoryCommand;
+use App\Domain\Category\Event\CategoryNecessaryChanged;
 use App\Domain\Category\Event\CategoryActiveStateChanged;
 use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AggregateId;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Aggregate\AggregateRootInterface;
@@ -33,6 +34,8 @@ final class Category implements AggregateRootInterface
 
 	private bool $active;
 
+	private bool $necessary;
+
 	private Collection $translations;
 
 	/**
@@ -48,11 +51,12 @@ final class Category implements AggregateRootInterface
 		$categoryId = NULL !== $command->categoryId() ? CategoryId::fromString($command->categoryId()) : CategoryId::new();
 		$code = Code::fromValidCode($command->code());
 		$active = $command->active();
+		$necessary = $command->necessary();
 		$names = $command->names();
 
 		$checkCodeUniqueness($categoryId, $code);
 
-		$category->recordThat(CategoryCreated::create($categoryId, $code, $active, $names));
+		$category->recordThat(CategoryCreated::create($categoryId, $code, $active, $necessary, $names));
 
 		return $category;
 	}
@@ -71,6 +75,10 @@ final class Category implements AggregateRootInterface
 
 		if (NULL !== $command->active()) {
 			$this->changeActiveState($command->active());
+		}
+
+		if (NULL !== $command->necessary()) {
+			$this->changeNecessary($command->necessary());
 		}
 
 		if (NULL !== $command->names()) {
@@ -116,6 +124,18 @@ final class Category implements AggregateRootInterface
 	}
 
 	/**
+	 * @param bool $necessary
+	 *
+	 * @return void
+	 */
+	public function changeNecessary(bool $necessary): void
+	{
+		if ($this->necessary !== $necessary) {
+			$this->recordThat(CategoryNecessaryChanged::create($this->id, $necessary));
+		}
+	}
+
+	/**
 	 * @param \App\Domain\Shared\ValueObject\Locale $locale
 	 * @param \App\Domain\Category\ValueObject\Name $name
 	 *
@@ -141,6 +161,7 @@ final class Category implements AggregateRootInterface
 		$this->createdAt = $event->createdAt();
 		$this->code = $event->code();
 		$this->active = $event->active();
+		$this->necessary = $event->necessary();
 		$this->translations = new ArrayCollection();
 
 		foreach ($event->names() as $locale => $name) {
@@ -166,6 +187,16 @@ final class Category implements AggregateRootInterface
 	protected function whenCategoryActiveStateChanged(CategoryActiveStateChanged $event): void
 	{
 		$this->active = $event->active();
+	}
+
+	/**
+	 * @param \App\Domain\Category\Event\CategoryNecessaryChanged $event
+	 *
+	 * @return void
+	 */
+	protected function whenCategoryNecessaryChanged(CategoryNecessaryChanged $event): void
+	{
+		$this->necessary = $event->necessary();
 	}
 
 	/**

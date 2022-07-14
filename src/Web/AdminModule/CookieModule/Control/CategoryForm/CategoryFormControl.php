@@ -67,6 +67,8 @@ final class CategoryFormControl extends Control
 		$form->addCheckbox('active', 'active.field')
 			->setDefaultValue(TRUE);
 
+		$form->addCheckbox('necessary', 'necessary.field');
+
 		$namesContainer = $form->addContainer('names');
 
 		foreach ($this->validLocalesProvider->getValidLocales() as $locale) {
@@ -82,6 +84,7 @@ final class CategoryFormControl extends Control
 			$form->setDefaults([
 				'code' => $this->default->code->value(),
 				'active' => $this->default->active,
+				'necessary' => $this->default->necessary,
 				'names' => array_map(static fn (Name $name): string => $name->value(), $this->default->names),
 			]);
 		}
@@ -108,6 +111,7 @@ final class CategoryFormControl extends Control
 				$values->code,
 				(array) $values->names,
 				$values->active,
+				$values->necessary,
 				$categoryId->toString()
 			);
 		} else {
@@ -115,6 +119,7 @@ final class CategoryFormControl extends Control
 			$command = UpdateCategoryCommand::create($categoryId->toString())
 				->withCode($values->code)
 				->withActive($values->active)
+				->withNecessary($values->necessary)
 				->withNames((array) $values->names);
 		}
 

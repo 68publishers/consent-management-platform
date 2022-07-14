@@ -95,6 +95,8 @@ final class StatisticsController extends AbstractInternalController
 			}
 		}
 
+		$projectIds = array_filter($projectIds);
+
 		// are some projects inaccessible for the current user?
 		if (0 < count($inaccessible)) {
 			return $response->withStatus(ApiResponse::S401_UNAUTHORIZED)
@@ -106,24 +108,6 @@ final class StatisticsController extends AbstractInternalController
 							'Project%s %s are not accessible for the user.',
 							1 < count($inaccessible) ? 's' : '',
 							implode(', ', $inaccessible)
-						),
-					],
-				]);
-		}
-
-		$missingProjects = array_keys(array_filter($projectIds, static fn (?string $projectId): bool => NULL === $projectId));
-
-		// are some projects missing?
-		if (0 < count($missingProjects)) {
-			return $response->withStatus(ApiResponse::S422_UNPROCESSABLE_ENTITY)
-				->writeJsonBody([
-					'status' => 'error',
-					'data' => [
-						'code' => ApiResponse::S422_UNPROCESSABLE_ENTITY,
-						'error' => sprintf(
-							'Project%s %s not found.',
-							1 < count($missingProjects) ? 's' : '',
-							implode(', ', $missingProjects)
 						),
 					],
 				]);
@@ -161,13 +145,20 @@ final class StatisticsController extends AbstractInternalController
 	private function buildData(array $projectIdsByCodes, string $locale, DateTimeImmutable $startDate, DateTimeImmutable $endDate, DateTimeZone $userTz): array
 	{
 		$data = [];
+
+		if (0 >= count($projectIdsByCodes)) {
+			return $data;
+		}
+
 		$projectIds = array_values($projectIdsByCodes);
 		$allConsentPeriodStatistics = $this->projectStatisticsCalculator->calculateConsentPeriodStatistics($projectIds, $startDate, $endDate);
+		$allPositiveConsentPeriodStatistics = $this->projectStatisticsCalculator->calculatePositiveConsentPeriodStatistics($projectIds, $startDate, $endDate);
 		$allCookieStatistics = $this->projectStatisticsCalculator->calculateCookieStatistics($projectIds);
 		$allLastConsentDates = $this->projectStatisticsCalculator->calculateLastConsentDate($projectIds);
 
 		foreach ($projectIdsByCodes as $code => $projectId) {
 			$consentPeriodStatistics = $allConsentPeriodStatistics->get($projectId);
+			$positiveConsentPeriodStatistics = $allPositiveConsentPeriodStatistics->get($projectId);
 			$cookieStatistics = $allCookieStatistics->get($projectId);
 			$lastConsentDate = $allLastConsentDates->get($projectId);
 
@@ -185,12 +176,12 @@ final class StatisticsController extends AbstractInternalController
 					'percentageDiff' => $consentPeriodStatistics->uniqueConsentsPeriodStatistics()->percentageDiff(),
 				],
 				'allPositive' => [
-					'value' => 'NaN',
-					'percentageDiff' => 0,
+					'value' => $positiveConsentPeriodStatistics->totalConsentsPeriodStatistics()->currentValue(),
+					'percentageDiff' => $positiveConsentPeriodStatistics->totalConsentsPeriodStatistics()->percentageDiff(),
 				],
 				'uniquePositive' => [
-					'value' => 'NaN',
-					'percentageDiff' => 0,
+					'value' => $positiveConsentPeriodStatistics->uniqueConsentsPeriodStatistics()->currentValue(),
+					'percentageDiff' => $positiveConsentPeriodStatistics->uniqueConsentsPeriodStatistics()->percentageDiff(),
 				],
 				'lastConsent' => [
 					'value' => NULL !== $lastConsentDate ? $lastConsentDate->format(DateTimeInterface::ATOM) : NULL,

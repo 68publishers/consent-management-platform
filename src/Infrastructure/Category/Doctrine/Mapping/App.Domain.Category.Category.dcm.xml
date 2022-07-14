@@ -28,6 +28,8 @@
 
         <field name="active" column="active" type="boolean" />
 
+        <field name="necessary" column="necessary" type="boolean" />
+
         <field name="version" column="version" type="integer" />
 
         <one-to-many field="translations" target-entity="App\Domain\Category\CategoryTranslation" mapped-by="category" orphan-removal="true">
