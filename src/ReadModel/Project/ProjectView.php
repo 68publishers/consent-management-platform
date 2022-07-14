@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\ReadModel\Project;
 
-use DateTimeZone;
 use App\Domain\Project\ValueObject\Code;
 use App\Domain\Project\ValueObject\Name;
 use App\Domain\Project\ValueObject\Color;
@@ -32,8 +31,6 @@ final class ProjectView extends AbstractView
 
 	public LocalesConfig $locales;
 
-	public DateTimeZone $timezone;
-
 	/**
 	 * @return array
 	 */
@@ -49,7 +46,6 @@ final class ProjectView extends AbstractView
 			'active' => $this->active,
 			'locales' => $this->locales->locales()->toArray(),
 			'defaultLocale' => $this->locales->defaultLocale()->value(),
-			'timezone' => $this->timezone->getName(),
 		];
 	}
 }

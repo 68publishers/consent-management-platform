@@ -11,7 +11,6 @@ use Contributte\MenuControl\UI\MenuComponent;
 use Nette\Application\ForbiddenRequestException;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use App\ReadModel\Project\GetUsersProjectByCodeQuery;
-use App\Application\Localization\ApplicationDateTimeZone;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 
 abstract class SelectedProjectPresenter extends AdminPresenter
@@ -60,7 +59,6 @@ abstract class SelectedProjectPresenter extends AdminPresenter
 	{
 		parent::startup();
 
-		ApplicationDateTimeZone::set($this->projectView->timezone);
 		$this->setLayout('layout.selectedProject');
 	}
 

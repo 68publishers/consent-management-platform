@@ -85,14 +85,6 @@ final class UpdateProjectCommand extends AbstractCommand
 	}
 
 	/**
-	 * @return string|NULL
-	 */
-	public function timezone(): ?string
-	{
-		return $this->getParam('timezone');
-	}
-
-	/**
 	 * @return string[]|NULL
 	 */
 	public function cookieProviderIds(): ?array
@@ -160,16 +152,6 @@ final class UpdateProjectCommand extends AbstractCommand
 	{
 		return $this->withParam('locales', $locales)
 			->withParam('default_locale', $defaultLocale);
-	}
-
-	/**
-	 * @param string $timezone
-	 *
-	 * @return $this
-	 */
-	public function withTimezone(string $timezone): self
-	{
-		return $this->withParam('timezone', $timezone);
 	}
 
 	/**

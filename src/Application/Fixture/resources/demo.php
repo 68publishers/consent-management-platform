@@ -154,7 +154,6 @@ $fixtures['project'] = [
 		'active' => TRUE,
 		'locales' => ['en', 'cs'],
 		'default_locale' => 'en',
-		'timezone' => 'Europe/Prague',
 		'cookie_provider_id' => $fixtures['cookie_provider']['demo']['cookie_provider_id'],
 		'cookie_provider_ids' => [
 			$fixtures['cookie_provider']['facebook_login']['cookie_provider_id'],

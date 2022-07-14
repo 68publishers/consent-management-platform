@@ -25,7 +25,6 @@ use App\Domain\Project\Event\ProjectLocalesChanged;
 use App\Domain\Project\Command\CreateProjectCommand;
 use App\Domain\Project\Command\UpdateProjectCommand;
 use App\Domain\Project\Event\ProjectTemplateChanged;
-use App\Domain\Project\Event\ProjectTimezoneChanged;
 use App\Domain\Project\Event\ProjectActiveStateChanged;
 use App\Domain\Project\Event\ProjectDescriptionChanged;
 use App\Domain\Project\Event\ProjectCookieProviderAdded;
@@ -83,7 +82,6 @@ final class Project implements AggregateRootInterface
 		$color = Color::fromValidColor($command->color());
 		$locales = Locales::empty();
 		$defaultLocale = Locale::fromValue($command->defaultLocale());
-		$timezone = new DateTimeZone($command->timezone());
 
 		foreach ($command->locales() as $locale) {
 			$locales = $locales->with(Locale::fromValue($locale));
@@ -91,7 +89,7 @@ final class Project implements AggregateRootInterface
 
 		$checkCodeUniqueness($projectId, $code);
 
-		$project->recordThat(ProjectCreated::create($projectId, $cookieProviderId, $name, $code, $description, $color, $command->active(), LocalesConfig::create($locales, $defaultLocale), $timezone));
+		$project->recordThat(ProjectCreated::create($projectId, $cookieProviderId, $name, $code, $description, $color, $command->active(), LocalesConfig::create($locales, $defaultLocale)));
 		$project->setCookieProviders(array_map(static fn (string $cookieProviderId): CookieProviderId => CookieProviderId::fromString($cookieProviderId), $command->cookieProviderIds()));
 
 		return $project;
@@ -134,10 +132,6 @@ final class Project implements AggregateRootInterface
 			}
 
 			$this->changeLocales(LocalesConfig::create($locales, $defaultLocale));
-		}
-
-		if (NULL !== $command->timezone()) {
-			$this->changeTimezone(new DateTimeZone($command->timezone()));
 		}
 
 		if (NULL !== $command->cookieProviderIds()) {
@@ -232,18 +226,6 @@ final class Project implements AggregateRootInterface
 	}
 
 	/**
-	 * @param \DateTimeZone $timezone
-	 *
-	 * @return void
-	 */
-	public function changeTimezone(DateTimeZone $timezone): void
-	{
-		if ($this->timezone->getName() !== $timezone->getName()) {
-			$this->recordThat(ProjectTimezoneChanged::create($this->id, $timezone));
-		}
-	}
-
-	/**
 	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId[] $cookieProviderIds
 	 *
 	 * @return void
@@ -319,7 +301,6 @@ final class Project implements AggregateRootInterface
 		$this->description = $event->description();
 		$this->active = $event->active();
 		$this->locales = $event->locales();
-		$this->timezone = $event->timezone();
 		$this->cookieProviders = new ArrayCollection();
 		$this->translations = new ArrayCollection();
 	}
@@ -382,16 +363,6 @@ final class Project implements AggregateRootInterface
 	protected function whenProjectLocalesChanged(ProjectLocalesChanged $event): void
 	{
 		$this->locales = $event->locales();
-	}
-
-	/**
-	 * @param \App\Domain\Project\Event\ProjectTimezoneChanged $event
-	 *
-	 * @return void
-	 */
-	protected function whenProjectTimezoneChanged(ProjectTimezoneChanged $event): void
-	{
-		$this->timezone = $event->timezone();
 	}
 
 	/**

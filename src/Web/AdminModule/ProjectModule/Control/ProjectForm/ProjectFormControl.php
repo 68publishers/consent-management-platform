@@ -17,7 +17,6 @@ use App\Domain\Project\ValueObject\ProjectId;
 use NasExt\Forms\Controls\DependentSelectBox;
 use App\Domain\Project\Command\CreateProjectCommand;
 use App\Domain\Project\Command\UpdateProjectCommand;
-use App\Application\Localization\ApplicationDateTimeZone;
 use App\Domain\Project\Exception\CodeUniquenessException;
 use App\Application\GlobalSettings\GlobalSettingsInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
@@ -118,13 +117,6 @@ final class ProjectFormControl extends Control
 			'default_locale'
 		);
 
-		$form->addSelect('timezone', 'timezone.field')
-			->setItems(ApplicationDateTimeZone::all(), FALSE)
-			->setRequired('timezone.required')
-			->setTranslator(NULL)
-			->setDefaultValue(ApplicationDateTimeZone::get()->getName())
-			->setOption('searchbar', TRUE);
-
 		$form->addTextArea('description', 'description.field', NULL, 4);
 
 		$form->addProtection('//layout.form_protection');
@@ -139,7 +131,6 @@ final class ProjectFormControl extends Control
 				'active' => $this->default->active,
 				'locales' => $this->default->locales->locales()->toArray(),
 				'default_locale' => $this->default->locales->defaultLocale()->value(),
-				'timezone' => $this->default->timezone->getName(),
 				'description' => $this->default->description->value(),
 			]);
 		}
@@ -170,7 +161,6 @@ final class ProjectFormControl extends Control
 				$values->active,
 				$values->locales,
 				$values->default_locale,
-				$values->timezone,
 				$projectId->toString()
 			);
 		} else {
@@ -181,8 +171,7 @@ final class ProjectFormControl extends Control
 				->withDescription($values->description)
 				->withColor($values->color)
 				->withActive($values->active)
-				->withLocales($values->locales, $values->default_locale)
-				->withTimezone($values->timezone);
+				->withLocales($values->locales, $values->default_locale);
 		}
 
 		try {
