@@ -43,15 +43,16 @@ final class CalculateProjectCookieTotalsQueryHandler implements QueryHandlerInte
 			->select('p.id AS projectId, COUNT(DISTINCT cp.id) AS providers, COUNT(DISTINCT c.id) AS commonCookies, COUNT(DISTINCT c_private.id) AS privateCookies')
 			->from(Project::class, 'p')
 			->leftJoin('p.cookieProviders', 'phcp')
-			->leftJoin(CookieProvider::class, 'cp', Join::WITH, 'cp.id = phcp.cookieProviderId AND cp.deletedAt IS NULL')
-			->leftJoin(Cookie::class, 'c', Join::WITH, 'c.cookieProviderId = cp.id AND c.deletedAt IS NULL')
-			->leftJoin(CookieProvider::class, 'cp_private', Join::WITH, 'cp_private.id = p.cookieProviderId AND cp_private.deletedAt IS NULL')
-			->leftJoin(Cookie::class, 'c_private', Join::WITH, 'c_private.cookieProviderId = cp_private.id AND c_private.deletedAt IS NULL')
+			->leftJoin(CookieProvider::class, 'cp', Join::WITH, 'cp.id = phcp.cookieProviderId AND cp.createdAt <= :maxDate AND (cp.deletedAt IS NULL OR cp.deletedAt > :maxDate)')
+			->leftJoin(Cookie::class, 'c', Join::WITH, 'c.cookieProviderId = cp.id AND c.createdAt <= :maxDate AND (c.deletedAt IS NULL OR c.deletedAt > :maxDate)')
+			->leftJoin(CookieProvider::class, 'cp_private', Join::WITH, 'cp_private.id = p.cookieProviderId AND cp_private.createdAt <= :maxDate AND (cp_private.deletedAt IS NULL OR cp_private.deletedAt > :maxDate)')
+			->leftJoin(Cookie::class, 'c_private', Join::WITH, 'c_private.cookieProviderId = cp_private.id AND c_private.createdAt <= :maxDate AND (c_private.deletedAt IS NULL OR c_private.deletedAt > :maxDate)')
 			->where('p.deletedAt IS NULL AND p.id IN (:projectIds)')
 			->orderBy('p.createdAt', 'DESC')
 			->groupBy('p.id')
 			->setParameters([
 				'projectIds' => $query->projectIds(),
+				'maxDate' => $query->maxDate(),
 			])
 			->getQuery()
 			->getResult(AbstractQuery::HYDRATE_ARRAY);

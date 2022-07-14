@@ -41,11 +41,12 @@ final class CalculateLastConsentDatesQueryHandler implements QueryHandlerInterfa
 		$data = $this->em->createQueryBuilder()
 			->select('p.id AS projectId, MAX(c.lastUpdateAt) AS lastConsentDate')
 			->from(Project::class, 'p')
-			->leftJoin(Consent::class, 'c', Join::WITH, 'c.projectId = p.id')
+			->leftJoin(Consent::class, 'c', Join::WITH, 'c.projectId = p.id AND c.lastUpdateAt <= :maxDate')
 			->where('p.id IN (:projectIds) AND p.deletedAt IS NULL')
 			->groupBy('p.id')
 			->setParameters([
 				'projectIds' => $query->projectIds(),
+				'maxDate' => $query->maxDate(),
 			])
 			->getQuery()
 			->getResult(AbstractQuery::HYDRATE_ARRAY);

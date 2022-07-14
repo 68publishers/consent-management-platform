@@ -24,9 +24,14 @@ module.exports = () => ({
             this.close();
         },
         ['x-on:focusin.window']() {
-            !this.$refs.panel.contains(this.$event.target) && !this.$refs.button.contains(this.$event.target) && this.close();
+            const target = this.$event.target;
+
+            !this.$refs.panel.contains(target)
+                && !this.$el.contains(target)
+                && this.close();
         },
         ['x-id']: '["dropdown"]',
+        ['x-ref']: 'dropdown',
     },
 
     dropdownButton: {
@@ -50,7 +55,9 @@ module.exports = () => ({
         ['x-transition:leave-start']: 'transform opacity-100 scale-100',
         ['x-transition:leave-end']: 'transform opacity-0 scale-95',
         ['x-on:click.outside']() {
-            this.close(this.$refs.button);
+            const target = this.$event.target;
+
+            !this.$refs.dropdown.contains(target) && this.close(this.$refs.button);
         },
         ['x-show']() {
             return this.open

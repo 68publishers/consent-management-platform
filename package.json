@@ -16,6 +16,7 @@
     "chart.js": "^3.8.0",
     "codemirror": "^5.65.1",
     "core-js": "^3.22.2",
+    "dayjs": "^1.11.3",
     "flatpickr": "^4.6.13",
     "jquery": "^3.6.0",
     "live-form-validation": "^1.10.0",

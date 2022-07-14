@@ -1,5 +1,6 @@
 'use strict';
 
+const dayjs = require('dayjs');
 const flatpickr = require('flatpickr').default;
 const dictionary = require('../dictionary')({
     'cs': require('flatpickr/dist/l10n/cs').default.cs,
@@ -13,12 +14,6 @@ const mergeObjects = (target, source) => {
     Object.assign(target || {}, source);
 
     return target;
-}
-
-const formatDate = date => {
-    return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()))
-        .toISOString()
-        .slice(0, 10);
 }
 
 module.exports = () => ({
@@ -52,7 +47,7 @@ module.exports = () => ({
         }
 
         // setup the default range
-        const range = this.createRangeFromToday(6, 0);
+        const range = this.createRangeFromDate(-6, 0);
         this.setRange(range[0], range[1]);
 
         // watch range changes
@@ -104,7 +99,7 @@ module.exports = () => ({
             codes.push(project.code);
         }
 
-        let query = `?locale=${document.documentElement.lang}&startDate=${formatDate(start)}&endDate=${formatDate(end)}`;
+        let query = `?locale=${document.documentElement.lang}&startDate=${start.format('YYYY-MM-DD')}&endDate=${end.format('YYYY-MM-DD')}`;
 
         for (let i in codes) {
             query += `&projects[]=${codes[i]}`;
@@ -207,22 +202,30 @@ module.exports = () => ({
         this.range = {
             startDate: start,
             endDate: end,
-            daysDiff: Math.ceil((end.getTime() - start.getTime()) / (1000 * 3600 * 24)),
+            daysDiff: Math.abs(start.diff(end, 'day')),
         };
     },
 
-    createToday() {
-        let today = Date.now();
-        today = new Date(today);
-        today.setHours(0, 0, 0, 0);
+    moveToPreviousRange() {
+        const range = this.createRangeFromDate((this.range.daysDiff * -1) - 1, -1, this.range.startDate);
 
-        return today;
+        this.fp.setDate([range[0].toDate(), range[1].toDate()], true);
     },
 
-    createRangeFromToday(dayDiffStart, dayDiffEnd) {
-        const today = this.createToday();
-        const start = 0 === dayDiffStart ? today : new Date(today.getTime() - (1000 * 60 * 60 * 24 * dayDiffStart));
-        const end = 0 === dayDiffEnd ? today : new Date(today.getTime() - (1000 * 60 * 60 * 24 * dayDiffEnd));
+    moveToNextRange() {
+        const range = this.createRangeFromDate(1, this.range.daysDiff + 1, this.range.endDate);
+
+        this.fp.setDate([range[0].toDate(), range[1].toDate()], true);
+    },
+
+    createToday() {
+        return dayjs().hour(0).minute(0).second(0).millisecond(0);
+    },
+
+    createRangeFromDate(dayDiffStart, dayDiffEnd, date = undefined) {
+        date = date ? date : this.createToday();
+        const start = 0 === dayDiffStart ? date.clone() : (0 < dayDiffStart ? date.add(dayDiffStart, 'day') : date.subtract(dayDiffStart * -1, 'day'));
+        const end = 0 === dayDiffEnd ? date.clone() : (0 < dayDiffEnd ? date.add(dayDiffEnd, 'day') : date.subtract(dayDiffEnd * -1, 'day'));
 
         return [start, end];
     },
@@ -250,7 +253,7 @@ module.exports = () => ({
                 mode: 'range',
                 dateFormat: 'j.n.Y',
                 disableMobile: true,
-                defaultDate: [this.range.startDate, this.range.endDate],
+                defaultDate: [this.range.startDate.toDate(), this.range.endDate.toDate()],
                 inline: true,
             };
 
@@ -274,11 +277,8 @@ module.exports = () => ({
                 return;
             }
 
-            const start = dates[0];
-            const end = dates[1];
-
-            start.setHours(0, 0, 0, 0);
-            end.setHours(0, 0, 0, 0);
+            const start = dayjs(dates[0]).hour(0).minute(0).second(0).millisecond(0);
+            const end = dayjs(dates[1]).hour(0).minute(0).second(0).millisecond(0);
 
             this.setRange(start, end);
             this.rangeText = this.fp.input.value;
@@ -289,15 +289,15 @@ module.exports = () => ({
             const dayDiffStart = this.$el.getAttribute('data-day-diff-start') || 0;
             const dayDiffEnd = this.$el.getAttribute('data-day-diff-end') || 0;
 
-            const range = this.createRangeFromToday(parseInt(dayDiffStart), parseInt(dayDiffEnd));
-            this.fp.setDate(range, true);
+            const range = this.createRangeFromDate(parseInt(dayDiffStart), parseInt(dayDiffEnd));
+            this.fp.setDate([range[0].toDate(), range[1].toDate()], true);
         },
         [':class']() {
             const dayDiffStart = this.$el.getAttribute('data-day-diff-start') || 0;
             const dayDiffEnd = this.$el.getAttribute('data-day-diff-end') || 0;
-            const range = this.createRangeFromToday(parseInt(dayDiffStart), parseInt(dayDiffEnd));
+            const range = this.createRangeFromDate(parseInt(dayDiffStart), parseInt(dayDiffEnd));
 
-            if (this.range.startDate.getTime() === range[0].getTime() && this.range.endDate.getTime() === range[1].getTime()) {
+            if (this.range.startDate.isSame(range[0], 'day') && this.range.endDate.isSame(range[1], 'day')) {
                 return 'text-white bg-indigo-600 hover:bg-indigo-700';
             }
 

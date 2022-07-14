@@ -183,11 +183,11 @@ final class ProjectStatisticsCalculator implements ProjectStatisticsCalculatorIn
 	/**
 	 * {@inheritDoc}
 	 */
-	public function calculateCookieStatistics(array $projectIds): MultiProjectCookieStatistics
+	public function calculateCookieStatistics(array $projectIds, DateTimeImmutable $endDate): MultiProjectCookieStatistics
 	{
 		$result = MultiProjectCookieStatistics::create();
 
-		foreach ($this->queryBus->dispatch(CalculateProjectCookieTotalsQuery::create($projectIds)) as $projectCookieTotalsView) {
+		foreach ($this->queryBus->dispatch(CalculateProjectCookieTotalsQuery::create($projectIds, $endDate)) as $projectCookieTotalsView) {
 			assert($projectCookieTotalsView instanceof ProjectCookieTotalsView);
 
 			$result = $result->withStatistics($projectCookieTotalsView->projectId->toString(), CookieStatistics::create(
@@ -207,15 +207,13 @@ final class ProjectStatisticsCalculator implements ProjectStatisticsCalculatorIn
 	}
 
 	/**
-	 * @param array $projectIds
-	 *
-	 * @return \App\Application\Statistics\MultiProjectLastConsentDate
+	 * {@inheritDoc}
 	 */
-	public function calculateLastConsentDate(array $projectIds): MultiProjectLastConsentDate
+	public function calculateLastConsentDate(array $projectIds, DateTimeImmutable $endDate): MultiProjectLastConsentDate
 	{
 		$result = MultiProjectLastConsentDate::create();
 
-		foreach ($this->queryBus->dispatch(CalculateLastConsentDatesQuery::create($projectIds)) as $lastConsentDateView) {
+		foreach ($this->queryBus->dispatch(CalculateLastConsentDatesQuery::create($projectIds, $endDate)) as $lastConsentDateView) {
 			assert($lastConsentDateView instanceof LastConsentDateView);
 
 			$result = $result->withDate($lastConsentDateView->projectId->toString(), $lastConsentDateView->lastConsentDate);

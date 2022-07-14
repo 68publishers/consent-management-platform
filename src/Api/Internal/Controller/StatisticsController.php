@@ -153,8 +153,8 @@ final class StatisticsController extends AbstractInternalController
 		$projectIds = array_values($projectIdsByCodes);
 		$allConsentPeriodStatistics = $this->projectStatisticsCalculator->calculateConsentPeriodStatistics($projectIds, $startDate, $endDate);
 		$allPositiveConsentPeriodStatistics = $this->projectStatisticsCalculator->calculatePositiveConsentPeriodStatistics($projectIds, $startDate, $endDate);
-		$allCookieStatistics = $this->projectStatisticsCalculator->calculateCookieStatistics($projectIds);
-		$allLastConsentDates = $this->projectStatisticsCalculator->calculateLastConsentDate($projectIds);
+		$allCookieStatistics = $this->projectStatisticsCalculator->calculateCookieStatistics($projectIds, $endDate);
+		$allLastConsentDates = $this->projectStatisticsCalculator->calculateLastConsentDate($projectIds, $endDate);
 
 		foreach ($projectIdsByCodes as $code => $projectId) {
 			$consentPeriodStatistics = $allConsentPeriodStatistics->get($projectId);
