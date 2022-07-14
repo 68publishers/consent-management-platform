@@ -1,8 +1,14 @@
 page_title: Dashboard
 
-last_30_days: Posledních 30 dní
-last_14_days: Posledních 14 dní
+yesterday: Včera
+today: Dnes
 last_7_days: Posledních 7 dní
+last_14_days: Posledních 14 dní
+last_30_days: Posledních 30 dní
+
+reload_project_data: Načíst znova
+response_error: Data se nepodařilo načíst.
+project_missing_in_response: Data pro projekt nebyla nalezena.
 
 all_consents: Souhlasy
 unique_consents: 'Souhlasy (unikátní)'
@@ -10,4 +16,4 @@ all_positive: Pozitivita
 unique_positive: 'Pozitivita (unikátní)'
 last_consent: Poslední souhlas
 providers: Poskytovatelé
-cokoies: Cookies
+cookies: Cookies

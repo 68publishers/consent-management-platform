@@ -35,7 +35,7 @@ final class CalculateConsentTotalsPerPeriodQueryHandler implements QueryHandlerI
 	/**
 	 * @param \App\ReadModel\Consent\CalculateConsentTotalsPerPeriodQuery $query
 	 *
-	 * @return array
+	 * @return \App\ReadModel\Consent\ConsentTotalsView[]
 	 */
 	public function __invoke(CalculateConsentTotalsPerPeriodQuery $query): array
 	{

@@ -2,18 +2,20 @@
 
 declare(strict_types=1);
 
-namespace App\ReadModel\Consent;
+namespace App\ReadModel\Project;
 
 use App\Domain\Project\ValueObject\ProjectId;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\AbstractView;
 
-final class ConsentTotalsView extends AbstractView
+final class ProjectCookieTotalsView extends AbstractView
 {
 	public ProjectId $projectId;
 
-	public int $total;
+	public int $providers;
 
-	public int $unique;
+	public int $commonCookies;
+
+	public int $privateCookies;
 
 	/**
 	 * @return array
@@ -22,8 +24,9 @@ final class ConsentTotalsView extends AbstractView
 	{
 		return [
 			'projectId' => $this->projectId->toString(),
-			'total' => $this->total,
-			'unique' => $this->unique,
+			'providers' => $this->providers,
+			'commonCookies' => $this->commonCookies,
+			'privateCookies' => $this->privateCookies,
 		];
 	}
 }

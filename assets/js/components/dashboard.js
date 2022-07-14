@@ -52,26 +52,43 @@ module.exports = () => ({
         }
 
         // setup the default range
-        const range = this.createRangeFromToday(6);
+        const range = this.createRangeFromToday(6, 0);
         this.setRange(range[0], range[1]);
 
         // watch range changes
-        this.$watch('range', ((range) => {
-            this.reloadAllProjectsData(range.startDate, range.endDate);
+        this.$watch('range', (() => {
+            this.reloadAllProjectsData();
         }));
 
         // load projects
         this.$nextTick(() => {
-            this.reloadAllProjectsData(this.range.startDate, this.range.endDate);
+            this.reloadAllProjectsData();
         });
     },
 
-    reloadAllProjectsData(start, end) {
+    reloadAllProjectsData() {
         for (let i in this.projects) {
             this.projects[i].status = this.STATUS_LOADING();
         }
 
-        this.loadProjectsData(start, end);
+        this.loadProjectsData(this.range.startDate, this.range.endDate);
+    },
+
+    reloadProjectData(code) {
+        for (let i in this.projects) {
+            const project = this.projects[i];
+
+            if (code !== project.code) {
+                continue;
+            }
+
+            if (this.STATUS_LOADING() !== project.status) {
+                project.status = this.STATUS_LOADING();
+                this.loadProjectsData(this.range.startDate, this.range.endDate);
+            }
+
+            break;
+        }
     },
 
     loadProjectsData(start, end) {
@@ -100,6 +117,10 @@ module.exports = () => ({
         promise.then(response => {
             return response.json();
         }).then(json => {
+            if ('success' !== json.status) {
+                return Promise.reject(json);
+            }
+
             const data = json.data;
 
             for (let i in this.projects) {
@@ -112,7 +133,7 @@ module.exports = () => ({
                 const projectData = data[project.code];
 
                 if (!projectData) {
-                    project.status = this.STATUS_LOADED();
+                    project.status = this.STATUS_MISSING();
 
                     continue;
                 }
@@ -120,11 +141,12 @@ module.exports = () => ({
                 project.data = mergeObjects(project.data, projectData);
                 project.status = this.STATUS_LOADED();
             }
-        }).catch(() => {
-            console.warn('EEEEE');
+        }).catch((e) => {
+            console.warn(e);
+
             for (let i in this.projects) {
                 if (-1 !== codes.indexOf(this.projects[i].code)) {
-                    this.projects[i].status = this.STATUS_LOADED();
+                    this.projects[i].status = this.STATUS_ERROR();
                 }
             }
         });
@@ -197,11 +219,12 @@ module.exports = () => ({
         return today;
     },
 
-    createRangeFromToday(daysDiff) {
-        const end = this.createToday();
-        const start = end.getTime() - (1000 * 60 * 60 * 24 * parseInt(daysDiff));
+    createRangeFromToday(dayDiffStart, dayDiffEnd) {
+        const today = this.createToday();
+        const start = 0 === dayDiffStart ? today : new Date(today.getTime() - (1000 * 60 * 60 * 24 * dayDiffStart));
+        const end = 0 === dayDiffEnd ? today : new Date(today.getTime() - (1000 * 60 * 60 * 24 * dayDiffEnd));
 
-        return [new Date(start), end];
+        return [start, end];
     },
 
     STATUS_LOADING() {
@@ -210,6 +233,14 @@ module.exports = () => ({
 
     STATUS_LOADED() {
         return 'loaded';
+    },
+
+    STATUS_MISSING() {
+        return 'missing';
+    },
+
+    STATUS_ERROR() {
+        return 'error';
     },
 
     datepicker: {
@@ -255,23 +286,22 @@ module.exports = () => ({
     },
     rangeButton: {
         ['x-on:click']() {
-            const daysDiff = this.$el.getAttribute('data-day-diff');
+            const dayDiffStart = this.$el.getAttribute('data-day-diff-start') || 0;
+            const dayDiffEnd = this.$el.getAttribute('data-day-diff-end') || 0;
 
-            if (!daysDiff) {
-                return;
-            }
-
-            const range = this.createRangeFromToday(daysDiff);
+            const range = this.createRangeFromToday(parseInt(dayDiffStart), parseInt(dayDiffEnd));
             this.fp.setDate(range, true);
         },
         [':class']() {
-            const dayDiff = this.$el.getAttribute('data-day-diff');
+            const dayDiffStart = this.$el.getAttribute('data-day-diff-start') || 0;
+            const dayDiffEnd = this.$el.getAttribute('data-day-diff-end') || 0;
+            const range = this.createRangeFromToday(parseInt(dayDiffStart), parseInt(dayDiffEnd));
 
-            if (!dayDiff || !(this.range.endDate.getTime() === this.createToday().getTime() && this.range.daysDiff === parseInt(dayDiff))) {
-                return 'text-indigo-700 bg-indigo-100 hover:bg-indigo-200';
+            if (this.range.startDate.getTime() === range[0].getTime() && this.range.endDate.getTime() === range[1].getTime()) {
+                return 'text-white bg-indigo-600 hover:bg-indigo-700';
             }
 
-            return 'text-white bg-indigo-600 hover:bg-indigo-700';
+            return 'text-indigo-700 bg-indigo-100 hover:bg-indigo-200';
         },
     },
 });

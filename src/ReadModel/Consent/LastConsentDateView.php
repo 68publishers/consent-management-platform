@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\ReadModel\Consent;
 
+use DateTimeImmutable;
+use DateTimeInterface;
 use App\Domain\Project\ValueObject\ProjectId;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\AbstractView;
 
-final class ConsentTotalsView extends AbstractView
+final class LastConsentDateView extends AbstractView
 {
 	public ProjectId $projectId;
 
-	public int $total;
-
-	public int $unique;
+	public ?DateTimeImmutable $lastConsentDate = NULL;
 
 	/**
 	 * @return array
@@ -22,8 +22,7 @@ final class ConsentTotalsView extends AbstractView
 	{
 		return [
 			'projectId' => $this->projectId->toString(),
-			'total' => $this->total,
-			'unique' => $this->unique,
+			'lastConsentDate' => NULL !== $this->lastConsentDate ? $this->lastConsentDate->format(DateTimeInterface::ATOM) : NULL,
 		];
 	}
 }

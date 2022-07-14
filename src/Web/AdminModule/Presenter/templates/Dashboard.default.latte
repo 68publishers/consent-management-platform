@@ -2,7 +2,7 @@
 
 {block #content}
 
-<div n:syntax="double" x-data="dashboard" data-endpoint="{{App\Api\Internal\Controller\StatisticsController::ENDPOINT_PROJECTS}}" data-projects="{{Nette\Utils\Json::encode(array_map(fn ($project) => ['code' => $project->code->value(), 'name' => $project->name->value(), 'color' => $project->color->value()], $projects))}}" class="w-full px-4 sm:px-0">
+<div n:syntax="double" x-data="dashboard" data-endpoint="{{App\Api\Internal\Controller\StatisticsController::ENDPOINT_PROJECTS}}" data-projects="{{Nette\Utils\Json::encode($projectsData)}}" class="w-full px-4 sm:px-0">
     <div class="flex w-full items-center justify-end">
         <div x-data="dropdown" x-bind="dropdown" class="ml-3 relative">
             <div class="min-w-[14rem]">
@@ -17,14 +17,20 @@
             <div x-bind="dropdownPanel" x-cloak class="origin-top-right absolute right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none p-2 sm:p-4 z-10" role="menu" aria-orientation="vertical" aria-labelledby="dashboard-range-button" tabindex="-1">
                 <div class="flex w-full flex-col md:flex-row md:flex-nowrap items-start space-y-4 md:space-y-0 md:space-x-4">
                     <div class="w-full md:w-auto space-y-2 flex flex-col">
-                        <a x-bind="rangeButton" data-day-diff="29" class="whitespace-nowrap w-full inline-flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
-                            {{_last_30_days}}
+                        <a x-bind="rangeButton" data-day-diff-start="1" data-day-diff-end="1" class="whitespace-nowrap w-full inline-flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                            {{_yesterday}}
                         </a>
-                        <a x-bind="rangeButton" data-day-diff="13" class="whitespace-nowrap w-full inline-flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                        <a x-bind="rangeButton" data-day-diff-start="0" data-day-diff-end="0" class="whitespace-nowrap w-full inline-flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                            {{_today}}
+                        </a>
+                        <a x-bind="rangeButton" data-day-diff-start="6" data-day-diff-end="0" class="whitespace-nowrap w-full inline-flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                            {{_last_7_days}}
+                        </a>
+                        <a x-bind="rangeButton" data-day-diff-start="13" data-day-diff-end="0" class="whitespace-nowrap w-full inline-flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
                             {{_last_14_days}}
                         </a>
-                        <a x-bind="rangeButton" data-day-diff="6" class="whitespace-nowrap w-full inline-flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
-                            {{_last_7_days}}
+                        <a x-bind="rangeButton" data-day-diff-start="29" data-day-diff-end="0" class="whitespace-nowrap w-full inline-flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                            {{_last_30_days}}
                         </a>
                     </div>
                     <div class="w-full md:w-auto flex">
@@ -37,26 +43,39 @@
     <div class="mt-12">
         <template x-for="project in projects" :key="project.code">
             <div x-data="collapse" x-bind="collapse" class="mb-2">
-                <div class="flex items-center justify-between mb-2 py-2">
-                    <div x-bind="collapseButton" class="flex items-center flex-nowrap cursor-pointer">
-                        <span :style="{'background-color': project.color}" x-text="project.name.slice(0,1).toUpperCase()" class="inline-flex items-center justify-center h-6 w-6 rounded-full mr-2 text-white text-sm"></span>
-                        <h3 x-text="project.name" class="text-lg leading-6 font-medium text-gray-900"></h3>
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center flex-nowrap">
+                        <div x-bind="collapseButton" class="flex items-center flex-nowrap cursor-pointer p-2 pl-0">
+                            <span :style="{'background-color': project.color}" x-text="project.name.slice(0,1).toUpperCase()" class="inline-flex items-center justify-center h-6 w-6 rounded-full mr-2 text-white text-sm"></span>
+                            <h3 x-text="project.name" class="text-lg leading-6 font-medium text-gray-900"></h3>
+                        </div>
+
+                        <div class="p-2">
+                            <span x-show="STATUS_ERROR() === project.status" x-data x-tooltip.interactive.placement.right.raw="{{_response_error}}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                            <span x-show="STATUS_MISSING() === project.status" x-data x-tooltip.interactive.placement.right.raw="{{_project_missing_in_response}}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                        </div>
                     </div>
-                    <div x-bind="collapseButton" class="cursor-pointer">
-                        <svg x-show="expanded" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+
+                    <button x-data x-tooltip.interactive.placement.left.raw="{{_reload_project_data}}" x-on:click="reloadProjectData(project.code)" class="cursor-pointer p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" :class="{'animate-spin': STATUS_LOADING() === project.status}" class="h-5 w-5 text-indigo-700" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
                         </svg>
-                        <svg x-show="!expanded" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </div>
+                    </button>
                 </div>
                 <div x-bind="collapsePanel" class="mb-8 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-7 gap-2">
 
                     <div :class="{'spinner': STATUS_LOADING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
                         <div class="text-sm font-medium text-gray-500 truncate">{{_all_consents}}</div>
 
-                        <div x-show="STATUS_LOADED() === project.status && null !== project.data.allConsents.value">
+                        <div x-show="STATUS_LOADING() !== project.status && null !== project.data.allConsents.value">
                             <div x-text="project.data.allConsents.value" class="mt-2 text-xl font-semibold text-gray-900"></div>
 
                             <p x-show="null !== project.data.allConsents.percentageDiff" :class="{'text-green-600': 0 <= project.data.allConsents.percentageDiff, 'text-red-600': 0 > project.data.allConsents.percentageDiff}" class="mt-4 flex items-baseline text-sm font-semibold">
@@ -72,9 +91,12 @@
                     </div>
 
                     <div :class="{'spinner': STATUS_LOADING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
-                        <div class="text-sm font-medium text-gray-500 truncate">{{_unique_consents}}</div>
+                        <div class="text-sm font-medium text-gray-500 truncate">
+                            <span x-show="!project.links.consents">{{_unique_consents}}</span>
+                            <a x-show="project.links.consents" :href="project.links.consents" class="text-indigo-700">{{_unique_consents}}</a>
+                        </div>
 
-                        <div x-show="STATUS_LOADED() === project.status && null !== project.data.uniqueConsents.value">
+                        <div x-show="STATUS_LOADING() !== project.status && null !== project.data.uniqueConsents.value">
                             <div x-text="project.data.uniqueConsents.value" class="mt-2 text-xl font-semibold text-gray-900"></div>
 
                             <p x-show="null !== project.data.uniqueConsents.percentageDiff" :class="{'text-green-600': 0 <= project.data.uniqueConsents.percentageDiff, 'text-red-600': 0 > project.data.uniqueConsents.percentageDiff}" class="mt-4 flex items-baseline text-sm font-semibold">
@@ -92,7 +114,7 @@
                     <div :class="{'spinner': STATUS_LOADING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
                         <div class="text-sm font-medium text-gray-500 truncate">{{_all_positive}}</div>
 
-                        <div x-show="STATUS_LOADED() === project.status && null !== project.data.allPositive.value">
+                        <div x-show="STATUS_LOADING() !== project.status && null !== project.data.allPositive.value">
                             <div x-text="project.data.allPositive.value + '%'" class="mt-2 text-xl font-semibold text-gray-900"></div>
 
                             <p x-show="null !== project.data.allPositive.percentageDiff" :class="{'text-green-600': 0 <= project.data.allPositive.percentageDiff, 'text-red-600': 0 > project.data.allPositive.percentageDiff}" class="mt-4 flex items-baseline text-sm font-semibold">
@@ -110,7 +132,7 @@
                     <div :class="{'spinner': STATUS_LOADING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
                         <div class="text-sm font-medium text-gray-500 truncate">{{_unique_positive}}</div>
 
-                        <div x-show="STATUS_LOADED() === project.status && null !== project.data.uniquePositive.value">
+                        <div x-show="STATUS_LOADING() !== project.status && null !== project.data.uniquePositive.value">
                             <div x-text="project.data.uniquePositive.value + '%'" class="mt-2 text-xl font-semibold text-gray-900"></div>
 
                             <p x-show="null !== project.data.uniquePositive.percentageDiff" :class="{'text-green-600': 0 <= project.data.uniquePositive.percentageDiff, 'text-red-600': 0 > project.data.uniquePositive.percentageDiff}" class="mt-4 flex items-baseline text-sm font-semibold">
@@ -128,19 +150,23 @@
                     <div :class="{'spinner': STATUS_LOADING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
                         <div class="text-sm font-medium text-gray-500 truncate">{{_last_consent}}</div>
 
-                        <div x-data x-tooltip.interactive.placement.bottom="project.data.lastConsent.formattedValue" x-show="STATUS_LOADED() === project.status && null !== project.data.lastConsent.value" x-text="project.data.lastConsent.text" class="mt-2 text-lg font-semibold text-gray-900"></div>
+                        <div x-show="STATUS_LOADING() !== project.status && null !== project.data.lastConsent.value" class="mt-2 text-lg font-semibold text-gray-900">
+                            <span x-data x-tooltip.interactive.placement.bottom="project.data.lastConsent.formattedValue" x-text="project.data.lastConsent.text"></span>
+                        </div>
                     </div>
 
                     <div :class="{'spinner': STATUS_LOADING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
-                        <div class="text-sm font-medium text-gray-500 truncate">{{_providers}}</div>
+                        <span x-show="!project.links.providers" class="text-sm font-medium text-gray-500 truncate">{{_providers}}</span>
+                        <a x-show="project.links.providers" :href="project.links.providers" class="text-sm font-medium text-indigo-700 truncate">{{_providers}}</a>
 
-                        <div x-show="STATUS_LOADED() === project.status && null !== project.data.providers.value" x-text="project.data.providers.value" class="mt-2 text-xl font-semibold text-gray-900"></div>
+                        <div x-show="STATUS_LOADING() !== project.status && null !== project.data.providers.value" x-text="project.data.providers.value" class="mt-2 text-xl font-semibold text-gray-900"></div>
                     </div>
 
                     <div :class="{'spinner': STATUS_LOADING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
-                        <div class="text-sm font-medium text-gray-500 truncate">{{_cokoies}}</div>
+                        <span x-show="!project.links.cookies" class="text-sm font-medium text-gray-500 truncate">{{_cookies}}</span>
+                        <a x-show="project.links.cookies" :href="project.links.cookies" class="text-sm font-medium text-indigo-700 truncate">{{_cookies}}</a>
 
-                        <div x-show="STATUS_LOADED() === project.status && null !== project.data.cookies.commonValue" class="mt-2 text-xl font-semibold text-gray-900">
+                        <div x-show="STATUS_LOADING() !== project.status && null !== project.data.cookies.commonValue" class="mt-2 text-xl font-semibold text-gray-900">
                             <span x-text="project.data.cookies.commonValue"></span>
                             <span x-show="null !== project.data.cookies.privateValue" x-text="'(' + project.data.cookies.privateValue + ')'"></span>
                         </div>

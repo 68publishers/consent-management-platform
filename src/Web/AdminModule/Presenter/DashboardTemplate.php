@@ -6,6 +6,5 @@ namespace App\Web\AdminModule\Presenter;
 
 final class DashboardTemplate extends AdminTemplate
 {
-	/** @var \App\ReadModel\Project\ProjectView[]  */
-	public array $projects;
+	public array $projectsData;
 }

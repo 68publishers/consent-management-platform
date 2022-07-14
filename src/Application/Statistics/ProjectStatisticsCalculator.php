@@ -6,6 +6,10 @@ namespace App\Application\Statistics;
 
 use DateTimeImmutable;
 use App\ReadModel\Consent\ConsentTotalsView;
+use App\ReadModel\Consent\LastConsentDateView;
+use App\ReadModel\Project\ProjectCookieTotalsView;
+use App\ReadModel\Consent\CalculateLastConsentDatesQuery;
+use App\ReadModel\Project\CalculateProjectCookieTotalsQuery;
 use App\ReadModel\Consent\CalculateConsentTotalsPerPeriodQuery;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 
@@ -62,6 +66,56 @@ final class ProjectStatisticsCalculator implements ProjectStatisticsCalculatorIn
 				PeriodStatistics::create($statistic['total']['previous'], $statistic['total']['current']),
 				PeriodStatistics::create($statistic['unique']['previous'], $statistic['unique']['current'])
 			));
+		}
+
+		return $result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function calculateCookieStatistics(array $projectIds): MultiProjectCookieStatistics
+	{
+		$result = MultiProjectCookieStatistics::create();
+
+		foreach ($this->queryBus->dispatch(CalculateProjectCookieTotalsQuery::create($projectIds)) as $projectCookieTotalsView) {
+			assert($projectCookieTotalsView instanceof ProjectCookieTotalsView);
+
+			$result = $result->withStatistics($projectCookieTotalsView->projectId->toString(), CookieStatistics::create(
+				$projectCookieTotalsView->providers,
+				$projectCookieTotalsView->commonCookies,
+				$projectCookieTotalsView->privateCookies
+			));
+		}
+
+		foreach ($projectIds as $projectId) {
+			if (!$result->has($projectId)) {
+				$result = $result->withStatistics($projectId, CookieStatistics::create(0, 0, 0));
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * @param array $projectIds
+	 *
+	 * @return \App\Application\Statistics\MultiProjectLastConsentDate
+	 */
+	public function calculateLastConsentDate(array $projectIds): MultiProjectLastConsentDate
+	{
+		$result = MultiProjectLastConsentDate::create();
+
+		foreach ($this->queryBus->dispatch(CalculateLastConsentDatesQuery::create($projectIds)) as $lastConsentDateView) {
+			assert($lastConsentDateView instanceof LastConsentDateView);
+
+			$result = $result->withDate($lastConsentDateView->projectId->toString(), $lastConsentDateView->lastConsentDate);
+		}
+
+		foreach ($projectIds as $projectId) {
+			if (!$result->has($projectId)) {
+				$result = $result->withDate($projectId, NULL);
+			}
 		}
 
 		return $result;

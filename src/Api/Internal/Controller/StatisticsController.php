@@ -6,8 +6,10 @@ namespace App\Api\Internal\Controller;
 
 use Exception;
 use DateTimeZone;
+use Carbon\Carbon;
 use DateTimeImmutable;
 use DateTimeInterface;
+use Carbon\CarbonInterface;
 use Apitte\Core\Http\ApiRequest;
 use App\ReadModel\User\UserView;
 use Apitte\Core\Http\ApiResponse;
@@ -97,16 +99,16 @@ final class StatisticsController extends AbstractInternalController
 		if (0 < count($inaccessible)) {
 			return $response->withStatus(ApiResponse::S401_UNAUTHORIZED)
 				->writeJsonBody([
-				'status' => 'error',
-				'data' => [
-					'code' => ApiResponse::S401_UNAUTHORIZED,
-					'error' => sprintf(
-						'Project%s %s are not accessible for the user.',
-						1 < count($inaccessible) ? 's' : '',
-						implode(', ', $inaccessible)
-					),
-				],
-			]);
+					'status' => 'error',
+					'data' => [
+						'code' => ApiResponse::S401_UNAUTHORIZED,
+						'error' => sprintf(
+							'Project%s %s are not accessible for the user.',
+							1 < count($inaccessible) ? 's' : '',
+							implode(', ', $inaccessible)
+						),
+					],
+				]);
 		}
 
 		$missingProjects = array_keys(array_filter($projectIds, static fn (?string $projectId): bool => NULL === $projectId));
@@ -143,24 +145,35 @@ final class StatisticsController extends AbstractInternalController
 		return $response->withStatus(ApiResponse::S200_OK)
 			->writeJsonBody([
 				'status' => 'success',
-				'data' => $this->buildData($projectIds, $startDate, $endDate),
+				'data' => $this->buildData($projectIds, $requestEntity->locale ?? $userData->profileLocale->value(), $startDate, $endDate, $userData->timezone),
 			]);
 	}
 
 	/**
-	 * @param array              $projectIdsByCodes
+	 * @param string[]           $projectIdsByCodes
+	 * @param string             $locale
 	 * @param \DateTimeImmutable $startDate
 	 * @param \DateTimeImmutable $endDate
+	 * @param \DateTimeZone      $userTz
 	 *
 	 * @return array
 	 */
-	private function buildData(array $projectIdsByCodes, DateTimeImmutable $startDate, DateTimeImmutable $endDate): array
+	private function buildData(array $projectIdsByCodes, string $locale, DateTimeImmutable $startDate, DateTimeImmutable $endDate, DateTimeZone $userTz): array
 	{
 		$data = [];
-		$allConsentPeriodStatistics = $this->projectStatisticsCalculator->calculateConsentPeriodStatistics(array_values($projectIdsByCodes), $startDate, $endDate);
+		$projectIds = array_values($projectIdsByCodes);
+		$allConsentPeriodStatistics = $this->projectStatisticsCalculator->calculateConsentPeriodStatistics($projectIds, $startDate, $endDate);
+		$allCookieStatistics = $this->projectStatisticsCalculator->calculateCookieStatistics($projectIds);
+		$allLastConsentDates = $this->projectStatisticsCalculator->calculateLastConsentDate($projectIds);
 
 		foreach ($projectIdsByCodes as $code => $projectId) {
 			$consentPeriodStatistics = $allConsentPeriodStatistics->get($projectId);
+			$cookieStatistics = $allCookieStatistics->get($projectId);
+			$lastConsentDate = $allLastConsentDates->get($projectId);
+
+			if (NULL !== $lastConsentDate) {
+				$lastConsentDate = $lastConsentDate->setTimezone($userTz);
+			}
 
 			$data[$code] = [
 				'allConsents' => [
@@ -172,24 +185,24 @@ final class StatisticsController extends AbstractInternalController
 					'percentageDiff' => $consentPeriodStatistics->uniqueConsentsPeriodStatistics()->percentageDiff(),
 				],
 				'allPositive' => [
-					'value' => 64,
-					'percentageDiff' => 17,
+					'value' => 'NaN',
+					'percentageDiff' => 0,
 				],
 				'uniquePositive' => [
-					'value' => 72,
-					'percentageDiff' => 21,
+					'value' => 'NaN',
+					'percentageDiff' => 0,
 				],
 				'lastConsent' => [
-					'value' => ($d = new DateTimeImmutable('now'))->format(DateTimeInterface::ATOM),
-					'formattedValue' => $d->format('j.n.Y H:i:s'),
-					'text' => 'a few seconds ago',
+					'value' => NULL !== $lastConsentDate ? $lastConsentDate->format(DateTimeInterface::ATOM) : NULL,
+					'formattedValue' => NULL !== $lastConsentDate ? $lastConsentDate->format('j.n.Y H:i:s') : NULL,
+					'text' => NULL !== $lastConsentDate ? Carbon::parse($lastConsentDate)->locale($locale)->ago(CarbonInterface::DIFF_RELATIVE_TO_NOW) : NULL,
 				],
 				'providers' => [
-					'value' => 14,
+					'value' => $cookieStatistics->numberOfProviders(),
 				],
 				'cookies' => [
-					'commonValue' => 82,
-					'privateValue' => 12,
+					'commonValue' => $cookieStatistics->numberOfCommonCookies(),
+					'privateValue' => $cookieStatistics->numberOfPrivateCookies(),
 				],
 			];
 		}
