@@ -9,13 +9,14 @@ use Nette\InvalidStateException;
 use App\Web\Ui\DataGrid\DataGrid;
 use Nette\Application\UI\Multiplier;
 use App\ReadModel\Consent\ConsentView;
+use App\ReadModel\Consent\ConsentListView;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\ReadModel\Consent\ConsentsDataGridQuery;
 use App\Web\Ui\DataGrid\DataGridFactoryInterface;
 use App\ReadModel\ConsentSettings\ConsentSettingsView;
 use App\ReadModel\Consent\GetConsentByIdAndProjectIdQuery;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
-use App\ReadModel\ConsentSettings\GetConsentSettingsByProjectIdAndChecksumQuery;
+use App\ReadModel\ConsentSettings\GetConsentSettingsByIdAndProjectIdQuery;
 use App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryModalControl;
 use App\Web\AdminModule\ProjectModule\Control\ConsentSettingsDetail\ConsentSettingsDetailModalControl;
 use App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryModalControlFactoryInterface;
@@ -84,7 +85,7 @@ final class ConsentListControl extends Control
 
 		$grid->addAction('edit', '')
 			->setTemplate(__DIR__ . '/templates/action.detail.latte', [
-				'createLink' => fn (ConsentView $view): string => $this->link('openModal!', ['modal' => 'history-' . $view->id->id()->getHex()->toString()]),
+				'createLink' => fn (ConsentListView $view): string => $this->link('openModal!', ['modal' => 'history-' . $view->id->id()->getHex()->toString()]),
 			]);
 
 		return $grid;
@@ -114,13 +115,13 @@ final class ConsentListControl extends Control
 	 */
 	protected function createComponentConsentSettingsDetail(): Multiplier
 	{
-		return new Multiplier(function (string $consentSettingsChecksum): ConsentSettingsDetailModalControl {
-			$consentSettingsView = $this->queryBus->dispatch(GetConsentSettingsByProjectIdAndChecksumQuery::create($this->projectId->toString(), $consentSettingsChecksum));
+		return new Multiplier(function (string $consentSettingsId): ConsentSettingsDetailModalControl {
+			$consentSettingsView = $this->queryBus->dispatch(GetConsentSettingsByIdAndProjectIdQuery::create($consentSettingsId, $this->projectId->toString()));
 
 			if (!$consentSettingsView instanceof ConsentSettingsView) {
 				throw new InvalidStateException(sprintf(
 					'Consent settings for checksum %s not found.',
-					$consentSettingsChecksum
+					$consentSettingsId
 				));
 			}
 

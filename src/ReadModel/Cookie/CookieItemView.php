@@ -34,10 +34,10 @@ final class CookieItemView extends AbstractView
 	{
 		return [
 			'id' => $this->id->toString(),
-			'cookie_name' => $this->cookieName->value(),
-			'processing_time' => $this->processingTime->value(),
-			'category_id' => NULL !== $this->categoryId ? $this->categoryId->toString() : NULL,
-			'category_name' => NULL !== $this->categoryName ? $this->categoryName->value() : NULL,
+			'cookieName' => $this->cookieName->value(),
+			'processingTime' => $this->processingTime->value(),
+			'categoryId' => NULL !== $this->categoryId ? $this->categoryId->toString() : NULL,
+			'categoryName' => NULL !== $this->categoryName ? $this->categoryName->value() : NULL,
 			'createdAt' => $this->createdAt->format(DateTimeInterface::ATOM),
 		];
 	}
