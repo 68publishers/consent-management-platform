@@ -15,9 +15,13 @@ use App\Web\AdminModule\ProfileModule\Control\BasicInformation\BasicInformationC
 use App\Web\AdminModule\ProfileModule\Control\PasswordChange\Event\PasswordChangedEvent;
 use App\Web\AdminModule\ProfileModule\Control\PasswordChange\Event\PasswordChangeFailedEvent;
 use App\Web\AdminModule\ProfileModule\Control\BasicInformation\Event\BasicInformationUpdatedEvent;
+use App\Web\AdminModule\UserModule\Control\NotificationPreferences\NotificationPreferencesControl;
 use App\Web\AdminModule\ProfileModule\Control\PasswordChange\PasswordChangeControlFactoryInterface;
 use App\Web\AdminModule\ProfileModule\Control\BasicInformation\BasicInformationControlFactoryInterface;
 use App\Web\AdminModule\ProfileModule\Control\BasicInformation\Event\BasicInformationUpdateFailedEvent;
+use App\Web\AdminModule\UserModule\Control\NotificationPreferences\Event\NotificationPreferencesUpdatedEvent;
+use App\Web\AdminModule\UserModule\Control\NotificationPreferences\NotificationPreferencesControlFactoryInterface;
+use App\Web\AdminModule\UserModule\Control\NotificationPreferences\Event\NotificationPreferencesProcessingFailedEvent;
 
 final class SettingsPresenter extends AdminPresenter
 {
@@ -25,16 +29,20 @@ final class SettingsPresenter extends AdminPresenter
 
 	private PasswordChangeControlFactoryInterface $passwordChangeControlFactory;
 
+	private NotificationPreferencesControlFactoryInterface $notificationPreferencesControlFactory;
+
 	/**
-	 * @param \App\Web\AdminModule\ProfileModule\Control\BasicInformation\BasicInformationControlFactoryInterface $basicInformationControlFactory
-	 * @param \App\Web\AdminModule\ProfileModule\Control\PasswordChange\PasswordChangeControlFactoryInterface     $passwordChangeControlFactory
+	 * @param \App\Web\AdminModule\ProfileModule\Control\BasicInformation\BasicInformationControlFactoryInterface            $basicInformationControlFactory
+	 * @param \App\Web\AdminModule\ProfileModule\Control\PasswordChange\PasswordChangeControlFactoryInterface                $passwordChangeControlFactory
+	 * @param \App\Web\AdminModule\UserModule\Control\NotificationPreferences\NotificationPreferencesControlFactoryInterface $notificationPreferencesControlFactory
 	 */
-	public function __construct(BasicInformationControlFactoryInterface $basicInformationControlFactory, PasswordChangeControlFactoryInterface $passwordChangeControlFactory)
+	public function __construct(BasicInformationControlFactoryInterface $basicInformationControlFactory, PasswordChangeControlFactoryInterface $passwordChangeControlFactory, NotificationPreferencesControlFactoryInterface $notificationPreferencesControlFactory)
 	{
 		parent::__construct();
 
 		$this->basicInformationControlFactory = $basicInformationControlFactory;
 		$this->passwordChangeControlFactory = $passwordChangeControlFactory;
+		$this->notificationPreferencesControlFactory = $notificationPreferencesControlFactory;
 	}
 
 	/**
@@ -100,6 +108,32 @@ final class SettingsPresenter extends AdminPresenter
 
 		$control->addEventListener(PasswordChangeFailedEvent::class, function () {
 			$this->subscribeFlashMessage(FlashMessage::error('password_change_failed'));
+		});
+
+		return $control;
+	}
+
+	/**
+	 * @return \App\Web\AdminModule\UserModule\Control\NotificationPreferences\NotificationPreferencesControl
+	 * @throws \SixtyEightPublishers\UserBundle\Application\Exception\IdentityException
+	 */
+	protected function createComponentNotificationPreferences(): NotificationPreferencesControl
+	{
+		$identity = $this->getUser()->getIdentity();
+		assert($identity instanceof Identity);
+
+		$control = $this->notificationPreferencesControlFactory->create($identity->data());
+
+		$control->setFormFactoryOptions([
+			FormFactoryInterface::OPTION_AJAX => TRUE,
+		]);
+
+		$control->addEventListener(NotificationPreferencesUpdatedEvent::class, function () {
+			$this->subscribeFlashMessage(FlashMessage::success('notification_preferences_updated'));
+		});
+
+		$control->addEventListener(NotificationPreferencesProcessingFailedEvent::class, function () {
+			$this->subscribeFlashMessage(FlashMessage::error('notification_preferences_update_failed'));
 		});
 
 		return $control;

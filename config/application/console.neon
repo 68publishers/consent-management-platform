@@ -1,0 +1,3 @@
+services:
+	console.command.weekly_overview: App\Application\Console\Command\WeeklyOverviewCommand
+	console.command.consent_decrease_notifier: App\Application\Console\Command\ConsentDecreaseNotifierCommand

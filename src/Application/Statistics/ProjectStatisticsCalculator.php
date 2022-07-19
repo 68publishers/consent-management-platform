@@ -34,12 +34,9 @@ final class ProjectStatisticsCalculator implements ProjectStatisticsCalculatorIn
 	 *
 	 * @throws \Exception
 	 */
-	public function calculateConsentPeriodStatistics(array $projectIds, DateTimeImmutable $startDate, DateTimeImmutable $endDate): MultiProjectConsentPeriodStatistics
+	public function calculateConsentPeriodStatistics(array $projectIds, Period $currentPeriod, ?Period $previousPeriod = NULL): MultiProjectConsentPeriodStatistics
 	{
-		$diff = $startDate->diff($endDate);
-		$previousEndDate = $startDate->modify('-1 second');
-		$previousStartDate = $previousEndDate->sub($diff);
-
+		$previousPeriod = $previousPeriod ?? $currentPeriod->createPreviousPeriod();
 		$consentStatistics = array_fill_keys($projectIds, [
 			'total' => [
 				'previous' => 0,
@@ -51,13 +48,13 @@ final class ProjectStatisticsCalculator implements ProjectStatisticsCalculatorIn
 			],
 		]);
 
-		foreach ($this->queryBus->dispatch(CalculateConsentTotalsPerPeriodQuery::create($projectIds, $previousStartDate, $previousEndDate)) as $previousTotalsView) {
+		foreach ($this->queryBus->dispatch(CalculateConsentTotalsPerPeriodQuery::create($projectIds, $previousPeriod->startDate(), $previousPeriod->endDate())) as $previousTotalsView) {
 			assert($previousTotalsView instanceof ConsentTotalsView);
 			$consentStatistics[$previousTotalsView->projectId->toString()]['total']['previous'] = $previousTotalsView->total;
 			$consentStatistics[$previousTotalsView->projectId->toString()]['unique']['previous'] = $previousTotalsView->unique;
 		}
 
-		foreach ($this->queryBus->dispatch(CalculateConsentTotalsPerPeriodQuery::create($projectIds, $startDate, $endDate)) as $currentTotalsView) {
+		foreach ($this->queryBus->dispatch(CalculateConsentTotalsPerPeriodQuery::create($projectIds, $currentPeriod->startDate(), $currentPeriod->endDate())) as $currentTotalsView) {
 			assert($currentTotalsView instanceof ConsentTotalsView);
 			$consentStatistics[$currentTotalsView->projectId->toString()]['total']['current'] = $currentTotalsView->total;
 			$consentStatistics[$currentTotalsView->projectId->toString()]['unique']['current'] = $currentTotalsView->unique;
@@ -78,13 +75,9 @@ final class ProjectStatisticsCalculator implements ProjectStatisticsCalculatorIn
 	/**
 	 * {@inheritDoc}
 	 */
-	public function calculatePositiveConsentPeriodStatistics(array $projectIds, DateTimeImmutable $startDate, DateTimeImmutable $endDate): MultiProjectConsentPeriodStatistics
+	public function calculatePositiveConsentPeriodStatistics(array $projectIds, Period $currentPeriod, ?Period $previousPeriod = NULL): MultiProjectConsentPeriodStatistics
 	{
-		$diff = $startDate->diff($endDate);
-		$previousEndDate = $startDate->modify('-1 second');
-		$previousStartDate = $previousEndDate->sub($diff);
-
-		// fill values
+		$previousPeriod = $previousPeriod ?? $currentPeriod->createPreviousPeriod();
 		$consentStatistics = array_fill_keys($projectIds, [
 			'total' => [
 				'previousPositive' => 0,
@@ -123,7 +116,7 @@ final class ProjectStatisticsCalculator implements ProjectStatisticsCalculatorIn
 		}
 
 		// the previous period
-		foreach ($this->queryBus->dispatch(ScrollThroughConsentsPerPeriodQuery::create($projectIds, $previousStartDate, $previousEndDate)->withBatchSize($batchSize)) as $batch) {
+		foreach ($this->queryBus->dispatch(ScrollThroughConsentsPerPeriodQuery::create($projectIds, $previousPeriod->startDate(), $previousPeriod->endDate())->withBatchSize($batchSize)) as $batch) {
 			assert($batch instanceof Batch);
 
 			foreach ($batch->results() as $row) {
@@ -141,7 +134,7 @@ final class ProjectStatisticsCalculator implements ProjectStatisticsCalculatorIn
 		// the current period
 		$userIdentifiers = [];
 
-		foreach ($this->queryBus->dispatch(ScrollThroughConsentsPerPeriodQuery::create($projectIds, $startDate, $endDate)->withBatchSize($batchSize)) as $batch) {
+		foreach ($this->queryBus->dispatch(ScrollThroughConsentsPerPeriodQuery::create($projectIds, $currentPeriod->startDate(), $currentPeriod->endDate())->withBatchSize($batchSize)) as $batch) {
 			assert($batch instanceof Batch);
 
 			foreach ($batch->results() as $row) {

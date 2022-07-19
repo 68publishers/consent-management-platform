@@ -1,0 +1,52 @@
+{layout $_config->layout}
+
+{varType array $_translatorArgs}
+
+{block #title|trim}
+    {_subject, $_translatorArgs}
+{/block}
+
+{block #header_icon}
+    <svg class="mx-auto h-16 w-16 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+    </svg>
+{/block}
+
+{block #header_title|trim}
+    {_header_title, $_translatorArgs|noescape}
+{/block}
+
+{block #content}
+    <div class="overflow-x-auto">
+        <div class="inline-block min-w-full py-2 align-middle">
+            <table class="min-w-full divide-y divide-gray-300">
+                <thead>
+                    <tr>
+                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 md:pl-0">{_col_name}</th>
+                        <th scope="col" class="py-3.5 px-3 text-center text-sm font-semibold text-gray-900">{_col_consents}</th>
+                        <th scope="col" class="py-3.5 px-3 text-center text-sm font-semibold text-gray-900">{_col_difference}</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    <tr n:foreach="$projects as $project">
+                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0">
+                            {$project['name']}
+                        </td>
+                        <td class="whitespace-nowrap text-center py-4 px-3 text-sm text-gray-500">
+                            {$project['allConsents']}
+                        </td>
+                        <td class="whitespace-nowrap text-center py-4 px-3 text-sm text-gray-500">
+                            {$project['percentageDiff']}%
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-6 text-center">
+        <a n:href="Admin:Dashboard:" class="inline-block no-underline px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 my-2">
+            {_go_to_dashboard}
+        </a>
+    </div>
+{/block}

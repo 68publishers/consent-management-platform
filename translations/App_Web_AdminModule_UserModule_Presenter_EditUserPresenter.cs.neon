@@ -1,8 +1,11 @@
 page_title: Upravit uživatele
 heading_basic: Základní informace
+notification_preferences: Nastavení notifikací
 back_to_list: Zpět na výpis uživatelů
 
 message:
 	user_not_found: Uživatel nebyl nalezen.
-	user_edited: Uživatel byl upraven.
-	user_edit_failed: Při úpravě uživatele došlo k chybě.
+	user_updated: Uživatel byl upraven.
+	user_update_failed: Při úpravě uživatele došlo k chybě.
+	notification_preferences_updated: Nastavení notifikací bylo uloženo.
+	notification_preferences_update_failed: Při ukládaní nastavení došlo k chybě.

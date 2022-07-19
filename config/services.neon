@@ -49,6 +49,7 @@ services:
 	- App\Web\AdminModule\UserModule\Control\PasswordRequestList\PasswordRequestListControlFactoryInterface
 	- App\Web\AdminModule\UserModule\Control\UserForm\UserFormControlFactoryInterface
 	- App\Web\AdminModule\ProfileModule\Control\PasswordChange\PasswordChangeControlFactoryInterface
+	- App\Web\AdminModule\UserModule\Control\NotificationPreferences\NotificationPreferencesControlFactoryInterface
 
 	# Web\AdminModule\CookieModule
 	- App\Web\AdminModule\CookieModule\Control\CategoryList\CategoryListControlFactoryInterface

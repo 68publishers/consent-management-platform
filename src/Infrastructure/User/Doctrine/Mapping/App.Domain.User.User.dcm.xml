@@ -50,6 +50,12 @@
 
         <field name="version" column="version" type="integer" />
 
+        <field name="notificationPreferences" column="notification_preferences" type="App\Domain\User\ValueObject\NotificationPreferences">
+            <options>
+                <option name="jsonb">true</option>
+            </options>
+        </field>
+
         <one-to-many field="projects" target-entity="App\Domain\User\UserHasProject" mapped-by="user" orphan-removal="true">
             <cascade>
                 <cascade-persist />

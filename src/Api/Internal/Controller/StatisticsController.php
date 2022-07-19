@@ -14,6 +14,7 @@ use Apitte\Core\Http\ApiRequest;
 use App\ReadModel\User\UserView;
 use Apitte\Core\Http\ApiResponse;
 use Nette\Security\User as NetteUser;
+use App\Application\Statistics\Period;
 use Apitte\Core\Annotation\Controller as Api;
 use App\ReadModel\Project\ProjectAccessibilityView;
 use App\ReadModel\Project\FindProjectsAccessibilityByCodeQuery;
@@ -151,8 +152,9 @@ final class StatisticsController extends AbstractInternalController
 		}
 
 		$projectIds = array_values($projectIdsByCodes);
-		$allConsentPeriodStatistics = $this->projectStatisticsCalculator->calculateConsentPeriodStatistics($projectIds, $startDate, $endDate);
-		$allPositiveConsentPeriodStatistics = $this->projectStatisticsCalculator->calculatePositiveConsentPeriodStatistics($projectIds, $startDate, $endDate);
+		$period = Period::create($startDate, $endDate);
+		$allConsentPeriodStatistics = $this->projectStatisticsCalculator->calculateConsentPeriodStatistics($projectIds, $period);
+		$allPositiveConsentPeriodStatistics = $this->projectStatisticsCalculator->calculatePositiveConsentPeriodStatistics($projectIds, $period);
 		$allCookieStatistics = $this->projectStatisticsCalculator->calculateCookieStatistics($projectIds, $endDate);
 		$allLastConsentDates = $this->projectStatisticsCalculator->calculateLastConsentDate($projectIds, $endDate);
 

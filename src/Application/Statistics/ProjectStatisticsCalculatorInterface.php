@@ -9,22 +9,22 @@ use DateTimeImmutable;
 interface ProjectStatisticsCalculatorInterface
 {
 	/**
-	 * @param string[]           $projectIds
-	 * @param \DateTimeImmutable $startDate
-	 * @param \DateTimeImmutable $endDate
+	 * @param string[]                                $projectIds
+	 * @param \App\Application\Statistics\Period      $currentPeriod
+	 * @param \App\Application\Statistics\Period|NULL $previousPeriod
 	 *
 	 * @return \App\Application\Statistics\MultiProjectConsentPeriodStatistics
 	 */
-	public function calculateConsentPeriodStatistics(array $projectIds, DateTimeImmutable $startDate, DateTimeImmutable $endDate): MultiProjectConsentPeriodStatistics;
+	public function calculateConsentPeriodStatistics(array $projectIds, Period $currentPeriod, ?Period $previousPeriod = NULL): MultiProjectConsentPeriodStatistics;
 
 	/**
-	 * @param array              $projectIds
-	 * @param \DateTimeImmutable $startDate
-	 * @param \DateTimeImmutable $endDate
+	 * @param string[]                                $projectIds
+	 * @param \App\Application\Statistics\Period      $currentPeriod
+	 * @param \App\Application\Statistics\Period|null $previousPeriod
 	 *
 	 * @return \App\Application\Statistics\MultiProjectConsentPeriodStatistics
 	 */
-	public function calculatePositiveConsentPeriodStatistics(array $projectIds, DateTimeImmutable $startDate, DateTimeImmutable $endDate): MultiProjectConsentPeriodStatistics;
+	public function calculatePositiveConsentPeriodStatistics(array $projectIds, Period $currentPeriod, ?Period $previousPeriod = NULL): MultiProjectConsentPeriodStatistics;
 
 	/**
 	 * @param string[]           $projectIds

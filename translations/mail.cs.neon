@@ -20,3 +20,22 @@ password_has_been_reset:
 	content: '''
 	<p>Heslo pro váš účet <strong>%emailAddress%</strong> bylo úspěšně změněno.</p>
 	'''
+
+weekly_overview:
+	subject: 'Týdenní přehled %formattedStartDate% - %formattedEndDate%'
+	header_title: 'Týdenní přehled<br>%formattedStartDate% - %formattedEndDate%'
+	col_name: Projekt
+	col_consents: Souhlasy
+	col_positivity: Pozitivita
+	col_providers: Poskytovatelé
+	col_cookies: Cookies
+	col_last_consent_date: Poslední souhlas
+	go_to_dashboard: Přejít na Dashboard
+
+consent_decrease:
+	subject: Byl zaznamenán pokles souhlasů
+	header_title: Byl zaznamenán pokles souhlasů
+	col_name: Projekt
+	col_consents: Souhlasy
+	col_difference: Změna
+	go_to_dashboard: Přejít na Dashboard

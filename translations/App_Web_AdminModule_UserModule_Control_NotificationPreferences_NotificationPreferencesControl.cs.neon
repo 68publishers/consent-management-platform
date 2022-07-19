@@ -1,0 +1,8 @@
+notifications:
+	field: 'Zvolte notifikace, které chcete dostávat'
+
+update:
+	field: Uložit
+
+consent_decreased: Pokles souhlasů
+weekly_overview: Týdenní přehled

@@ -13,6 +13,8 @@ use App\Domain\User\Event\UserProfileChanged;
 use App\Domain\User\Event\UserProjectsChanged;
 use App\Domain\User\Event\UserTimezoneChanged;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Domain\User\ValueObject\NotificationPreferences;
+use App\Domain\User\Event\UserNotificationPreferencesChanged;
 use SixtyEightPublishers\UserBundle\Domain\Event\UserCreated;
 use SixtyEightPublishers\UserBundle\Domain\Command\CreateUserCommand;
 use SixtyEightPublishers\UserBundle\Domain\Command\UpdateUserCommand;
@@ -29,6 +31,8 @@ final class User extends BaseUser
 
 	/** @var \Doctrine\Common\Collections\Collection|\App\Domain\User\UserHasProject[] */
 	private Collection $projects;
+
+	private NotificationPreferences $notificationPreferences;
 
 	/**
 	 * {@inheritDoc}
@@ -147,6 +151,18 @@ final class User extends BaseUser
 	}
 
 	/**
+	 * @param \App\Domain\User\ValueObject\NotificationPreferences $notificationPreferences
+	 *
+	 * @return void
+	 */
+	public function changeNotificationPreferences(NotificationPreferences $notificationPreferences): void
+	{
+		if (!$this->notificationPreferences->equals($notificationPreferences)) {
+			$this->recordThat(UserNotificationPreferencesChanged::create($this->id, $notificationPreferences));
+		}
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	protected function whenUserCreated(UserCreated $event): void
@@ -155,6 +171,7 @@ final class User extends BaseUser
 
 		$this->timezone = new DateTimeZone('UTC');
 		$this->projects = new ArrayCollection();
+		$this->notificationPreferences = NotificationPreferences::empty();
 	}
 
 	/**
@@ -201,6 +218,16 @@ final class User extends BaseUser
 		foreach ($newProjectIds as $newProjectId) {
 			$this->projects->add(UserHasProject::create($this, $newProjectId));
 		}
+	}
+
+	/**
+	 * @param \App\Domain\User\Event\UserNotificationPreferencesChanged $event
+	 *
+	 * @return void
+	 */
+	protected function whenUserNotificationPreferencesChanged(UserNotificationPreferencesChanged $event): void
+	{
+		$this->notificationPreferences = $event->notificationPreferences();
 	}
 
 	/**

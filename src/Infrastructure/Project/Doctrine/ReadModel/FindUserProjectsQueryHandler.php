@@ -43,7 +43,7 @@ final class FindUserProjectsQueryHandler implements QueryHandlerInterface
 			->from(Project::class, 'p')
 			->join(UserHasProject::class, 'uhp', Join::WITH, 'uhp.projectId = p.id AND uhp.user = :userId')
 			->where('p.deletedAt IS NULL')
-			->orderBy('p.createdAt', 'DESC')
+			->orderBy('p.name', 'ASC')
 			->setParameter('userId', $query->userId())
 			->getQuery()
 			->getResult(AbstractQuery::HYDRATE_ARRAY);
