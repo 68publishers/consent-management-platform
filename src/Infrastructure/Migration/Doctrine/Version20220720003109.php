@@ -39,7 +39,7 @@ final class Version20220720003109 extends AbstractMigration
 	 */
 	public function down(Schema $schema): void
 	{
-		$this->addSql('DROP SEQUENCE ' . ShortIdentifierGenerator::class);
+		$this->addSql('DROP SEQUENCE ' . ShortIdentifierGenerator::SEQUENCE_NAME);
 		$this->addSql('DROP INDEX UNIQ_CA814C72CFED4FBF');
 		$this->addSql('ALTER TABLE consent_settings DROP short_identifier');
 	}

@@ -12,7 +12,7 @@ use App\Domain\ConsentSettings\Exception\ShortIdentifierGeneratorException;
 
 final class ShortIdentifierGenerator implements ShortIdentifierGeneratorInterface
 {
-	public const SEQUENCE_NAME = 'consent_settings_short_identifier';
+	public const SEQUENCE_NAME = 'app_consent_settings_short_identifier';
 
 	private EntityManagerInterface $em;
 

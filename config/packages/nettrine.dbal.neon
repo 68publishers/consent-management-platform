@@ -14,3 +14,8 @@ nettrine.dbal:
 		dbname: ::env(DB_NAME)
 		user: ::env(DB_USER)
 		password: ::env(DB_PASSWORD)
+
+services:
+	nettrine.dbal.configuration:
+		setup:
+			- setSchemaAssetsFilter(App\Infrastructure\Shared\Doctrine\SchemaAssetsFilter())
