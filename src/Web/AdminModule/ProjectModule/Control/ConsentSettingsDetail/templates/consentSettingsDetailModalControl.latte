@@ -3,7 +3,7 @@
 {extends $layout}
 
 {block #title}
-    <span class="flex items-center">{_title, [checksum => ($consentSettingsView->checksum->value()|substr:0, 8)]|noescape}</span>
+    <span class="flex items-center">{_title, [checksum => ($consentSettingsView->checksum->value()|substr:0, 8), shortIdentifier => $consentSettingsView->shortIdentifier->value()]|noescape}</span>
 {/block}
 
 {block #body}

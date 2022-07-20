@@ -9,6 +9,7 @@ use DateTimeInterface;
 use App\Domain\Shared\ValueObject\Checksum;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\ConsentSettings\ValueObject\SettingsGroup;
+use App\Domain\ConsentSettings\ValueObject\ShortIdentifier;
 use App\Domain\ConsentSettings\ValueObject\ConsentSettingsId;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\AbstractView;
 
@@ -26,6 +27,8 @@ final class ConsentSettingsView extends AbstractView
 
 	public SettingsGroup $settings;
 
+	public ShortIdentifier $shortIdentifier;
+
 	/**
 	 * @return array
 	 */
@@ -33,11 +36,12 @@ final class ConsentSettingsView extends AbstractView
 	{
 		return [
 			'id' => $this->id->toString(),
-			'project_id' => $this->projectId->toString(),
-			'created_at' => $this->createdAt->format(DateTimeInterface::ATOM),
-			'last_update_at' => $this->lastUpdateAt->format(DateTimeInterface::ATOM),
+			'projectId' => $this->projectId->toString(),
+			'createdAt' => $this->createdAt->format(DateTimeInterface::ATOM),
+			'lastUpdateAt' => $this->lastUpdateAt->format(DateTimeInterface::ATOM),
 			'checksum' => $this->checksum->value(),
 			'settings' => $this->settings->toArray(),
+			'shortIdentifier' => $this->shortIdentifier->value(),
 		];
 	}
 }

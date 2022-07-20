@@ -9,6 +9,9 @@ services:
 
 	# infra: doctrine
 	-
+		type: App\Domain\ConsentSettings\ShortIdentifierGeneratorInterface
+		factory: App\Infrastructure\ConsentSettings\Doctrine\ShortIdentifierGenerator
+	-
 		autowired: no
 		factory: App\Infrastructure\ConsentSettings\Doctrine\ReadModel\ConsentSettingsDataGridQueryHandler
 	-
@@ -33,4 +36,8 @@ nettrine.dbal:
 
 			App\Domain\ConsentSettings\ValueObject\SettingsGroup:
 				class: App\Infrastructure\ConsentSettings\Doctrine\DbalType\SettingsGroupType
+				commented: yes
+
+			App\Domain\ConsentSettings\ValueObject\ShortIdentifier:
+				class: App\Infrastructure\ConsentSettings\Doctrine\DbalType\ShortIdentifierType
 				commented: yes

@@ -28,6 +28,8 @@
 
         <field name="settings" column="settings" type="App\Domain\ConsentSettings\ValueObject\SettingsGroup" />
 
+        <field name="shortIdentifier" column="short_identifier" type="App\Domain\ConsentSettings\ValueObject\ShortIdentifier" unique="true" />
+
         <field name="version" column="version" type="integer" />
     </entity>
 

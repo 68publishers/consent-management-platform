@@ -7,6 +7,7 @@ namespace App\Domain\ConsentSettings\Event;
 use App\Domain\Shared\ValueObject\Checksum;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\ConsentSettings\ValueObject\SettingsGroup;
+use App\Domain\ConsentSettings\ValueObject\ShortIdentifier;
 use App\Domain\ConsentSettings\ValueObject\ConsentSettingsId;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Event\AbstractDomainEvent;
 
@@ -20,26 +21,31 @@ final class ConsentSettingsCreated extends AbstractDomainEvent
 
 	private SettingsGroup $settings;
 
+	private ShortIdentifier $shortIdentifier;
+
 	/**
 	 * @param \App\Domain\ConsentSettings\ValueObject\ConsentSettingsId $consentSettingsId
 	 * @param \App\Domain\Project\ValueObject\ProjectId                 $projectId
 	 * @param \App\Domain\Shared\ValueObject\Checksum                   $checksum
 	 * @param \App\Domain\ConsentSettings\ValueObject\SettingsGroup     $settings
+	 * @param \App\Domain\ConsentSettings\ValueObject\ShortIdentifier   $shortIdentifier
 	 *
 	 * @return static
 	 */
-	public static function create(ConsentSettingsId $consentSettingsId, ProjectId $projectId, Checksum $checksum, SettingsGroup $settings): self
+	public static function create(ConsentSettingsId $consentSettingsId, ProjectId $projectId, Checksum $checksum, SettingsGroup $settings, ShortIdentifier $shortIdentifier): self
 	{
 		$event = self::occur($consentSettingsId->toString(), [
 			'project_id' => $projectId->toString(),
 			'checksum' => $checksum->value(),
 			'settings' => $settings->toArray(),
+			'short_identifier' => $shortIdentifier->value(),
 		]);
 
 		$event->consentSettingsId = $consentSettingsId;
 		$event->projectId = $projectId;
 		$event->checksum = $checksum;
 		$event->settings = $settings;
+		$event->shortIdentifier = $shortIdentifier;
 
 		return $event;
 	}
@@ -77,6 +83,14 @@ final class ConsentSettingsCreated extends AbstractDomainEvent
 	}
 
 	/**
+	 * @return \App\Domain\ConsentSettings\ValueObject\ShortIdentifier
+	 */
+	public function shortIdentifier(): ShortIdentifier
+	{
+		return $this->shortIdentifier;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	protected function reconstituteState(array $parameters): void
@@ -85,5 +99,6 @@ final class ConsentSettingsCreated extends AbstractDomainEvent
 		$this->projectId = ProjectId::fromString($parameters['project_id']);
 		$this->checksum = Checksum::fromValue($parameters['checksum']);
 		$this->settings = SettingsGroup::reconstitute($parameters['settings']);
+		$this->shortIdentifier = ShortIdentifier::fromValue($parameters['short_identifier']);
 	}
 }

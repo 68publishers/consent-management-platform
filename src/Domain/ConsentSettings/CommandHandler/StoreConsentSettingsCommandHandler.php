@@ -10,6 +10,7 @@ use App\Domain\ConsentSettings\ConsentSettings;
 use App\Domain\ConsentSettings\ValueObject\Settings;
 use App\Domain\ConsentSettings\CheckChecksumNotExistsInterface;
 use App\Domain\ConsentSettings\Exception\ChecksumExistsException;
+use App\Domain\ConsentSettings\ShortIdentifierGeneratorInterface;
 use App\Domain\ConsentSettings\ConsentSettingsRepositoryInterface;
 use App\Domain\ConsentSettings\Command\StoreConsentSettingsCommand;
 use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
@@ -20,14 +21,18 @@ final class StoreConsentSettingsCommandHandler implements CommandHandlerInterfac
 
 	private CheckChecksumNotExistsInterface $checkChecksumNotExists;
 
+	private ShortIdentifierGeneratorInterface $shortIdentifierGenerator;
+
 	/**
 	 * @param \App\Domain\ConsentSettings\ConsentSettingsRepositoryInterface $consentSettingsRepository
 	 * @param \App\Domain\ConsentSettings\CheckChecksumNotExistsInterface    $checkChecksumNotExists
+	 * @param \App\Domain\ConsentSettings\ShortIdentifierGeneratorInterface  $shortIdentifierGenerator
 	 */
-	public function __construct(ConsentSettingsRepositoryInterface $consentSettingsRepository, CheckChecksumNotExistsInterface $checkChecksumNotExists)
+	public function __construct(ConsentSettingsRepositoryInterface $consentSettingsRepository, CheckChecksumNotExistsInterface $checkChecksumNotExists, ShortIdentifierGeneratorInterface $shortIdentifierGenerator)
 	{
 		$this->consentSettingsRepository = $consentSettingsRepository;
 		$this->checkChecksumNotExists = $checkChecksumNotExists;
+		$this->shortIdentifierGenerator = $shortIdentifierGenerator;
 	}
 
 	/**
@@ -43,7 +48,7 @@ final class StoreConsentSettingsCommandHandler implements CommandHandlerInterfac
 		$settings = Settings::create($command->setting());
 
 		try {
-			$consentSettings = ConsentSettings::create($projectId, $checksum, $settings, $this->checkChecksumNotExists);
+			$consentSettings = ConsentSettings::create($projectId, $checksum, $settings, $this->checkChecksumNotExists, $this->shortIdentifierGenerator);
 		} catch (ChecksumExistsException $e) {
 			$consentSettings = $this->consentSettingsRepository->get($e->consentSettingsId());
 			$consentSettings->addSettings($settings);

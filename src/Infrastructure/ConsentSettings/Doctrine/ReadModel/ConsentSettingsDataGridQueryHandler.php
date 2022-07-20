@@ -45,11 +45,13 @@ final class ConsentSettingsDataGridQueryHandler implements QueryHandlerInterface
 			ConsentSettingsView::class,
 			[
 				'checksum' => ['applyLike', 'c.checksum'],
+				'shortIdentifier' => ['applyLike', 'CAST(c.shortIdentifier AS string)'],
 				'createdAt' => ['applyDate', 'c.createdAt'],
 				'lastUpdateAt' => ['applyDate', 'c.lastUpdateAt'],
 			],
 			[
 				'checksum' => 'c.checksum',
+				'shortIdentifier' => 'c.shortIdentifier',
 				'createdAt' => 'c.createdAt',
 				'lastUpdateAt' => 'c.lastUpdateAt',
 			]

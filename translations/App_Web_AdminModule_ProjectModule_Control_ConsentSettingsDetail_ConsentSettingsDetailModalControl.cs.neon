@@ -1,2 +1,6 @@
-title: 'Cookie lišta <span class="inline-flex items-center px-2.5 py-0.5 ml-2 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800">%checksum%</span>'
+title: '''
+Cookie lišta
+<span class="inline-flex items-center px-2.5 py-0.5 ml-2 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800">%checksum%</span>
+<span class="inline-flex items-center px-2.5 py-0.5 ml-2 rounded-md text-sm font-medium bg-purple-100 text-purple-800">verze %shortIdentifier%</span>
+'''
 close_button_text: Zavřít

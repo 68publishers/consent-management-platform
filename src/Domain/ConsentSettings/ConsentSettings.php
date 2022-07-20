@@ -10,6 +10,7 @@ use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\ConsentSettings\ValueObject\Settings;
 use App\Domain\ConsentSettings\ValueObject\SettingsGroup;
 use App\Domain\ConsentSettings\Event\ConsentSettingsAdded;
+use App\Domain\ConsentSettings\ValueObject\ShortIdentifier;
 use App\Domain\ConsentSettings\Event\ConsentSettingsCreated;
 use App\Domain\ConsentSettings\ValueObject\ConsentSettingsId;
 use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AggregateId;
@@ -32,15 +33,18 @@ final class ConsentSettings implements AggregateRootInterface
 
 	private SettingsGroup $settings;
 
+	private ShortIdentifier $shortIdentifier;
+
 	/**
-	 * @param \App\Domain\Project\ValueObject\ProjectId                   $projectId
-	 * @param \App\Domain\Shared\ValueObject\Checksum                     $checksum
-	 * @param \App\Domain\ConsentSettings\ValueObject\Settings            $settings
-	 * @param \App\Domain\ConsentSettings\CheckChecksumNotExistsInterface $checkChecksumNotExists
+	 * @param \App\Domain\Project\ValueObject\ProjectId                     $projectId
+	 * @param \App\Domain\Shared\ValueObject\Checksum                       $checksum
+	 * @param \App\Domain\ConsentSettings\ValueObject\Settings              $settings
+	 * @param \App\Domain\ConsentSettings\CheckChecksumNotExistsInterface   $checkChecksumNotExists
+	 * @param \App\Domain\ConsentSettings\ShortIdentifierGeneratorInterface $shortIdentifierGenerator
 	 *
 	 * @return static
 	 */
-	public static function create(ProjectId $projectId, Checksum $checksum, Settings $settings, CheckChecksumNotExistsInterface $checkChecksumNotExists): self
+	public static function create(ProjectId $projectId, Checksum $checksum, Settings $settings, CheckChecksumNotExistsInterface $checkChecksumNotExists, ShortIdentifierGeneratorInterface $shortIdentifierGenerator): self
 	{
 		$checkChecksumNotExists($projectId, $checksum);
 
@@ -50,7 +54,8 @@ final class ConsentSettings implements AggregateRootInterface
 			ConsentSettingsId::new(),
 			$projectId,
 			$checksum,
-			SettingsGroup::fromItems([$settings])
+			SettingsGroup::fromItems([$settings]),
+			$shortIdentifierGenerator->generate()
 		));
 
 		return $consentSettings;
@@ -89,6 +94,7 @@ final class ConsentSettings implements AggregateRootInterface
 		$this->lastUpdateAt = $event->createdAt();
 		$this->checksum = $event->checksum();
 		$this->settings = $event->settings();
+		$this->shortIdentifier = $event->shortIdentifier();
 	}
 
 	/**
