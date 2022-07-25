@@ -1,13 +1,23 @@
-{block #control-type-button}
-    {if !$control->getOption('rendered')}
-        <input n:name="$control" n:class="
-            $control->getControlPrototype()->class,
-            'w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer'
-        ">
-        {include #control-help, control => $control}
-    {/if}
-    {if !$controlsIterator->isLast() && $controlsIterator->getNextValue()->getOption('type') === 'button'}
-        {php $controlsIterator->next()}
-        {include #control-type-button, control => $controlsIterator->current(), controlsIterator => $controlsIterator}
-    {/if}
-{/block}
+{define #pair-type-default}
+    <div n:attr="id => $control->getOption('id')">
+        {include #helpers-override-split, blockNamePrefix => control, control => $control}
+    </div>
+{/define}
+
+{define #pair-type-button}
+    <div class="flex pt-2">
+        {block #control-type-button}
+            {if !$control->getOption('rendered')}
+                <input n:name="$control" n:class="
+                    $control->getControlPrototype()->class,
+                    'w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer'
+                ">
+                {include #control-help, control => $control}
+            {/if}
+            {if !$controlsIterator->isLast() && $controlsIterator->getNextValue()->getOption('type') === 'button'}
+                {php $controlsIterator->next()}
+                {include #control-type-button, control => $controlsIterator->current(), controlsIterator => $controlsIterator}
+            {/if}
+        {/block}
+    </div>
+{/define}

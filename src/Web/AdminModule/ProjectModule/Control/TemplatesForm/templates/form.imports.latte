@@ -3,21 +3,24 @@
 
 {define #container-name-templates, $container}
     {var $active = array_key_first($locales)}
-    <div class="sm:col-span-6" x-data="{ activeTab: '{$active}' }">
-        <nav class="flex space-x-4 mb-4" aria-label="Tabs">
+
+    <div class="sm:border-b sm:border-gray-200 sm:pb-5 px-4 sm:px-6" x-data="{ activeTab: '{$active}' }">
+        <nav class="flex space-x-4 mb-4 max-w-2xl mx-auto" aria-label="Tabs">
             <span n:foreach="$locales as $locale => $label" @click="activeTab = '{$locale}'" :class="activeTab === '{$locale}' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-500 hover:text-gray-700'" class="px-3 py-2 font-medium text-sm rounded-md cursor-pointer">{$label}</span>
         </nav>
 
-        {formContainer templates}
-            <div n:foreach="array_keys($locales) as $locale" n:attr="x-cloak => $active === $locale ? TRUE : NULL" x-show.transition.in.opacity.duration.200="activeTab === '{$locale}'">
-                {include #helpers-override-split, blockNamePrefix => pair, control => $container[$locale]}
-                <div class="mt-4">
-                    {var $link = App\Api\V1\Controller\CookiesController::getTemplateUrl($projectCode, $locale)}
-                    <div class="mb-1">{$container[$locale]->translate(open_template, [link => $link])|noescape}</div>
-                    <div>{$container[$locale]->translate(more_about_syntax)|noescape}</div>
+        <div class="max-w-2xl mx-auto">
+            {formContainer templates}
+                <div n:foreach="array_keys($locales) as $locale" n:attr="x-cloak => $active === $locale ? TRUE : NULL" x-show.transition.in.opacity.duration.200="activeTab === '{$locale}'">
+                    {include #helpers-override-split, blockNamePrefix => control, control => $container[$locale]}
+                    <div class="mt-4">
+                        {var $link = App\Api\V1\Controller\CookiesController::getTemplateUrl($projectCode, $locale)}
+                        <div class="mb-1">{$container[$locale]->translate(open_template, [link => $link])|noescape}</div>
+                        <div>{$container[$locale]->translate(more_about_syntax)|noescape}</div>
+                    </div>
                 </div>
-            </div>
-        {/formContainer}
+            {/formContainer}
+        </div>
     </div>
     {include #controls, group => $container}
 {/define}

@@ -1,5 +1,5 @@
 {define #form-body}
-    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+    <div class="space-y-6 py-8">
         {foreach $form->getGroups() as $group}
             {include #group, group => $group, groupsIterator => $iterator}
         {/foreach}
@@ -49,17 +49,19 @@
 {/define}
 
 {define #pair-type-default}
-    <div class="sm:col-span-6" n:attr="id => $control->getOption('id')">
+    <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-b sm:border-gray-200 sm:pb-5 px-4 sm:px-6" n:attr="id => $control->getOption('id')">
         {include #label, control => $control}
 
-        <div class="mt-1">
-            {include #helpers-override-split, blockNamePrefix => control, control => $control}
+        <div class="mt-1 sm:mt-0 sm:col-span-2 h-full">
+            <div class="max-w-lg h-full flex flex-col justify-center">
+                {include #helpers-override-split, blockNamePrefix => control, control => $control}
+            </div>
         </div>
     </div>
 {/define}
 
 {define #pair-type-button}
-    <div class="sm:col-span-6 flex justify-end pt-4">
+    <div class="flex justify-end px-4 sm:px-6">
         {block #control-type-button}
             {if !$control->getOption('rendered')}
                 <input n:name="$control" n:class="
@@ -77,21 +79,22 @@
 {/define}
 
 {define #label}
-    <label n:if="$control->getLabel()" n:ifcontent n:name="$control" n:class="
-        $control->getLabelPrototype()->class,
-        'block text-sm font-medium text-gray-700'
-    " />
+    <div class="block sm:mt-px sm:pt-2">
+        <label n:ifcontent n:name="$control" n:class="
+            $control->getLabelPrototype()->class,
+            'block text-sm font-medium text-gray-700'
+        " />
+        {include #control-help, control => $control}
+    </div>
 {/define}
 
 {define #control-type-default}
     {include #helpers-override-split, blockNamePrefix => input, control => $control}
-    {include #control-help, control => $control}
     {include #control-errors, control => $control}
 {/define}
 
 {define #control-type-checkboxlist}
     {include #helpers-override-split, blockNamePrefix => input, control => $control}
-    {include #control-help, control => $control}
     {include #control-errors, control => $control}
 {/define}
 
@@ -104,7 +107,7 @@
 {/define}
 
 {define #control-help}
-    <small n:if="$control->getOption('description') !== null" class="text-gray-600 text-xs italic pt-2">{$control->getOption('description')|safeTranslate}</small>
+    <small n:if="$control->getOption('description') !== null" class="block text-gray-600 text-xs italic py-2 max-w-lg">{$control->getOption('description')|safeTranslate}</small>
 {/define}
 
 {define #input-type-default}
@@ -151,12 +154,6 @@
                 $control->getControlPrototype()->class,
                 'show-hidden-error focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none'
             " x-data x-toggle x-cloak>
-        </div>
-        <div class="ml-3 text-sm">
-            <label n:name="$control:" n:class="
-                $control->getLabelPrototype()->class,
-                'font-medium text-gray-700'
-            "/>
         </div>
     </div>
 {/define}

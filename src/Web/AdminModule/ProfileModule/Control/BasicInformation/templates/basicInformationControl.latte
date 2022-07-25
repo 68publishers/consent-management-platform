@@ -1,18 +1,26 @@
 {templateType App\Web\AdminModule\ProfileModule\Control\BasicInformation\BasicInformationTemplate}
 
-<div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6 mb-6">
-    <div class="sm:col-span-6">
-        <span class="block text-sm font-medium text-gray-700">{_email_address}</span>
+<div class="space-y-6 pt-8">
+    <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-b sm:border-gray-200 sm:pb-5 px-4 sm:px-6">
+        <div class="block sm:mt-px sm:pt-2">
+            <span class="block text-sm font-medium text-gray-700">{_email_address}</span>
+        </div>
 
-        <div class="mt-1">
-            <span class="inline-flex items-center px-2 py-0.5 rounded text-sm font-medium bg-gray-100 text-gray-800">{$userView->emailAddress->value()}</span>
+        <div class="mt-1 sm:mt-0 sm:col-span-2 h-full">
+            <div class="max-w-lg h-full flex">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-sm font-medium bg-gray-100 text-gray-800">{$userView->emailAddress->value()}</span>
+            </div>
         </div>
     </div>
-    <div class="sm:col-span-6">
-        <span class="block text-sm font-medium text-gray-700">{_roles}</span>
+    <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-b sm:border-gray-200 sm:pb-5 px-4 sm:px-6">
+        <div class="block sm:mt-px sm:pt-2">
+            <span class="block text-sm font-medium text-gray-700">{_roles}</span>
+        </div>
 
-        <div class="mt-1">
-            <span n:foreach="$userView->roles->all() as $role" class="inline-flex items-center px-2 py-0.5 mr-2 rounded text-sm font-medium bg-gray-100 text-gray-800">{_'//layout.role_name.' . $role->value()}</span>
+        <div class="mt-1 sm:mt-0 sm:col-span-2 h-full">
+            <div class="max-w-lg h-full flex">
+                <span n:foreach="$userView->roles->all() as $role" class="inline-flex items-center px-2 py-0.5 mr-2 rounded text-sm font-medium bg-gray-100 text-gray-800">{_'//layout.role_name.' . $role->value()}</span>
+            </div>
         </div>
     </div>
 </div>

@@ -22,6 +22,16 @@ function Select(Alpine) {
                 this.$watch(`$store.${this.cid}.opened`, (() => {
                     this.$refs.button.focus();
                 }));
+
+                const selectId = this.$store[this.cid].el.getAttribute('id');
+
+                if (selectId) {
+                    document.querySelectorAll(`label[for="${selectId}"]`).forEach(label => {
+                        label.addEventListener('click', () => {
+                            this.$refs.button.focus();
+                        });
+                    });
+                }
             },
         },
         selectButton: {
@@ -279,7 +289,7 @@ function Select(Alpine) {
         selectEl.setAttribute('x-data', 'select');
         selectEl.setAttribute('x-bind', 'select');
         selectEl.setAttribute('data-cid', cid);
-        selectEl.setAttribute('class', 'relative');
+        selectEl.setAttribute('class', 'relative w-full');
 
         const optionsEl = document.createElement('div');
         optionsEl.innerHTML = `

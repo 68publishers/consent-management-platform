@@ -4,16 +4,14 @@
     <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
         <h3 class="text-lg leading-6 font-medium text-gray-900">{_heading_basic}</h3>
     </div>
-    <div class="max-w-2xl mx-auto px-4 py-8 sm:px-6">
-        {control projectForm}
-    </div>
+
+    {control projectForm}
 </div>
 
 <div n:if="$user->isAllowed(App\Application\Acl\ProjectResource::class, App\Application\Acl\ProjectResource::DELETE)" class="bg-white shadow sm:rounded-lg">
     <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
         <h3 class="text-lg leading-6 font-medium text-red-700">{_heading_danger_zone}</h3>
     </div>
-    <div class="max-w-2xl mx-auto px-4 py-8 sm:px-6">
-        {control delete}
-    </div>
+
+    {control delete}
 </div>
