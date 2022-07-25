@@ -65,7 +65,7 @@
 		"umpirsky/locale-list": "^1.0"
 	},
 	"require-dev": {
-		"friendsofphp/php-cs-fixer": "^2.19",
+		"friendsofphp/php-cs-fixer": "^3.9",
 		"roave/security-advisories": "dev-latest"
 	},
 	"config": {
