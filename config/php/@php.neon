@@ -1,4 +1,5 @@
 includes:
+	- contributte.console.php
 	- contributte.recaptcha.php
 	- http.cookie_secure.php
 	- kdyby.redis.php
