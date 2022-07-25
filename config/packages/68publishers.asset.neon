@@ -7,3 +7,5 @@ extensions:
 			json_manifest_path: %wwwDir%/dist/app/manifest.json
 		mail:
 			json_manifest_path: %wwwDir%/dist/mail/manifest.json
+			base_urls:
+				- ::env(PROJECT_URL)

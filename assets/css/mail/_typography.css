@@ -1,0 +1,45 @@
+h1,
+h2,
+h3,
+h4 {
+    color: var(--color--heading);
+    font-family: var(--font-family);
+    font-weight: var(--font-weight--heading);
+    line-height: var(--line-height--heading);
+    margin: var(--margin--heading);
+}
+
+h1 {
+    font-size: var(--font-size--h1);
+    font-weight: var(--font-weight--h1);
+    text-align: center;
+}
+
+p,
+ul,
+ol {
+    font-family: var(--font-family);
+    font-size: var(--font-size--base);
+    font-weight: normal;
+    margin: var(--margin--paragraph)
+}
+
+p li,
+ul li,
+ol li {
+    list-style-position: inside;
+    margin-left: 5px;
+}
+
+.text-light {
+    color: var(--color--text-light);
+}
+
+.text-sm {
+    font-size: var(--font-size--sm);
+}
+
+a {
+    color: var(--color--link) !important;
+    text-decoration: underline;
+}

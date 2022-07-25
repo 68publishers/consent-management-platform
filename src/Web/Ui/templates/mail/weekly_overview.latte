@@ -10,71 +10,69 @@
     {_header_title, $_translatorArgs|noescape}
 {/block}
 
-{block #content}
-    <div class="overflow-x-auto">
-        <div class="inline-block min-w-full py-2 align-middle">
-            <table class="min-w-full divide-y divide-gray-300">
-                <thead>
-                    <tr>
-                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 md:pl-0">{_col_name}</th>
-                        <th scope="col" class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">{_col_consents}</th>
-                        <th scope="col" class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">{_col_positivity}</th>
-                        <th scope="col" class="py-3.5 px-3 text-center text-sm font-semibold text-gray-900">{_col_providers}</th>
-                        <th scope="col" class="py-3.5 px-3 text-center text-sm font-semibold text-gray-900">{_col_cookies}</th>
-                        <th scope="col" class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">{_col_last_consent_date}</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-200">
-                    <tr n:foreach="$projects as $project">
-                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0">
-                            {$project['name']}
-                        </td>
-                        <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
-                            {$project['uniqueConsents']['value']}
-                            <div n:class="'mt-2 block text-sm font-semibold', 0 <= $project['uniqueConsents']['percentageDiff'] ? 'text-green-600' : 'text-red-600'">
-                                <svg n:if="0 <= $project['uniqueConsents']['percentageDiff']" class="inline-block align-middle h-5 w-5 text-green-500 -ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                                </svg>
-                                <svg n:if="0 > $project['uniqueConsents']['percentageDiff']" class="inline-block align-middle h-5 w-5 text-red-500 -ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="inline-block h-5 align-middle">
-                                    {abs($project['uniqueConsents']['percentageDiff'])}%
-                                </span>
-                            </div>
-                        </td>
-                        <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
-                            {$project['uniquePositive']['value']}%
-                            <div n:class="'mt-2 block text-sm font-semibold', 0 <= $project['uniquePositive']['percentageDiff'] ? 'text-green-600' : 'text-red-600'">
-                                <svg n:if="0 <= $project['uniquePositive']['percentageDiff']" class="inline-block align-middle h-5 w-5 text-green-500 -ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                                </svg>
-                                <svg n:if="0 > $project['uniquePositive']['percentageDiff']" class="inline-block align-middle h-5 w-5 text-red-500 -ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="inline-block h-5 align-middle">
-                                    {abs($project['uniquePositive']['percentageDiff'])}%
-                                </span>
-                            </div>
-                        </td>
-                        <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500 text-center">
-                            {$project['providers']['value']}
-                        </td>
-                        <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500 text-center">
-                            {$project['cookies']['commonValue']} ({$project['cookies']['privateValue']})
-                        </td>
-                        <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
-                            {$project['lastConsent']['formattedValue'] ?? '-'}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+{block #styles}
+    {include parent}
 
-    <div class="mt-6 text-center">
-        <a n:href="Admin:Dashboard:" class="inline-block no-underline px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 my-2">
-            {_go_to_dashboard}
-        </a>
-    </div>
+    <style n:syntax="off">
+        .arrow { display:block;font-weight:600;margin-top:8px;margin-left:-2px; }
+        .arrow-green { color:#22c55e; }
+        .arrow-red { color:#ef4444; }
+        .arrow i { display:inline-block;vertical-align:middle;font-weight:800;font-style:normal; }
+        .arrow span { display:inline-block;vertical-align:middle; }
+    </style>
+{/block}
+
+{block #content}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">{_col_name}</th>
+                <th scope="col">{_col_consents}</th>
+                <th scope="col">{_col_positivity}</th>
+                <th scope="col" class="text-center">{_col_providers}</th>
+                <th scope="col" class="text-center">{_col_cookies}</th>
+                <th scope="col">{_col_last_consent_date}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr n:foreach="$projects as $project">
+                <td style="font-weight:600">
+                    {$project['name']}
+                </td>
+                <td>
+                    {$project['uniqueConsents']['value']}
+                    <div n:class="'arrow', 0 <= $project['uniqueConsents']['percentageDiff'] ? 'arrow-green' : 'arrow-red'">
+                        <i n:if="0 <= $project['uniqueConsents']['percentageDiff']">&uarr;</i>
+                        <i n:if="0 > $project['uniqueConsents']['percentageDiff']">&darr;</i>
+                        <span>
+                            {abs($project['uniqueConsents']['percentageDiff'])}%
+                        </span>
+                    </div>
+                </td>
+                <td>
+                    {$project['uniquePositive']['value']}%
+                    <div n:class="'arrow', 0 <= $project['uniquePositive']['percentageDiff'] ? 'arrow-green' : 'arrow-red'">
+                        <i n:if="0 <= $project['uniquePositive']['percentageDiff']">&uarr;</i>
+                        <i n:if="0 > $project['uniquePositive']['percentageDiff']">&darr;</i>
+                        <span>
+                            {abs($project['uniquePositive']['percentageDiff'])}%
+                        </span>
+                    </div>
+                </td>
+                <td class="text-center">
+                    {$project['providers']['value']}
+                </td>
+                <td class="text-center">
+                    {$project['cookies']['commonValue']} ({$project['cookies']['privateValue']})
+                </td>
+                <td>
+                    {$project['lastConsent']['formattedValue'] ?? '-'}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p class="text-center" style="margin-top: 24px">
+        <a n:href="Admin:Dashboard:" class="btn btn-primary">{_go_to_dashboard}</a>
+    </p>
 {/block}

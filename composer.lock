@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9ae1fcdf1f48bd3dd2cc5b348723d605",
+    "content-hash": "a30fbcb6accbc9aef65ce95272592039",
     "packages": [
         {
             "name": "68publishers/asset",
-            "version": "v2.0",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/68publishers/asset.git",
-                "reference": "c67c5cee960610789226a33e1be0b8a59c2689ea"
+                "reference": "61c686e550c817643976c376be9451fc112c1cd5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/68publishers/asset/zipball/c67c5cee960610789226a33e1be0b8a59c2689ea",
-                "reference": "c67c5cee960610789226a33e1be0b8a59c2689ea",
+                "url": "https://api.github.com/repos/68publishers/asset/zipball/61c686e550c817643976c376be9451fc112c1cd5",
+                "reference": "61c686e550c817643976c376be9451fc112c1cd5",
                 "shasum": ""
             },
             "require": {
@@ -57,9 +57,9 @@
             ],
             "support": {
                 "issues": "https://github.com/68publishers/asset/issues",
-                "source": "https://github.com/68publishers/asset/tree/v2.0"
+                "source": "https://github.com/68publishers/asset/tree/v2.1.0"
             },
-            "time": "2020-10-27T14:12:01+00:00"
+            "time": "2022-07-24T23:22:43+00:00"
         },
         {
             "name": "68publishers/doctrine-bridge",

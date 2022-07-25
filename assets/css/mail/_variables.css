@@ -1,0 +1,45 @@
+:root {
+    /* Colors */
+    --color--link: #4338ca;
+    --color--button-primary: #fff;
+    --color--text: #4b5563;
+    --color--text-light: #9ca3af;
+    --color--heading: #111827;
+    --color--hr: var(--color--text-light);
+    --color--table-head: #111827;
+
+    --background--body: #fff;
+    --background--button-primary: #4f46e5;
+
+    --border-color--table-head: #d1d5db;
+    --border-color--table-row: #e5e7eb;
+
+    /* Fonts */
+    --font-family: Inter var, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+    --font-size--base: 16px;
+    --font-size--sm: 14px;
+    --font-size--h1: 32px;
+    --line-height--base: 1.4;
+    --line-height--heading: 1.4;
+
+    --font-height--medium: 500;
+    --font-weight--heading: 600;
+    --font-weight--h1: 800;
+    --font-height--table-head: 600;
+
+    /* Box */
+    --margin--paragraph: 0 0 15px 0;
+    --margin--hr: 30px 0;
+    --margin--footer: 10px 0 0 0;
+    --margin--heading: 0 0 30px 0;
+    --margin--table: 20px 0;
+
+    --padding--container: 30px 5px;
+    --padding--table-head: 14px 12px;
+    --padding--table-cell: 16px 12px;
+
+    /* Sizes */
+    --width--container: 680px;
+    --width--footer: 100%
+}

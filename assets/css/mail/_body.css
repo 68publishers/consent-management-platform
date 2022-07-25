@@ -1,0 +1,23 @@
+.body {
+    background-color: var(--background--body);
+    color: var(--color--text);
+    width: 100%;
+}
+
+/* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
+.container {
+    display: block;
+    margin: 0 auto !important;
+    /* makes it centered */
+    max-width: var(--width--container);
+    width: 100%;
+}
+
+/* This should also be a block element, so that it will fill 100% of the .container */
+.content {
+    box-sizing: border-box;
+    display: block;
+    margin: 0 auto;
+    max-width: var(--width--container);
+    padding: var(--padding--container);
+}

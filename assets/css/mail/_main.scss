@@ -1,0 +1,53 @@
+.main {
+  background: var(--background--body);
+  width: 100%;
+}
+
+.wrapper {
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.header {
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.header-icon {
+  display: block;
+  text-align: center;
+  line-height: 1;
+}
+
+.header-icon img {
+  margin: 0 auto;
+  height: 64px;
+  width: 64px;
+}
+
+.header-title {
+  display: block;
+  margin-top: 10px;
+}
+
+.footer {
+  box-sizing: border-box;
+  clear: both;
+  margin: var(--margin--footer);
+  padding: 0 20px;
+  text-align: center;
+  width: var(--width--footer);
+}
+
+.footer td,
+.footer p,
+.footer span {
+  color: var(--color--text-light);
+  font-size: var(--font-size--sm);
+  text-align: center;
+}
+
+.footer a {
+  font-size: var(--font-size--sm);
+  text-align: center;
+}

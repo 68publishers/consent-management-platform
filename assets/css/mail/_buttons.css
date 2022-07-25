@@ -1,0 +1,24 @@
+.btn {
+    box-sizing: border-box;
+    background-color: transparent;
+    border-color: transparent;
+    border-width: 1px;
+    border-radius: 6px;
+    box-shadow: 0 0 #0000, 0 0 #0000, 0 0 #0000;
+    display: inline-block;
+    font-size: var(--font-size--base);
+    font-weight: 500;
+    line-height: var(--line-height--base);
+    margin-bottom: 8px;
+    margin-top: 8px;
+    padding: 8px 16px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-primary,
+a.btn-primary {
+    background-color: var(--background--button-primary);
+    border-color: var(--background--button-primary);
+    color: var(--color--button-primary) !important;
+}

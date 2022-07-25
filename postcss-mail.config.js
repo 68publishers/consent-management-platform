@@ -1,6 +1,11 @@
 module.exports = {
-    plugins: [
-        require('tailwindcss')('./tailwind-mail.config.js'),
-        require('autoprefixer')
-    ]
+    plugins: {
+        'postcss-import': {
+            path: './assets/css/mail',
+        },
+        'postcss-custom-properties': {
+            preserve: false,
+        },
+        'autoprefixer': {},
+    },
 };

@@ -52,7 +52,10 @@ const mailConfig = reconfigureEncore(Encore, 'mail')
             config: './postcss-mail.config.js',
         };
     })
-    .addStyleEntry('mail', './assets/css/mail.css')
+    .addStyleEntry('mail', './assets/css/mail/style.css')
+    .copyFiles({
+        from: './assets/images/mail'
+    })
     .getWebpackConfig();
 
 appConfig.name = 'app';
