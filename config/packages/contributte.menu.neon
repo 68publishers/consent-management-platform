@@ -64,6 +64,14 @@ contributte.menu:
 					icon: '''
                     <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
 					'''
+			layout.sidebar.imports:
+				action: Admin:Import:Imports:default
+				include:
+					- '^Admin\:Import\:Imports\:.+$'
+				data:
+					icon: '''
+					<path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+  					'''
 			layout.sidebar.projects:
 				action: Admin:Project:Projects:default
 				include:

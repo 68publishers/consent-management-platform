@@ -1,0 +1,53 @@
+{templateType App\Web\AdminModule\ImportModule\Control\ImportDetail\ImportDetailTemplate}
+
+<div class="bg-white overflow-hidden sm:rounded-lg">
+    <div class="px-4 py-5 sm:p-0">
+        <div class="sm:divide-y sm:divide-gray-200">
+
+            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <div class="text-sm font-medium text-gray-500">{_name}</div>
+                <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{_'//imports.name.' . $importView->name->value()}</div>
+            </div>
+
+            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <div class="text-sm font-medium text-gray-500">{_author}</div>
+                <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{$importView->author->value()}</div>
+            </div>
+
+            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <div class="text-sm font-medium text-gray-500">{_status}</div>
+                <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {switch TRUE}
+                        {case $importView->status->is(App\Domain\Import\ValueObject\Status::RUNNING)}
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">{_status_value.running}</span>
+                        {case $importView->status->is(App\Domain\Import\ValueObject\Status::COMPLETED)}
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">{_status_value.completed}</span>
+                        {case $importView->status->is(App\Domain\Import\ValueObject\Status::FAILED)}
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">{_status_value.failed}</span>
+                    {/switch}
+                </div>
+            </div>
+
+            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <div class="text-sm font-medium text-gray-500">{_duration}</div>
+                <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{$importView->createdAt|date: 'j.n.Y H:i:s'} - {$importView->endedAt ? ($importView->endedAt|date: 'j.n.Y H:i:s') : '?'}</div>
+            </div>
+
+            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <div class="text-sm font-medium text-gray-500">{_totals}</div>
+                <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">{$importView->imported->value()}</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">{$importView->failed->value()}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="px-4 py-5 sm:px-0">
+        <div class="overflow-auto max-h-[400px]">
+            {var $newline = "\n"}
+            <div n:foreach="explode($newline, $importView->output->value()) as $line" n:class="'p-1.5', Nette\Utils\Strings::startsWith($line, '[info]') ? 'bg-green-100 text-green-800' : '', Nette\Utils\Strings::startsWith($line, '[warning]') ? 'bg-yellow-100 text-yellow-800': '', Nette\Utils\Strings::startsWith($line, '[error]') ? 'bg-red-100 text-red-800' : ''">
+                {$line}
+            </div>
+        </div>
+    </div>
+</div>

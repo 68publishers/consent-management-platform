@@ -10,6 +10,7 @@
 @import '_spinner.css';
 @import '_tags.css';
 @import '_x-cloak.css';
+@import '_hidden.css';
 
 @tailwind base;
 @tailwind components;

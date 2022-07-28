@@ -1,0 +1,18 @@
+{extends $originalTemplate}
+
+{varType App\ReadModel\Import\ImportView $item}
+
+{define col-name}
+    {_'//imports.name.' . $item->name->value()}
+{/define}
+
+{define col-status}
+    {switch TRUE}
+        {case $item->status->is(App\Domain\Import\ValueObject\Status::RUNNING)}
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">{_status_value.running}</span>
+        {case $item->status->is(App\Domain\Import\ValueObject\Status::COMPLETED)}
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">{_status_value.completed}</span>
+        {case $item->status->is(App\Domain\Import\ValueObject\Status::FAILED)}
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">{_status_value.failed}</span>
+    {/switch}
+{/define}

@@ -1,0 +1,12 @@
+name: Název
+status: Stav
+author: Autor
+imported: Úspěšně importováno
+failed: Neúspěšně importováno
+created_at: Spuštěno
+ended_at: Skončeno
+
+status_value:
+	running: probíhá
+	completed: hotovo
+	failed: neúspěšný

@@ -1,0 +1,11 @@
+name: Název
+author: Autor
+status: Stav
+
+status_value:
+	running: probíhá
+	completed: hotovo
+	failed: neúspěšný
+
+duration: Doba trvání
+totals: Počty položek

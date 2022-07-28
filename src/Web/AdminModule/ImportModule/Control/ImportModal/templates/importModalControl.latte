@@ -1,0 +1,25 @@
+{extends $layout}
+
+{templateType App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalTemplate}
+
+{block #title}
+    {if NULL !== $importView}
+        {_import_finished}
+    {else}
+        {_new_import}
+    {/if}
+{/block}
+
+{block #footer}
+    {if NULL !== $importView}
+        {include parent}
+    {/if}
+{/block}
+
+{block #body}
+
+{if NULL !== $importView}
+    {control detail}
+{else}
+    {control form}
+{/if}

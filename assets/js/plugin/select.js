@@ -484,7 +484,7 @@ function Select(Alpine) {
                     opt.selected = -1 !== values.indexOf(opt.value);
                 }
 
-                //this.el.dispatchEvent(new Event('change'));
+                this.el.dispatchEvent(new Event('change'));
                 $(this.el).trigger('change');
             },
 

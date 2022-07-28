@@ -9,7 +9,7 @@ function Toggle(Alpine) {
             this.checked = !this.checked;
             this.inputEl.checked = this.checked;
 
-            //this.inputEl.dispatchEvent(new Event('change'));
+            this.inputEl.dispatchEvent(new Event('change'));
             $(this.inputEl).trigger('change');
         },
 

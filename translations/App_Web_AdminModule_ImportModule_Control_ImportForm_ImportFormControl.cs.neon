@@ -1,0 +1,34 @@
+error:
+	processing_fail: Při zpracování formuláře došlo k chybě.
+
+type:
+	field: Type
+	required: Zvolte prosím typ.
+
+format:
+	field: Formát
+	required: Zvolte prosím formát.
+	item:
+		csv: CSV
+		json: JSON
+
+separator:
+	field: Separátor
+	required: Zvolte prosím separátor.
+	item:
+		comma: 'Čárka (,)'
+		semicolon: 'Středník (;)'
+		tabulator: 'Tabulátor (\t)'
+		space: 'Mezera ( )'
+		pipe: 'Svislá čára (|)'
+
+file:
+	field: Soubor
+	required: Zvolte prosím soubor.
+	rule:
+		mime_type:
+			csv: Zvolený soubor není soubor typu csv.
+			json: Zvolený soubor není soubor typu json.
+
+import:
+	field: Importovat
