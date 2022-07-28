@@ -1,6 +1,7 @@
 includes:
 	- console.neon
 	- cookie.neon
+	- data_reader.neon
 	- event_metadata_extender.neon
 	- global_settings.neon
 	- localization.neon
