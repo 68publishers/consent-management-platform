@@ -27,6 +27,9 @@ services:
 		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindProjectsAccessibilityByCodeQueryHandler
 	-
 		autowired: no
+		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindProjectsByCodesQueryHandler
+	-
+		autowired: no
 		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindProjectSelectOptionsQueryHandler
 	-
 		autowired: no

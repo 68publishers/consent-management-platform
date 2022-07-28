@@ -1,0 +1,25 @@
+services:
+	import.runner:
+		autowired: App\Application\Import\RunnerInterface
+		type: App\Application\Import\RunnerInterface
+		factory: @import.runner.default
+
+	import.runner.default:
+		autowired: no
+		factory: App\Application\Import\Runner
+
+	import.importer:
+		autowired: App\Application\Import\ImporterInterface
+		type: App\Application\Import\ImporterInterface
+		factory: @import.importer.registry
+
+	import.importer.registry:
+		autowired: no
+		factory: App\Application\Import\ImporterRegistry
+		arguments:
+			importers:
+				- @import.importer.cookie_provider
+
+	import.importer.cookie_provider:
+		autowired: no
+		factory: App\Application\CookieProvider\Import\CookieProviderImporter

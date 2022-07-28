@@ -5,6 +5,7 @@ includes:
 	- cookie/@default.neon
 	- cookie_provider/@default.neon
 	- global_settings/@default.neon
+	- import/@default.neon
 	- password_request/@default.neon
 	- project/@default.neon
 	- shared/@default.neon

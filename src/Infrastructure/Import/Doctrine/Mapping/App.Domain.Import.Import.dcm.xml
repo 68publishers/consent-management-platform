@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                                      https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Domain\Import\Import" table="import">
+        <indexes>
+            <index name="idx_import_created_at" columns="created_at" />
+        </indexes>
+
+        <id name="id" column="id" type="App\Domain\Import\ValueObject\ImportId" unique="true" />
+
+        <field name="createdAt" column="created_at" type="datetime_immutable" />
+
+        <field name="endedAt" column="deleted_at" type="datetime_immutable" nullable="true" />
+
+        <field name="name" column="name" type="App\Domain\Import\ValueObject\Name" />
+
+        <field name="status" column="status" type="App\Domain\Import\ValueObject\Status" />
+
+        <field name="author" column="author" type="App\Domain\Import\ValueObject\Author" />
+
+        <field name="imported" column="imported" type="App\Domain\Import\ValueObject\Total" />
+
+        <field name="failed" column="failed" type="App\Domain\Import\ValueObject\Total" />
+
+        <field name="output" column="output" type="App\Domain\Import\ValueObject\Output" />
+
+        <field name="version" column="version" type="integer" />
+    </entity>
+
+</doctrine-mapping>

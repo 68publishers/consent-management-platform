@@ -1,0 +1,10 @@
+services:
+	-
+		autowired: no
+		factory: App\Domain\Import\CommandHandler\StartImportCommandHandler
+	-
+		autowired: no
+		factory: App\Domain\Import\CommandHandler\FailImportCommandHandler
+	-
+		autowired: no
+		factory: App\Domain\Import\CommandHandler\CompleteImportCommandHandler
