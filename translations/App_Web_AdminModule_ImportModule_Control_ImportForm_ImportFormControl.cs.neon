@@ -16,6 +16,7 @@ separator:
 	field: Separátor
 	required: Zvolte prosím separátor.
 	item:
+		auto: 'Automaticky detekovat'
 		comma: 'Čárka (,)'
 		semicolon: 'Středník (;)'
 		tabulator: 'Tabulátor (\t)'

@@ -94,6 +94,8 @@ final class Runner implements RunnerInterface
 				}
 
 				foreach ($importerResult->warnings() as $warning) {
+					$state->warningsTotal++;
+
 					$logger->warning(sprintf(
 						'[:%s] %s',
 						$row->index(),
@@ -120,9 +122,9 @@ final class Runner implements RunnerInterface
 		$state->resolveStatus();
 
 		if ($state::STATUS_COMPLETED === $state->status) {
-			$this->commandBus->dispatch(CompleteImportCommand::create($state->id, $state->importedTotal(), $state->failedTotal(), $state->output));
+			$this->commandBus->dispatch(CompleteImportCommand::create($state->id, $state->importedTotal(), $state->failedTotal(), $state->warningsTotal, $state->output));
 		} else {
-			$this->commandBus->dispatch(FailImportCommand::create($state->id, $state->importedTotal(), $state->failedTotal(), $state->output));
+			$this->commandBus->dispatch(FailImportCommand::create($state->id, $state->importedTotal(), $state->failedTotal(), $state->warningsTotal, $state->output));
 		}
 
 		return $state;

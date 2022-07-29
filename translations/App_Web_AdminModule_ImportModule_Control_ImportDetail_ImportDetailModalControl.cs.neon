@@ -1,0 +1,5 @@
+title: '''
+<span class="mr-2">Detail importu</span>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800 select-all">%id%</span>
+'''
+close_button_text: Zavřít

@@ -17,27 +17,32 @@ final class ImportFailed extends AbstractDomainEvent
 
 	private Total $failed;
 
+	private Total $warned;
+
 	private Output $output;
 
 	/**
 	 * @param \App\Domain\Import\ValueObject\ImportId $id
 	 * @param \App\Domain\Import\ValueObject\Total    $imported
 	 * @param \App\Domain\Import\ValueObject\Total    $failed
+	 * @param \App\Domain\Import\ValueObject\Total    $warned
 	 * @param \App\Domain\Import\ValueObject\Output   $output
 	 *
 	 * @return static
 	 */
-	public static function create(ImportId $id, Total $imported, Total $failed, Output $output): self
+	public static function create(ImportId $id, Total $imported, Total $failed, Total $warned, Output $output): self
 	{
 		$event = self::occur($id->toString(), [
 			'imported' => $imported->value(),
 			'failed' => $failed->value(),
+			'warned' => $warned->value(),
 			'output' => $output->value(),
 		]);
 
 		$event->id = $id;
 		$event->imported = $imported;
 		$event->failed = $failed;
+		$event->warned = $warned;
 		$event->output = $output;
 
 		return $event;
@@ -68,6 +73,14 @@ final class ImportFailed extends AbstractDomainEvent
 	}
 
 	/**
+	 * @return \App\Domain\Import\ValueObject\Total
+	 */
+	public function warned(): Total
+	{
+		return $this->warned;
+	}
+
+	/**
 	 * @return \App\Domain\Import\ValueObject\Output
 	 */
 	public function output(): Output
@@ -83,6 +96,7 @@ final class ImportFailed extends AbstractDomainEvent
 		$this->id = ImportId::fromUuid($this->aggregateId()->id());
 		$this->imported = Total::fromValue($parameters['imported']);
 		$this->failed = Total::fromValue($parameters['failed']);
+		$this->warned = Total::fromValue($parameters['warned']);
 		$this->output = Output::fromValue($parameters['output']);
 	}
 }

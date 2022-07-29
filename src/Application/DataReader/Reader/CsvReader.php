@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\DataReader\Reader;
 
+use League\Csv\Info;
 use League\Csv\Reader;
 use League\Csv\Statement;
 use App\Application\DataReader\Row;
@@ -92,6 +93,11 @@ final class CsvReader extends AbstractReader
 
 		if (is_string($options[self::OPTION_DELIMITER] ?? NULL)) {
 			$reader->setDelimiter($options[self::OPTION_DELIMITER]);
+		} else {
+			$stats = Info::getDelimiterStats($reader, [',', ';', "\t", '|']);
+			arsort($stats);
+
+			$reader->setDelimiter(array_key_first($stats));
 		}
 
 		if (is_string($options[self::OPTION_ENCLOSURE] ?? NULL)) {

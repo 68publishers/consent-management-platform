@@ -3,6 +3,7 @@
 @import 'tippy.js/dist/tippy.css';
 @import 'tippy.js/dist/svg-arrow.css';
 @import 'codemirror/lib/codemirror.css';
+@import 'pace-js/themes/purple/pace-theme-barber-shop.css';
 @import '_codemirror.css';
 @import '_datagrid.css';
 @import '_flatpickr.css';
@@ -11,6 +12,7 @@
 @import '_tags.css';
 @import '_x-cloak.css';
 @import '_hidden.css';
+@import '_pace.css';
 
 @tailwind base;
 @tailwind components;

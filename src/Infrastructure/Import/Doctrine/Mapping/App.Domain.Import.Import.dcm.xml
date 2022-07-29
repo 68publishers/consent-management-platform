@@ -25,6 +25,8 @@
 
         <field name="failed" column="failed" type="App\Domain\Import\ValueObject\Total" />
 
+        <field name="warned" column="warned" type="App\Domain\Import\ValueObject\Total" />
+
         <field name="output" column="output" type="App\Domain\Import\ValueObject\Output" />
 
         <field name="version" column="version" type="integer" />

@@ -62,6 +62,7 @@ services:
 
 	# Web\AdminModule\ImportModule
 	- App\Web\AdminModule\ImportModule\Control\ImportDetail\ImportDetailControlFactoryInterface
+	- App\Web\AdminModule\ImportModule\Control\ImportDetail\ImportDetailModalControlFactoryInterface
 	- App\Web\AdminModule\ImportModule\Control\ImportForm\ImportFormControlFactoryInterface
 	- App\Web\AdminModule\ImportModule\Control\ImportList\ImportListControlFactoryInterface
 	- App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControlFactoryInterface

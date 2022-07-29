@@ -1,0 +1,11 @@
+{templateType App\Web\AdminModule\ImportModule\Control\ImportDetail\ImportDetailModalTemplate}
+
+{extends $layout}
+
+{block #title}
+    <span class="flex items-center break-words flex-wrap">{_title, [id => $importView->id->toString()]|noescape}</span>
+{/block}
+
+{block #body}
+
+{control detail}

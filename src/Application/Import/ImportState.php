@@ -16,6 +16,8 @@ final class ImportState
 
 	public array $failedIndexes = [];
 
+	public int $warningsTotal = 0;
+
 	public string $output = '';
 
 	public string $status = self::STATUS_RUNNING;

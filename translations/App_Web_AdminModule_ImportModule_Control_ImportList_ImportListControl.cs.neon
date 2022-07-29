@@ -1,8 +1,7 @@
 name: Název
 status: Stav
 author: Autor
-imported: Úspěšně importováno
-failed: Neúspěšně importováno
+summary: Přehled
 created_at: Spuštěno
 ended_at: Skončeno
 

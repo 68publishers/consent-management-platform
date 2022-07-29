@@ -32,6 +32,8 @@ final class ImportView extends AbstractView
 
 	public Total $failed;
 
+	public Total $warned;
+
 	public Output $output;
 
 	/**
@@ -48,6 +50,7 @@ final class ImportView extends AbstractView
 			'author' => $this->author->value(),
 			'imported' => $this->imported->value(),
 			'failed' => $this->failed->value(),
+			'warned' => $this->warned->value(),
 			'output' => $this->output->value(),
 		];
 	}

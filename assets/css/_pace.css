@@ -1,0 +1,13 @@
+.pace,
+.pace .pace-progress,
+.pace .pace-activity {
+    @apply h-[3px];
+}
+
+.pace {
+    @apply bg-transparent;
+}
+
+.pace .pace-progress {
+    @apply bg-indigo-700;
+}

@@ -12,16 +12,18 @@ final class CompleteImportCommand extends AbstractCommand
 	 * @param string $id
 	 * @param int    $imported
 	 * @param int    $failed
+	 * @param int    $warned
 	 * @param string $output
 	 *
 	 * @return static
 	 */
-	public static function create(string $id, int $imported, int $failed, string $output): self
+	public static function create(string $id, int $imported, int $failed, int $warned, string $output): self
 	{
 		return self::fromParameters([
 			'id' => $id,
 			'imported' => $imported,
 			'failed' => $failed,
+			'warned' => $warned,
 			'output' => $output,
 		]);
 	}
@@ -48,6 +50,14 @@ final class CompleteImportCommand extends AbstractCommand
 	public function failed(): int
 	{
 		return $this->getParam('failed');
+	}
+
+	/**
+	 * @return int
+	 */
+	public function warned(): int
+	{
+		return $this->getParam('warned');
 	}
 
 	/**

@@ -42,6 +42,8 @@ final class Import implements AggregateRootInterface
 
 	private Total $failed;
 
+	private Total $warned;
+
 	private Output $output;
 
 	/**
@@ -87,6 +89,7 @@ final class Import implements AggregateRootInterface
 			$id,
 			Total::fromValue($command->imported()),
 			Total::fromValue($command->failed()),
+			Total::fromValue($command->warned()),
 			Output::fromValue($command->output())
 		));
 	}
@@ -108,6 +111,7 @@ final class Import implements AggregateRootInterface
 			$id,
 			Total::fromValue($command->imported()),
 			Total::fromValue($command->failed()),
+			Total::fromValue($command->warned()),
 			Output::fromValue($command->output())
 		));
 	}
@@ -126,6 +130,7 @@ final class Import implements AggregateRootInterface
 		$this->author = $event->author();
 		$this->imported = Total::fromValue(0);
 		$this->failed = Total::fromValue(0);
+		$this->warned = Total::fromValue(0);
 		$this->output = Output::fromValue('');
 	}
 
@@ -140,6 +145,7 @@ final class Import implements AggregateRootInterface
 		$this->status = Status::failed();
 		$this->imported = $event->imported();
 		$this->failed = $event->failed();
+		$this->warned = $event->warned();
 		$this->output = $event->output();
 	}
 
@@ -154,6 +160,7 @@ final class Import implements AggregateRootInterface
 		$this->status = Status::completed();
 		$this->imported = $event->imported();
 		$this->failed = $event->failed();
+		$this->warned = $event->warned();
 		$this->output = $event->output();
 	}
 }

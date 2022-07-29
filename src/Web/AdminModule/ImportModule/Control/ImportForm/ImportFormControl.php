@@ -9,6 +9,7 @@ use App\Web\Ui\Control;
 use Nette\Application\UI\Form;
 use App\Web\Utils\TranslatorUtils;
 use App\Web\Ui\Form\FormFactoryInterface;
+use Nepada\FormRenderer\TemplateRenderer;
 use App\Application\Import\RunnerInterface;
 use App\Web\Ui\Form\FormFactoryOptionsTrait;
 use App\Application\DataReader\Reader\CsvReader;
@@ -31,6 +32,7 @@ final class ImportFormControl extends Control
 	];
 
 	private const CSV_SEPARATORS = [
+		'auto' => NULL,
 		'comma' => ',',
 		'semicolon' => ';',
 		'tabulator' => "\t",
@@ -63,8 +65,11 @@ final class ImportFormControl extends Control
 	{
 		$form = $this->formFactory->create($this->getFormFactoryOptions());
 		$translator = $this->getPrefixedTranslator();
+		$renderer = $form->getRenderer();
+		assert($renderer instanceof TemplateRenderer);
 
-		$form->setTranslator($translator);
+		$form->setTranslator($this->getPrefixedTranslator());
+		$renderer->importTemplate(__DIR__ . '/templates/form.imports.latte');
 
 		$form->addSelect('type', 'type.field')
 			->setPrompt('-------')
@@ -92,7 +97,7 @@ final class ImportFormControl extends Control
 				TranslatorUtils::translateArray($translator, 'separator.item.', array_keys(self::CSV_SEPARATORS))
 			))
 			->setTranslator(NULL)
-			->setDefaultValue('comma')
+			->setDefaultValue('auto')
 			->setOption('id', $this->getUniqueId() . '-separator-container')
 			->addConditionOn($form['format'], $form::EQUAL, self::FORMAT_CSV)
 				->setRequired('separator.required');

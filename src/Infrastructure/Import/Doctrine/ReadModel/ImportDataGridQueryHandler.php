@@ -51,6 +51,7 @@ final class ImportDataGridQueryHandler implements QueryHandlerInterface
 				'author' => 'i.author',
 				'imported' => 'i.imported',
 				'failed' => 'i.failed',
+				'warned' => 'i.warned',
 			]
 		);
 	}

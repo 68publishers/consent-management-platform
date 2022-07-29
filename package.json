@@ -22,6 +22,7 @@
     "jquery": "^3.6.0",
     "live-form-validation": "^1.10.0",
     "nette.ajax.js": "^2.3.0",
+    "pace-js": "^1.2.4",
     "path": "^0.12.7",
     "postcss": "^8.4.12",
     "postcss-custom-properties": "^12.1.8",

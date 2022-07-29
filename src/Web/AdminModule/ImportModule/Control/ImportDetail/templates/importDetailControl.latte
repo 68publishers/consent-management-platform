@@ -38,12 +38,13 @@
                 <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                     <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">{$importView->imported->value()}</span>
                     <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">{$importView->failed->value()}</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">{$importView->warned->value()}</span>
                 </div>
             </div>
         </div>
     </div>
     <div class="px-4 py-5 sm:px-0">
-        <div class="overflow-auto max-h-[400px]">
+        <div class="overflow-auto max-h-[400px] text-sm">
             {var $newline = "\n"}
             <div n:foreach="explode($newline, $importView->output->value()) as $line" n:class="'p-1.5', Nette\Utils\Strings::startsWith($line, '[info]') ? 'bg-green-100 text-green-800' : '', Nette\Utils\Strings::startsWith($line, '[warning]') ? 'bg-yellow-100 text-yellow-800': '', Nette\Utils\Strings::startsWith($line, '[error]') ? 'bg-red-100 text-red-800' : ''">
                 {$line}
