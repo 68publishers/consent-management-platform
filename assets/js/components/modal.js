@@ -12,9 +12,15 @@ module.exports = () => ({
             return;
         }
 
-        this.$nextTick((() => {
+        this.$forceNextTick(() => {
             BodyScrollLock.lock(true);
-        }));
+
+            const autofocusedEl = this.$el.querySelector('[data-modal-autofocus]');
+
+            if (autofocusedEl) {
+                this.$focus.focus(autofocusedEl);
+            }
+        });
 
         this.opened = true;
         Bridge.dispatchOpened(this);
@@ -41,7 +47,10 @@ module.exports = () => ({
     modal: {
         ['x-init']() {
             this.name = this.$el.getAttribute('data-modal-name');
-            Bridge.dispatchInitialized(this);
+
+            this.$nextTick(() => {
+                Bridge.dispatchInitialized(this);
+            });
         },
         ['x-on:keydown.escape.window']() {
             this.close();

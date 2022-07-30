@@ -38,10 +38,10 @@ cookie_provider_type:
 alert:
 	missing_default_locale:
 		text: Výchozí jazyk pro aplikaci není nastaven.
-		link_text: Nastavte ho prosím v nastavení aplikace.
+		link_text: Nastavte jej prosím v nastavení aplikace.
 	missing_default_project_locale:
 		text: Výchozí jazyk pro tento projekt není nastaven.
-		link_text: Nastavte ho prosím v editaci projektu.
+		link_text: Nastavte jej prosím v editaci projektu.
 
 message:
 	locale_change_failed: Jazyk se nepovedlo změnit.

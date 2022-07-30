@@ -1,20 +1,36 @@
 'use strict';
 
 (function () {
+    const findSpinner = el => {
+        if ('self' === el.data('spinner-for')) {
+            return el;
+        }
+
+        const id = el.attr('id');
+
+        if (!id) {
+            return null;
+        }
+
+        const spinner = $('[data-spinner-for~="' + id + '"]');
+
+        return spinner.length ? spinner : null;
+    };
+
+    const show = spinner => {
+        spinner && spinner.addClass('spinner');
+    };
+
+    const hide = spinner => {
+        spinner && spinner.removeClass('spinner');
+    };
+
     $.nette.ext('plugin-spinner', {
         start: function (jqXHR, settings) {
-            const el = this.findSpinnerElement(settings);
-
-            if (null !== el) {
-                el.addClass('spinner');
-            }
+            show(this.findSpinnerElement(settings));
         },
         complete: function (jqXHR, status, settings) {
-            const el = this.findSpinnerElement(settings);
-
-            if (null !== el) {
-                el.removeClass('spinner');
-            }
+            hide(this.findSpinnerElement(settings));
         }
     }, {
         findSpinnerElement: function (settings) {
@@ -22,33 +38,25 @@
                 return null;
             }
 
-            let spinner;
+            let spinner = null;
 
             if (settings.nette.ui) {
-                const ui = $(settings.nette.ui);
-
-                if ('self' === ui.data('spinner-for')) {
-                    return $(settings.nette.ui);
-                }
-
-                if (ui.attr('id')) {
-                    spinner = $('[data-spinner-for="' + ui.attr('id') + '"]');
-
-                    if (spinner.length) {
-                        return spinner;
-                    }
-                }
+                spinner = findSpinner($(settings.nette.ui));
             }
 
-            if (settings.nette.form && settings.nette.form.attr('id')) {
-                spinner = $('[data-spinner-for="' + settings.nette.form.attr('id') + '"]');
-
-                if (spinner.length) {
-                    return spinner;
-                }
+            if (!spinner && settings.nette.form) {
+                spinner = findSpinner(settings.nette.form);
             }
 
-            return null;
+            return spinner;
         }
+    });
+
+    $(document).on('submit', 'form:not(.ajax)', function () {
+        show(findSpinner($(this)));
+    });
+
+    $(document).on('click', 'a:not(.ajax)', function () {
+        show(findSpinner($(this)));
     });
 })();

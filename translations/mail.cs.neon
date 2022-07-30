@@ -4,12 +4,12 @@ password_change_requested:
 	content: '''
 	<p>Zažádali jste o změnu hesla. Pokud jste tak opravdu učinili vy, klikněte pro nastavení nového:</p>
 	<p class="text-center">
-		<a href="%resetLink%" class="btn btn-primary">Nastavit Nové Heslo</a>
+		<a href="%resetLink%" class="btn btn-primary">Nastavit nové heslo</a>
 	</p>
 	<p>Pokud jste nechtěli obnovit heslo, můžete tento e-mail jednoduše ignorovat, vaše heslo se nezmění.</p>
 	<p>Požadavek pro změnu hesla je platný do <strong>%expireAt%</strong></p>
 	<hr>
-	<p class="text-light text-sm">Tlačíko “Nastavit Nové Heslo” nefugnuje?</p>
+	<p class="text-light text-sm">Tlačíko “Nastavit nové heslo” nefugnuje?</p>
 	<p class="text-light text-sm">Jednoduše zkopírujte následujcí odkaz do webového prohlížeče:<br><strong>%resetLink%</strong></p>
 	'''
 

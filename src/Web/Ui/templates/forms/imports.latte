@@ -1,5 +1,5 @@
 {define #form-body}
-    <div class="space-y-6 py-8">
+    <div class="space-y-6 py-6">
         {foreach $form->getGroups() as $group}
             {include #group, group => $group, groupsIterator => $iterator}
         {/foreach}
@@ -49,7 +49,7 @@
 {/define}
 
 {define #pair-type-default}
-    <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-b sm:border-gray-200 sm:pb-5 px-4 sm:px-6" n:attr="id => $control->getOption('id')">
+    <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-b sm:border-gray-200 sm:pb-6 px-4 sm:px-6" n:attr="id => $control->getOption('id')">
         {include #label, control => $control}
 
         <div class="mt-1 sm:mt-0 sm:col-span-2 h-full">
@@ -64,10 +64,10 @@
     <div class="flex justify-end px-4 sm:px-6">
         {block #control-type-button}
             {if !$control->getOption('rendered')}
-                <input n:name="$control" n:class="
+                <button data-spinner-for="{$form->getElementPrototype()->id}" n:name="$control" n:class="
                     $control->getControlPrototype()->class,
-                    'ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer'
-                ">
+                    'spinner-white ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer'
+                ">{$control->translate($control->getCaption())}</button>
                 {include #control-help, control => $control}
             {/if}
             {if !$controlsIterator->isLast() && $controlsIterator->getNextValue()->getOption('type') === 'button'}
@@ -103,11 +103,11 @@
 {/define}
 
 {define #control-errors}
-    <div n:foreach="$control->getErrors() as $error" class="text-red-500 text-xs italic pt-2">{$error}</div>
+    <div n:foreach="$control->getErrors() as $error" class="text-red-500 text-xs pt-2">{$error}</div>
 {/define}
 
 {define #control-help}
-    <small n:if="$control->getOption('description') !== null" class="block text-gray-600 text-xs italic py-2 max-w-lg">{$control->getOption('description')|safeTranslate}</small>
+    <small n:if="$control->getOption('description') !== null" class="block text-gray-600 text-xs py-2 max-w-lg">{$control->getOption('description')|safeTranslate}</small>
 {/define}
 
 {define #input-type-default}
@@ -133,7 +133,7 @@
 
     <textarea n:name="$control" n:class="
         $control->getControlPrototype()->class,
-        'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none'
+        'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none'
     " x-data n:attr="'x-autosize' => !$codemirror, 'x-codemirror' => $codemirror"></textarea>
 {/define}
 
@@ -143,7 +143,7 @@
 
     <select n:name="$control" n:class="
         $control->getControlPrototype()->class,
-        'show-hidden-error mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none'
+        'show-hidden-error block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none'
     " x-data x-cloak n:attr="'x-select' => !$searchbar && !$tags, 'x-select.tags' => !$searchbar && $tags, 'x-select.searchbar' => $searchbar && !$tags, 'x-select.searchbar.tags' => $searchbar && $tags" />
 {/define}
 

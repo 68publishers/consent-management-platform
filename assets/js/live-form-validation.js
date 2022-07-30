@@ -10,7 +10,7 @@ import 'script-loader!live-form-validation';
         showMessageClassOnParent: false,
         controlErrorClass: 'border-red-500 rounded',
         showValid: false,
-        messageErrorClass: 'block text-red-500 text-xs italic pt-2',
+        messageErrorClass: 'block text-red-500 text-xs pt-2',
         messageTag: 'div',
         messageErrorPrefix: '',
         messageParentClass: 'lfv-message-parent'

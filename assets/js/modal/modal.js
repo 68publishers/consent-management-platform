@@ -14,10 +14,7 @@ const Bridge = require('./modal-bridge');
             }
 
             opened[modal.name].modal = modal;
-
-            setTimeout(function () {
-                modal.open();
-            }, 50);
+            modal.open();
         });
 
         Bridge.addListener('opened', function (modal) {

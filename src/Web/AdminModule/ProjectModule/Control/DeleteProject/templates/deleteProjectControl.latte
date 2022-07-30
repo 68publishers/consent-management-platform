@@ -10,7 +10,8 @@
 
             <div class="mt-4 sm:mt-0 sm:col-span-2 h-full">
                 <div class="h-full flex items-center justify-end">
-                    {input delete, class => 'inline-flex w-full sm:w-auto items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 text-sm cursor-pointer'}
+                    {do $form['delete']->renderAsButton()}
+                    {input delete, data-spinner-for => 'self', class => 'spinner-white inline-flex w-full sm:w-auto items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 text-sm cursor-pointer'}
                 </div>
             </div>
         </div>

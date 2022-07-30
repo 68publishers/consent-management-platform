@@ -19,4 +19,3 @@
         <textarea x-data x-codemirror.readonly.wrap="javascript" n:syntax="double"><script async id="cmp-cookies-table-script">!function(e,t,n=!0){var a=new XMLHttpRequest;a.onreadystatechange=(()=>{if(4===a.readyState&&0!==a.status){var e=a.responseText;200<=a.status&&300>a.status?document.getElementById("cmp-cookies-table-script").insertAdjacentHTML("beforebegin",e):console.warn(e)}}),a.onerror=(()=>{console.warn(a.statusText||"Can't load cookies table.")}),!0===n&&(n=document.documentElement.lang),a.open("get",e.replace(new RegExp("/$"),"")+"/api/v1/cookies/"+t+"/template"+(!1!==n?"?locale="+n:""),!0),a.send()}({{$appHost}}, {{$projectView->code->value()}});</script></textarea>
     </div>
 </div>
-
