@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Cookie;
 
+use App\ReadModel\CookieProvider\CookieProviderView;
 use App\Domain\Cookie\CheckCookieProviderExistsInterface;
 use App\Domain\CookieProvider\ValueObject\CookieProviderId;
 use App\ReadModel\CookieProvider\GetCookieProviderByIdQuery;
@@ -27,7 +28,9 @@ final class CheckCookieProviderExists implements CheckCookieProviderExistsInterf
 	 */
 	public function __invoke(CookieProviderId $cookieProviderId): void
 	{
-		if (NULL === $this->queryBus->dispatch(GetCookieProviderByIdQuery::create($cookieProviderId->toString()))) {
+		$cookieProvider = $this->queryBus->dispatch(GetCookieProviderByIdQuery::create($cookieProviderId->toString()));
+
+		if (!$cookieProvider instanceof CookieProviderView || NULL !== $cookieProvider->deletedAt) {
 			throw CookieProviderNotFoundException::withId($cookieProviderId);
 		}
 	}

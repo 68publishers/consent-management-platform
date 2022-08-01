@@ -8,7 +8,7 @@ use App\Domain\Project\Project;
 use Doctrine\ORM\AbstractQuery;
 use App\Domain\User\UserHasProject;
 use Doctrine\ORM\EntityManagerInterface;
-use App\ReadModel\Project\ProjectAccessibilityView;
+use App\ReadModel\Project\ProjectPermissionView;
 use App\ReadModel\Project\FindProjectsAccessibilityByCodeQuery;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewFactoryInterface;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\QueryHandlerInterface;
@@ -33,7 +33,7 @@ final class FindProjectsAccessibilityByCodeQueryHandler implements QueryHandlerI
 	/**
 	 * @param \App\ReadModel\Project\FindProjectsAccessibilityByCodeQuery $query
 	 *
-	 * @return \App\ReadModel\Project\ProjectAccessibilityView[]
+	 * @return \App\ReadModel\Project\ProjectPermissionView[]
 	 */
 	public function __invoke(FindProjectsAccessibilityByCodeQuery $query): array
 	{
@@ -47,7 +47,7 @@ final class FindProjectsAccessibilityByCodeQueryHandler implements QueryHandlerI
 		$data = $this->em->createQueryBuilder()
 			->select('p.id AS projectId, p.code AS projectCode')
 			->addSelect(sprintf(
-				'CASE WHEN (%s) = 1 THEN true ELSE false END AS accessible',
+				'CASE WHEN (%s) = 1 THEN true ELSE false END AS permission',
 				$accessibilitySubQuery
 			))
 			->from(Project::class, 'p')
@@ -60,6 +60,6 @@ final class FindProjectsAccessibilityByCodeQueryHandler implements QueryHandlerI
 			->getQuery()
 			->getResult(AbstractQuery::HYDRATE_ARRAY);
 
-		return array_map(fn (array $row): ProjectAccessibilityView => $this->viewFactory->create(ProjectAccessibilityView::class, DoctrineViewData::create($row)), $data);
+		return array_map(fn (array $row): ProjectPermissionView => $this->viewFactory->create(ProjectPermissionView::class, DoctrineViewData::create($row)), $data);
 	}
 }

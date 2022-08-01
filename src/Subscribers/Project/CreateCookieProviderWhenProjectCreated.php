@@ -58,6 +58,7 @@ final class CreateCookieProviderWhenProjectCreated implements EventHandlerInterf
 			'https://www.example.com',
 			[],
 			TRUE,
+			TRUE,
 			$event->cookieProviderId()->toString()
 		));
 	}

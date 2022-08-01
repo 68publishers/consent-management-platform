@@ -19,6 +19,7 @@ use App\Domain\Cookie\ValueObject\ProcessingTime;
 use App\Domain\Cookie\Command\CreateCookieCommand;
 use App\Domain\Cookie\Command\UpdateCookieCommand;
 use App\Domain\Cookie\Event\CookieCategoryChanged;
+use App\Domain\Cookie\Event\CookieActiveStateChanged;
 use App\Domain\Cookie\Event\CookieProcessingTimeChanged;
 use App\Domain\CookieProvider\ValueObject\CookieProviderId;
 use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AggregateId;
@@ -41,16 +42,19 @@ final class Cookie implements AggregateRootInterface
 
 	private ProcessingTime $processingTime;
 
+	private bool $active;
+
 	private Collection $translations;
 
 	/**
 	 * @param \App\Domain\Cookie\Command\CreateCookieCommand        $command
 	 * @param \App\Domain\Cookie\CheckCategoryExistsInterface       $checkCategoryExists
 	 * @param \App\Domain\Cookie\CheckCookieProviderExistsInterface $checkCookieProviderExists
+	 * @param \App\Domain\Cookie\CheckNameUniquenessInterface       $checkNameUniqueness
 	 *
 	 * @return static
 	 */
-	public static function create(CreateCookieCommand $command, CheckCategoryExistsInterface $checkCategoryExists, CheckCookieProviderExistsInterface $checkCookieProviderExists): self
+	public static function create(CreateCookieCommand $command, CheckCategoryExistsInterface $checkCategoryExists, CheckCookieProviderExistsInterface $checkCookieProviderExists, CheckNameUniquenessInterface $checkNameUniqueness): self
 	{
 		$cookie = new self();
 
@@ -59,12 +63,14 @@ final class Cookie implements AggregateRootInterface
 		$cookieProviderId = CookieProviderId::fromString($command->cookieProviderId());
 		$name = Name::fromValue($command->name());
 		$processingTime = ProcessingTime::withValidation($command->processingTime());
+		$active = $command->active();
 		$purposes = array_map(static fn (string $purpose): Purpose => Purpose::fromValue($purpose), $command->purposes());
 
 		$checkCategoryExists($categoryId);
 		$checkCookieProviderExists($cookieProviderId);
+		$checkNameUniqueness($id, $name, $cookieProviderId);
 
-		$cookie->recordThat(CookieCreated::create($id, $categoryId, $cookieProviderId, $name, $processingTime, $purposes));
+		$cookie->recordThat(CookieCreated::create($id, $categoryId, $cookieProviderId, $name, $processingTime, $active, $purposes));
 
 		return $cookie;
 	}
@@ -72,21 +78,26 @@ final class Cookie implements AggregateRootInterface
 	/**
 	 * @param \App\Domain\Cookie\Command\UpdateCookieCommand  $command
 	 * @param \App\Domain\Cookie\CheckCategoryExistsInterface $checkCategoryExists
+	 * @param \App\Domain\Cookie\CheckNameUniquenessInterface $checkNameUniqueness
 	 *
 	 * @return void
 	 */
-	public function update(UpdateCookieCommand $command, CheckCategoryExistsInterface $checkCategoryExists): void
+	public function update(UpdateCookieCommand $command, CheckCategoryExistsInterface $checkCategoryExists, CheckNameUniquenessInterface $checkNameUniqueness): void
 	{
 		if (NULL !== $command->categoryId()) {
 			$this->changeCategoryId(CategoryId::fromString($command->categoryId()), $checkCategoryExists);
 		}
 
 		if (NULL !== $command->name()) {
-			$this->changeName(Name::fromValue($command->name()));
+			$this->changeName(Name::fromValue($command->name()), $checkNameUniqueness);
 		}
 
 		if (NULL !== $command->processingTime()) {
 			$this->changeProcessingTime(ProcessingTime::withValidation($command->processingTime()));
+		}
+
+		if (NULL !== $command->active()) {
+			$this->changeActiveState($command->active());
 		}
 
 		if (NULL !== $command->purposes()) {
@@ -119,13 +130,15 @@ final class Cookie implements AggregateRootInterface
 	}
 
 	/**
-	 * @param \App\Domain\Cookie\ValueObject\Name $name
+	 * @param \App\Domain\Cookie\ValueObject\Name             $name
+	 * @param \App\Domain\Cookie\CheckNameUniquenessInterface $checkNameUniqueness
 	 *
 	 * @return void
 	 */
-	public function changeName(Name $name): void
+	public function changeName(Name $name, CheckNameUniquenessInterface $checkNameUniqueness): void
 	{
 		if (!$this->name->equals($name)) {
+			$checkNameUniqueness($this->id, $name, $this->cookieProviderId);
 			$this->recordThat(CookieNameChanged::create($this->id, $name));
 		}
 	}
@@ -158,6 +171,18 @@ final class Cookie implements AggregateRootInterface
 	}
 
 	/**
+	 * @param bool $active
+	 *
+	 * @return void
+	 */
+	public function changeActiveState(bool $active): void
+	{
+		if ($this->active !== $active) {
+			$this->recordThat(CookieActiveStateChanged::create($this->id, $active));
+		}
+	}
+
+	/**
 	 * @param \App\Domain\Cookie\Event\CookieCreated $event
 	 *
 	 * @return void
@@ -170,6 +195,7 @@ final class Cookie implements AggregateRootInterface
 		$this->createdAt = $event->createdAt();
 		$this->name = $event->name();
 		$this->processingTime = $event->processingTime();
+		$this->active = $event->active();
 		$this->translations = new ArrayCollection();
 
 		foreach ($event->purposes() as $locale => $purpose) {
@@ -205,6 +231,16 @@ final class Cookie implements AggregateRootInterface
 	protected function whenCookieProcessingTimeChanged(CookieProcessingTimeChanged $event): void
 	{
 		$this->processingTime = $event->processingTime();
+	}
+
+	/**
+	 * @param \App\Domain\Cookie\Event\CookieActiveStateChanged $event
+	 *
+	 * @return void
+	 */
+	protected function whenCookieActiveStateChanged(CookieActiveStateChanged $event): void
+	{
+		$this->active = $event->active();
 	}
 
 	/**

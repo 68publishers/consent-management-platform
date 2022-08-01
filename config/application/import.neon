@@ -19,7 +19,12 @@ services:
 		arguments:
 			importers:
 				- @import.importer.cookie_provider
+				- @import.importer.cookie
 
 	import.importer.cookie_provider:
 		autowired: no
 		factory: App\Application\CookieProvider\Import\CookieProviderImporter
+
+	import.importer.cookie:
+		autowired: no
+		factory: App\Application\Cookie\Import\CookieImporter

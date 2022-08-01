@@ -8,6 +8,7 @@ use Throwable;
 use Nette\Utils\Html;
 use App\Web\Ui\Control;
 use Nette\Application\UI\Form;
+use Nette\Forms\Controls\TextInput;
 use App\ReadModel\Cookie\CookieView;
 use App\ReadModel\Category\CategoryView;
 use App\Web\Ui\Form\FormFactoryInterface;
@@ -19,12 +20,13 @@ use App\Domain\Cookie\ValueObject\ProcessingTime;
 use App\Domain\Cookie\Command\CreateCookieCommand;
 use App\Domain\Cookie\Command\UpdateCookieCommand;
 use App\Application\GlobalSettings\ValidLocalesProvider;
+use App\Domain\Cookie\Exception\NameUniquenessException;
 use App\Domain\CookieProvider\ValueObject\CookieProviderId;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieCreatedEvent;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieUpdatedEvent;
-use App\Web\AdminModule\CookieModule\Control\ProviderForm\Event\ProviderFormProcessingFailedEvent;
+use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieFormProcessingFailedEvent;
 
 final class CookieFormControl extends Control
 {
@@ -93,6 +95,9 @@ final class CookieFormControl extends Control
 				->setRequired('processing_time_mask.required')
 				->addRule($form::PATTERN, 'processing_time_mask.rule_pattern', '(?:(?<years>\d+)y\s*)?(?:(?<months>\d+)m\s*)?(?:(?<days>\d+)d\s*)?(?:(?<hours>\d+)h\s*)?');
 
+		$form->addCheckbox('active', 'active.field')
+			->setDefaultValue(TRUE);
+
 		$purposesContainer = $form->addContainer('purposes');
 
 		foreach ($this->validLocalesProvider->getValidLocales() as $locale) {
@@ -111,6 +116,7 @@ final class CookieFormControl extends Control
 				'category' => $this->default->categoryId->toString(),
 				'processing_time' => !$isExpiration ? $this->default->processingTime->value() : 'expiration',
 				'processing_time_mask' => $isExpiration ? $this->default->processingTime->value() : '',
+				'active' => $this->default->active,
 				'purposes' => array_map(static fn (Purpose $purpose): string => $purpose->value(), $this->default->purposes),
 			]);
 		}
@@ -138,6 +144,7 @@ final class CookieFormControl extends Control
 				$this->cookieProviderId->toString(),
 				$values->name,
 				'expiration' === $values->processing_time ? $values->processing_time_mask : $values->processing_time,
+				$values->active,
 				(array) $values->purposes,
 				$cookieId->toString()
 			);
@@ -147,14 +154,22 @@ final class CookieFormControl extends Control
 				->withCategoryId($values->category)
 				->withName($values->name)
 				->withProcessingTime('expiration' === $values->processing_time ? $values->processing_time_mask : $values->processing_time)
+				->withActive($values->active)
 				->withPurposes((array) $values->purposes);
 		}
 
 		try {
 			$this->commandBus->dispatch($command);
+		} catch (NameUniquenessException $e) {
+			$nameField = $form->getComponent('name');
+			assert($nameField instanceof TextInput);
+
+			$nameField->addError('name.error.duplicated_value');
+
+			return;
 		} catch (Throwable $e) {
 			$this->logger->error((string) $e);
-			$this->dispatchEvent(new ProviderFormProcessingFailedEvent($e));
+			$this->dispatchEvent(new CookieFormProcessingFailedEvent($e));
 
 			return;
 		}

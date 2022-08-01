@@ -1,7 +1,11 @@
 name: Název
+active: Aktivní
 category_name: Kategorie
 processing_time: Doba zpracování
 created_at: Vytvořeno
+
+active_value: aktivní
+inactive_value: neaktivní
 
 session: Session
 persistent: Persistent

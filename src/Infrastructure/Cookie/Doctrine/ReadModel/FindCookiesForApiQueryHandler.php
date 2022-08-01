@@ -47,9 +47,10 @@ final class FindCookiesForApiQueryHandler implements QueryHandlerInterface
 			->from(Cookie::class, 'c')
 			->join(Project::class, 'p', Join::WITH, 'p.id = :projectId AND p.deletedAt IS NULL')
 			->join(Category::class, 'cat', Join::WITH, 'cat.id = c.categoryId AND cat.deletedAt IS NULL AND cat.active = true')
-			->join(CookieProvider::class, 'cp', Join::WITH, 'cp.id = c.cookieProviderId AND cp.deletedAt IS NULL')
+			->join(CookieProvider::class, 'cp', Join::WITH, 'cp.id = c.cookieProviderId AND cp.deletedAt IS NULL AND cp.active = true')
 			->leftJoin(ProjectHasCookieProvider::class, 'phc', Join::WITH, 'phc.cookieProviderId = cp.id AND phc.project = p')
 			->where('c.deletedAt IS NULL')
+			->andWhere('c.active = true')
 			->andWhere('(phc.id IS NOT NULL OR cp.id = p.cookieProviderId)')
 			->orderBy('c.createdAt', 'ASC')
 			->setParameter('projectId', $query->projectId());

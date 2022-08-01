@@ -4,37 +4,23 @@ declare(strict_types=1);
 
 namespace App\Application\CookieProvider\Import;
 
-use App\ReadModel\Project\ProjectView;
+use App\Application\Import\RowResult;
 use App\Application\Import\ImporterResult;
 use App\Application\DataReader\RowInterface;
-use App\Application\Import\ImporterInterface;
-use App\ReadModel\Project\FindProjectsByCodesQuery;
+use App\Application\Import\AbstractImporter;
+use App\ReadModel\Project\ProjectPermissionView;
 use App\ReadModel\CookieProvider\CookieProviderView;
 use App\Domain\CookieProvider\ValueObject\ProviderType;
 use App\Domain\CookieProvider\ValueObject\CookieProviderId;
-use App\ReadModel\CookieProvider\GetCookieProviderByCodeQuery;
+use App\ReadModel\CookieProvider\FindCookieProvidersByCodesQuery;
 use App\Domain\CookieProvider\Command\CreateCookieProviderCommand;
 use App\Domain\CookieProvider\Command\UpdateCookieProviderCommand;
 use App\Domain\Project\Command\AddCookieProvidersToProjectCommand;
-use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
-use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
+use App\Domain\Project\Command\RemoveCookieProvidersFromProjectCommand;
+use App\ReadModel\Project\FindAllProjectsWithPossibleAssociationWithCookieProviderQuery;
 
-final class CookieProviderImporter implements ImporterInterface
+final class CookieProviderImporter extends AbstractImporter
 {
-	private CommandBusInterface $commandBus;
-
-	private QueryBusInterface $queryBus;
-
-	/**
-	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface $commandBus
-	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface   $queryBus
-	 */
-	public function __construct(CommandBusInterface $commandBus, QueryBusInterface $queryBus)
-	{
-		$this->commandBus = $commandBus;
-		$this->queryBus = $queryBus;
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -46,23 +32,32 @@ final class CookieProviderImporter implements ImporterInterface
 	/**
 	 * {@inheritDoc}
 	 */
-	public function import(RowInterface $row): ImporterResult
+	public function import(array $rows): ImporterResult
 	{
-		$data = $row->data();
-		assert($data instanceof CookieProviderData);
+		$result = ImporterResult::of();
+		$existingProviders = $this->findExistingProviders($rows);
 
-		$result = ImporterResult::success(sprintf(
-			'Provider "%s" imported',
-			$data->code
-		));
+		foreach ($rows as $row) {
+			$result = $result->with($this->wrapRowImport($row, function (RowInterface $row) use ($existingProviders) {
+				$data = $row->data();
+				assert($data instanceof CookieProviderData);
 
-		$cookieProviderView = $this->queryBus->dispatch(GetCookieProviderByCodeQuery::create($data->code));
-		[$commands, $result] = $cookieProviderView instanceof CookieProviderView
-			? $this->prepareUpdate($data, $cookieProviderView, $result)
-			: $this->prepareInsert($data, $result);
+				$result = RowResult::success($row->index(), sprintf(
+					'Provider "%s" imported',
+					$data->code
+				));
+				$code = strtolower($data->code);
 
-		foreach ($commands as $command) {
-			$this->commandBus->dispatch($command);
+				[$commands, $result] = isset($existingProviders[$code])
+					? $this->prepareUpdate($data, $existingProviders[$code], $result)
+					: $this->prepareInsert($data, $result);
+
+				foreach ($commands as $command) {
+					$this->commandBus->dispatch($command);
+				}
+
+				return $result;
+			}));
 		}
 
 		return $result;
@@ -70,11 +65,11 @@ final class CookieProviderImporter implements ImporterInterface
 
 	/**
 	 * @param \App\Application\CookieProvider\Import\CookieProviderData $data
-	 * @param \App\Application\Import\ImporterResult                    $result
+	 * @param \App\Application\Import\RowResult                         $result
 	 *
 	 * @return array
 	 */
-	private function prepareInsert(CookieProviderData $data, ImporterResult $result): array
+	private function prepareInsert(CookieProviderData $data, RowResult $result): array
 	{
 		$cookieProviderId = CookieProviderId::new();
 		$createCommand = CreateCookieProviderCommand::create(
@@ -84,6 +79,7 @@ final class CookieProviderImporter implements ImporterInterface
 			$data->link,
 			$data->purpose,
 			FALSE,
+			$data->active,
 			$cookieProviderId->toString()
 		);
 
@@ -95,15 +91,16 @@ final class CookieProviderImporter implements ImporterInterface
 	/**
 	 * @param \App\Application\CookieProvider\Import\CookieProviderData $data
 	 * @param \App\ReadModel\CookieProvider\CookieProviderView          $view
-	 * @param \App\Application\Import\ImporterResult                    $result
+	 * @param \App\Application\Import\RowResult                         $result
 	 *
 	 * @return array
 	 */
-	private function prepareUpdate(CookieProviderData $data, CookieProviderView $view, ImporterResult $result): array
+	private function prepareUpdate(CookieProviderData $data, CookieProviderView $view, RowResult $result): array
 	{
 		$updateCommand = UpdateCookieProviderCommand::create($view->id->toString())
 			->withName($data->name)
 			->withLink($data->link)
+			->withActive($data->active)
 			->withPurposes($data->purpose);
 
 		if ($view->private) {
@@ -133,23 +130,33 @@ final class CookieProviderImporter implements ImporterInterface
 	/**
 	 * @param \App\Application\CookieProvider\Import\CookieProviderData $data
 	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId   $cookieProviderId
-	 * @param \App\Application\Import\ImporterResult                    $result
+	 * @param \App\Application\Import\RowResult                         $result
 	 *
 	 * @return array
 	 */
-	private function prepareUpdateProjects(CookieProviderData $data, CookieProviderId $cookieProviderId, ImporterResult $result): array
+	private function prepareUpdateProjects(CookieProviderData $data, CookieProviderId $cookieProviderId, RowResult $result): array
 	{
-		$found = array_fill_keys($data->projects, TRUE);
+		$loweCaseCodes = array_map('strtolower', $data->projects);
+		$codes = array_combine($loweCaseCodes, $data->projects);
 		$commands = [];
 
-		foreach ($this->queryBus->dispatch(FindProjectsByCodesQuery::create($data->projects)) as $projectView) {
-			assert($projectView instanceof ProjectView);
+		foreach ($this->queryBus->dispatch(FindAllProjectsWithPossibleAssociationWithCookieProviderQuery::create($cookieProviderId->toString(), NULL)) as $projectPermissionView) {
+			assert($projectPermissionView instanceof ProjectPermissionView);
 
-			$found[$projectView->code->value()] = NULL;
-			$commands[] = AddCookieProvidersToProjectCommand::create($projectView->id->toString(), $cookieProviderId->toString());
+			$loweCaseCode = strtolower($projectPermissionView->projectCode->value());
+
+			if ($projectPermissionView->permission && !in_array($loweCaseCode, $loweCaseCodes, TRUE)) {
+				$commands[] = RemoveCookieProvidersFromProjectCommand::create($projectPermissionView->projectId->toString(), $cookieProviderId->toString());
+			}
+
+			if (!$projectPermissionView->permission && in_array($loweCaseCode, $loweCaseCodes, TRUE)) {
+				$commands[] = AddCookieProvidersToProjectCommand::create($projectPermissionView->projectId->toString(), $cookieProviderId->toString());
+			}
+
+			$codes[$loweCaseCode] = NULL;
 		}
 
-		$notFound = array_keys(array_filter($found));
+		$notFound = array_filter($codes);
 
 		if (0 < count($notFound)) {
 			$result = $result->withWarning(sprintf(
@@ -159,5 +166,29 @@ final class CookieProviderImporter implements ImporterInterface
 		}
 
 		return [$commands, $result];
+	}
+
+	/**
+	 * @param array $rows
+	 *
+	 * @return \App\ReadModel\CookieProvider\CookieProviderView[]
+	 */
+	private function findExistingProviders(array $rows): array
+	{
+		$existingProviders = $this->queryBus->dispatch(FindCookieProvidersByCodesQuery::create(
+			array_unique(
+				array_map(
+					static fn (RowInterface $row): string => $row->data()->get('code'),
+					$rows
+				)
+			)
+		));
+
+		$keys = array_map(
+			static fn (CookieProviderView $view): string => strtolower($view->code->value()),
+			$existingProviders
+		);
+
+		return array_combine($keys, $existingProviders);
 	}
 }

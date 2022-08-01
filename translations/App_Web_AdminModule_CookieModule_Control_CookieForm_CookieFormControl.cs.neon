@@ -1,6 +1,8 @@
 name:
 	field: Název
 	required: Vyplňte prosím název.
+	error:
+		duplicated_value: 'Cookie s tímto názvem již existuje.'
 
 category:
 	field: Kategorie
@@ -9,6 +11,9 @@ category:
 processing_time:
 	field: 'Doba zpracování'
 	required: Zvolte prosím dobu zpracování.
+
+active:
+	field: Aktivní
 
 session: Session
 persistent: Persistent

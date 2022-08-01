@@ -1,8 +1,12 @@
 name: Název
 code: Kód
+active: Aktivní
 type: Typ
 link: Odkaz
 created_at: Vytvořeno
+
+active_value: aktivní
+inactive_value: neaktivní
 
 delete_confirm:
 	question: 'Opravdu si přejete odstranit poskytovatele <strong>"%name%"</strong>?'

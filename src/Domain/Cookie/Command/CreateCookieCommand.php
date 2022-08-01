@@ -13,18 +13,20 @@ final class CreateCookieCommand extends AbstractCommand
 	 * @param string      $cookieProviderId
 	 * @param string      $name
 	 * @param string      $processingTime
+	 * @param bool        $active
 	 * @param array       $purposes
 	 * @param string|NULL $cookieId
 	 *
 	 * @return static
 	 */
-	public static function create(string $categoryId, string $cookieProviderId, string $name, string $processingTime, array $purposes, ?string $cookieId = NULL): self
+	public static function create(string $categoryId, string $cookieProviderId, string $name, string $processingTime, bool $active, array $purposes, ?string $cookieId = NULL): self
 	{
 		return self::fromParameters([
 			'category_id' => $categoryId,
 			'cookie_provider_id' => $cookieProviderId,
 			'name' => $name,
 			'processing_time' => $processingTime,
+			'active' => $active,
 			'purposes' => $purposes,
 			'cookie_id' => $cookieId,
 		]);
@@ -68,6 +70,14 @@ final class CreateCookieCommand extends AbstractCommand
 	public function purposes(): array
 	{
 		return $this->getParam('purposes');
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function active(): bool
+	{
+		return $this->getParam('active');
 	}
 
 	/**

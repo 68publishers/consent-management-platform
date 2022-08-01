@@ -22,6 +22,7 @@ use App\Domain\CookieProvider\Event\CookieProviderTypeChanged;
 use App\Domain\CookieProvider\Event\CookieProviderPurposeChanged;
 use App\Domain\CookieProvider\Command\CreateCookieProviderCommand;
 use App\Domain\CookieProvider\Command\UpdateCookieProviderCommand;
+use App\Domain\CookieProvider\Event\CookieProviderActiveStateChanged;
 use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AggregateId;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Aggregate\AggregateRootInterface;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Aggregate\DeletableAggregateRootTrait;
@@ -44,6 +45,8 @@ final class CookieProvider implements AggregateRootInterface
 
 	private bool $private;
 
+	private bool $active;
+
 	private Collection $translations;
 
 	/**
@@ -65,7 +68,7 @@ final class CookieProvider implements AggregateRootInterface
 
 		$checkCodeUniqueness($id, $code);
 
-		$cookieProvider->recordThat(CookieProviderCreated::create($id, $code, $type, $name, $link, $purposes, $command->private()));
+		$cookieProvider->recordThat(CookieProviderCreated::create($id, $code, $type, $name, $link, $purposes, $command->private(), $command->active()));
 
 		return $cookieProvider;
 	}
@@ -96,6 +99,10 @@ final class CookieProvider implements AggregateRootInterface
 
 		if (NULL !== $command->link()) {
 			$this->changeLink(Link::withValidation($command->link()));
+		}
+
+		if (NULL !== $command->active()) {
+			$this->changeActiveState($command->active());
 		}
 
 		if (NULL !== $command->purposes()) {
@@ -165,6 +172,18 @@ final class CookieProvider implements AggregateRootInterface
 	}
 
 	/**
+	 * @param bool $active
+	 *
+	 * @return void
+	 */
+	public function changeActiveState(bool $active): void
+	{
+		if ($this->active !== $active) {
+			$this->recordThat(CookieProviderActiveStateChanged::create($this->id, $active));
+		}
+	}
+
+	/**
 	 * @param \App\Domain\Shared\ValueObject\Locale          $locale
 	 * @param \App\Domain\CookieProvider\ValueObject\Purpose $purpose
 	 *
@@ -193,6 +212,7 @@ final class CookieProvider implements AggregateRootInterface
 		$this->name = $event->name();
 		$this->link = $event->link();
 		$this->private = $event->private();
+		$this->active = $event->active();
 		$this->translations = new ArrayCollection();
 
 		foreach ($event->purposes() as $locale => $purpose) {
@@ -238,6 +258,16 @@ final class CookieProvider implements AggregateRootInterface
 	protected function whenCookieProviderLinkChanged(CookieProviderLinkChanged $event): void
 	{
 		$this->link = $event->link();
+	}
+
+	/**
+	 * @param \App\Domain\CookieProvider\Event\CookieProviderActiveStateChanged $event
+	 *
+	 * @return void
+	 */
+	protected function whenCookieProviderActiveStateChanged(CookieProviderActiveStateChanged $event): void
+	{
+		$this->active = $event->active();
 	}
 
 	/**

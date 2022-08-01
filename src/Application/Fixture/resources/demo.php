@@ -85,6 +85,7 @@ $fixtures['cookie_provider'] = [
 			'cs' => 'Naše vlastní cookies, které jsou nutné pro provoz našeho webu.',
 			'en' => 'Our own cookies that are necessary for the operation of our website.',
 		],
+		'active' => TRUE,
 		'private' => TRUE,
 	],
 	'facebook_login' => [
@@ -97,6 +98,7 @@ $fixtures['cookie_provider'] = [
 			'cs' => 'Platforma pro přihlášení skrze Facebook.',
 			'en' => 'Facebook login platform.',
 		],
+		'active' => TRUE,
 		'private' => FALSE,
 	],
 	'google_ads' => [
@@ -109,6 +111,7 @@ $fixtures['cookie_provider'] = [
 			'cs' => 'Platforma pro reklamu, retargeting a měření konverzí.',
 			'en' => 'The platform for advertising, retargeting, and conversion measurement.',
 		],
+		'active' => TRUE,
 		'private' => FALSE,
 	],
 ];
@@ -120,6 +123,7 @@ $fixtures['cookie'] = [
 		'cookie_provider_id' => $fixtures['cookie_provider']['demo']['cookie_provider_id'],
 		'name' => 'PHPSESSID',
 		'processing_time' => ProcessingTime::SESSION,
+		'active' => TRUE,
 		'purposes' => [
 			'cs' => 'Session ID zákazníka.',
 			'en' => 'Customer\'s session ID.',
@@ -131,6 +135,7 @@ $fixtures['cookie'] = [
 		'cookie_provider_id' => $fixtures['cookie_provider']['facebook_login']['cookie_provider_id'],
 		'name' => 'c_user',
 		'processing_time' => ProcessingTime::SESSION,
+		'active' => TRUE,
 		'purposes' => [
 			'cs' => 'Facebook ID zákazníka.',
 			'en' => 'Customer\'s Facebook ID.',
@@ -142,6 +147,7 @@ $fixtures['cookie'] = [
 		'cookie_provider_id' => $fixtures['cookie_provider']['google_ads']['cookie_provider_id'],
 		'name' => '__gads',
 		'processing_time' => '13m',
+		'active' => TRUE,
 		'purposes' => [
 			'cs' => 'Reklama.',
 			'en' => 'Advertising.',

@@ -9,6 +9,14 @@
     {/if}
 {/define}
 
+{define col-active}
+    {if $item->active}
+        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">{_active_value}</span>
+    {else}
+        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">{_inactive_value}</span>
+    {/if}
+{/define}
+
 {define col-processing_time}
     {if NULL !== $item->processingTime && NULL !== $_locale}
         {var $processingTime = $item->processingTime->print($_locale->code())}

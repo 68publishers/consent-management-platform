@@ -9,6 +9,9 @@ services:
 	-
 		type: App\Domain\Cookie\CheckCookieProviderExistsInterface
 		factory: App\Infrastructure\Cookie\CheckCookieProviderExists
+	-
+		type: App\Domain\Cookie\CheckNameUniquenessInterface
+		factory: App\Infrastructure\Cookie\CheckNameUniqueness
 
 	# infra: doctrine
 	-
@@ -28,6 +31,9 @@ services:
 	-
 		autowired: no
 		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\FindCookiesForApiQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\GetCookieByNameAndCookieProviderQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:

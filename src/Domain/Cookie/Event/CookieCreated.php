@@ -24,6 +24,8 @@ final class CookieCreated extends AbstractDomainEvent
 
 	private Name $name;
 
+	private bool $active;
+
 	private array $purposes;
 
 	/**
@@ -32,17 +34,19 @@ final class CookieCreated extends AbstractDomainEvent
 	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId $cookieProviderId
 	 * @param \App\Domain\Cookie\ValueObject\Name                     $name
 	 * @param \App\Domain\Cookie\ValueObject\ProcessingTime           $processingTime
+	 * @param bool                                                    $active
 	 * @param \App\Domain\Cookie\ValueObject\Purpose[]                $purposes
 	 *
 	 * @return static
 	 */
-	public static function create(CookieId $cookieId, CategoryId $categoryId, CookieProviderId $cookieProviderId, Name $name, ProcessingTime $processingTime, array $purposes): self
+	public static function create(CookieId $cookieId, CategoryId $categoryId, CookieProviderId $cookieProviderId, Name $name, ProcessingTime $processingTime, bool $active, array $purposes): self
 	{
 		$event = self::occur($cookieId->toString(), [
 			'category_id' => $categoryId->toString(),
 			'cookie_provider_id' => $cookieProviderId->toString(),
 			'name' => $name->value(),
 			'processing_time' => $processingTime->value(),
+			'active' => $active,
 			'purposes' => array_map(static fn (Purpose $purpose): string => $purpose->value(), $purposes),
 		]);
 
@@ -51,6 +55,7 @@ final class CookieCreated extends AbstractDomainEvent
 		$event->cookieProviderId = $cookieProviderId;
 		$event->name = $name;
 		$event->processingTime = $processingTime;
+		$event->active = $active;
 		$event->purposes = $purposes;
 
 		return $event;
@@ -97,6 +102,14 @@ final class CookieCreated extends AbstractDomainEvent
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function active(): bool
+	{
+		return $this->active;
+	}
+
+	/**
 	 * @return \App\Domain\Cookie\ValueObject\Purpose[]
 	 */
 	public function purposes(): array
@@ -116,6 +129,7 @@ final class CookieCreated extends AbstractDomainEvent
 		$this->cookieProviderId = CookieProviderId::fromString($parameters['cookie_provider_id']);
 		$this->name = Name::fromValue($parameters['name']);
 		$this->processingTime = ProcessingTime::fromValue($parameters['processing_time']);
+		$this->active = (bool) $parameters['active'];
 		$this->purposes = array_map(static fn (string $purpose): Purpose => Purpose::fromValue($purpose), $parameters['purposes']);
 	}
 }

@@ -13,6 +13,7 @@ use App\ReadModel\Category\CategoryView;
 use App\Web\Ui\Form\FormFactoryInterface;
 use App\Domain\Cookie\ValueObject\CookieId;
 use App\ReadModel\Cookie\GetCookieByIdQuery;
+use App\Web\Ui\DataGrid\Helper\FilterHelper;
 use App\ReadModel\Category\AllCategoriesQuery;
 use App\ReadModel\Cookie\CookiesDataGridQuery;
 use App\Web\Ui\DataGrid\DataGridFactoryInterface;
@@ -109,6 +110,10 @@ final class CookieListControl extends Control
 		$grid->addColumnText('name', 'name', 'cookieName.value')
 			->setSortable('cookieName')
 			->setFilterText('cookieName');
+
+		$grid->addColumnText('active', 'active')
+			->setAlign('center')
+			->setFilterSelect(FilterHelper::bool($grid->getTranslator()));
 
 		$grid->addColumnText('category_name', 'category_name')
 			->setSortable('categoryName')

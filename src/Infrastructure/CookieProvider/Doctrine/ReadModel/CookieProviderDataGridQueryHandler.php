@@ -47,6 +47,7 @@ final class CookieProviderDataGridQueryHandler implements QueryHandlerInterface
 				'link' => ['applyLike', 'c.link'],
 				'type' => ['applyEquals', 'c.type'],
 				'createdAt' => ['applyDate', 'c.createdAt'],
+				'active' => ['applyEquals', 'c.active'],
 			],
 			[
 				'name' => 'c.name',

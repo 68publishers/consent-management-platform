@@ -61,6 +61,14 @@ final class UpdateCookieCommand extends AbstractCommand
 	}
 
 	/**
+	 * @return bool|NULL
+	 */
+	public function active(): ?bool
+	{
+		return $this->getParam('active');
+	}
+
+	/**
 	 * @param string $categoryId
 	 *
 	 * @return $this
@@ -98,5 +106,15 @@ final class UpdateCookieCommand extends AbstractCommand
 	public function withProcessingTime(string $processingTime): self
 	{
 		return $this->withParam('processing_time', $processingTime);
+	}
+
+	/**
+	 * @param bool $active
+	 *
+	 * @return $this
+	 */
+	public function withActive(bool $active): self
+	{
+		return $this->withParam('active', $active);
 	}
 }

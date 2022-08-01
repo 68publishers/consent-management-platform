@@ -8,6 +8,7 @@ use App\Domain\Cookie\ValueObject\CookieId;
 use App\Domain\Cookie\CookieRepositoryInterface;
 use App\Domain\Cookie\Command\UpdateCookieCommand;
 use App\Domain\Cookie\CheckCategoryExistsInterface;
+use App\Domain\Cookie\CheckNameUniquenessInterface;
 use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
 
 final class UpdateCookieCommandHandler implements CommandHandlerInterface
@@ -16,14 +17,18 @@ final class UpdateCookieCommandHandler implements CommandHandlerInterface
 
 	private CheckCategoryExistsInterface $checkCategoryExists;
 
+	private CheckNameUniquenessInterface $checkNameUniqueness;
+
 	/**
 	 * @param \App\Domain\Cookie\CookieRepositoryInterface    $cookieRepository
 	 * @param \App\Domain\Cookie\CheckCategoryExistsInterface $checkCategoryExists
+	 * @param \App\Domain\Cookie\CheckNameUniquenessInterface $checkNameUniqueness
 	 */
-	public function __construct(CookieRepositoryInterface $cookieRepository, CheckCategoryExistsInterface $checkCategoryExists)
+	public function __construct(CookieRepositoryInterface $cookieRepository, CheckCategoryExistsInterface $checkCategoryExists, CheckNameUniquenessInterface $checkNameUniqueness)
 	{
 		$this->cookieRepository = $cookieRepository;
 		$this->checkCategoryExists = $checkCategoryExists;
+		$this->checkNameUniqueness = $checkNameUniqueness;
 	}
 
 	/**
@@ -35,7 +40,7 @@ final class UpdateCookieCommandHandler implements CommandHandlerInterface
 	{
 		$cookie = $this->cookieRepository->get(CookieId::fromString($command->cookieId()));
 
-		$cookie->update($command, $this->checkCategoryExists);
+		$cookie->update($command, $this->checkCategoryExists, $this->checkNameUniqueness);
 
 		$this->cookieRepository->save($cookie);
 	}

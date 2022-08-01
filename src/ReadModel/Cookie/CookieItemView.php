@@ -21,6 +21,8 @@ final class CookieItemView extends AbstractView
 
 	public ProcessingTime $processingTime;
 
+	public bool $active;
+
 	public ?CategoryId $categoryId = NULL;
 
 	public ?CategoryName $categoryName = NULL;
@@ -36,6 +38,7 @@ final class CookieItemView extends AbstractView
 			'id' => $this->id->toString(),
 			'cookieName' => $this->cookieName->value(),
 			'processingTime' => $this->processingTime->value(),
+			'active' => $this->active,
 			'categoryId' => NULL !== $this->categoryId ? $this->categoryId->toString() : NULL,
 			'categoryName' => NULL !== $this->categoryName ? $this->categoryName->value() : NULL,
 			'createdAt' => $this->createdAt->format(DateTimeInterface::ATOM),

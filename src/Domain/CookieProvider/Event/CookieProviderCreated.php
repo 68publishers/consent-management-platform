@@ -28,6 +28,8 @@ final class CookieProviderCreated extends AbstractDomainEvent
 
 	private bool $private;
 
+	private bool $active;
+
 	/**
 	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId $cookieProviderId
 	 * @param \App\Domain\CookieProvider\ValueObject\Code             $code
@@ -36,10 +38,11 @@ final class CookieProviderCreated extends AbstractDomainEvent
 	 * @param \App\Domain\CookieProvider\ValueObject\Link             $link
 	 * @param \App\Domain\CookieProvider\ValueObject\Purpose[]        $purposes
 	 * @param bool                                                    $private
+	 * @param bool                                                    $active
 	 *
 	 * @return static
 	 */
-	public static function create(CookieProviderId $cookieProviderId, Code $code, ProviderType $type, Name $name, Link $link, array $purposes, bool $private): self
+	public static function create(CookieProviderId $cookieProviderId, Code $code, ProviderType $type, Name $name, Link $link, array $purposes, bool $private, bool $active): self
 	{
 		$event = self::occur($cookieProviderId->toString(), [
 			'code' => $code->value(),
@@ -48,6 +51,7 @@ final class CookieProviderCreated extends AbstractDomainEvent
 			'link' => $link->value(),
 			'purposes' => array_map(static fn (Purpose $purpose): string => $purpose->value(), $purposes),
 			'private' => $private,
+			'active' => $active,
 		]);
 
 		$event->cookieProviderId = $cookieProviderId;
@@ -57,6 +61,7 @@ final class CookieProviderCreated extends AbstractDomainEvent
 		$event->link = $link;
 		$event->purposes = $purposes;
 		$event->private = $private;
+		$event->active = $active;
 
 		return $event;
 	}
@@ -118,6 +123,14 @@ final class CookieProviderCreated extends AbstractDomainEvent
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function active(): bool
+	{
+		return $this->active;
+	}
+
+	/**
 	 * @param array $parameters
 	 *
 	 * @return void
@@ -131,5 +144,6 @@ final class CookieProviderCreated extends AbstractDomainEvent
 		$this->link = Link::fromValue($parameters['link']);
 		$this->purposes = array_map(static fn (string $purpose): Purpose => Purpose::fromValue($purpose), $parameters['purposes']);
 		$this->private = (bool) $parameters['private'];
+		$this->active = (bool) $parameters['active'];
 	}
 }

@@ -15,11 +15,12 @@ final class CreateCookieProviderCommand extends AbstractCommand
 	 * @param string      $link
 	 * @param string[]    $purposes
 	 * @param bool        $private
+	 * @param bool        $active
 	 * @param string|NULL $cookieProviderId
 	 *
 	 * @return static
 	 */
-	public static function create(string $code, string $type, string $name, string $link, array $purposes, bool $private, ?string $cookieProviderId = NULL): self
+	public static function create(string $code, string $type, string $name, string $link, array $purposes, bool $private, bool $active, ?string $cookieProviderId = NULL): self
 	{
 		return self::fromParameters([
 			'code' => $code,
@@ -28,6 +29,7 @@ final class CreateCookieProviderCommand extends AbstractCommand
 			'link' => $link,
 			'purposes' => $purposes,
 			'private' => $private,
+			'active' => $active,
 			'cookie_provider_id' => $cookieProviderId,
 		]);
 	}
@@ -78,6 +80,14 @@ final class CreateCookieProviderCommand extends AbstractCommand
 	public function private(): bool
 	{
 		return $this->getParam('private');
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function active(): bool
+	{
+		return $this->getParam('active');
 	}
 
 	/**

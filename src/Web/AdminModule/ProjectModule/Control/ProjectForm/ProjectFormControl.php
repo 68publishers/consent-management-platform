@@ -177,10 +177,10 @@ final class ProjectFormControl extends Control
 		try {
 			$this->commandBus->dispatch($command);
 		} catch (CodeUniquenessException $e) {
-			$emailAddressField = $form->getComponent('code');
-			assert($emailAddressField instanceof TextInput);
+			$codeField = $form->getComponent('code');
+			assert($codeField instanceof TextInput);
 
-			$emailAddressField->addError('code.error.duplicated_value');
+			$codeField->addError('code.error.duplicated_value');
 
 			return;
 		} catch (Throwable $e) {

@@ -8,13 +8,13 @@ use App\Domain\Project\ValueObject\Code;
 use App\Domain\Project\ValueObject\ProjectId;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\AbstractView;
 
-final class ProjectAccessibilityView extends AbstractView
+final class ProjectPermissionView extends AbstractView
 {
 	public ProjectId $projectId;
 
 	public Code $projectCode;
 
-	public bool $accessible;
+	public bool $permission;
 
 	/**
 	 * @return array
@@ -24,7 +24,7 @@ final class ProjectAccessibilityView extends AbstractView
 		return [
 			'project_id' => $this->projectId->toString(),
 			'project_code' => $this->projectCode->value(),
-			'accessible' => $this->accessible,
+			'permission' => $this->permission,
 		];
 	}
 }

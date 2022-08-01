@@ -16,7 +16,7 @@ use Apitte\Core\Http\ApiResponse;
 use Nette\Security\User as NetteUser;
 use App\Application\Statistics\Period;
 use Apitte\Core\Annotation\Controller as Api;
-use App\ReadModel\Project\ProjectAccessibilityView;
+use App\ReadModel\Project\ProjectPermissionView;
 use App\ReadModel\Project\FindProjectsAccessibilityByCodeQuery;
 use App\Api\Internal\RequestBody\GetProjectStatisticsRequestBody;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
@@ -86,13 +86,13 @@ final class StatisticsController extends AbstractInternalController
 		$inaccessible = [];
 
 		// check accessibility for requested projects
-		foreach ($this->queryBus->dispatch(FindProjectsAccessibilityByCodeQuery::create($identity->id()->toString(), $projectCodes)) as $projectAccessibilityView) {
-			assert($projectAccessibilityView instanceof ProjectAccessibilityView);
+		foreach ($this->queryBus->dispatch(FindProjectsAccessibilityByCodeQuery::create($identity->id()->toString(), $projectCodes)) as $projectPermissionView) {
+			assert($projectPermissionView instanceof ProjectPermissionView);
 
-			$projectIds[$projectAccessibilityView->projectCode->value()] = $projectAccessibilityView->projectId->toString();
+			$projectIds[$projectPermissionView->projectCode->value()] = $projectPermissionView->projectId->toString();
 
-			if (!$projectAccessibilityView->accessible) {
-				$inaccessible[] = $projectAccessibilityView->projectCode->value();
+			if (!$projectPermissionView->permission) {
+				$inaccessible[] = $projectPermissionView->projectCode->value();
 			}
 		}
 

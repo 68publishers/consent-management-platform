@@ -10,17 +10,18 @@ use App\Application\DataReader\RowInterface;
 
 final class ImportTask extends Task
 {
-	private RowInterface $row;
+	/** @var \App\Application\DataReader\RowInterface[] */
+	private array $rows;
 
 	private ?ImporterInterface $importer = NULL;
 
 	/**
-	 * @param \App\Application\DataReader\RowInterface  $row
-	 * @param \App\Application\Import\ImporterInterface $importer
+	 * @param \App\Application\DataReader\RowInterface[] $rows
+	 * @param \App\Application\Import\ImporterInterface  $importer
 	 */
-	public function __construct(RowInterface $row, ImporterInterface $importer)
+	public function __construct(array $rows, ImporterInterface $importer)
 	{
-		$this->row = $row;
+		$this->rows = (static fn (RowInterface ...$rows): array => $rows)(...$rows);
 		$this->importer = $importer;
 	}
 
@@ -41,7 +42,7 @@ final class ImportTask extends Task
 	 */
 	public function run(): ImporterResult
 	{
-		return $this->importer->import($this->row);
+		return $this->importer->import($this->rows);
 	}
 
 	/**
@@ -49,6 +50,6 @@ final class ImportTask extends Task
 	 */
 	public function __sleep(): array
 	{
-		return ['row'];
+		return ['rows'];
 	}
 }

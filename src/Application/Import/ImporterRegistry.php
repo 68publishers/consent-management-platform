@@ -43,54 +43,87 @@ final class ImporterRegistry implements ImporterInterface
 	/**
 	 * {@inheritDoc}
 	 */
-	public function import(RowInterface $row): ImporterResult
+	public function import(array $rows): ImporterResult
 	{
-		foreach ($this->importers as $importer) {
-			if ($importer->accepts($row)) {
-				return $this->doImport($importer, $row);
+		$resolved = [];
+		$unresolved = [];
+		$importerResult = ImporterResult::of();
+
+		foreach ($rows as $row) {
+			foreach ($this->importers as $index => $importer) {
+				if ($importer->accepts($row)) {
+					$resolved[$index][] = $row;
+
+					continue 2;
+				}
 			}
+
+			$unresolved[] = $row;
 		}
 
-		$message = 'Can\'t resolve importer for the row';
+		foreach ($resolved as $index => $r) {
+			$importerResult = $importerResult->merge(
+				$this->doImport($this->importers[$index], $r)
+			);
+		}
 
-		$this->logError(self::class, $message, $row);
+		if (0 < count($unresolved)) {
+			$importerResult = $importerResult->merge(
+				$this->createFailedResult($unresolved, 'Can\'t resolve importer for the row')
+			);
 
-		return ImporterResult::error($message);
+			$this->logError(self::class, 'Can\'t resolve importer for some rows.', $unresolved);
+		}
+
+		return $importerResult;
 	}
 
 	/**
 	 * @param \App\Application\Import\ImporterInterface $importer
-	 * @param \App\Application\DataReader\RowInterface  $row
+	 * @param array                                     $rows
 	 *
 	 * @return \App\Application\Import\ImporterResult
 	 */
-	private function doImport(ImporterInterface $importer, RowInterface $row): ImporterResult
+	private function doImport(ImporterInterface $importer, array $rows): ImporterResult
 	{
 		try {
-			return $importer->import($row);
+			return $importer->import($rows);
 		} catch (Throwable $e) {
 			if (!$e instanceof DomainException) {
-				$this->logError(get_class($importer), $e->getMessage(), $row);
+				$this->logError(get_class($importer), $e->getMessage(), $rows);
 			}
 
-			return ImporterResult::error($e->getMessage());
+			return $this->createFailedResult($rows, $e->getMessage());
 		}
 	}
 
 	/**
-	 * @param string                                   $importerClassname
-	 * @param string                                   $message
-	 * @param \App\Application\DataReader\RowInterface $row
+	 * @param string                                     $importerClassname
+	 * @param string                                     $message
+	 * @param \App\Application\DataReader\RowInterface[] $rows
 	 *
 	 * @return void
 	 */
-	private function logError(string $importerClassname, string $message, RowInterface $row): void
+	private function logError(string $importerClassname, string $message, array $rows): void
 	{
 		$this->logger->error(sprintf(
-			"Error during calling %s::import(): %s\nThe row contained the following data:\n%s",
+			"Error during calling %s::import(): %s\nThe following data have been imported:\n%s",
 			$importerClassname,
 			$message,
-			json_encode($row->data()->toArray())
+			json_encode(array_map(static fn (RowInterface $row): array => $row->data()->toArray(), $rows))
 		));
+	}
+
+	/**
+	 * @param \App\Application\DataReader\RowInterface[] $rows
+	 * @param string                                     $message
+	 *
+	 * @return \App\Application\Import\ImporterResult
+	 */
+	private function createFailedResult(array $rows, string $message): ImporterResult
+	{
+		return ImporterResult::of(
+			...array_map(static fn (RowInterface $row): RowResult => RowResult::error($row->index(), $message), $rows)
+		);
 	}
 }

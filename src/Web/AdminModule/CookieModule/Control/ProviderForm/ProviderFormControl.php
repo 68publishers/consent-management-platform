@@ -86,6 +86,9 @@ final class ProviderFormControl extends Control
 			->setRequired('link.required')
 			->addRule($form::URL, 'link.rule_url');
 
+		$form->addCheckbox('active', 'active.field')
+			->setDefaultValue(TRUE);
+
 		$form->addMultiSelect('projects', 'projects.field', $this->getProjectOptions())
 			->checkDefaultValue(FALSE)
 			->setTranslator(NULL)
@@ -108,6 +111,7 @@ final class ProviderFormControl extends Control
 				'name' => $this->default->name->value(),
 				'type' => $this->default->type->value(),
 				'link' => $this->default->link->value(),
+				'active' => $this->default->active,
 				'projects' => $this->getDefaultProjectIds(),
 				'purposes' => array_map(static fn (Purpose $purpose): string => $purpose->value(), $this->default->purposes),
 			]);
@@ -138,6 +142,7 @@ final class ProviderFormControl extends Control
 				$values->link,
 				(array) $values->purposes,
 				FALSE,
+				$values->active,
 				$cookieProviderId->toString()
 			);
 		} else {
@@ -147,6 +152,7 @@ final class ProviderFormControl extends Control
 				->withType($values->type)
 				->withName($values->name)
 				->withLink($values->link)
+				->withActive($values->active)
 				->withPurposes((array) $values->purposes);
 		}
 
@@ -154,10 +160,10 @@ final class ProviderFormControl extends Control
 			$this->commandBus->dispatch($command);
 			$this->saveProjects((array) $values->projects, $cookieProviderId);
 		} catch (CodeUniquenessException $e) {
-			$emailAddressField = $form->getComponent('code');
-			assert($emailAddressField instanceof TextInput);
+			$codeField = $form->getComponent('code');
+			assert($codeField instanceof TextInput);
 
-			$emailAddressField->addError('code.error.duplicated_value');
+			$codeField->addError('code.error.duplicated_value');
 
 			return;
 		} catch (Throwable $e) {

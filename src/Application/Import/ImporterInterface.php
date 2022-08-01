@@ -16,9 +16,9 @@ interface ImporterInterface
 	public function accepts(RowInterface $row): bool;
 
 	/**
-	 * @param \App\Application\DataReader\RowInterface $row
+	 * @param \App\Application\DataReader\RowInterface[] $rows
 	 *
 	 * @return \App\Application\Import\ImporterResult
 	 */
-	public function import(RowInterface $row): ImporterResult;
+	public function import(array $rows): ImporterResult;
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Cookie;
 
+use App\ReadModel\Category\CategoryView;
 use App\Domain\Category\ValueObject\CategoryId;
 use App\ReadModel\Category\GetCategoryByIdQuery;
 use App\Domain\Cookie\CheckCategoryExistsInterface;
@@ -27,7 +28,9 @@ final class CheckCategoryExists implements CheckCategoryExistsInterface
 	 */
 	public function __invoke(CategoryId $categoryId): void
 	{
-		if (NULL === $this->queryBus->dispatch(GetCategoryByIdQuery::create($categoryId->toString()))) {
+		$category = $this->queryBus->dispatch(GetCategoryByIdQuery::create($categoryId->toString()));
+
+		if (!$category instanceof CategoryView || NULL !== $category->deletedAt) {
 			throw CategoryNotFoundException::withId($categoryId);
 		}
 	}

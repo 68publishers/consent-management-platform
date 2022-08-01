@@ -41,7 +41,7 @@ final class CookiesDataGridQueryHandler implements QueryHandlerInterface
 			},
 			function (CookiesDataGridQuery $query): QueryBuilder {
 				return $this->em->createQueryBuilder()
-					->select('c.id AS id, cat.id AS categoryId, c.name AS cookieName, c.processingTime AS processingTime, cat_t.name AS categoryName, c.createdAt AS createdAt')
+					->select('c.id AS id, cat.id AS categoryId, c.name AS cookieName, c.processingTime AS processingTime, c.active AS active, cat_t.name AS categoryName, c.createdAt AS createdAt')
 					->from(Cookie::class, 'c')
 					->leftJoin(Category::class, 'cat', Join::WITH, 'cat.id = c.categoryId AND cat.deletedAt IS NULL')
 					->leftJoin('cat.translations', 'cat_t', Join::WITH, 'cat_t.locale = :locale')
@@ -58,6 +58,7 @@ final class CookiesDataGridQueryHandler implements QueryHandlerInterface
 				'cookieName' => ['applyLike', 'c.name'],
 				'categoryName' => ['applyIn', 'cat.id'],
 				'createdAt' => ['applyDate', 'c.createdAt'],
+				'active' => ['applyEquals', 'c.active'],
 			],
 			[
 				'cookieName' => 'c.name',

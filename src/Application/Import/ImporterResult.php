@@ -6,76 +6,68 @@ namespace App\Application\Import;
 
 final class ImporterResult
 {
-	private bool $ok;
+	/** @var \App\Application\Import\RowResult[]  */
+	private array $rows = [];
 
-	private string $message;
-
-	private array $warnings = [];
-
-	/**
-	 * @param bool   $ok
-	 * @param string $message
-	 */
-	private function __construct(bool $ok, string $message)
+	private function __construct()
 	{
-		$this->ok = $ok;
-		$this->message = $message;
 	}
 
 	/**
-	 * @param string $message
+	 * @param \App\Application\Import\RowResult ...$rows
 	 *
 	 * @return static
 	 */
-	public static function success(string $message): self
+	public static function of(RowResult ...$rows): self
 	{
-		return new self(TRUE, $message);
-	}
-
-	/**
-	 * @param string $message
-	 *
-	 * @return static
-	 */
-	public static function error(string $message): self
-	{
-		return new self(FALSE, $message);
-	}
-
-	/**
-	 * @param string $warning
-	 *
-	 * @return $this
-	 */
-	public function withWarning(string $warning): self
-	{
-		$result = clone $this;
-		$result->warnings[] = $warning;
+		$result = new self();
+		$result->rows = $rows;
 
 		return $result;
 	}
 
 	/**
-	 * @return bool
+	 * @param \App\Application\Import\RowResult $rowResult
+	 *
+	 * @return $this
 	 */
-	public function ok(): bool
+	public function with(RowResult $rowResult): self
 	{
-		return $this->ok;
+		$rows = $this->rows;
+		$rows[] = $rowResult;
+
+		return self::of(...$rows);
 	}
 
 	/**
-	 * @return string
+	 * @param \App\Application\Import\ImporterResult $importerResult
+	 *
+	 * @return $this
 	 */
-	public function message(): string
+	public function merge(self $importerResult): self
 	{
-		return $this->message;
+		$rows = array_merge($this->rows, $importerResult->all());
+
+		return self::of(...$rows);
 	}
 
 	/**
-	 * @return string[]
+	 * @return \App\Application\Import\RowResult[]
 	 */
-	public function warnings(): array
+	public function all(): array
 	{
-		return $this->warnings;
+		return $this->rows;
+	}
+
+	/**
+	 * @param callable $callback
+	 *
+	 * @return void
+	 */
+	public function each(callable $callback): void
+	{
+		foreach ($this->rows as $row) {
+			$callback($row);
+		}
 	}
 }

@@ -61,6 +61,14 @@ final class UpdateCookieProviderCommand extends AbstractCommand
 	}
 
 	/**
+	 * @return bool|NULL
+	 */
+	public function active(): ?bool
+	{
+		return $this->getParam('active');
+	}
+
+	/**
 	 * @return array|NULL
 	 */
 	public function purposes(): ?array
@@ -105,6 +113,16 @@ final class UpdateCookieProviderCommand extends AbstractCommand
 	public function withLink(string $link): self
 	{
 		return $this->withParam('link', $link);
+	}
+
+	/**
+	 * @param bool $active
+	 *
+	 * @return $this
+	 */
+	public function withActive(bool $active): self
+	{
+		return $this->withParam('active', $active);
 	}
 
 	/**

@@ -70,6 +70,10 @@ final class ProviderListControl extends Control
 			->setSortable('code')
 			->setFilterText('code');
 
+		$grid->addColumnText('active', 'active')
+			->setAlign('center')
+			->setFilterSelect(FilterHelper::bool($grid->getTranslator()));
+
 		$grid->addColumnText('type', 'type', 'type.value')
 			->setFilterSelect(FilterHelper::select(ProviderType::values(), FALSE, $grid->getTranslator(), '//layout.cookie_provider_type.'), 'type');
 

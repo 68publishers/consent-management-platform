@@ -6,6 +6,9 @@ namespace App\ReadModel\Cookie;
 
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractBatchedQuery;
 
+/**
+ * Returns CookieApiView[]
+ */
 final class FindCookiesForApiQuery extends AbstractBatchedQuery
 {
 	/**

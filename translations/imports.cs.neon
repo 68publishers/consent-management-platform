@@ -1,2 +1,3 @@
 name:
 	App\Application\CookieProvider\Import\CookieProviderData: Poskytovatelé
+	App\Application\Cookie\Import\CookieData: Cookies

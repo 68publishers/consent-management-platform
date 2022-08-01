@@ -6,8 +6,10 @@ namespace App\Web\AdminModule\ImportModule\Control\ImportForm;
 
 use Throwable;
 use App\Web\Ui\Control;
+use Nette\Http\FileUpload;
 use Nette\Application\UI\Form;
 use App\Web\Utils\TranslatorUtils;
+use App\Application\Import\ImportOptions;
 use App\Web\Ui\Form\FormFactoryInterface;
 use App\Application\Import\RunnerInterface;
 use App\Web\Ui\Form\FormFactoryOptionsTrait;
@@ -132,13 +134,20 @@ final class ImportFormControl extends Control
 			$format = $values->format;
 			$filename = $values->file->getTemporaryFile();
 
+			$file = $values->file;
+			assert($file instanceof FileUpload);
+
 			$options = self::FORMAT_CSV === $format ? [
 				CsvReader::OPTION_HAS_HEADER => TRUE,
 				CsvReader::OPTION_DELIMITER => self::CSV_SEPARATORS[$values->separator],
 			] : [];
 
 			$reader = $this->dataReaderFactory->fromFile($format, $filename, $options);
-			$state = $this->runner->run($reader, $type, $this->getAuthor());
+			$options = ImportOptions::create($type)
+				->withAuthor($this->getAuthor())
+				->withBatchSize(50);
+
+			$state = $this->runner->run($reader, $options);
 		} catch (Throwable $e) {
 			$this->logger->error((string) $e);
 			$this->dispatchEvent(new ImportFormProcessingFailedEvent($e));
