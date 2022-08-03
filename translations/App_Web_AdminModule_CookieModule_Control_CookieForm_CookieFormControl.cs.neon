@@ -4,6 +4,10 @@ name:
 	error:
 		duplicated_value: 'Cookie s tímto názvem již existuje.'
 
+provider:
+	field: Poskytovatel
+	required: Zvolte prosím poskytovatele.
+
 category:
 	field: Kategorie
 	required: Zvolte prosím kategorii.

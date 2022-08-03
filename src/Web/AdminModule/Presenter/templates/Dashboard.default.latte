@@ -1,69 +1,57 @@
 {templateType App\Web\AdminModule\Presenter\DashboardTemplate}
 
-{block #header}{/block}
-
-{block #content_wrapper_classes}max-w-7xl mx-auto sm:px-6 md:px-8{/block}
-
 {block #content}
 
 <div n:syntax="double" x-data="dashboard" data-endpoint="{{App\Api\Internal\Controller\StatisticsController::ENDPOINT_PROJECTS}}" data-projects="{{Nette\Utils\Json::encode($projectsData)}}" class="w-full px-4 sm:px-0">
 
-    <div class="mt-4 md:flex md:items-center md:justify-between">
-        <div class="flex-1 min-w-0">
-            <h1 class="text-2xl font-semibold leading-7 text-gray-900 sm:text-3xl sm:truncate">
-                {{_page_title}}
-            </h1>
-        </div>
-        <div class="mt-4 flex-shrink-0 flex md:mt-0 md:ml-4">
-            <div x-data="dropdown" x-bind="dropdown" class="relative">
-                <span class="relative z-0 inline-flex shadow-sm rounded-md">
-                    <button x-on:click="moveToPreviousRange()" type="button" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
-                        <span class="sr-only">{{_previous_period}}</span>
-                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                        </svg>
-                    </button>
+    <div x-data="dropdown" x-bind="dropdown" class="relative">
+        <span class="relative z-0 inline-flex shadow-sm rounded-md">
+            <button x-on:click="moveToPreviousRange()" type="button" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+                <span class="sr-only">{{_previous_period}}</span>
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+            </button>
 
-                    <button x-bind="dropdownButton" type="button" class="min-w-[14rem] -ml-px relative inline-flex items-center justify-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500" id="dashboard-range-button" aria-expanded="false" aria-haspopup="true">
-                        <span x-text="rangeText">&nbsp;</span>
-                    </button>
+            <button x-bind="dropdownButton" type="button" class="min-w-[14rem] -ml-px relative inline-flex items-center justify-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500" id="dashboard-range-button" aria-expanded="false" aria-haspopup="true">
+                <span x-text="rangeText">&nbsp;</span>
+            </button>
 
-                    <button x-on:click="moveToNextRange()" type="button" class="-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
-                        <span class="sr-only">{{_next_period}}</span>
-                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                        </svg>
-                    </button>
-                </span>
+            <button x-on:click="moveToNextRange()" type="button" class="-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+                <span class="sr-only">{{_next_period}}</span>
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>
+            </button>
+        </span>
 
-                <div x-bind="dropdownPanel" x-cloak class="absolute origin-top-left md:origin-top-right left-0 md:left-auto md:right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none p-2 sm:p-4 z-10" role="menu" aria-orientation="vertical" aria-labelledby="dashboard-range-button" tabindex="-1">
-                    <div class="flex w-full flex-col md:flex-row md:flex-nowrap items-start space-y-4 md:space-y-0 md:space-x-4">
-                        <div class="w-full md:w-auto space-y-2 flex flex-col">
-                            <a x-bind="rangeButton" data-day-diff-start="-1" data-day-diff-end="-1" class="whitespace-nowrap w-full inline-flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
-                                {{_yesterday}}
-                            </a>
-                            <a x-bind="rangeButton" data-day-diff-start="0" data-day-diff-end="0" class="whitespace-nowrap w-full inline-flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
-                                {{_today}}
-                            </a>
-                            <a x-bind="rangeButton" data-day-diff-start="-6" data-day-diff-end="0" class="whitespace-nowrap w-full inline-flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
-                                {{_last_7_days}}
-                            </a>
-                            <a x-bind="rangeButton" data-day-diff-start="-13" data-day-diff-end="0" class="whitespace-nowrap w-full inline-flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
-                                {{_last_14_days}}
-                            </a>
-                            <a x-bind="rangeButton" data-day-diff-start="-29" data-day-diff-end="0" class="whitespace-nowrap w-full inline-flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
-                                {{_last_30_days}}
-                            </a>
-                        </div>
-                        <div class="w-full md:w-auto flex">
-                            <input x-bind="datepicker" type="text" readonly class="hidden">
-                        </div>
-                    </div>
+        <div x-bind="dropdownPanel" x-cloak class="absolute origin-top-left left-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none p-2 sm:p-4 z-10" role="menu" aria-orientation="vertical" aria-labelledby="dashboard-range-button" tabindex="-1">
+            <div class="flex w-full flex-col md:flex-row md:flex-nowrap items-start space-y-4 md:space-y-0 md:space-x-4">
+                <div class="w-full md:w-auto space-y-2 flex flex-col">
+                    <a x-bind="rangeButton" data-day-diff-start="-1" data-day-diff-end="-1" class="whitespace-nowrap w-full inline-flex justify-start px-4 py-2 border border-transparent rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                        {{_yesterday}}
+                    </a>
+                    <a x-bind="rangeButton" data-day-diff-start="0" data-day-diff-end="0" class="whitespace-nowrap w-full inline-flex justify-start px-4 py-2 border border-transparent rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                        {{_today}}
+                    </a>
+                    <a x-bind="rangeButton" data-day-diff-start="-6" data-day-diff-end="0" class="whitespace-nowrap w-full inline-flex justify-start px-4 py-2 border border-transparent rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                        {{_last_7_days}}
+                    </a>
+                    <a x-bind="rangeButton" data-day-diff-start="-13" data-day-diff-end="0" class="whitespace-nowrap w-full inline-flex justify-start px-4 py-2 border border-transparent rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                        {{_last_14_days}}
+                    </a>
+                    <a x-bind="rangeButton" data-day-diff-start="-29" data-day-diff-end="0" class="whitespace-nowrap w-full inline-flex justify-start px-4 py-2 border border-transparent rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                        {{_last_30_days}}
+                    </a>
+                </div>
+                <div class="w-full md:w-auto flex">
+                    <input x-bind="datepicker" type="text" readonly class="hidden">
                 </div>
             </div>
         </div>
     </div>
-    <div class="mt-8 md:mt-12">
+
+    <div class="mt-8 md:mt-8">
         <template x-for="project in projects" :key="project.code">
             <div x-data="collapse" x-bind="collapse" class="mb-2">
                 <div class="flex items-center justify-between mb-2">

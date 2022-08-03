@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\CookieProvider\Doctrine\ReadModel;
 
+use App\Domain\Cookie\Cookie;
 use Doctrine\ORM\QueryBuilder;
 use App\Domain\CookieProvider\CookieProvider;
 use App\Infrastructure\DataGridQueryHandlerTrait;
-use App\ReadModel\CookieProvider\CookieProviderView;
 use App\ReadModel\CookieProvider\CookieProvidersDataGridQuery;
+use App\ReadModel\CookieProvider\CookieProviderDaraGridItemView;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\QueryHandlerInterface;
 
 final class CookieProviderDataGridQueryHandler implements QueryHandlerInterface
@@ -34,13 +35,25 @@ final class CookieProviderDataGridQueryHandler implements QueryHandlerInterface
 					->andWhere('c.private = false');
 			},
 			function (): QueryBuilder {
+				$numberOfCookiesSubQuery = $this->em->createQueryBuilder()
+					->select('COUNT(cookie.id)')
+					->from(Cookie::class, 'cookie')
+					->where('cookie.cookieProviderId = c.id')
+					->andWhere('cookie.deletedAt IS NULL')
+					->getQuery()
+					->getDQL();
+
 				return $this->em->createQueryBuilder()
-					->select('c')
+					->select('c.id, c.createdAt, c.code, c.type, c.name, c.link, c.private, c.active')
+					->addSelect(sprintf(
+						'(%s) AS numberOfCookies',
+						$numberOfCookiesSubQuery
+					))
 					->from(CookieProvider::class, 'c')
 					->where('c.deletedAt IS NULL')
 					->andWhere('c.private = false');
 			},
-			CookieProviderView::class,
+			CookieProviderDaraGridItemView::class,
 			[
 				'name' => ['applyLike', 'c.name'],
 				'code' => ['applyLike', 'c.code'],
@@ -53,6 +66,7 @@ final class CookieProviderDataGridQueryHandler implements QueryHandlerInterface
 				'name' => 'c.name',
 				'code' => 'c.code',
 				'createdAt' => 'c.createdAt',
+				'numberOfCookies' => 'numberOfCookies',
 			]
 		);
 	}

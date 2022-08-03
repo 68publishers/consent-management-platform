@@ -17,7 +17,7 @@ final class Link extends AbstractStringValueObject
 	 */
 	public static function withValidation(string $value): self
 	{
-		if (!Validators::isUrl($value)) {
+		if (!empty($value) && !Validators::isUrl($value)) {
 			throw InvalidLinkException::invalidUrl($value);
 		}
 

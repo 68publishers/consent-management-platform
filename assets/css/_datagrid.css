@@ -13,7 +13,7 @@
 }
 
 .datagrid .table > thead th, .datagrid .table > thead td {
-    @apply px-3 py-3.5 text-sm font-semibold text-gray-900;
+    @apply px-3 py-3.5 text-sm font-semibold text-gray-900 whitespace-nowrap;
 }
 
 .datagrid .table > thead tr:nth-child(even) th, .datagrid .table > thead tr:nth-child(even) td {

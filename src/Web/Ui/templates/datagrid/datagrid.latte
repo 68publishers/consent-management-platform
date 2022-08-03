@@ -68,35 +68,51 @@
 
 
 {define #filtertype-select, $input, $outer}
+    {var $searchbar = 8 < count($input->getItems())}
+    {var $atts = [
+        'x-data' => TRUE,
+        'x-select' => !$searchbar,
+        'x-select.searchbar' => $searchbar,
+        'x-cloak' => TRUE,
+    ]}
+
     {if $outer}
         <div class="row">
             {label $input class => 'col-sm-3 control-label' /}
             <div class="col-sm-9">
                 <div>
-                    {input $input, x-data => '', x-select => '', x-cloak => ''}
+                    {input $input, (expand) $atts}
                 </div>
             </div>
         </div>
     {else}
         <div>
-            {input $input, x-data => '', x-select => '', x-cloak => ''}
+            {input $input, (expand) $atts}
         </div>
     {/if}
 {/define}
 
 {define #filtertype-multi-select, $input, $outer}
+    {var $searchbar = 8 < count($input->getItems())}
+    {var $atts = [
+        'x-data' => TRUE,
+        'x-select' => !$searchbar,
+        'x-select.searchbar' => $searchbar,
+        'x-cloak' => TRUE,
+    ]}
+
     {if $outer}
         <div class="row">
             {label $input class => 'col-sm-3 control-label' /}
             <div class="col-sm-9">
                 <div>
-                    {input $input, x-data => '', x-select => '', x-cloak => ''}
+                    {input $input, (expand) $atts}
                 </div>
             </div>
         </div>
     {else}
         <div>
-            {input $input, x-data => '', x-select => '', x-cloak => ''}
+            {input $input, (expand) $atts}
         </div>
     {/if}
 {/define}

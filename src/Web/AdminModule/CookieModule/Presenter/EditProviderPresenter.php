@@ -118,7 +118,7 @@ final class EditProviderPresenter extends AdminPresenter
 			throw new InvalidStateException('The user is not allowed to read cookies.');
 		}
 
-		$control = $this->cookieListControlFactory->create($this->cookieProviderView->id, $this->validLocalesProvider);
+		$control = $this->cookieListControlFactory->create($this->validLocalesProvider, $this->cookieProviderView->id);
 
 		$control->configureAclChecks(CookieResource::class, CookieResource::UPDATE, CookieResource::DELETE);
 
@@ -134,8 +134,10 @@ final class EditProviderPresenter extends AdminPresenter
 			throw new InvalidStateException('The user is not allowed to create cookies.');
 		}
 
-		$control = $this->cookieFormModalControlFactory->create($this->validLocalesProvider, $this->cookieProviderView->id);
+		$control = $this->cookieFormModalControlFactory->create($this->validLocalesProvider);
 		$inner = $control->getInnerControl();
+
+		$inner->setCookieProviderId($this->cookieProviderView->id);
 
 		$inner->setFormFactoryOptions([
 			FormFactoryInterface::OPTION_AJAX => TRUE,

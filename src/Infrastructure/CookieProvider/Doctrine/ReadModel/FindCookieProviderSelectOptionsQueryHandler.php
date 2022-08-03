@@ -42,13 +42,16 @@ final class FindCookieProviderSelectOptionsQueryHandler implements QueryHandlerI
 			->select('c.id, c.name')
 			->from(CookieProvider::class, 'c')
 			->andWhere('c.deletedAt IS NULL')
-			->andWhere('c.private = false')
 			->orderBy('c.name', 'ASC');
 
 		if (NULL !== $query->projectId()) {
 			$qb->join(ProjectHasCookieProvider::class, 'phc', Join::WITH, 'phc.cookieProviderId = c.id AND phc.project = :projectId')
 				->join('phc.project', 'p', Join::WITH, 'p.deletedAt IS NULL')
 				->setParameter('projectId', $query->projectId());
+		}
+
+		if (!$query->privateAllowed()) {
+			$qb->andWhere('c.private = false');
 		}
 
 		$data = $qb->getQuery()

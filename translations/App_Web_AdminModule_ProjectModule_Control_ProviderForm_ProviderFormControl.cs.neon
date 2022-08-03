@@ -11,7 +11,6 @@ name:
 
 link:
 	field: Odkaz
-	required: Vyplňte prosím odkaz.
 	rule_url: Odkaz není validní URL.
 
 purpose:

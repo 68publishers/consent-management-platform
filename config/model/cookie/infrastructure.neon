@@ -21,6 +21,10 @@ services:
 	-
 		autowired: self
 		type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
+		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\CookieDataGridItemViewDataTransformer
+	-
+		autowired: self
+		type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
 		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\CookieApiViewDataTransformer
 	-
 		autowired: no

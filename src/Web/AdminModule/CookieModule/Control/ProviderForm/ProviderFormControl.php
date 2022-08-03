@@ -83,8 +83,8 @@ final class ProviderFormControl extends Control
 			->setDefaultValue(ProviderType::THIRD_PARTY);
 
 		$form->addText('link', 'link.field')
-			->setRequired('link.required')
-			->addRule($form::URL, 'link.rule_url');
+			->addCondition($form::FILLED, TRUE)
+				->addRule($form::URL, 'link.rule_url');
 
 		$form->addCheckbox('active', 'active.field')
 			->setDefaultValue(TRUE);

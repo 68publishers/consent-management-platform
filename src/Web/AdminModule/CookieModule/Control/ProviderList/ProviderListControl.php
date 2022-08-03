@@ -80,6 +80,10 @@ final class ProviderListControl extends Control
 		$grid->addColumnText('link', 'link', 'link.value')
 			->setFilterText('link');
 
+		$grid->addColumnNumber('number_of_cookies', 'number_of_cookies', 'numberOfCookies')
+			->setAlign('center')
+			->setSortable('numberOfCookies');
+
 		$grid->addColumnDateTimeTz('created_at', 'created_at', 'createdAt')
 			->setFormat('j.n.Y H:i:s')
 			->setSortable('createdAt')

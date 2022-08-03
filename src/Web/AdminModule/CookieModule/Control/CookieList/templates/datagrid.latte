@@ -1,12 +1,58 @@
 {extends $originalTemplate}
 
-{varType App\ReadModel\Cookie\CookieItemView $item}
+{varType App\ReadModel\Cookie\CookieDataGridItemView $item}
 {varType App\Application\GlobalSettings\Locale|null $_locale}
 
 {define col-category_name}
     {if NULL !== $item->categoryName}
         {$item->categoryName->value()}
     {/if}
+{/define}
+
+{define col-provider_name}
+    <div class="min-w-[200px]">
+        {if NULL !== $item->cookieProviderName}
+            {$item->cookieProviderName->value()}
+        {/if}
+    </div>
+{/define}
+
+{define col-projects}
+    <div class="min-w-[150px]">
+        {if NULL !== $item->projects && !empty($item->projects)}
+            {var $projects = $item->projects}
+            {var $maxBadges = min([2, count($projects)])}
+
+            <div class="whitespace-nowrap">
+                {for $i = 0; $i < $maxBadges; $i++}
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800 select-all">
+                        {array_shift($projects)}
+                    </span>
+                {/for}
+
+                {if 0 < count($projects)}
+                    {capture $tooltip}
+                        <div>
+                            <div n:foreach="$item->projects as $project" class="text-gray-800">
+                                <span class="block text-center px-2.5 py-0.5 my-1.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800 select-all">
+                                    {$project}
+                                </span>
+                            </div>
+                        </div>
+                    {/capture}
+
+                    {var $attrs = [
+                        'x-data' => TRUE,
+                        'x-tooltip.interactive.theme.light-border.placement.right.html.raw' => $tooltip
+                    ]}
+
+                    <span n:attr="$attrs">{_and_more_projects, count($projects)}</span>
+                {/if}
+            </div>
+        {else}
+            -
+        {/if}
+    </div>
 {/define}
 
 {define col-active}

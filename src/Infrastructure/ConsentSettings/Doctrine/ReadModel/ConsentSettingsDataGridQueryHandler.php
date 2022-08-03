@@ -45,7 +45,7 @@ final class ConsentSettingsDataGridQueryHandler implements QueryHandlerInterface
 			ConsentSettingsView::class,
 			[
 				'checksum' => ['applyLike', 'c.checksum'],
-				'shortIdentifier' => ['applyEquals', 'c.shortIdentifier'],
+				'shortIdentifier' => ['applyShortIdentifier', 'c.shortIdentifier'],
 				'createdAt' => ['applyDate', 'c.createdAt'],
 				'lastUpdateAt' => ['applyDate', 'c.lastUpdateAt'],
 			],
@@ -56,5 +56,17 @@ final class ConsentSettingsDataGridQueryHandler implements QueryHandlerInterface
 				'lastUpdateAt' => 'c.lastUpdateAt',
 			]
 		);
+	}
+
+	/**
+	 * @param \Doctrine\ORM\QueryBuilder $qb
+	 * @param string                     $column
+	 * @param mixed                      $value
+	 *
+	 * @return void
+	 */
+	private function applyShortIdentifier(QueryBuilder $qb, string $column, $value): void
+	{
+		$this->applyEquals($qb, $column, (int) $value);
 	}
 }

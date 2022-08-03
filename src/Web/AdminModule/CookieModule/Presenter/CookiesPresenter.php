@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Web\AdminModule\ProjectModule\Presenter;
+namespace App\Web\AdminModule\CookieModule\Presenter;
 
 use Nette\InvalidStateException;
+use App\Application\Acl\CookieResource;
 use App\Web\Ui\Form\FormFactoryInterface;
-use App\Application\Acl\ProjectCookieResource;
+use App\Web\AdminModule\Presenter\AdminPresenter;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControl;
@@ -17,9 +18,9 @@ use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieFormProcessi
 use App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControlFactoryInterface;
 
 /**
- * @IsAllowed(resource=ProjectCookieResource::class, privilege=ProjectCookieResource::READ)
+ * @IsAllowed(resource=CookieResource::class, privilege=CookieResource::READ)
  */
-final class CookiesPresenter extends SelectedProjectPresenter
+final class CookiesPresenter extends AdminPresenter
 {
 	private CookieListControlFactoryInterface $cookieListControlFactory;
 
@@ -52,12 +53,10 @@ final class CookiesPresenter extends SelectedProjectPresenter
 	 */
 	protected function createComponentList(): CookieListControl
 	{
-		$control = $this->cookieListControlFactory->create(
-			$this->validLocalesProvider->withLocalesConfig($this->projectView->locales),
-			$this->projectView->cookieProviderId
-		);
+		$control = $this->cookieListControlFactory->create($this->validLocalesProvider);
 
-		$control->configureAclChecks(ProjectCookieResource::class, ProjectCookieResource::UPDATE, ProjectCookieResource::DELETE);
+		$control->includeProjectsData(TRUE);
+		$control->configureAclChecks(CookieResource::class, CookieResource::UPDATE, CookieResource::DELETE);
 
 		return $control;
 	}
@@ -67,16 +66,12 @@ final class CookiesPresenter extends SelectedProjectPresenter
 	 */
 	protected function createComponentCookieModal(): CookieFormModalControl
 	{
-		if (!$this->getUser()->isAllowed(ProjectCookieResource::class, ProjectCookieResource::CREATE)) {
-			throw new InvalidStateException('The user is not allowed to create project\'s cookies.');
+		if (!$this->getUser()->isAllowed(CookieResource::class, CookieResource::CREATE)) {
+			throw new InvalidStateException('The user is not allowed to create cookies.');
 		}
 
-		$control = $this->cookieFormModalControlFactory->create(
-			$this->validLocalesProvider->withLocalesConfig($this->projectView->locales)
-		);
+		$control = $this->cookieFormModalControlFactory->create($this->validLocalesProvider);
 		$inner = $control->getInnerControl();
-
-		$inner->setCookieProviderId($this->projectView->cookieProviderId);
 
 		$inner->setFormFactoryOptions([
 			FormFactoryInterface::OPTION_AJAX => TRUE,

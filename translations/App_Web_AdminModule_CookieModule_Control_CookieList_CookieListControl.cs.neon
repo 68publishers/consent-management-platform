@@ -2,6 +2,8 @@ name: Název
 active: Aktivní
 category_name: Kategorie
 processing_time: Doba zpracování
+provider_name: Poskytovatel
+projects: Projekty
 created_at: Vytvořeno
 
 active_value: aktivní
@@ -9,6 +11,8 @@ inactive_value: neaktivní
 
 session: Session
 persistent: Persistent
+
+and_more_projects: 'a %count% další'
 
 delete_confirm:
 	question: 'Opravdu si přejete odstranit cookie <strong>"%name%"</strong>?'

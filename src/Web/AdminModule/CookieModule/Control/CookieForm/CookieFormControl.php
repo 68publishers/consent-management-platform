@@ -22,8 +22,10 @@ use App\Domain\Cookie\Command\UpdateCookieCommand;
 use App\Application\GlobalSettings\ValidLocalesProvider;
 use App\Domain\Cookie\Exception\NameUniquenessException;
 use App\Domain\CookieProvider\ValueObject\CookieProviderId;
+use App\ReadModel\CookieProvider\CookieProviderSelectOptionView;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
+use App\ReadModel\CookieProvider\FindCookieProviderSelectOptionsQuery;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieCreatedEvent;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieUpdatedEvent;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieFormProcessingFailedEvent;
@@ -31,8 +33,6 @@ use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieFormProcessi
 final class CookieFormControl extends Control
 {
 	use FormFactoryOptionsTrait;
-
-	private CookieProviderId $cookieProviderId;
 
 	private FormFactoryInterface $formFactory;
 
@@ -42,24 +42,36 @@ final class CookieFormControl extends Control
 
 	private ValidLocalesProvider $validLocalesProvider;
 
+	private ?CookieProviderId $cookieProviderId = NULL;
+
 	private ?CookieView $default;
 
 	/**
-	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId          $cookieProviderId
 	 * @param \App\Web\Ui\Form\FormFactoryInterface                            $formFactory
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface $commandBus
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface   $queryBus
 	 * @param \App\Application\GlobalSettings\ValidLocalesProvider             $validLocalesProvider
 	 * @param \App\ReadModel\Cookie\CookieView|NULL                            $default
 	 */
-	public function __construct(CookieProviderId $cookieProviderId, FormFactoryInterface $formFactory, CommandBusInterface $commandBus, QueryBusInterface $queryBus, ValidLocalesProvider $validLocalesProvider, ?CookieView $default = NULL)
+	public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, QueryBusInterface $queryBus, ValidLocalesProvider $validLocalesProvider, ?CookieView $default = NULL)
 	{
-		$this->cookieProviderId = $cookieProviderId;
 		$this->formFactory = $formFactory;
 		$this->commandBus = $commandBus;
 		$this->queryBus = $queryBus;
 		$this->validLocalesProvider = $validLocalesProvider;
 		$this->default = $default;
+	}
+
+	/**
+	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId $cookieProviderId
+	 *
+	 * @return $this
+	 */
+	public function setCookieProviderId(CookieProviderId $cookieProviderId): self
+	{
+		$this->cookieProviderId = $cookieProviderId;
+
+		return $this;
 	}
 
 	/**
@@ -74,6 +86,14 @@ final class CookieFormControl extends Control
 
 		$form->addText('name', 'name.field')
 			->setRequired('name.required');
+
+		$providers = $this->getCookieProviders();
+		$providerField = $form->addSelect('provider', 'provider.field', $providers)
+			->setPrompt('-------')
+			->setRequired('provider.required')
+			->setTranslator(NULL)
+			->checkDefaultValue(FALSE)
+			->setOption('searchbar', TRUE);
 
 		$form->addSelect('category', 'category.field', $this->getCategories())
 			->setPrompt('-------')
@@ -113,12 +133,23 @@ final class CookieFormControl extends Control
 
 			$form->setDefaults([
 				'name' => $this->default->name->value(),
+				'provider' => $providerDefaultValue = $this->default->cookieProviderId->toString(),
 				'category' => $this->default->categoryId->toString(),
 				'processing_time' => !$isExpiration ? $this->default->processingTime->value() : 'expiration',
 				'processing_time_mask' => $isExpiration ? $this->default->processingTime->value() : '',
 				'active' => $this->default->active,
 				'purposes' => array_map(static fn (Purpose $purpose): string => $purpose->value(), $this->default->purposes),
 			]);
+		} elseif (NULL !== $this->cookieProviderId) {
+			$form->setDefaults([
+				'provider' => $providerDefaultValue = $this->cookieProviderId->toString(),
+			]);
+		}
+
+		if (isset($providerDefaultValue) && array_key_exists($providerDefaultValue, $providers)) {
+			$providerField->setDisabled(TRUE)
+				->setOmitted(FALSE)
+				->setDefaultValue($providerDefaultValue);
 		}
 
 		$form->onSuccess[] = function (Form $form): void {
@@ -141,7 +172,7 @@ final class CookieFormControl extends Control
 			$cookieId = CookieId::new();
 			$command = CreateCookieCommand::create(
 				$values->category,
-				$this->cookieProviderId->toString(),
+				$values->provider,
 				$values->name,
 				'expiration' === $values->processing_time ? $values->processing_time_mask : $values->processing_time,
 				$values->active,
@@ -193,5 +224,23 @@ final class CookieFormControl extends Control
 		}
 
 		return $categories;
+	}
+
+	/**
+	 * @return array
+	 */
+	private function getCookieProviders(): array
+	{
+		$providers = [];
+		$query = FindCookieProviderSelectOptionsQuery::all()
+			->withPrivate(TRUE);
+
+		foreach ($this->queryBus->dispatch($query) as $cookieProviderSelectOptionView) {
+			assert($cookieProviderSelectOptionView instanceof CookieProviderSelectOptionView);
+
+			$providers += $cookieProviderSelectOptionView->toOption();
+		}
+
+		return $providers;
 	}
 }

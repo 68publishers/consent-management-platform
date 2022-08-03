@@ -1,0 +1,6 @@
+page_title: Seznam cookies
+add_new_cookie: Přidat cookie
+
+message:
+	cookie_created: Cookie byla vytvořena.
+	cookie_creation_failed: Při vytváření cookie došlo k chybě.

@@ -19,12 +19,16 @@ use App\ReadModel\Cookie\CookiesDataGridQuery;
 use App\Web\Ui\DataGrid\DataGridFactoryInterface;
 use App\Web\Ui\Modal\Confirm\ConfirmModalControl;
 use App\Domain\Cookie\Command\DeleteCookieCommand;
+use App\ReadModel\Project\ProjectSelectOptionView;
 use App\Application\GlobalSettings\ValidLocalesProvider;
+use App\ReadModel\Project\FindProjectSelectOptionsQuery;
 use App\Domain\CookieProvider\ValueObject\CookieProviderId;
+use App\ReadModel\CookieProvider\CookieProviderSelectOptionView;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use App\Web\Ui\Modal\Confirm\ConfirmModalControlFactoryInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
+use App\ReadModel\CookieProvider\FindCookieProviderSelectOptionsQuery;
 use App\Domain\CookieProvider\Exception\CookieProviderNotFoundException;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControl;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieUpdatedEvent;
@@ -33,8 +37,6 @@ use App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControlFa
 
 final class CookieListControl extends Control
 {
-	private CookieProviderId $cookieProviderId;
-
 	private ValidLocalesProvider $validLocalesProvider;
 
 	private CommandBusInterface $commandBus;
@@ -47,30 +49,41 @@ final class CookieListControl extends Control
 
 	private CookieFormModalControlFactoryInterface $cookieFormModalControlFactory;
 
+	private ?CookieProviderId $cookieProviderId;
+
 	private array $acl = [
 		'resource' => NULL,
 		'update' => NULL,
 		'delete' => NULL,
 	];
 
+	private bool $includeProjectsData = FALSE;
+
 	/**
-	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId                                     $cookieProviderId
 	 * @param \App\Application\GlobalSettings\ValidLocalesProvider                                        $validLocalesProvider
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface                            $commandBus
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface                              $queryBus
 	 * @param \App\Web\Ui\DataGrid\DataGridFactoryInterface                                               $dataGridFactory
 	 * @param \App\Web\Ui\Modal\Confirm\ConfirmModalControlFactoryInterface                               $confirmModalControlFactory
 	 * @param \App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControlFactoryInterface $cookieFormModalControlFactory
+	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId|NULL                                $cookieProviderId
 	 */
-	public function __construct(CookieProviderId $cookieProviderId, ValidLocalesProvider $validLocalesProvider, CommandBusInterface $commandBus, QueryBusInterface $queryBus, DataGridFactoryInterface $dataGridFactory, ConfirmModalControlFactoryInterface $confirmModalControlFactory, CookieFormModalControlFactoryInterface $cookieFormModalControlFactory)
-	{
-		$this->cookieProviderId = $cookieProviderId;
+	public function __construct(
+		ValidLocalesProvider $validLocalesProvider,
+		CommandBusInterface $commandBus,
+		QueryBusInterface $queryBus,
+		DataGridFactoryInterface $dataGridFactory,
+		ConfirmModalControlFactoryInterface $confirmModalControlFactory,
+		CookieFormModalControlFactoryInterface $cookieFormModalControlFactory,
+		?CookieProviderId $cookieProviderId = NULL
+	) {
 		$this->validLocalesProvider = $validLocalesProvider;
 		$this->commandBus = $commandBus;
 		$this->queryBus = $queryBus;
 		$this->dataGridFactory = $dataGridFactory;
 		$this->confirmModalControlFactory = $confirmModalControlFactory;
 		$this->cookieFormModalControlFactory = $cookieFormModalControlFactory;
+		$this->cookieProviderId = $cookieProviderId;
 	}
 
 	/**
@@ -78,13 +91,27 @@ final class CookieListControl extends Control
 	 * @param string|NULL $updatePrivilege
 	 * @param string|NULL $deletePrivilege
 	 *
-	 * @return void
+	 * @return $this
 	 */
-	public function configureAclChecks(string $resource, ?string $updatePrivilege, ?string $deletePrivilege): void
+	public function configureAclChecks(string $resource, ?string $updatePrivilege, ?string $deletePrivilege): self
 	{
 		$this->acl['resource'] = $resource;
 		$this->acl['update'] = $updatePrivilege;
 		$this->acl['delete'] = $deletePrivilege;
+
+		return $this;
+	}
+
+	/**
+	 * @param bool $includeProjectsData
+	 *
+	 * @return $this
+	 */
+	public function includeProjectsData(bool $includeProjectsData): self
+	{
+		$this->includeProjectsData = $includeProjectsData;
+
+		return $this;
 	}
 
 	/**
@@ -94,10 +121,17 @@ final class CookieListControl extends Control
 	protected function createComponentGrid(): DataGrid
 	{
 		$locale = $this->validLocalesProvider->getValidDefaultLocale();
-		$grid = $this->dataGridFactory->create(CookiesDataGridQuery::create($this->cookieProviderId->toString(), NULL !== $locale ? $locale->code() : NULL));
+		$query = CookiesDataGridQuery::create(NULL !== $locale ? $locale->code() : NULL)
+			->withProjectsData($this->includeProjectsData);
+
+		if (NULL !== $this->cookieProviderId) {
+			$query = $query->withCookieProviderId($this->cookieProviderId->toString());
+		}
+
+		$grid = $this->dataGridFactory->create($query);
 
 		$grid->setTranslator($this->getPrefixedTranslator());
-		$grid->setSessionNamePostfix($this->cookieProviderId->toString());
+		$grid->setSessionNamePostfix(NULL !== $this->cookieProviderId ? $this->cookieProviderId->toString() : '__all__');
 		$grid->setTemplateFile(__DIR__ . '/templates/datagrid.latte');
 		$grid->setTemplateVariables([
 			'_locale' => $locale,
@@ -120,6 +154,17 @@ final class CookieListControl extends Control
 			->setFilterMultiSelect($this->getCategories(), 'categoryName');
 
 		$grid->addColumnText('processing_time', 'processing_time');
+
+		if (NULL === $this->cookieProviderId) {
+			$grid->addColumnText('provider_name', 'provider_name')
+				->setSortable('providerName')
+				->setFilterMultiSelect($this->getCookieProviders(), 'providerName');
+		}
+
+		if ($this->includeProjectsData) {
+			$grid->addColumnText('projects', 'projects')
+				->setFilterMultiSelect($this->getProjects(), 'projects');
+		}
 
 		$grid->addColumnDateTimeTz('created_at', 'created_at', 'createdAt')
 			->setFormat('j.n.Y H:i:s')
@@ -152,7 +197,7 @@ final class CookieListControl extends Control
 			$cookieId = CookieId::fromString($id);
 			$cookieView = $this->queryBus->dispatch(GetCookieByIdQuery::create($cookieId->toString()));
 
-			if (!$cookieView instanceof CookieView || !$cookieView->cookieProviderId->equals($this->cookieProviderId)) {
+			if (!$cookieView instanceof CookieView || (NULL !== $this->cookieProviderId && !$cookieView->cookieProviderId->equals($this->cookieProviderId))) {
 				throw new InvalidStateException('Cookie provider not found.');
 			}
 
@@ -187,12 +232,16 @@ final class CookieListControl extends Control
 			$cookieId = CookieId::fromString($id);
 			$cookieView = $this->queryBus->dispatch(GetCookieByIdQuery::create($cookieId->toString()));
 
-			if (!$cookieView instanceof CookieView || !$cookieView->cookieProviderId->equals($this->cookieProviderId)) {
+			if (!$cookieView instanceof CookieView || (NULL !== $this->cookieProviderId && !$cookieView->cookieProviderId->equals($this->cookieProviderId))) {
 				throw new InvalidStateException('Cookie provider not found.');
 			}
 
-			$control = $this->cookieFormModalControlFactory->create($this->validLocalesProvider, $this->cookieProviderId, $cookieView);
+			$control = $this->cookieFormModalControlFactory->create($this->validLocalesProvider, $cookieView);
 			$inner = $control->getInnerControl();
+
+			if (NULL !== $this->cookieProviderId) {
+				$inner->setCookieProviderId($this->cookieProviderId);
+			}
 
 			$inner->setFormFactoryOptions([
 				FormFactoryInterface::OPTION_AJAX => TRUE,
@@ -227,5 +276,39 @@ final class CookieListControl extends Control
 		}
 
 		return $categories;
+	}
+
+	/**
+	 * @return array
+	 */
+	private function getCookieProviders(): array
+	{
+		$providers = [];
+		$query = FindCookieProviderSelectOptionsQuery::all()
+			->withPrivate(TRUE);
+
+		foreach ($this->queryBus->dispatch($query) as $cookieProviderSelectOptionView) {
+			assert($cookieProviderSelectOptionView instanceof CookieProviderSelectOptionView);
+
+			$providers += $cookieProviderSelectOptionView->toOption();
+		}
+
+		return $providers;
+	}
+
+	/**
+	 * @return array
+	 */
+	private function getProjects(): array
+	{
+		$options = [];
+
+		foreach ($this->queryBus->dispatch(FindProjectSelectOptionsQuery::all()) as $projectSelectOptionView) {
+			assert($projectSelectOptionView instanceof ProjectSelectOptionView);
+
+			$options += $projectSelectOptionView->toOption();
+		}
+
+		return $options;
 	}
 }

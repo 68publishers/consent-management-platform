@@ -32,10 +32,28 @@ final class FindCookieProviderSelectOptionsQuery extends AbstractQuery
 	}
 
 	/**
+	 * @param bool $privateAllowed
+	 *
+	 * @return $this
+	 */
+	public function withPrivate(bool $privateAllowed): self
+	{
+		return $this->withParam('private_allowed', $privateAllowed);
+	}
+
+	/**
 	 * @return string|NULL
 	 */
 	public function projectId(): ?string
 	{
 		return $this->getParam('project_id');
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function privateAllowed(): bool
+	{
+		return $this->getParam('private_allowed') ?? FALSE;
 	}
 }

@@ -301,7 +301,7 @@ module.exports = () => ({
                 return 'text-white bg-indigo-600 hover:bg-indigo-700';
             }
 
-            return 'text-indigo-700 bg-indigo-100 hover:bg-indigo-200';
+            return 'text-gray-700 hover:bg-gray-200';
         },
     },
 });

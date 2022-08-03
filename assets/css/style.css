@@ -1,6 +1,7 @@
 @import 'toastr';
 @import 'flatpickr/dist/themes/airbnb.css';
 @import 'tippy.js/dist/tippy.css';
+@import 'tippy.js/themes/light-border.css';
 @import 'tippy.js/dist/svg-arrow.css';
 @import 'codemirror/lib/codemirror.css';
 @import '_codemirror.css';

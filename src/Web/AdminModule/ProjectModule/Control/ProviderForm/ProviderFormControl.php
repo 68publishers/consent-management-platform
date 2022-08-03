@@ -71,8 +71,8 @@ final class ProviderFormControl extends Control
 			->setRequired('name.required');
 
 		$form->addText('link', 'link.field')
-			->setRequired('link.required')
-			->addRule($form::URL, 'link.rule_url');
+			->addCondition($form::FILLED, TRUE)
+				->addRule($form::URL, 'link.rule_url');
 
 		$namesContainer = $form->addContainer('purposes');
 

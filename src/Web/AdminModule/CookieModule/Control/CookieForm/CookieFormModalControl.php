@@ -7,13 +7,10 @@ namespace App\Web\AdminModule\CookieModule\Control\CookieForm;
 use App\ReadModel\Cookie\CookieView;
 use App\Web\Ui\Modal\AbstractModalControl;
 use App\Application\GlobalSettings\ValidLocalesProvider;
-use App\Domain\CookieProvider\ValueObject\CookieProviderId;
 
 final class CookieFormModalControl extends AbstractModalControl
 {
 	private ValidLocalesProvider $validLocalesProvider;
-
-	private CookieProviderId $cookieProviderId;
 
 	private ?CookieView $default;
 
@@ -21,14 +18,12 @@ final class CookieFormModalControl extends AbstractModalControl
 
 	/**
 	 * @param \App\Application\GlobalSettings\ValidLocalesProvider                                   $validLocalesProvider
-	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId                                $cookieProviderId
 	 * @param \App\ReadModel\Cookie\CookieView|NULL                                                  $default
 	 * @param \App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormControlFactoryInterface $cookieFormControlFactory
 	 */
-	public function __construct(ValidLocalesProvider $validLocalesProvider, CookieProviderId $cookieProviderId, ?CookieView $default, CookieFormControlFactoryInterface $cookieFormControlFactory)
+	public function __construct(ValidLocalesProvider $validLocalesProvider, ?CookieView $default, CookieFormControlFactoryInterface $cookieFormControlFactory)
 	{
 		$this->validLocalesProvider = $validLocalesProvider;
-		$this->cookieProviderId = $cookieProviderId;
 		$this->default = $default;
 		$this->cookieFormControlFactory = $cookieFormControlFactory;
 	}
@@ -56,6 +51,6 @@ final class CookieFormModalControl extends AbstractModalControl
 	 */
 	protected function createComponentCookieForm(): CookieFormControl
 	{
-		return $this->cookieFormControlFactory->create($this->validLocalesProvider, $this->cookieProviderId, $this->default);
+		return $this->cookieFormControlFactory->create($this->validLocalesProvider, $this->default);
 	}
 }

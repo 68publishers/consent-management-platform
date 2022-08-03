@@ -10,10 +10,10 @@ use App\Domain\CookieProvider\ValueObject\CookieProviderId;
 interface CookieListControlFactoryInterface
 {
 	/**
-	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId $cookieProviderId
-	 * @param \App\Application\GlobalSettings\ValidLocalesProvider    $validLocalesProvider
+	 * @param \App\Application\GlobalSettings\ValidLocalesProvider         $validLocalesProvider
+	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId|NULL $cookieProviderId
 	 *
 	 * @return \App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControl
 	 */
-	public function create(CookieProviderId $cookieProviderId, ValidLocalesProvider $validLocalesProvider): CookieListControl;
+	public function create(ValidLocalesProvider $validLocalesProvider, ?CookieProviderId $cookieProviderId = NULL): CookieListControl;
 }
