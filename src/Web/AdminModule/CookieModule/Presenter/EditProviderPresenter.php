@@ -67,7 +67,7 @@ final class EditProviderPresenter extends AdminPresenter
 	{
 		$cookieProviderView = CookieProviderId::isValid($id) ? $this->queryBus->dispatch(GetCookieProviderByIdQuery::create($id)) : NULL;
 
-		if (!$cookieProviderView instanceof CookieProviderView || NULL !== $cookieProviderView->deletedAt || $cookieProviderView->private) {
+		if (!$cookieProviderView instanceof CookieProviderView || $cookieProviderView->private) {
 			$this->subscribeFlashMessage(FlashMessage::warning('provider_not_found'));
 			$this->redirect('Providers:');
 		}

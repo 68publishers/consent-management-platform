@@ -42,6 +42,7 @@ final class GetCookieByIdQueryHandler implements QueryHandlerInterface
 			->from(Cookie::class, 'c')
 			->leftJoin('c.translations', 'ct')
 			->where('c.id = :id')
+			->where('c.deletedAt IS NULL')
 			->setParameter('id', $query->id())
 			->getQuery()
 			->getOneOrNullResult(AbstractQuery::HYDRATE_ARRAY);

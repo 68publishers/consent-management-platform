@@ -41,6 +41,7 @@ final class GetProjectByIdQueryHandler implements QueryHandlerInterface
 			->select('p')
 			->from(Project::class, 'p')
 			->where('p.id = :id')
+			->andWhere('p.deletedAt IS NULL')
 			->setParameter('id', $query->id())
 			->getQuery()
 			->getOneOrNullResult(AbstractQuery::HYDRATE_ARRAY);

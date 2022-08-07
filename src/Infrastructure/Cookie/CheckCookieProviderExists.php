@@ -30,7 +30,7 @@ final class CheckCookieProviderExists implements CheckCookieProviderExistsInterf
 	{
 		$cookieProvider = $this->queryBus->dispatch(GetCookieProviderByIdQuery::create($cookieProviderId->toString()));
 
-		if (!$cookieProvider instanceof CookieProviderView || NULL !== $cookieProvider->deletedAt) {
+		if (!$cookieProvider instanceof CookieProviderView) {
 			throw CookieProviderNotFoundException::withId($cookieProviderId);
 		}
 	}

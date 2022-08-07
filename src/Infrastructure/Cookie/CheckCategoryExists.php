@@ -30,7 +30,7 @@ final class CheckCategoryExists implements CheckCategoryExistsInterface
 	{
 		$category = $this->queryBus->dispatch(GetCategoryByIdQuery::create($categoryId->toString()));
 
-		if (!$category instanceof CategoryView || NULL !== $category->deletedAt) {
+		if (!$category instanceof CategoryView) {
 			throw CategoryNotFoundException::withId($categoryId);
 		}
 	}

@@ -51,7 +51,7 @@ final class EditCategoryPresenter extends AdminPresenter
 	{
 		$categoryView = CategoryId::isValid($id) ? $this->queryBus->dispatch(GetCategoryByIdQuery::create($id)) : NULL;
 
-		if (!$categoryView instanceof CategoryView || NULL !== $categoryView->deletedAt) {
+		if (!$categoryView instanceof CategoryView) {
 			$this->subscribeFlashMessage(FlashMessage::warning('category_not_found'));
 			$this->redirect('Categories:');
 		}

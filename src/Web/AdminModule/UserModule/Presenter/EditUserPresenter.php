@@ -59,7 +59,7 @@ final class EditUserPresenter extends AdminPresenter
 	{
 		$userView = UserId::isValid($id) ? $this->queryBus->dispatch(GetUserByIdQuery::create($id)) : NULL;
 
-		if (!$userView instanceof UserView || NULL !== $userView->deletedAt) {
+		if (!$userView instanceof UserView) {
 			$this->subscribeFlashMessage(FlashMessage::warning('user_not_found'));
 			$this->redirect('Users:');
 		}
