@@ -19,6 +19,7 @@ function Codemirror(Alpine) {
             showTrailingSpace: true,
             viewportMargin: Infinity,
             autoRefresh: true,
+            lineNumbers: -1 !== modifiers.indexOf('linenumbers'),
             readOnly: -1 !== modifiers.indexOf('readonly'),
             lineWrapping: -1 !== modifiers.indexOf('wrap'),
         });

@@ -5,3 +5,7 @@
 textarea.codemirror-h-auto + .CodeMirror {
     @apply h-auto;
 }
+
+textarea.codemirror-resize + .CodeMirror {
+    @apply resize-y overflow-auto;
+}

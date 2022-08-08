@@ -15,7 +15,7 @@
                         {$consentSettingsView->checksum->value()}
                     </div>
                     <div class="w-full">
-                        <textarea x-data x-codemirror.readonly.wrap="javascript" class="codemirror-h-auto">{Nette\Utils\Json::encode($settings->get('settings'), Nette\Utils\Json::PRETTY)}</textarea>
+                        <textarea x-data x-codemirror.linenumbers.readonly.wrap="javascript" class="codemirror-h-auto">{Nette\Utils\Json::encode($settings->get('settings'), Nette\Utils\Json::PRETTY)}</textarea>
                     </div>
                 </div>
             </div>

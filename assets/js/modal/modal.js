@@ -19,6 +19,12 @@ const Bridge = require('./modal-bridge');
 
         Bridge.addListener('opened', function (modal) {
             // update url
+
+            // fix autosize in modals
+            modal.$el.querySelectorAll('[x-autosize]').forEach(el => {
+                el.style.minHeight = el.getBoundingClientRect().height + 'px';
+                el.dispatchEvent(new Event('input', {bubbles:true}));
+            });
         });
 
         Bridge.addListener('closed', function (modal) {

@@ -20,10 +20,11 @@ module.exports = () => ({
             if (autofocusedEl) {
                 this.$focus.focus(autofocusedEl);
             }
+
+            Bridge.dispatchOpened(this);
         });
 
         this.opened = true;
-        Bridge.dispatchOpened(this);
     },
 
     close() {
