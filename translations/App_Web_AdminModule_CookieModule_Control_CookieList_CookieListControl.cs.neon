@@ -12,7 +12,7 @@ inactive_value: neaktivní
 session: Session
 persistent: Persistent
 
-and_more_projects: 'a %count% další'
+and_more_projects: "[1,4] a %count% další|[5,Inf[ a %count% dalších"
 
 delete_confirm:
 	question: 'Opravdu si přejete odstranit cookie <strong>"%name%"</strong>?'

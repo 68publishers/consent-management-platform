@@ -1,3 +1,5 @@
+'use strict';
+
 function Codemirror(Alpine) {
     const codemirror = require('codemirror');
 

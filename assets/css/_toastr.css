@@ -11,10 +11,6 @@
     @apply static;
 }
 
-#toast-container > .toast.toast-success {
-    @apply ring-green-500;
-}
-
 #toast-container > .toast::before {
     @apply absolute w-6 h-6 top-3.5 left-3.5;
     content: url("data:image/svg+xml,%3Csvg width='24' height='24' xmlns='http://www.w3.org/2000/svg' stroke-width='2' stroke='currentColor' fill='none'%3E%3Cg%3E%3Cpath stroke='%2322c55e' id='svg_1' d='m9,12l2,2l4,-4m6,2a9,9 0 1 1 -18,0a9,9 0 0 1 18,0z' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E");
@@ -34,18 +30,6 @@
 
 #toast-container > .toast.toast-info::before {
     content: url("data:image/svg+xml,%3Csvg width='24' height='24' xmlns='http://www.w3.org/2000/svg' stroke-width='2' stroke='currentColor' fill='none'%3E%3Cg%3E%3Cpath stroke='%233b82f6' id='svg_1' d='m13,16l-1,0l0,-4l-1,0m1,-4l0.01,0m8.99,4a9,9 0 1 1 -18,0a9,9 0 0 1 18,0z' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E");
-}
-
-#toast-container > .toast.toast-info {
-    @apply ring-blue-500;
-}
-
-#toast-container > .toast.toast-warning {
-    @apply ring-yellow-500;
-}
-
-#toast-container > .toast.toast-error {
-    @apply ring-red-500;
 }
 
 #toast-container > .toast .toast-title,

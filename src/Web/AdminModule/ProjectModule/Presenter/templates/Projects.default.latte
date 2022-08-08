@@ -24,7 +24,7 @@
 
 {block #content}
 
-<ul role="list" class="grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 px-4 sm:px-0">
+<ul role="list" class="grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 px-4 sm:px-0">
     <li n:foreach="$projects as $project" class="col-span-1 shadow-sm rounded-md">
         <div class="flex h-full">
             {if $user->isAllowed(App\Application\Acl\ProjectConsentResource::class, App\Application\Acl\ProjectConsentResource::READ)}

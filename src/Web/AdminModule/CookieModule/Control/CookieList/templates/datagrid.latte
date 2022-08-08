@@ -33,7 +33,7 @@
                 {if 0 < count($projects)}
                     {capture $tooltip}
                         <div>
-                            <div n:foreach="$item->projects as $project" class="text-gray-800">
+                            <div n:foreach="$projects as $project" class="text-gray-800">
                                 <span class="block text-center px-2.5 py-0.5 my-1.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800 select-all">
                                     {$project}
                                 </span>

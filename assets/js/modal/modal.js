@@ -22,8 +22,7 @@ const Bridge = require('./modal-bridge');
 
             // fix autosize in modals
             modal.$el.querySelectorAll('[x-autosize]').forEach(el => {
-                el.style.minHeight = el.getBoundingClientRect().height + 'px';
-                el.dispatchEvent(new Event('input', {bubbles:true}));
+                el.refreshAutosize && el.refreshAutosize();
             });
         });
 

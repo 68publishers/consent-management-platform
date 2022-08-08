@@ -1,3 +1,5 @@
+'use strict';
+
 function Flatpickr(Alpine) {
     const flatpickr = require('flatpickr').default;
     const dictionary = require('../dictionary')({
