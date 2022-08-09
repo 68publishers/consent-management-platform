@@ -1,5 +1,7 @@
 {templateType App\Web\AdminModule\Presenter\DashboardTemplate}
 
+{block #page_size}max-w-14xl{/block}
+
 {block #content}
 
 <div n:syntax="double" x-data="dashboard" data-endpoint="{{App\Api\Internal\Controller\StatisticsController::ENDPOINT_PROJECTS}}" data-projects="{{Nette\Utils\Json::encode($projectsData)}}" class="w-full px-4 sm:px-0">

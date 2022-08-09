@@ -14,6 +14,9 @@ module.exports = {
       fontFamily: {
         sans: ['Inter var', ...require('tailwindcss/defaultTheme').fontFamily.sans],
       },
+      maxWidth: {
+        '14xl': '160rem',
+      }
     },
   },
   plugins: [
