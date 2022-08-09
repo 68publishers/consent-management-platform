@@ -1,19 +1,21 @@
+@import 'tailwindcss/base.css';
+
 @import 'toastr';
 @import 'flatpickr/dist/themes/airbnb.css';
 @import 'tippy.js/dist/tippy.css';
 @import 'tippy.js/themes/light-border.css';
 @import 'tippy.js/dist/svg-arrow.css';
 @import 'codemirror/lib/codemirror.css';
+@import 'ublaboo-datagrid/assets/datagrid.css';
+
+@import 'tailwindcss/components.css';
+@import 'tailwindcss/utilities.css';
+
 @import '_codemirror.css';
 @import '_datagrid.css';
 @import '_flatpickr.css';
 @import '_footer.css';
-@import '_spinner.css';
-@import '_tags.css';
 @import '_toastr.css';
-@import '_x-cloak.css';
-@import '_hidden.css';
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import '_tags.css';
+@import '_spinner.css';
+@import '_utils.css';

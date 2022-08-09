@@ -1,112 +1,123 @@
-@import 'ublaboo-datagrid/assets/datagrid.css';
+@layer components {
+    .datagrid {
+        @apply p-0 bg-transparent;
+    }
 
-.datagrid {
-    @apply p-0 bg-transparent;
-}
+    .datagrid .table {
+        @apply min-w-full divide-y divide-gray-300;
+    }
 
-.datagrid .table {
-    @apply min-w-full divide-y divide-gray-300;
-}
+    .datagrid .table > thead {
+        @apply bg-gray-50;
+    }
 
-.datagrid .table > thead {
-    @apply bg-gray-50;
-}
+    .datagrid .table > thead th, .datagrid .table > thead td {
+        @apply px-3 py-3.5 text-sm font-semibold text-gray-900 whitespace-nowrap;
+    }
 
-.datagrid .table > thead th, .datagrid .table > thead td {
-    @apply px-3 py-3.5 text-sm font-semibold text-gray-900 whitespace-nowrap;
-}
+    .datagrid .table > thead tr:nth-child(even) th, .datagrid .table > thead tr:nth-child(even) td {
+        @apply pt-0;
+    }
 
-.datagrid .table > thead tr:nth-child(even) th, .datagrid .table > thead tr:nth-child(even) td {
-    @apply pt-0;
-}
+    .datagrid .table > thead th.col-action, .datagrid .table > thead td.col-action {
+        @apply relative py-3.5 pl-6 pr-4 sm:pr-6;
+    }
 
-.datagrid .table > thead th.col-action, .datagrid .table > thead td.col-action {
-    @apply relative py-3.5 pl-6 pr-4 sm:pr-6;
-}
+    .datagrid .table > tbody {
+        @apply divide-y divide-gray-200 bg-white;
+    }
 
-.datagrid .table > tbody {
-    @apply divide-y divide-gray-200 bg-white;
-}
+    .datagrid .table > tbody tr:nth-child(even) {
+        @apply bg-gray-50;
+    }
 
-.datagrid .table > tbody tr:nth-child(even) {
-    @apply bg-gray-50;
-}
+    .datagrid .table > tbody th, .datagrid .table > tbody td {
+        @apply whitespace-nowrap px-3 py-4 text-sm text-gray-600;
+    }
 
-.datagrid .table > tbody th, .datagrid .table > tbody td {
-    @apply whitespace-nowrap px-3 py-4 text-sm text-gray-600;
-}
+    .datagrid .table > tbody th.col-action, .datagrid .table > tbody td.col-action {
+        @apply pl-6;
+    }
 
-.datagrid .table > tbody th.col-action, .datagrid .table > tbody td.col-action {
-    @apply pl-6;
-}
+    .datagrid .table > tbody td.col-action > a:not(:first-child) {
+        @apply ml-1.5;
+    }
 
-.datagrid .table > tbody td.col-action > a:not(:first-child) {
-    @apply ml-1.5;
-}
+    .datagrid input.form-control {
+        @apply shadow-sm font-normal focus:ring-indigo-500 focus:border-indigo-500 block text-sm border-gray-300 rounded-md;
+    }
 
-.datagrid input.form-control {
-    @apply shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full text-sm border-gray-300 rounded-md;
-}
+    .datagrid select.form-control {
+        @apply block font-normal py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm;
+    }
 
-.datagrid select.form-control {
-    @apply block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm;
-}
+    .datagrid .btn {
+        @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm;
+    }
 
-.datagrid .btn {
-    @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm;
-}
+    .datagrid .btn.btn-sm {
+        @apply px-3 py-2 rounded;
+    }
 
-.datagrid .btn.btn-sm {
-    @apply px-3 py-2 rounded;
-}
+    .datagrid .btn.btn-primary {
+        @apply text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
+    }
 
-.datagrid .btn.btn-primary {
-    @apply text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
-}
+    .datagrid .btn.btn-danger {
+        @apply text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500;
+    }
 
-.datagrid .btn.btn-danger {
-    @apply text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500;
-}
+    .datagrid .row-grid-bottom {
+        @apply border-0 pt-2 pb-0;
+    }
 
-.datagrid .row-grid-bottom {
-    @apply border-0 pt-2 pb-0;
-}
+    .datagrid .row-grid-bottom .col-items {
+        @apply py-0.5 w-auto;
+    }
 
-.datagrid .row-grid-bottom .col-items {
-    @apply py-0.5 w-auto;
-}
+    .datagrid .row-grid-bottom .col-pagination {
+        @apply py-0.5 w-auto;
+        text-align: center;
+    }
 
-.datagrid .row-grid-bottom .col-pagination {
-    @apply text-center py-0.5 w-auto;
-}
+    .datagrid .row-grid-bottom .col-per-page {
+        @apply flex items-center py-0.5 w-auto relative;
+        text-align: right;
+    }
 
-.datagrid .row-grid-bottom .col-per-page {
-    @apply flex items-center text-right py-0.5 w-auto relative;
-}
+    .datagrid .row-grid-bottom .col-per-page > [x-data="select"] {
+        @apply min-w-[80px];
+    }
 
-.datagrid .row-grid-bottom .col-per-page > [x-data="select"] {
-    @apply min-w-[80px];
-}
+    .datagrid .table > thead th a, .datagrid .table > thead td a {
+        @apply text-indigo-500;
+    }
 
-.datagrid .table > thead th a, .datagrid .table > thead td a {
-    @apply text-indigo-500;
-}
+    .datagrid .link, .datagrid .table > thead th a.sort {
+        @apply text-indigo-700;
+    }
 
-.datagrid .link, .datagrid .table > thead th a.sort {
-    @apply text-indigo-700;
-}
+    .ublaboo-spinner {
+        content: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3Csvg xmlns:svg='http://www.w3.org/2000/svg' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.0' width='64px' height='64px' viewBox='0 0 128 128' xml:space='preserve'%3E%3Cscript type='text/ecmascript' xlink:href='//faviconer.net/jscripts/smil.user.js'/%3E%3Cg%3E%3Cpath d='M75.4 126.63a11.43 11.43 0 0 1-2.1-22.65 40.9 40.9 0 0 0 30.5-30.6 11.4 11.4 0 1 1 22.27 4.87h.02a63.77 63.77 0 0 1-47.8 48.05v-.02a11.38 11.38 0 0 1-2.93.37z' fill='%234338ca' fill-opacity='1'/%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 64 64' to='360 64 64' dur='800ms' repeatCount='indefinite'%3E%3C/animateTransform%3E%3C/g%3E%3C/svg%3E");
+        @apply inline-flex h-6 w-6 align-middle mr-4 absolute left-[-2rem];
+    }
 
-.ublaboo-spinner {
-    content: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3Csvg xmlns:svg='http://www.w3.org/2000/svg' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.0' width='64px' height='64px' viewBox='0 0 128 128' xml:space='preserve'%3E%3Cscript type='text/ecmascript' xlink:href='//faviconer.net/jscripts/smil.user.js'/%3E%3Cg%3E%3Cpath d='M75.4 126.63a11.43 11.43 0 0 1-2.1-22.65 40.9 40.9 0 0 0 30.5-30.6 11.4 11.4 0 1 1 22.27 4.87h.02a63.77 63.77 0 0 1-47.8 48.05v-.02a11.38 11.38 0 0 1-2.93.37z' fill='%234338ca' fill-opacity='1'/%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 64 64' to='360 64 64' dur='800ms' repeatCount='indefinite'%3E%3C/animateTransform%3E%3C/g%3E%3C/svg%3E");
-    @apply inline-flex h-6 w-6 align-middle mr-4 absolute left-[-2rem];
-}
+    .datagrid thead [x-data="select"],
+    .datagrid thead input {
+        @apply w-[150px] md:w-[180px] 6xl:w-[250px];
+    }
 
-.datagrid [x-data="select"] {
-    min-width: 150px;
-    max-width: 200px;
-}
+    .datagrid thead [x-data="select"] [x-bind="selectOptions"] {
+        @apply min-w-[150px] md:min-w-[180px] 6xl:min-w-[250px] w-auto;
+    }
 
-.datagrid [x-data="select"] [x-bind="selectOptions"] {
-    min-width: 150px;
-    width: auto;
+    .datagrid thead th.text-center [x-data="select"],
+    .datagrid thead th.text-center input {
+        margin: 0 auto;
+    }
+
+    .datagrid thead th.text-right [x-data="select"],
+    .datagrid thead th.text-right input {
+        margin: 0 0 0 auto;
+    }
 }

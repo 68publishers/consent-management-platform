@@ -292,7 +292,7 @@ function Select(Alpine) {
         selectEl.setAttribute('x-data', 'select');
         selectEl.setAttribute('x-bind', 'select');
         selectEl.setAttribute('data-cid', cid);
-        selectEl.setAttribute('class', 'relative w-full');
+        selectEl.setAttribute('class', 'relative w-full font-normal');
 
         const optionsEl = document.createElement('div');
         optionsEl.innerHTML = `

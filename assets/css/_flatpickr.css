@@ -1,157 +1,159 @@
-.flatpickr-calendar {
-    @apply shadow;
-}
+@layer components {
+    .flatpickr-calendar {
+        @apply shadow;
+    }
 
-.flatpickr-calendar.open {
-    @apply my-0.5;
-}
+    .flatpickr-calendar.open {
+        @apply my-0.5;
+    }
 
-.flatpickr-calendar:before, .flatpickr-calendar:after {
-    @apply hidden;
-}
+    .flatpickr-calendar:before, .flatpickr-calendar:after {
+        @apply hidden;
+    }
 
-span.flatpickr-day.today:not(.selected),
-span.flatpickr-day.prevMonthDay.today:not(.selected),
-span.flatpickr-day.nextMonthDay.today:not(.selected) {
-    position: relative;
-    border-bottom-color: #e9e9e9;
-}
+    span.flatpickr-day.today:not(.selected),
+    span.flatpickr-day.prevMonthDay.today:not(.selected),
+    span.flatpickr-day.nextMonthDay.today:not(.selected) {
+        position: relative;
+        border-bottom-color: #e9e9e9;
+    }
 
-span.flatpickr-day.today:hover {
-    border-color: #e9e9e9;
-}
+    span.flatpickr-day.today:hover {
+        border-color: #e9e9e9;
+    }
 
-span.flatpickr-day.today:not(.selected):hover,
-span.flatpickr-day.prevMonthDay.today:not(.selected):hover,
-span.flatpickr-day.nextMonthDay.today:not(.selected):hover {
-    background: #e9e9e9;
-    border-color: #e9e9e9;
-    color: #404848;
-}
+    span.flatpickr-day.today:not(.selected):hover,
+    span.flatpickr-day.prevMonthDay.today:not(.selected):hover,
+    span.flatpickr-day.nextMonthDay.today:not(.selected):hover {
+        background: #e9e9e9;
+        border-color: #e9e9e9;
+        color: #404848;
+    }
 
-span.flatpickr-day.selected,
-span.flatpickr-day.startRange,
-span.flatpickr-day.endRange,
-span.flatpickr-day.selected.inRange,
-span.flatpickr-day.startRange.inRange,
-span.flatpickr-day.endRange.inRange,
-span.flatpickr-day.selected:focus,
-span.flatpickr-day.startRange:focus,
-span.flatpickr-day.endRange:focus,
-span.flatpickr-day.selected:hover,
-span.flatpickr-day.startRange:hover,
-span.flatpickr-day.endRange:hover,
-span.flatpickr-day.selected.prevMonthDay,
-span.flatpickr-day.startRange.prevMonthDay,
-span.flatpickr-day.endRange.prevMonthDay,
-span.flatpickr-day.selected.nextMonthDay,
-span.flatpickr-day.startRange.nextMonthDay,
-span.flatpickr-day.endRange.nextMonthDay,
+    span.flatpickr-day.selected,
+    span.flatpickr-day.startRange,
+    span.flatpickr-day.endRange,
+    span.flatpickr-day.selected.inRange,
+    span.flatpickr-day.startRange.inRange,
+    span.flatpickr-day.endRange.inRange,
+    span.flatpickr-day.selected:focus,
+    span.flatpickr-day.startRange:focus,
+    span.flatpickr-day.endRange:focus,
+    span.flatpickr-day.selected:hover,
+    span.flatpickr-day.startRange:hover,
+    span.flatpickr-day.endRange:hover,
+    span.flatpickr-day.selected.prevMonthDay,
+    span.flatpickr-day.startRange.prevMonthDay,
+    span.flatpickr-day.endRange.prevMonthDay,
+    span.flatpickr-day.selected.nextMonthDay,
+    span.flatpickr-day.startRange.nextMonthDay,
+    span.flatpickr-day.endRange.nextMonthDay,
 
-span.flatpickr-day.today:not(.selected).startRange,
-span.flatpickr-day.today:not(.selected).endRange,
-span.flatpickr-day.prevMonthDay.today:not(.selected).startRange:hover,
-span.flatpickr-day.prevMonthDay.today:not(.selected).endRange:hover,
-span.flatpickr-day.nextMonthDay.today:not(.selected).startRange:hover,
-span.flatpickr-day.nextMonthDay.today:not(.selected).endRange:hover {
-    @apply bg-indigo-700 text-white border-indigo-700;
-}
+    span.flatpickr-day.today:not(.selected).startRange,
+    span.flatpickr-day.today:not(.selected).endRange,
+    span.flatpickr-day.prevMonthDay.today:not(.selected).startRange:hover,
+    span.flatpickr-day.prevMonthDay.today:not(.selected).endRange:hover,
+    span.flatpickr-day.nextMonthDay.today:not(.selected).startRange:hover,
+    span.flatpickr-day.nextMonthDay.today:not(.selected).endRange:hover {
+        @apply bg-indigo-700 text-white border-indigo-700;
+    }
 
-span.flatpickr-day.flatpickr-disabled,
-span.flatpickr-day.flatpickr-disabled:hover,
-span.flatpickr-day.prevMonthDay,
-span.flatpickr-day.nextMonthDay,
-span.flatpickr-day.notAllowed,
-span.flatpickr-day.notAllowed.prevMonthDay,
-span.flatpickr-day.notAllowed.nextMonthDay {
-    @apply border-r-transparent;
-}
+    span.flatpickr-day.flatpickr-disabled,
+    span.flatpickr-day.flatpickr-disabled:hover,
+    span.flatpickr-day.prevMonthDay,
+    span.flatpickr-day.nextMonthDay,
+    span.flatpickr-day.notAllowed,
+    span.flatpickr-day.notAllowed.prevMonthDay,
+    span.flatpickr-day.notAllowed.nextMonthDay {
+        @apply border-r-transparent;
+    }
 
-span.flatpickr-day.today:after {
-    content: '';
-    @apply absolute w-3/4 h-3/4 top-2/4 left-2/4 translate-y-[-50%] translate-x-[-50%] bg-gray-200 rounded-full;
-    z-index: -1;
-}
+    span.flatpickr-day.today:after {
+        content: '';
+        @apply absolute w-3/4 h-3/4 top-2/4 left-2/4 translate-y-[-50%] translate-x-[-50%] bg-gray-200 rounded-full;
+        z-index: -1;
+    }
 
-span.flatpickr-day.today:not(.selected):not(.startRange):not(.endRange):not(.inRange):hover:after {
-    @apply bg-gray-100;
-}
+    span.flatpickr-day.today:not(.selected):not(.startRange):not(.endRange):not(.inRange):hover:after {
+        @apply bg-gray-100;
+    }
 
-span.flatpickr-day.today.selected:after,
-span.flatpickr-day.today.selected:hover:after,
-span.flatpickr-day.today.selected:hover:after,
-span.flatpickr-day.today.startRange:after,
-span.flatpickr-day.today.endRange:after,
-span.flatpickr-day.today.startRange:hover:after,
-span.flatpickr-day.today.endRange:hover:after {
-    @apply bg-indigo-500;
-}
+    span.flatpickr-day.today.selected:after,
+    span.flatpickr-day.today.selected:hover:after,
+    span.flatpickr-day.today.selected:hover:after,
+    span.flatpickr-day.today.startRange:after,
+    span.flatpickr-day.today.endRange:after,
+    span.flatpickr-day.today.startRange:hover:after,
+    span.flatpickr-day.today.endRange:hover:after {
+        @apply bg-indigo-500;
+    }
 
-span.flatpickr-day.today.inRange:after {
-    @apply bg-indigo-200;
-}
+    span.flatpickr-day.today.inRange:after {
+        @apply bg-indigo-200;
+    }
 
-span.flatpickr-day.startRange:not(.endRange) {
-    border-top-left-radius: 1rem !important;
-    border-bottom-left-radius: 1rem !important;
-}
+    span.flatpickr-day.startRange:not(.endRange) {
+        border-top-left-radius: 1rem !important;
+        border-bottom-left-radius: 1rem !important;
+    }
 
-span.flatpickr-day.endRange:not(.startRange) {
-    border-top-right-radius: 1rem !important;
-    border-bottom-right-radius: 1rem !important;
-}
+    span.flatpickr-day.endRange:not(.startRange) {
+        border-top-right-radius: 1rem !important;
+        border-bottom-right-radius: 1rem !important;
+    }
 
-span.flatpickr-day.inRange,
-span.flatpickr-day.prevMonthDay.inRange,
-span.flatpickr-day.nextMonthDay.inRange,
-span.flatpickr-day.today.inRange,
-span.flatpickr-day.prevMonthDay.today.inRange,
-span.flatpickr-day.nextMonthDay.today.inRange,
-span.flatpickr-day.inRange:hover,
-span.flatpickr-day.prevMonthDay.inRange:hover,
-span.flatpickr-day.nextMonthDay.inRange:hover,
-span.flatpickr-day.today.inRange:hover,
-span.flatpickr-day.prevMonthDay.today.inRange:hover,
-span.flatpickr-day.nextMonthDay.today.inRange:hover {
-    @apply shadow-none bg-indigo-100;
-}
+    span.flatpickr-day.inRange,
+    span.flatpickr-day.prevMonthDay.inRange,
+    span.flatpickr-day.nextMonthDay.inRange,
+    span.flatpickr-day.today.inRange,
+    span.flatpickr-day.prevMonthDay.today.inRange,
+    span.flatpickr-day.nextMonthDay.today.inRange,
+    span.flatpickr-day.inRange:hover,
+    span.flatpickr-day.prevMonthDay.inRange:hover,
+    span.flatpickr-day.nextMonthDay.inRange:hover,
+    span.flatpickr-day.today.inRange:hover,
+    span.flatpickr-day.prevMonthDay.today.inRange:hover,
+    span.flatpickr-day.nextMonthDay.today.inRange:hover {
+        @apply shadow-none bg-indigo-100;
+    }
 
-span.flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n+1)),
-span.flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n+1)),
-span.flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n+1)) {
-    @apply shadow-none;
-}
+    span.flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n+1)),
+    span.flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n+1)),
+    span.flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n+1)) {
+        @apply shadow-none;
+    }
 
-.flatpickr-current-month,
-.flatpickr-current-month .flatpickr-monthDropdown-months,
-.flatpickr-current-month input.cur-year {
-    @apply font-normal;
-}
+    .flatpickr-current-month,
+    .flatpickr-current-month .flatpickr-monthDropdown-months,
+    .flatpickr-current-month input.cur-year {
+        @apply font-normal;
+    }
 
-.flatpickr-current-month {
-    @apply flex items-center justify-center pt-0 space-x-2;
-}
+    .flatpickr-current-month {
+        @apply flex items-center justify-center pt-0 space-x-2;
+    }
 
-.flatpickr-months {
-    @apply my-2;
-}
+    .flatpickr-months {
+        @apply my-2;
+    }
 
-.flatpickr-months .flatpickr-prev-month, .flatpickr-months .flatpickr-next-month {
-    @apply static flex items-center;
-}
+    .flatpickr-months .flatpickr-prev-month, .flatpickr-months .flatpickr-next-month {
+        @apply static flex items-center;
+    }
 
-.flatpickr-months .flatpickr-prev-month svg, .flatpickr-months .flatpickr-next-month svg {
-    @apply w-5 h-5;
-}
+    .flatpickr-months .flatpickr-prev-month svg, .flatpickr-months .flatpickr-next-month svg {
+        @apply w-5 h-5;
+    }
 
-.flatpickr-months .flatpickr-prev-month:hover, .flatpickr-months .flatpickr-next-month:hover {
-    @apply text-indigo-700;
-}
+    .flatpickr-months .flatpickr-prev-month:hover, .flatpickr-months .flatpickr-next-month:hover {
+        @apply text-indigo-700;
+    }
 
-.flatpickr-months .flatpickr-prev-month:hover svg, .flatpickr-months .flatpickr-next-month:hover svg {
-    @apply fill-indigo-700;
-}
+    .flatpickr-months .flatpickr-prev-month:hover svg, .flatpickr-months .flatpickr-next-month:hover svg {
+        @apply fill-indigo-700;
+    }
 
-.numInputWrapper span {
-    right: -16px;
+    .numInputWrapper span {
+        right: -16px;
+    }
 }

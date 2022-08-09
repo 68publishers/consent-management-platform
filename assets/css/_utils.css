@@ -1,0 +1,5 @@
+@layer utilities {
+    [x-cloak], [hidden] {
+        display: none !important;
+    }
+}
