@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9ae56c26ce34ede726d1ec882c30a9c9",
+    "content-hash": "7bcdd2d3a1b97ff4af1ce3161fec7824",
     "packages": [
         {
             "name": "68publishers/asset",
@@ -317,12 +317,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/68publishers/omni.git",
-                "reference": "893b4c57c54366270d339f2c0b717bac277d97a9"
+                "reference": "6a84536b793fcd83216f818f33767b5e9491a08d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/68publishers/omni/zipball/893b4c57c54366270d339f2c0b717bac277d97a9",
-                "reference": "893b4c57c54366270d339f2c0b717bac277d97a9",
+                "url": "https://api.github.com/repos/68publishers/omni/zipball/6a84536b793fcd83216f818f33767b5e9491a08d",
+                "reference": "6a84536b793fcd83216f818f33767b5e9491a08d",
                 "shasum": ""
             },
             "require": {
@@ -336,7 +336,7 @@
                 "68publishers/doctrine-bridge": "^0.2.1",
                 "doctrine/migrations": "^3.5",
                 "doctrine/orm": "^2.12",
-                "friendsofphp/php-cs-fixer": "^2.19",
+                "friendsofphp/php-cs-fixer": "^3.9",
                 "latte/latte": "^2.11",
                 "nette/application": "^3.1",
                 "nette/security": "^3.1",
@@ -372,7 +372,7 @@
                 "issues": "https://github.com/68publishers/omni/issues",
                 "source": "https://github.com/68publishers/omni/tree/main"
             },
-            "time": "2022-08-07T23:03:20+00:00"
+            "time": "2022-08-10T16:12:17+00:00"
         },
         {
             "name": "68publishers/smart-nette-component",
@@ -11015,8 +11015,9 @@
     "prefer-lowest": false,
     "platform": {
         "php": "^7.4",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-mbstring": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.0.0"
 }

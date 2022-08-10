@@ -46,7 +46,7 @@ final class CookieProviderImporter extends AbstractImporter
 					'Provider "%s" imported',
 					$data->code
 				));
-				$code = strtolower($data->code);
+				$code = mb_strtolower($data->code);
 
 				[$commands, $result] = isset($existingProviders[$code])
 					? $this->prepareUpdate($data, $existingProviders[$code], $result)
@@ -143,7 +143,7 @@ final class CookieProviderImporter extends AbstractImporter
 		foreach ($this->queryBus->dispatch(FindAllProjectsWithPossibleAssociationWithCookieProviderQuery::create($cookieProviderId->toString(), NULL)) as $projectPermissionView) {
 			assert($projectPermissionView instanceof ProjectPermissionView);
 
-			$loweCaseCode = strtolower($projectPermissionView->projectCode->value());
+			$loweCaseCode = mb_strtolower($projectPermissionView->projectCode->value());
 
 			if ($projectPermissionView->permission && !in_array($loweCaseCode, $loweCaseCodes, TRUE)) {
 				$commands[] = RemoveCookieProvidersFromProjectCommand::create($projectPermissionView->projectId->toString(), $cookieProviderId->toString());
@@ -185,7 +185,7 @@ final class CookieProviderImporter extends AbstractImporter
 		));
 
 		$keys = array_map(
-			static fn (CookieProviderView $view): string => strtolower($view->code->value()),
+			static fn (CookieProviderView $view): string => mb_strtolower($view->code->value()),
 			$existingProviders
 		);
 

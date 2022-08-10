@@ -1,6 +1,4 @@
-@layer components {
-    .footer-content > span:not(:first-of-type):not(:empty)::before {
-        content: '\00b7';
-        @apply hidden sm:inline-block text-sm mx-2;
-    }
+.footer-content > span:not(:first-of-type):not(:empty)::before {
+    content: '\00b7';
+    @apply hidden sm:inline-block text-sm mx-2;
 }

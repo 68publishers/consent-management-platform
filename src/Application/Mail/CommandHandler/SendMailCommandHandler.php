@@ -89,10 +89,10 @@ final class SendMailCommandHandler implements CommandHandlerInterface
 			$templateFile = sprintf(
 				'%s/%s',
 				$this->templatesDirectory,
-				substr($templateFile, 1)
+				mb_substr($templateFile, 1)
 			);
 		} elseif (0 === strncmp($templateFile, 'default:', 8)) {
-			$mailName = substr($templateFile, 8);
+			$mailName = mb_substr($templateFile, 8);
 			$templateFile = sprintf(
 				'%s/default.latte',
 				$this->templatesDirectory

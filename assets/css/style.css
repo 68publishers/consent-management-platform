@@ -1,4 +1,6 @@
 @import 'tailwindcss/base.css';
+@import 'tailwindcss/components.css';
+@import 'tailwindcss/utilities.css';
 
 @import 'toastr';
 @import 'flatpickr/dist/themes/airbnb.css';
@@ -7,9 +9,6 @@
 @import 'tippy.js/dist/svg-arrow.css';
 @import 'codemirror/lib/codemirror.css';
 @import 'ublaboo-datagrid/assets/datagrid.css';
-
-@import 'tailwindcss/components.css';
-@import 'tailwindcss/utilities.css';
 
 @import '_codemirror.css';
 @import '_datagrid.css';

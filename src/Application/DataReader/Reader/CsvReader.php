@@ -85,10 +85,12 @@ final class CsvReader extends AbstractReader
 
 		if ($resource instanceof FileResource) {
 			$reader = Reader::createFromPath($resource->filename());
+			$encoding = mb_detect_encoding($reader->toString());
 		} else {
 			assert($resource instanceof StringResource);
 
 			$reader = Reader::createFromString($resource->string());
+			$encoding = mb_detect_encoding($resource->string());
 		}
 
 		if (is_string($options[self::OPTION_DELIMITER] ?? NULL)) {
@@ -110,6 +112,11 @@ final class CsvReader extends AbstractReader
 
 		if (TRUE === (isset($options[self::OPTION_ESCAPE])) ?? FALSE) {
 			$reader->setEscape($options[self::OPTION_ESCAPE]);
+		}
+
+		// probably windows
+		if (FALSE === $encoding) {
+			$reader->addStreamFilter('convert.iconv.WINDOWS-1250/UTF-8//TRANSLIT//IGNORE');
 		}
 
 		return $reader;

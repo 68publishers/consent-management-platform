@@ -22,7 +22,7 @@ final class Code extends AbstractStringValueObject
 			throw InvalidCodeException::containsNonAllowedCharacters($code);
 		}
 
-		if (self::MAX_LENGTH < strlen($code)) {
+		if (self::MAX_LENGTH < mb_strlen($code)) {
 			throw InvalidCodeException::tooLong($code, self::MAX_LENGTH);
 		}
 

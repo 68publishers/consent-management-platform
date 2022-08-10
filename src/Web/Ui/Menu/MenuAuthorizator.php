@@ -38,10 +38,10 @@ final class MenuAuthorizator implements IAuthorizator
 
 		$target = rtrim($item->getAction());
 
-		if (':' === substr($target, -1)) {
+		if (':' === mb_substr($target, -1)) {
 			$presenter = trim($target, ':');
 			$action = 'default';
-		} elseif (FALSE !== strpos($target, ':')) {
+		} elseif (FALSE !== mb_strpos($target, ':')) {
 			$explode = explode(':', $target);
 			$action = array_pop($explode);
 			$presenter = trim(implode(':', $explode), ':');

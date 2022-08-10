@@ -67,7 +67,7 @@ final class StatisticsController extends AbstractInternalController
 					'status' => 'error',
 					'data' => [
 						'code' => ApiResponse::S401_UNAUTHORIZED,
-						'error' => 'The user is not logged in.',
+						'error' => 'The user is not authorized.',
 					],
 				]);
 		}

@@ -18,7 +18,7 @@ final class Code extends AbstractStringValueObject
 	 */
 	public static function withValidation(string $code): self
 	{
-		if (self::MAX_LENGTH < strlen($code)) {
+		if (self::MAX_LENGTH < mb_strlen($code)) {
 			throw InvalidCodeException::tooLong($code, self::MAX_LENGTH);
 		}
 
