@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7bcdd2d3a1b97ff4af1ce3161fec7824",
+    "content-hash": "376fd5194b2184110bd8895d4d918aef",
     "packages": [
         {
             "name": "68publishers/asset",
@@ -122,22 +122,22 @@
         },
         {
             "name": "68publishers/environment",
-            "version": "v0.4",
+            "version": "v0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/68publishers/environment.git",
-                "reference": "a8c52a4cc472590b44cf8dbe64edab1e52bdc745"
+                "reference": "2adc703a1e80e586d413da657d5752ea4a492a77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/68publishers/environment/zipball/a8c52a4cc472590b44cf8dbe64edab1e52bdc745",
-                "reference": "a8c52a4cc472590b44cf8dbe64edab1e52bdc745",
+                "url": "https://api.github.com/repos/68publishers/environment/zipball/2adc703a1e80e586d413da657d5752ea4a492a77",
+                "reference": "2adc703a1e80e586d413da657d5752ea4a492a77",
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^1.1 | ^2.0",
                 "ext-json": "*",
-                "php": "^7.2",
+                "php": "^7.2|^8.0",
                 "symfony/dotenv": "^5.0"
             },
             "require-dev": {
@@ -178,9 +178,9 @@
             ],
             "support": {
                 "issues": "https://github.com/68publishers/environment/issues",
-                "source": "https://github.com/68publishers/environment/tree/v0.4"
+                "source": "https://github.com/68publishers/environment/tree/v0.5.0"
             },
-            "time": "2021-10-07T22:15:15+00:00"
+            "time": "2022-08-07T23:05:40+00:00"
         },
         {
             "name": "68publishers/event-dispatcher-extra",
