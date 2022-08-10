@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "376fd5194b2184110bd8895d4d918aef",
+    "content-hash": "96d9a3841775531b8ad243e0e02009dc",
     "packages": [
         {
             "name": "68publishers/asset",
@@ -763,16 +763,16 @@
         },
         {
             "name": "contributte/apitte",
-            "version": "v0.9.1",
+            "version": "v0.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/contributte/apitte.git",
-                "reference": "e25e03ad4616b0624427d1cd3addc4355a9704d5"
+                "reference": "67d760544d6a168c62b850e6362ab4dc1a2fc615"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/contributte/apitte/zipball/e25e03ad4616b0624427d1cd3addc4355a9704d5",
-                "reference": "e25e03ad4616b0624427d1cd3addc4355a9704d5",
+                "url": "https://api.github.com/repos/contributte/apitte/zipball/67d760544d6a168c62b850e6362ab4dc1a2fc615",
+                "reference": "67d760544d6a168c62b850e6362ab4dc1a2fc615",
                 "shasum": ""
             },
             "require": {
@@ -782,7 +782,7 @@
                 "ext-json": "*",
                 "koriym/attributes": "^1.0.2",
                 "nette/utils": "^3.2.7",
-                "php": ">=7.3"
+                "php": ">=7.4"
             },
             "conflict": {
                 "nette/tester": "<2.4.1"
@@ -841,7 +841,7 @@
             ],
             "support": {
                 "issues": "https://github.com/contributte/apitte/issues",
-                "source": "https://github.com/contributte/apitte/tree/v0.9.1"
+                "source": "https://github.com/contributte/apitte/tree/v0.10.0"
             },
             "funding": [
                 {
@@ -853,7 +853,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-02-10T13:22:09+00:00"
+            "time": "2022-08-05T10:04:31+00:00"
         },
         {
             "name": "contributte/application",
