@@ -23,7 +23,7 @@
 		"68publishers/tracy-git-version": "^1.0.2",
 		"68publishers/translation-bridge": "^1.2",
 		"68publishers/webpack-encore-bundle": "^2.0",
-		"contributte/apitte": "^0.9.1",
+		"contributte/apitte": "^0.10.0",
 		"contributte/console": "^0.9.1",
 		"contributte/event-dispatcher": "^0.8.1",
 		"contributte/event-dispatcher-extra": "^0.8.2",
