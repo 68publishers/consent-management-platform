@@ -26,26 +26,29 @@
 {/define}
 
 {define #controls}
-    {if}
-        {var $controls = $group instanceof Nette\Forms\Container ? $group->getComponents() : $group->getControls()}
+    {try}
+        <table>
+            {var $controls = $group instanceof Nette\Forms\Container ? $group->getComponents() : $group->getControls()}
 
-        {foreach $controls as $control}
-            {if $control instanceof Nette\Forms\Control}
-                {continueIf $control->getOption('rendered') || $control->getOption('type') === 'hidden'}
-                {if $control instanceof Nette\Forms\Controls\CheckboxList && 'checkbox' === $control->getOption('type')}
-                    {do $control->setOption('type', 'checkboxlist')}
+            {foreach $controls as $control}
+                {if $control instanceof Nette\Forms\Control}
+                    {continueIf $control->getOption('rendered') || $control->getOption('type') === 'hidden'}
+                    {if $control instanceof Nette\Forms\Controls\CheckboxList && 'checkbox' === $control->getOption('type')}
+                        {do $control->setOption('type', 'checkboxlist')}
+                    {/if}
+
+                    {include #helpers-override-split, blockNamePrefix => pair, control => $control, parameters => [controlsIterator => $iterator]}
+                {elseif $control instanceof Nette\Forms\Container}
+                    {ifset #'container-name-' . $control->getName()}
+                        {include #'container-name-' . $control->getName(), container => $control}
+                    {else}
+                        {include #controls, group => $control}
+                    {/ifset}
                 {/if}
-
-                {include #helpers-override-split, blockNamePrefix => pair, control => $control, parameters => [controlsIterator => $iterator]}
-            {elseif $control instanceof Nette\Forms\Container}
-                {ifset #'container-name-' . $control->getName()}
-                    {include #'container-name-' . $control->getName(), container => $control}
-                {else}
-                    {include #controls, group => $control}
-                {/ifset}
-            {/if}
-        {/foreach}
-    {/if $iterations}
+                {else}{rollback}
+            {/foreach}
+        </table>
+    {/try}
 {/define}
 
 {define #pair-type-default}
@@ -80,7 +83,7 @@
 
 {define #label}
     <div class="block sm:mt-px sm:pt-2">
-        <label n:ifcontent n:name="$control" n:class="
+        <label n:name="$control" n:class="
             $control->getLabelPrototype()->class,
             'block text-sm font-medium text-gray-700'
         " />
