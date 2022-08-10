@@ -33,7 +33,7 @@
 		"contributte/recaptcha": "^3.4",
 		"contributte/translation": "^1.0",
 		"kdyby/redis": "^6.1",
-		"latte/latte": "2.11.0",
+		"latte/latte": "2.11.5",
 		"league/csv": "^9.8",
 		"nasext/dependent-select-box": "^5.1",
 		"nepada/form-renderer": "^1.9",
