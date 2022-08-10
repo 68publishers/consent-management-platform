@@ -15,15 +15,14 @@ services:
         volumes:
             - .:/var/www/html:cached
         depends_on:
-            - db
             - redis
+            #- db
     db:
         build:
             context: .
             dockerfile: Dockerfile
             target: db
         container_name: cmp-db
-        restart: always
         ports:
             - 5432:5432
         networks:
