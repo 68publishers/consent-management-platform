@@ -2769,16 +2769,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "2.13.0",
+            "version": "2.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/orm.git",
-                "reference": "827cb0c10bd0440b5e1b8ec7f5dc1fc1810f1821"
+                "reference": "35c44a56677adb3ce796138b6e4934ce93ec6811"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/orm/zipball/827cb0c10bd0440b5e1b8ec7f5dc1fc1810f1821",
-                "reference": "827cb0c10bd0440b5e1b8ec7f5dc1fc1810f1821",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/35c44a56677adb3ce796138b6e4934ce93ec6811",
+                "reference": "35c44a56677adb3ce796138b6e4934ce93ec6811",
                 "shasum": ""
             },
             "require": {
@@ -2863,9 +2863,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/orm/issues",
-                "source": "https://github.com/doctrine/orm/tree/2.13.0"
+                "source": "https://github.com/doctrine/orm/tree/2.13.1"
             },
-            "time": "2022-08-07T16:11:43+00:00"
+            "time": "2022-08-08T09:00:16+00:00"
         },
         {
             "name": "doctrine/persistence",
@@ -6980,16 +6980,16 @@
         },
         {
             "name": "scienta/doctrine-json-functions",
-            "version": "5.0.0",
+            "version": "5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ScientaNL/DoctrineJsonFunctions.git",
-                "reference": "a5a2309844cbb7fbf60d2aabcc6fb27418a431c5"
+                "reference": "02fcdcc05ac679bdbc0a9326b9d9abe80c664e50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ScientaNL/DoctrineJsonFunctions/zipball/a5a2309844cbb7fbf60d2aabcc6fb27418a431c5",
-                "reference": "a5a2309844cbb7fbf60d2aabcc6fb27418a431c5",
+                "url": "https://api.github.com/repos/ScientaNL/DoctrineJsonFunctions/zipball/02fcdcc05ac679bdbc0a9326b9d9abe80c664e50",
+                "reference": "02fcdcc05ac679bdbc0a9326b9d9abe80c664e50",
                 "shasum": ""
             },
             "require": {
@@ -7042,9 +7042,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ScientaNL/DoctrineJsonFunctions/issues",
-                "source": "https://github.com/ScientaNL/DoctrineJsonFunctions/tree/5.0.0"
+                "source": "https://github.com/ScientaNL/DoctrineJsonFunctions/tree/5.1.0"
             },
-            "time": "2022-01-12T10:14:59+00:00"
+            "time": "2022-06-29T06:22:13+00:00"
         },
         {
             "name": "sentry/sdk",
