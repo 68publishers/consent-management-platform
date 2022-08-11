@@ -15,8 +15,10 @@ services:
         volumes:
             - .:/var/www/html:cached
         depends_on:
-            - redis
-            #- db
+            redis:
+                condition: service_started
+            db:
+                condition: service_healthy
     db:
         build:
             context: .
@@ -28,7 +30,7 @@ services:
         networks:
             - backend
         volumes:
-            - ./docker/postgres/postgres.conf:/var/lib/postgresql/data/postgresql.conf:delegated
+            - ./docker/postgres/postgres.conf:/etc/postgresql/postgresql.conf:delegated
             - ./var/postgres-data:/var/lib/postgresql/data:cached
         environment:
             - PGDATA=/var/lib/postgresql/data/pgdata
@@ -36,9 +38,14 @@ services:
             - POSTGRES_PASSWORD=root
             - POSTGRES_DB=cmp
         command:
-            - postgres
-            - -c
-            - config_file=/var/lib/postgresql/data/postgresql.conf
+          - postgres
+          - -c
+          - 'config_file=/etc/postgresql/postgresql.conf'
+        healthcheck:
+            test: ["CMD-SHELL", "sh -c 'pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB'"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
     redis:
         image: redis:5.0.8-alpine
         container_name: cmp-redis

@@ -4,8 +4,10 @@ cache:
 cache-clear:
 	rm -rf var/cache/*
 	rm -rf var/log/*
-	rm -rf var/postgres-data
 	rm -rf var/mail-panel-latte
+
+db-clear:
+	rm -rf var/postgres-data/*
 
 start:
 	docker compose up -d
@@ -48,6 +50,7 @@ install-assets:
 
 init:
 	make stop
+	make db-clear
 	make start
 	make install
 	make data
