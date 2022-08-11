@@ -2,7 +2,7 @@ error:
 	processing_fail: Při zpracování formuláře došlo k chybě.
 
 type:
-	field: Type
+	field: Typ
 	required: Zvolte prosím typ.
 
 format:

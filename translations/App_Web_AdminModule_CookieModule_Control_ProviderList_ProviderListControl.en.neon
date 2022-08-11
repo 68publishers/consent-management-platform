@@ -1,0 +1,13 @@
+name: Name
+code: Code
+active: Active
+type: Type
+link: Link
+number_of_cookies: Cookies
+created_at: Created
+
+active_value: active
+inactive_value: inactive
+
+delete_confirm:
+	question: 'Are you sure you want to delete the provider <strong>"%name%"</strong>?'

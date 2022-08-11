@@ -1,0 +1,11 @@
+page_title: Edit user
+heading_basic: Basic information
+notification_preferences: Notification settings
+back_to_list: Back to the user list
+
+message:
+	user_not_found: User not found.
+	user_updated: The user has been edited.
+	user_update_failed: An error occurred while editing the user.
+	notification_preferences_updated: Notification settings have been saved.
+	notification_preferences_update_failed: An error occurred while saving the settings.

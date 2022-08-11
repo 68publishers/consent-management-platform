@@ -1,0 +1,36 @@
+no_item_found_reset: 'No items. You can try  <a class="link ajax" href="%link%">resetting the filter</a>.'
+no_item_found: No items.
+here: here
+items: ''
+all: all
+from: from
+reset_filter: Reset filters
+group_actions: Group actions
+show: Show
+add: Add
+edit: Edit
+show_all_columns: Show all columns
+show_default_columns: Show default columns
+hide_column: Hide column
+action: ''
+previous: Prevous
+next: Next
+choose: Chhose
+choose_input_required: The value must not be empty
+execute: Execute
+save: Save
+cancel: Cancel
+multiselect_choose: Choose
+multiselect_selected: '{0} selected'
+filter_submit_button: Filter
+show_filter: Show filter
+per_page_submit: Change
+
+showing_all_items: All items
+showing_items: 'Showing <span class="font-medium">%from%</span> - <span class="font-medium">%to%</span> from <span class="font-medium">%total%</span> items'
+
+boolean_filter:
+	yes: 'yes'
+	no: 'no'
+
+invalid_uuid: UUID is not valid

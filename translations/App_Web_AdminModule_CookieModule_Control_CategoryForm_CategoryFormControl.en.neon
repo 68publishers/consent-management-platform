@@ -1,0 +1,22 @@
+code:
+	field: Code
+	required: Please enter a code.
+	rule_max_length: The maximum length allowed is %d characters.
+	error:
+		duplicated_value: 'A category with this code already exists.'
+
+active:
+	field: Active
+
+necessary:
+	field: Necessary category
+
+name:
+	field: 'Name - %name%'
+	required: Please enter a name.
+
+save:
+	field: Create category
+
+update:
+	field: Save

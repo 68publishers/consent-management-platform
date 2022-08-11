@@ -1,0 +1,6 @@
+page_title: Settings
+heading_locales: Localization
+
+message:
+	global_settings_updated: The settings have been saved.
+	global_settings_update_failed: An error occurred while saving the settings.

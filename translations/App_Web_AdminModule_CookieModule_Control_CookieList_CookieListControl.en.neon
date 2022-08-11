@@ -1,0 +1,22 @@
+name: Name
+active: Active
+category_name: Category
+processing_time: Processing time
+provider_name: Provider
+projects: Projects
+created_at: Created
+
+active_value: active
+inactive_value: inactive
+
+session: Session
+persistent: Persistent
+
+and_more_projects: "and %count% more"
+
+delete_confirm:
+	question: 'Are you sure you want to delete the cookie <strong>"%name%"</strong>?'
+
+message:
+	cookie_updated: The cookie has been edited.
+	cookie_update_failed: An error occurred while editing the cookie.

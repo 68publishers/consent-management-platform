@@ -1,0 +1,12 @@
+page_title: User account
+basic_information: Basic information
+password_change: Passowrd change
+notification_preferences: Notification settings
+
+message:
+	basic_information_edited: Basic information has been saved.
+	basic_information_edit_failed: An error occurred while saving basic information.
+	password_changed: The password has been changed.
+	password_change_failed: An error occurred while changing the password.
+	notification_preferences_updated: Notification settings have been saved.
+	notification_preferences_update_failed: An error occurred while saving the settings.

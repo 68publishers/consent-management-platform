@@ -1,0 +1,7 @@
+page_title: New project
+back_to_list: Back to the project list
+heading_basic: Basic information
+
+message:
+	project_created: The project has been created.
+	project_creation_failed: An error occurred while creating the project.

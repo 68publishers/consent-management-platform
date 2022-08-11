@@ -1,0 +1,35 @@
+error:
+	processing_fail: An error occurred while processing the form.
+
+type:
+	field: Type
+	required: Please select a type.
+
+format:
+	field: Format
+	required: Please select a format.
+	item:
+		csv: CSV
+		json: JSON
+
+separator:
+	field: Separator
+	required: Please select a separator.
+	item:
+		auto: 'Detect automatically'
+		comma: 'Comma (,)'
+		semicolon: 'Semicolon (;)'
+		tabulator: 'Tabulator (\t)'
+		space: 'Whitespace ( )'
+		pipe: 'Pipe (|)'
+
+file:
+	field: File
+	required: Please select a file.
+	rule:
+		mime_type:
+			csv: The selected file is not a csv file.
+			json: The selected file is not a json file.
+
+import:
+	field: Import

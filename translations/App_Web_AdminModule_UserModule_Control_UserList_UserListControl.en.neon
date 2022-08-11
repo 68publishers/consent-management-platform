@@ -1,0 +1,8 @@
+id: ID
+email_address: Email
+name: Name
+created_at: Created
+roles: Roles
+
+delete_confirm:
+	question: 'Are you sure you want to delete the user <strong>"%name%"</strong>?'

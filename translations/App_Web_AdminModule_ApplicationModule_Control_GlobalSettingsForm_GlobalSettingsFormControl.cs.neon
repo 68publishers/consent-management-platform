@@ -1,10 +1,10 @@
 locales:
 	field: Jazky překladů
-	required: Zvolte alespoň jeden jazyk.
+	required: Zvolte prosím alespoň jeden jazyk.
 
 default_locale:
 	field: Výchozí jazyk
-	required: Zvolte výchozí jazyk.
+	required: Zvolte prosím výchozí jazyk.
 
 save:
 	field: Uložit

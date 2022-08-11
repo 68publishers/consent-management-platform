@@ -1,0 +1,36 @@
+code:
+	field: Code
+	required: Please enter a code.
+	rule_max_length: The maximum length allowed is %d characters.
+	error:
+		duplicated_value: 'A provider with this code already exists.'
+
+name:
+	field: Name
+	required: Please enter a name.
+
+type:
+	field: Type
+	required: Please select a type.
+
+link:
+	field: Link
+	rule_url: The link is not a valid URL.
+
+active:
+	field: Active
+
+projects:
+	field: Assigned projects
+
+purpose:
+	field: 'Purpose - %name%'
+
+save:
+	field: Create provider
+
+update:
+	field: Save
+
+1st_party: 1st party
+3rd_party: 3rd party

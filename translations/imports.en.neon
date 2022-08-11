@@ -1,0 +1,3 @@
+name:
+	App\Application\CookieProvider\Import\CookieProviderData: Providers
+	App\Application\Cookie\Import\CookieData: Cookies

@@ -1,0 +1,13 @@
+go_back_home: Back to the main page
+
+404:
+	page_title: The page does not exist
+	error_message: 'The link leads to a page that does not exist or is no longer functional.'
+
+403:
+	page_title: Access denied
+	error_message: 'You do not have access to the content of this page.'
+
+4xx:
+	page_title: Something went wrong...
+	error_message: 'An unexpected error has occurred, please contact support.'

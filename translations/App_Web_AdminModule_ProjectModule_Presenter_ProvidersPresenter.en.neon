@@ -1,0 +1,9 @@
+page_title: Providers
+main_provider: The project provider
+other_providers: The Other providers
+
+message:
+	provider_updated: The provider has been edited.
+	provider_updated_failed: An error occurred while saving the provider.
+	other_providers_updated: Providers have been saved.
+	other_providers_update_failed: An error occurred while saving providers.

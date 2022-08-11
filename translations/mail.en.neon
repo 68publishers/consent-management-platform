@@ -1,0 +1,40 @@
+password_change_requested:
+	subject: Password change request
+	header_title: Password change request
+	content: '''
+	<p>You have requested to change your password. If you have indeed done so, click to set up a new one:</p>
+	<p class="text-center">
+		<a href="%resetLink%" class="btn btn-primary">Set a new password</a>
+	</p>
+	<p>If you did not want to reset your password, you can simply ignore this email, your password will not change.</p>
+	<p>The password change request is valid until <strong>%expireAt%</strong></p>
+	<hr>
+	<p class="text-light text-sm">"Set new password" button not working?</p>
+	<p class="text-light text-sm">Simply copy the following link into your web browser:<br><strong>%resetLink%</strong></p>
+	'''
+
+password_has_been_reset:
+	subject: Password has been changed
+	header_title: Password has been changed
+	content: '''
+	<p class="text-center">The password for your account <strong>%emailAddress%</strong> has been successfully changed.</p>
+	'''
+
+weekly_overview:
+	subject: 'Weekly overview %formattedStartDate% - %formattedEndDate%'
+	header_title: 'Weekly overview<br>%formattedStartDate% - %formattedEndDate%'
+	col_name: Project
+	col_consents: Consents
+	col_positivity: Positivity
+	col_providers: Providers
+	col_cookies: Cookies
+	col_last_consent_date: Last consent
+	go_to_dashboard: Go to Dashboard
+
+consent_decrease:
+	subject: A decrease in consents has been noted
+	header_title: A decrease in consents has been noted
+	col_name: Project
+	col_consents: Consents
+	col_difference: Change
+	go_to_dashboard: Go to Dashboard

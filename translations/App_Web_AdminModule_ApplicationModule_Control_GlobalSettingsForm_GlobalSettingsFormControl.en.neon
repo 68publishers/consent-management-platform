@@ -1,0 +1,10 @@
+locales:
+	field: Translation locales
+	required: Please select at least one locale.
+
+default_locale:
+	field: Default locale
+	required: Please select the default locale.
+
+save:
+	field: Save

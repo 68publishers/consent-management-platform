@@ -13,7 +13,7 @@ category:
 	required: Zvolte prosím kategorii.
 
 processing_time:
-	field: 'Doba zpracování'
+	field: Doba zpracování
 	required: Zvolte prosím dobu zpracování.
 
 active:
@@ -25,7 +25,7 @@ expiration: Expirace
 
 processing_time_mask:
 	field: 'Doba zpracování - expirace'
-	required: Vypňte prosím expiraci.
+	required: Vyplňte prosím expiraci.
 	rule_pattern: Hodnota není validní expirace.
 	description: 'Jsou povoleny modifikátory "y" (rok), "m" (měsíc), "d" (den), "h" (hodina). Například expirace "1y 6m" znamená, že cookie má expiraci jeden rok a 6 měsíců.'
 

@@ -1,0 +1,9 @@
+page_title: Edit project
+heading_basic: Basic information
+heading_danger_zone: Danger Zone
+
+message:
+	project_edited: The project has been edited.
+	project_edit_failed: An error occurred while editing the project.
+	project_deleted: The project has been deleted.
+	project_deletion_failed: An error occurred while deleting the project.

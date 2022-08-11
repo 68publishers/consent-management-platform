@@ -1,0 +1,5 @@
+page_title: Sign in
+forgot_your_password: Forgot Password?
+
+message:
+	user_authentication_failed: Incorrect credentials.

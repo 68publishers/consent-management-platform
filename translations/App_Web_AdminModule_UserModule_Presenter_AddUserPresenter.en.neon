@@ -1,0 +1,7 @@
+page_title: New user
+heading_basic: Basic information
+back_to_list: Back to the user list
+
+message:
+	user_created: The user has been created.
+	user_creation_failed: An error occurred while creating the user.

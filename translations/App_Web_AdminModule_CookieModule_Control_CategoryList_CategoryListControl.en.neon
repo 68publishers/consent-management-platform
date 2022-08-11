@@ -1,0 +1,11 @@
+name: Name
+code: Code
+active: Active
+created_at: Created
+
+active_value: active
+inactive_value: inactive
+
+delete_confirm:
+	title: Delete category
+	question: 'Are you sure you want to delete the category <strong>"%name%"</strong> (%code%)?'

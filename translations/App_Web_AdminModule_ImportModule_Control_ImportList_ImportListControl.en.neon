@@ -1,0 +1,11 @@
+name: Name
+status: State
+author: Author
+summary: Summary
+created_at: Launched
+ended_at: Finished
+
+status_value:
+	running: running
+	completed: completed
+	failed: failed
