@@ -36,7 +36,10 @@
     "webpack-require-http": "^0.4.3"
   },
   "devDependencies": {
-    "ynpx": "^2.1.2"
+    "ynpx": "^2.1.3"
+  },
+  "resolutions": {
+    "got": "^11.8.5"
   },
   "scripts": {},
   "repository": {
