@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+    const showed = [];
+
     const findSpinner = el => {
         if ('self' === el.data('spinner-for')) {
             return el;
@@ -18,11 +20,21 @@
     };
 
     const show = spinner => {
-        spinner && spinner.addClass('spinner');
+        spinner && spinner.addClass('spinner') && showed.push(spinner);
     };
 
     const hide = spinner => {
-        spinner && spinner.removeClass('spinner');
+        if (!spinner) {
+            return;
+        }
+
+        spinner.removeClass('spinner');
+
+        for (let i in showed) {
+            if (showed[i] === spinner) {
+                showed.splice(i, 1);
+            }
+        }
     };
 
     $.nette.ext('plugin-spinner', {
@@ -58,5 +70,13 @@
 
     $(document).on('click', 'a:not(.ajax)', function () {
         show(findSpinner($(this)));
+    });
+
+    window.addEventListener('pageshow', function (e) {
+        if (e.persisted) {
+            for (let i in showed) {
+                hide(showed[i]);
+            }
+        }
     });
 })();
