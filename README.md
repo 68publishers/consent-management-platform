@@ -14,19 +14,17 @@
   * [Installation](#installation)
 * [Product Documentation](#product-documentation)
 * [Development Guide](#development-guide)
-* [License](#license)
 
 ## About CMP
 
-The CMP is a standalone application for logging cookie consent and managing the cookies themselves on any website.
-You can implement the integration with the application in the cookie bar on your website, however, if you use [our solution](https://github.com/68publishers/cookie-consent), the integration is ready for you.
+The CMP is a standalone application for storing users' cookie consent and managing the cookies themselves on any website or application.
 
 ![CMP Application](docs/images/dashboard.png)
 
 ## Getting Started
 
 ### Prerequisites
-- Docker Compose
+- Docker
 - Make
 
 ### Installation
@@ -48,7 +46,3 @@ For documentation of the application from a user perspective, please go to the [
 ## Development Guide
 
 For more technical information, please go to the [Development Guide](docs/development.md).
-
-## License
-
-The package is distributed under the MIT License. See [LICENSE](LICENSE.md) for more information.
