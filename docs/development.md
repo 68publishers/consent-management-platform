@@ -11,6 +11,7 @@
 * [Frontend](#frontend)
 * [Fixtures](#fixtures)
 * [Sending emails](#sending-emails)
+* [Notification commands setup](#notification-commands-setup)
 * [API and integration](#api-and-integration)
 * [How to update to the latest version](#how-to-update-to-the-latest-version)
 * [Contributing](#contributing)
@@ -126,16 +127,38 @@ If the debug mode is enabled (`APP_DEBUG=1` or the user has set the `APP_DEBUG_C
 
 <img src="images/tracy-bar-mails.png" alt="Emails in the Tracy Bar" width="400">
 
+## Notification commands setup
+
+There are two console commands that send notifications to users.
+
+### Weekly overview
+
+The command sends weekly report with consent statistics for all projects.
+
+```sh
+$ bin/console cmp:weekly-overview
+```
+
+In your CRONTAB, schedule the command to run once a week, e.g. every Monday at 4:00 a.m.
+
+### Consent decrease notification
+
+The command sends notifications about consent decrease for the previous day for all projects that are related to a notified user.
+
+```sh
+$ bin/console cmp:consent-decrease-notifier
+```
+
+In your CRONTAB, schedule the command to run once a day, e.g. every day at 4:00 a.m.
+
 ## API and integration
 
-The application exposes out API to communicate with the cookie bar.
+The application exposes our API to communicate with the cookie widget.
 
 All endpoints are described using OpenApi. To display the Swagger UI, set the ENV variable `API_DOCS_ENABLED` to `1` and open the `http://localhost:8888/api/docs` page in your browser.
 
 If you use [68publishers/cookie-consent](https://github.com/68publishers/cookie-consent) on your sites, there is no need to manually integrate or call anything, everything is already prepared, and you just need to set the GTM tag correctly.
-You can read how to integrate it in the 68publishers/cookie-consent documentation.
-
-@TODO documentation link
+You can read how to integrate it in the 68publishers/cookie-consent [documentation](https://github.com/68publishers/cookie-consent#integration-with-cmp-application).
 
 ## How to update to the latest version
 

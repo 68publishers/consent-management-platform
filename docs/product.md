@@ -16,7 +16,7 @@
 * [Imports](#imports)
 * [Projects](#projects)
   * [Consents](#consents)
-  * [Cookies bars](#cookie-bars)
+  * [Cookie widgets](#cookie-widgets)
   * [Project cookies](#project-cookies)
   * [Integration](#integration)
 
@@ -80,8 +80,8 @@ The application provides only two roles - `admin` and `manager` with following p
 | Create a project                                                  |                    | :white_check_mark: |
 | `Project > Consents`                                              |      Manager       |       Admin        |
 | View the list of consents                                         | :white_check_mark: | :white_check_mark: |
-| `Project > Cookie bars`                                           |      Manager       |       Admin        |
-| View the list of cookie bars                                      | :white_check_mark: | :white_check_mark: |
+| `Project > Cookie widgets`                                        |      Manager       |       Admin        |
+| View the list of cookie widgets                                   | :white_check_mark: | :white_check_mark: |
 | `Project > Cookies > Providers`                                   |      Manager       |       Admin        |
 | View and edit project providers                                   | :white_check_mark: | :white_check_mark: |
 | `Project > Cookies > Project cookies`                             |      Manager       |       Admin        |
@@ -229,21 +229,21 @@ So the correct procedure is to establish your projects first and then import the
 
 ## Projects
 
-After selecting a specific project, the user is moved to the context of the selected project where he can see consents, cookie bar settings and manage project cookies.
+After selecting a specific project, the user is moved to the context of the selected project where he can see consents, cookie widget settings and manage project cookies.
 
 ### Consents
 
 Here is the list of all recorded consents.
-The consents are grouped according to the user identifier that the cookie bar creates and sends. After clicking on a detail, you can see the complete history of that user.
+The consents are grouped according to the user identifier that the cookie widget creates and sends. After clicking on a detail, you can see the complete history of that user.
 
 <img src="images/consents-page.png" alt="Consents page" width="1000">
 
-### Cookie bars
+### Cookie widgets
 
-On this page you can find the settings of all cookie bars used.
-The uniqueness of the cookie bar is determined by the checksum that is calculated and sent by the cookie bar itself.
+On this page you can find the settings of all cookie widgets used.
+The uniqueness of the cookie widget is determined by the checksum that is calculated and sent by the cookie widget itself.
 
-<img src="images/cookie-bar-page.png" alt="Cookie bars page" width="1000">
+<img src="images/cookie-widget-page.png" alt="Cookie widgets page" width="1000">
 
 ### Project cookies
 
