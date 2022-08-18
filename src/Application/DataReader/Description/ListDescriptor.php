@@ -44,7 +44,13 @@ final class ListDescriptor implements DescriptorInterface
 					return $value;
 				}
 
-				$value = explode(',', trim((string) $value));
+				$value = trim((string) $value);
+
+				if ('' === $value) {
+					return [];
+				}
+
+				$value = explode(',', $value);
 
 				return array_map('trim', $value);
 			});

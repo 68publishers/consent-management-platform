@@ -68,6 +68,8 @@
 		"umpirsky/locale-list": "^1.0"
 	},
 	"require-dev": {
+		"behat/transliterator": "^1.5",
+		"fakerphp/faker": "^1.20",
 		"friendsofphp/php-cs-fixer": "^3.9",
 		"roave/security-advisories": "dev-latest"
 	},

@@ -13,8 +13,10 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use App\Domain\Consent\Command\StoreConsentCommand;
 use App\Domain\Project\Command\CreateProjectCommand;
 use App\Domain\Category\Command\CreateCategoryCommand;
+use App\Domain\User\Command\AssignProjectsToUserCommand;
 use App\Domain\GlobalSettings\Command\StoreGlobalSettingsCommand;
 use App\Domain\CookieProvider\Command\CreateCookieProviderCommand;
+use App\Domain\ConsentSettings\Command\StoreConsentSettingsCommand;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 use SixtyEightPublishers\UserBundle\Domain\Command\CreateUserCommand;
 
@@ -48,9 +50,11 @@ abstract class AbstractFixture implements FixtureInterface, ContainerAwareInterf
 			'project' => CreateProjectCommand::class,
 			'user' => CreateUserCommand::class,
 			'consent' => StoreConsentCommand::class,
+			'consent_settings' => StoreConsentSettingsCommand::class,
+			'user_has_projects' => AssignProjectsToUserCommand::class,
 		];
 
-		$fixtures = $this->loadFixtures();
+		$fixtures = $this->loadFixtures($manager);
 
 		foreach ($commandsByTypes as $type => $commandClassname) {
 			if (!isset($fixtures[$type])) {
@@ -62,8 +66,12 @@ abstract class AbstractFixture implements FixtureInterface, ContainerAwareInterf
 				$type
 			));
 
-			foreach ($fixtures[$type] as $fixture) {
+			foreach ($fixtures[$type] as $i => $fixture) {
 				$this->commandBus->dispatch(([$commandClassname, 'fromParameters'])($fixture));
+
+				if (50 === $i) {
+					$manager->clear();
+				}
 			}
 
 			$manager->clear();
@@ -71,7 +79,9 @@ abstract class AbstractFixture implements FixtureInterface, ContainerAwareInterf
 	}
 
 	/**
+	 * @param \Doctrine\Persistence\ObjectManager $manager
+	 *
 	 * @return array
 	 */
-	abstract protected function loadFixtures(): array;
+	abstract protected function loadFixtures(ObjectManager $manager): array;
 }

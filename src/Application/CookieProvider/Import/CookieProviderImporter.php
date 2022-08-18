@@ -113,10 +113,12 @@ final class CookieProviderImporter extends AbstractImporter
 				));
 			}
 
-			$result = $result->withWarning(sprintf(
-				'Skipping field "projects" for the provider "%s", associations can not be managed because the provider is a project\'s main provider',
-				$data->code
-			));
+			if (!empty($data->projects)) {
+				$result = $result->withWarning(sprintf(
+					'Skipping field "projects" for the provider "%s", associations can not be managed because the provider is a project\'s main provider',
+					$data->code
+				));
+			}
 
 			return [[$updateCommand], $result];
 		}
