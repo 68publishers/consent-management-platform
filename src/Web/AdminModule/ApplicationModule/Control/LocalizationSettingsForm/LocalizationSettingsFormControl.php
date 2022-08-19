@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\AdminModule\ApplicationModule\Control\GlobalSettingsForm;
+namespace App\Web\AdminModule\ApplicationModule\Control\LocalizationSettingsForm;
 
 use Throwable;
 use App\Web\Ui\Control;
@@ -14,12 +14,12 @@ use App\Application\GlobalSettings\Locale;
 use App\Web\Ui\Form\FormFactoryOptionsTrait;
 use NasExt\Forms\Controls\DependentSelectBox;
 use App\Application\GlobalSettings\GlobalSettingsInterface;
-use App\Domain\GlobalSettings\Command\StoreGlobalSettingsCommand;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
-use App\Web\AdminModule\ApplicationModule\Control\GlobalSettingsForm\Event\GlobalSettingsUpdatedEvent;
-use App\Web\AdminModule\ApplicationModule\Control\GlobalSettingsForm\Event\GlobalSettingsUpdateFailedEvent;
+use App\Domain\GlobalSettings\Command\PutLocalizationSettingsCommand;
+use App\Web\AdminModule\ApplicationModule\Control\LocalizationSettingsForm\Event\LocalizationSettingsUpdatedEvent;
+use App\Web\AdminModule\ApplicationModule\Control\LocalizationSettingsForm\Event\LocalizationSettingsUpdateFailedEvent;
 
-final class GlobalSettingsFormControl extends Control
+final class LocalizationSettingsFormControl extends Control
 {
 	use FormFactoryOptionsTrait;
 
@@ -114,18 +114,18 @@ final class GlobalSettingsFormControl extends Control
 	private function saveGlobalSettings(Form $form): void
 	{
 		$values = $form->values;
-		$command = StoreGlobalSettingsCommand::create($values->locales, $values->default_locale);
+		$command = PutLocalizationSettingsCommand::create($values->locales, $values->default_locale);
 
 		try {
 			$this->commandBus->dispatch($command);
 		} catch (Throwable $e) {
 			$this->logger->error((string) $e);
-			$this->dispatchEvent(new GlobalSettingsUpdateFailedEvent($e));
+			$this->dispatchEvent(new LocalizationSettingsUpdateFailedEvent($e));
 
 			return;
 		}
 
-		$this->dispatchEvent(new GlobalSettingsUpdatedEvent());
+		$this->dispatchEvent(new LocalizationSettingsUpdatedEvent());
 		$this->redrawControl();
 	}
 

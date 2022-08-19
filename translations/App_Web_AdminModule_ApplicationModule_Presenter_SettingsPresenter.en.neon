@@ -1,6 +1,9 @@
 page_title: Settings
-heading_locales: Localization
+heading_localization: Localization
+heading_api_cache: Performance
 
 message:
-	global_settings_updated: The settings have been saved.
-	global_settings_update_failed: An error occurred while saving the settings.
+	localization_settings_updated: The localization settings have been saved.
+	localization_settings_update_failed: An error occurred while saving the localization settings.
+	api_cache_settings_updated: The performance settings have been saved.
+	api_cache_settings_update_failed: An error occurred while saving the performance settings.

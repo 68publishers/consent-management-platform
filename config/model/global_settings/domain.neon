@@ -1,4 +1,7 @@
 services:
 	-
 		autowired: no
-		factory: App\Domain\GlobalSettings\CommandHandler\StoreGlobalSettingsCommandHandler
+		factory: App\Domain\GlobalSettings\CommandHandler\PutLocalizationSettingsCommandHandler
+	-
+		autowired: no
+		factory: App\Domain\GlobalSettings\CommandHandler\PutApiCacheSettingsCommandHandler

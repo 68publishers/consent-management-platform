@@ -1,6 +1,9 @@
 page_title: Nastavení
-heading_locales: Lokalizace
+heading_localization: Lokalizace
+heading_api_cache: Výkon
 
 message:
-	global_settings_updated: Nastavení bylo uloženo.
-	global_settings_update_failed: Při ukládaní nastavení došlo k chybě.
+	localization_settings_updated: Nastavení lokalizace bylo uloženo.
+	localization_settings_update_failed: Při ukládaní nastavení došlo k chybě.
+	api_cache_settings_updated: Nastavení výkonu bylo uloženo.
+	api_cache_settings_update_failed: Při ukládaní nastavení došlo k chybě.

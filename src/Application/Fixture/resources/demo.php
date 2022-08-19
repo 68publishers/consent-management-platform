@@ -14,7 +14,7 @@ use SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId;
 
 $fixtures = [];
 
-$fixtures['global_settings'] = [
+$fixtures['global_settings_localization'] = [
 	[
 		'locales' => ['en', 'cs', 'de'],
 		'default_locale' => 'en',

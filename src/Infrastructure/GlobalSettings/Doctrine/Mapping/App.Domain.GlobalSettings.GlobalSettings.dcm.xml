@@ -13,6 +13,8 @@
 
         <embedded name="locales" class="App\Domain\Shared\ValueObject\LocalesConfig" use-column-prefix="false" />
 
+        <embedded name="apiCache" class="App\Domain\GlobalSettings\ValueObject\ApiCache" use-column-prefix="false" />
+
         <field name="version" column="version" type="integer" />
     </entity>
 

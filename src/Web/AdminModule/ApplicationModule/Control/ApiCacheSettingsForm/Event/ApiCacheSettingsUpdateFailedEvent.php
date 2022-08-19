@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Web\AdminModule\ApplicationModule\Control\GlobalSettingsForm\Event;
+namespace App\Web\AdminModule\ApplicationModule\Control\ApiCacheSettingsForm\Event;
 
 use Throwable;
 use Symfony\Contracts\EventDispatcher\Event;
 
-final class GlobalSettingsUpdateFailedEvent extends Event
+final class ApiCacheSettingsUpdateFailedEvent extends Event
 {
 	private Throwable $error;
 

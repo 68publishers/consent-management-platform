@@ -18,6 +18,7 @@ use App\ReadModel\Project\ProjectTemplateView;
 use App\ReadModel\Cookie\FindCookiesForApiQuery;
 use App\ReadModel\Project\GetProjectByCodeQuery;
 use App\Application\Cookie\TemplateRendererInterface;
+use App\Application\GlobalSettings\GlobalSettingsInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\Batch;
 use App\ReadModel\Project\GetProjectTemplateByCodeAndLocaleWithFallbackQuery;
@@ -31,14 +32,18 @@ final class CookiesController extends AbstractV1Controller
 
 	private TemplateRendererInterface $templateRenderer;
 
+	private GlobalSettingsInterface $globalSettings;
+
 	/**
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface $queryBus
 	 * @param \App\Application\Cookie\TemplateRendererInterface              $templateRenderer
+	 * @param \App\Application\GlobalSettings\GlobalSettingsInterface        $globalSettings
 	 */
-	public function __construct(QueryBusInterface $queryBus, TemplateRendererInterface $templateRenderer)
+	public function __construct(QueryBusInterface $queryBus, TemplateRendererInterface $templateRenderer, GlobalSettingsInterface $globalSettings)
 	{
 		$this->queryBus = $queryBus;
 		$this->templateRenderer = $templateRenderer;
+		$this->globalSettings = $globalSettings;
 	}
 
 	/**
@@ -75,6 +80,7 @@ final class CookiesController extends AbstractV1Controller
 			->withHeader('Access-Control-Allow-Origin', '*')
 			->withHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
 			->withHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+			->withHeader('Access-Control-Max-Age', '86400')
 			->withHeader('Content-Type', 'application/json')
 			->withStatus($response::S204_NO_CONTENT);
 	}
@@ -98,6 +104,7 @@ final class CookiesController extends AbstractV1Controller
 			->withHeader('Access-Control-Allow-Origin', '*')
 			->withHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
 			->withHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+			->withHeader('Access-Control-Max-Age', '86400')
 			->withHeader('Content-Type', 'text/html')
 			->withStatus($response::S204_NO_CONTENT);
 	}
@@ -124,12 +131,12 @@ final class CookiesController extends AbstractV1Controller
 		assert($requestEntity instanceof CookiesRequestBody);
 
 		if (!$project instanceof ProjectView) {
-			return $response->withStatus(ApiResponse::S422_UNPROCESSABLE_ENTITY)
+			return $response->withStatus(ApiResponse::S404_NOT_FOUND)
 				->writeJsonBody([
 					'status' => 'error',
 					'data' => [
-						'code' => ApiResponse::S422_UNPROCESSABLE_ENTITY,
-						'error' => 'Project does not exist.',
+						'code' => ApiResponse::S404_NOT_FOUND,
+						'error' => 'Project not found.',
 					],
 				]);
 		}
@@ -138,11 +145,19 @@ final class CookiesController extends AbstractV1Controller
 			? Locale::fromValue($requestEntity->locale)
 			: $project->locales->defaultLocale();
 
-		return $response->withStatus(ApiResponse::S200_OK)
+		$response = $response->withStatus(ApiResponse::S200_OK)
 			->writeJsonBody([
 				'status' => 'success',
 				'data' => $this->getCookiesData($project->id, $locale, $project->locales->defaultLocale(), $requestEntity->category),
 			]);
+
+		$cacheControlHeader = $this->globalSettings->apiCache()->cacheControlHeader();
+
+		if (NULL !== $cacheControlHeader) {
+			$response = $response->withHeader('Cache-Control', $cacheControlHeader);
+		}
+
+		return $response;
 	}
 
 	/**
@@ -168,12 +183,12 @@ final class CookiesController extends AbstractV1Controller
 		$projectTemplate = $this->queryBus->dispatch(GetProjectTemplateByCodeAndLocaleWithFallbackQuery::create($request->getParameter('project'), $requestEntity->locale));
 
 		if (!$projectTemplate instanceof ProjectTemplateView) {
-			return $response->withStatus(ApiResponse::S422_UNPROCESSABLE_ENTITY)
+			return $response->withStatus(ApiResponse::S404_NOT_FOUND)
 				->writeJsonBody([
 					'status' => 'error',
 					'data' => [
-						'code' => ApiResponse::S422_UNPROCESSABLE_ENTITY,
-						'error' => 'Project does not exist.',
+						'code' => ApiResponse::S404_NOT_FOUND,
+						'error' => 'Project not found.',
 					],
 				]);
 		}
@@ -192,9 +207,17 @@ final class CookiesController extends AbstractV1Controller
 			TemplateArguments::create($data->providers, $data->cookies)
 		);
 
-		return $response->withStatus(ApiResponse::S200_OK)
+		$response = $response->withStatus(ApiResponse::S200_OK)
 			->withHeader('Content-Type', 'text/html')
 			->writeBody($this->templateRenderer->render($template));
+
+		$cacheControlHeader = $this->globalSettings->apiCache()->cacheControlHeader();
+
+		if (NULL !== $cacheControlHeader) {
+			$response = $response->withHeader('Cache-Control', $cacheControlHeader);
+		}
+
+		return $response;
 	}
 
 	/**

@@ -10,13 +10,11 @@ use App\ReadModel\GlobalSettings\GetGlobalSettingsQuery;
 use App\Domain\Shared\ValueObject\Locale as LocaleValueObject;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 
-final class LazyGlobalSettings implements GlobalSettingsInterface
+final class GlobalSettingsFactory implements GlobalSettingsFactoryInterface
 {
 	private QueryBusInterface $queryBus;
 
 	private Locales $locales;
-
-	private ?GlobalSettings $inner = NULL;
 
 	/**
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface $queryBus
@@ -31,40 +29,12 @@ final class LazyGlobalSettings implements GlobalSettingsInterface
 	/**
 	 * {@inheritDoc}
 	 */
-	public function locales(): array
+	public function create(): GlobalSettingsInterface
 	{
-		return $this->getInner()->locales();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function defaultLocale(): Locale
-	{
-		return $this->getInner()->defaultLocale();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function refresh(): void
-	{
-		$this->inner = NULL;
-	}
-
-	/**
-	 * @return \App\Application\GlobalSettings\GlobalSettings
-	 */
-	private function getInner(): GlobalSettings
-	{
-		if (NULL !== $this->inner) {
-			return $this->inner;
-		}
-
 		$globalSettingsView = $this->queryBus->dispatch(GetGlobalSettingsQuery::create());
 
 		if (!$globalSettingsView instanceof GlobalSettingsView) {
-			return $this->inner = GlobalSettings::default();
+			return GlobalSettings::default();
 		}
 
 		$locales = [];
@@ -79,9 +49,10 @@ final class LazyGlobalSettings implements GlobalSettingsInterface
 
 		$defaultLocaleValue = $globalSettingsView->locales->defaultLocale()->value();
 
-		return $this->inner = new GlobalSettings(
+		return new GlobalSettings(
 			$locales,
-			Locale::create($defaultLocaleValue, $list[$defaultLocaleValue] ?? $defaultLocaleValue)
+			Locale::create($defaultLocaleValue, $list[$defaultLocaleValue] ?? $defaultLocaleValue),
+			$globalSettingsView->apiCache
 		);
 	}
 }

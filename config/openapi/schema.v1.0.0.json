@@ -165,8 +165,8 @@
 					"200": {
 						"$ref": "#/components/responses/CookiesApiOk"
 					},
-					"422": {
-						"$ref": "#/components/responses/UnprocessableEntityError"
+					"404": {
+						"$ref": "#/components/responses/ProjectNotFound"
 					},
 					"default": {
 						"$ref": "#/components/responses/ServerError"
@@ -218,8 +218,8 @@
 					"200": {
 						"$ref": "#/components/responses/CookiesTemplateApiOk"
 					},
-					"422": {
-						"$ref": "#/components/responses/UnprocessableEntityError"
+					"404": {
+						"$ref": "#/components/responses/ProjectNotFound"
 					},
 					"default": {
 						"$ref": "#/components/responses/ServerError"
@@ -373,6 +373,16 @@
 					"application/json": {
 						"schema": {
 							"$ref": "#/components/schemas/UnprocessableEntityResponse"
+						}
+					}
+				}
+			},
+			"ProjectNotFound": {
+				"description": "Project not found",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/ProjectNotFoundResponse"
 						}
 					}
 				}
@@ -666,6 +676,28 @@
 							"error": {
 								"type": "string",
 								"example": "Unprocessable entity."
+							}
+						}
+					}
+				}
+			},
+			"ProjectNotFoundResponse": {
+				"type": "object",
+				"properties": {
+					"status": {
+						"type": "string",
+						"example": "error"
+					},
+					"data": {
+						"type": "object",
+						"properties": {
+							"code": {
+								"type": "integer",
+								"default": 404
+							},
+							"error": {
+								"type": "string",
+								"example": "Project not found."
 							}
 						}
 					}

@@ -10,7 +10,7 @@ use App\Domain\Shared\ValueObject\LocalesConfig;
 use App\Domain\GlobalSettings\ValueObject\GlobalSettingsId;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Event\AbstractDomainEvent;
 
-final class GlobalSettingsUpdated extends AbstractDomainEvent
+final class LocalizationSettingsChanged extends AbstractDomainEvent
 {
 	private GlobalSettingsId $globalSettingsId;
 

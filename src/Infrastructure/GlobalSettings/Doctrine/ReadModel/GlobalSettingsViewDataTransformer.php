@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\GlobalSettings\Doctrine\ReadModel;
 
 use App\Domain\Shared\ValueObject\LocalesConfig;
+use App\Domain\GlobalSettings\ValueObject\ApiCache;
 use App\ReadModel\GlobalSettings\GlobalSettingsView;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataInterface;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewFactoryInterface;
@@ -28,6 +29,7 @@ final class GlobalSettingsViewDataTransformer implements ViewDataTransformerInte
 	{
 		return $viewData
 			->with('locales', LocalesConfig::create($viewData->get('locales.locales'), $viewData->get('locales.defaultLocale')))
-			->without('locales.locales', 'locales.defaultLocale');
+			->with('apiCache', ApiCache::create($viewData->get('apiCache.cacheControlDirectives'), $viewData->get('apiCache.useEntityTag')))
+			->without('locales.locales', 'locales.defaultLocale', 'apiCache.cacheControlDirectives', 'apiCache.useEntityTag');
 	}
 }

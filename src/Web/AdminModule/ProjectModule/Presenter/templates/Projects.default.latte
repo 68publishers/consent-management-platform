@@ -7,6 +7,8 @@
 {/block}
 
 {block #before_content}
+    {include parent}
+
     <div n:if="empty($projects)" class="bg-blue-50 border-l-4 border-blue-400 p-4 sm:rounded-lg mb-3">
         <div class="flex">
             <div class="flex-shrink-0">

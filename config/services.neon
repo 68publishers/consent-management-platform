@@ -39,7 +39,8 @@ services:
 	- App\Web\FrontModule\Control\ResetPassword\ResetPasswordControlFactoryInterface
 
 	# Web\AdminModule\ApplicationModule
-	- App\Web\AdminModule\ApplicationModule\Control\GlobalSettingsForm\GlobalSettingsFormControlFactoryInterface
+	- App\Web\AdminModule\ApplicationModule\Control\LocalizationSettingsForm\LocalizationSettingsFormControlFactoryInterface
+	- App\Web\AdminModule\ApplicationModule\Control\ApiCacheSettingsForm\ApiCacheSettingsFormControlFactoryInterface
 
 	# Web\AdminModule\AccountModule
 	- App\Web\AdminModule\ProfileModule\Control\BasicInformation\BasicInformationControlFactoryInterface

@@ -1,0 +1,26 @@
+use_entity_tag:
+	field: HTTP Header ETag
+	description: '''
+	<span class="block mb-2">When enabled, the server will send an HTTP header ETag in a response. The header contains a unique validation value.</span>
+	<span class="block mb-2">Then, the browser queries the server to see if the cached response is still up to date. If the ETag does not match, then updated data is returned.</span>
+	<span class="block">At the same time it is necessary to send the HTTP header Cache-Control, it tells the browser after what time to ask (if the "max-age" is set to 0, it will always ask).</span>
+	'''
+
+cache_control_enabled:
+	field: HTTP Header Cache-Control
+	required: The header must be used.
+
+max_age:
+	field: 'HTTP Header Cache-Control: max-age'
+	description: '''
+	<span class="block mb-2">The "max-age" value is in seconds and determines how long the browser should use the data from the server before requesting it again.</span>
+	<span class="block mb-2">Beware of too high values, the data may not be up-to-date for a long time.</span>
+	<span class="block">If we set the value to 0 the browser will not cache the data at all.</span>
+	'''
+	required: Please enter a value.
+	rule:
+		integer: The value must be an integer.
+		min: The value must be an integer greater than or equal to zero.
+
+save:
+	field: Save

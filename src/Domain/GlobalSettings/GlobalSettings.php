@@ -8,10 +8,11 @@ use DateTimeImmutable;
 use App\Domain\Shared\ValueObject\Locale;
 use App\Domain\Shared\ValueObject\Locales;
 use App\Domain\Shared\ValueObject\LocalesConfig;
+use App\Domain\GlobalSettings\ValueObject\ApiCache;
 use App\Domain\GlobalSettings\Event\GlobalSettingsCreated;
-use App\Domain\GlobalSettings\Event\GlobalSettingsUpdated;
 use App\Domain\GlobalSettings\ValueObject\GlobalSettingsId;
-use App\Domain\GlobalSettings\Command\StoreGlobalSettingsCommand;
+use App\Domain\GlobalSettings\Event\ApiCacheSettingsChanged;
+use App\Domain\GlobalSettings\Event\LocalizationSettingsChanged;
 use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AggregateId;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Aggregate\AggregateRootTrait;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Aggregate\AggregateRootInterface;
@@ -28,44 +29,41 @@ final class GlobalSettings implements AggregateRootInterface
 
 	private LocalesConfig $locales;
 
+	private ApiCache $apiCache;
+
 	/**
-	 * @param \App\Domain\GlobalSettings\Command\StoreGlobalSettingsCommand $command
-	 *
 	 * @return static
 	 */
-	public static function create(StoreGlobalSettingsCommand $command): self
+	public static function createEmpty(): self
 	{
 		$globalSettings = new self();
-		$locales = Locales::empty();
-		$defaultLocale = Locale::fromValue($command->defaultLocale());
 
-		foreach ($command->locales() as $locale) {
-			$locales = $locales->with(Locale::fromValue($locale));
-		}
-
-		$globalSettings->recordThat(GlobalSettingsCreated::create(GlobalSettingsId::new(), LocalesConfig::create($locales, $defaultLocale)));
+		$globalSettings->recordThat(GlobalSettingsCreated::create(GlobalSettingsId::new()));
 
 		return $globalSettings;
 	}
 
 	/**
-	 * @param \App\Domain\GlobalSettings\Command\StoreGlobalSettingsCommand $command
+	 * @param \App\Domain\Shared\ValueObject\LocalesConfig $localesConfig
 	 *
 	 * @return void
 	 */
-	public function update(StoreGlobalSettingsCommand $command): void
+	public function updateLocalizationSettings(LocalesConfig $localesConfig): void
 	{
-		$locales = Locales::empty();
-		$defaultLocale = Locale::fromValue($command->defaultLocale());
-
-		foreach ($command->locales() as $locale) {
-			$locales = $locales->with(Locale::fromValue($locale));
+		if (!$this->locales->equals($localesConfig)) {
+			$this->recordThat(LocalizationSettingsChanged::create($this->id, $localesConfig));
 		}
+	}
 
-		$locales = LocalesConfig::create($locales, $defaultLocale);
-
-		if (!$this->locales->equals($locales)) {
-			$this->recordThat(GlobalSettingsUpdated::create($this->id, $locales));
+	/**
+	 * @param \App\Domain\GlobalSettings\ValueObject\ApiCache $apiCache
+	 *
+	 * @return void
+	 */
+	public function updateApiCacheSettings(ApiCache $apiCache): void
+	{
+		if (!$this->apiCache->equals($apiCache)) {
+			$this->recordThat(ApiCacheSettingsChanged::create($this->id, $apiCache));
 		}
 	}
 
@@ -87,17 +85,29 @@ final class GlobalSettings implements AggregateRootInterface
 		$this->id = $event->globalSettingsId();
 		$this->createdAt = $event->createdAt();
 		$this->lastUpdateAt = $event->createdAt();
+		$this->locales = LocalesConfig::create(Locales::reconstitute(['en']), Locale::fromValue('en')); // setup defaults to en
+		$this->apiCache = ApiCache::create([]);
+	}
+
+	/**
+	 * @param \App\Domain\GlobalSettings\Event\LocalizationSettingsChanged $event
+	 *
+	 * @return void
+	 */
+	protected function whenLocalizationSettingsChanged(LocalizationSettingsChanged $event): void
+	{
+		$this->lastUpdateAt = $event->createdAt();
 		$this->locales = $event->locales();
 	}
 
 	/**
-	 * @param \App\Domain\GlobalSettings\Event\GlobalSettingsUpdated $event
+	 * @param \App\Domain\GlobalSettings\Event\ApiCacheSettingsChanged $event
 	 *
 	 * @return void
 	 */
-	protected function whenGlobalSettingsUpdated(GlobalSettingsUpdated $event): void
+	protected function whenApiCacheSettingsChanged(ApiCacheSettingsChanged $event): void
 	{
 		$this->lastUpdateAt = $event->createdAt();
-		$this->locales = $event->locales();
+		$this->apiCache = $event->apiCache();
 	}
 }

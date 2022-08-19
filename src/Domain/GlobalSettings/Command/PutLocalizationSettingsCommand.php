@@ -6,7 +6,7 @@ namespace App\Domain\GlobalSettings\Command;
 
 use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
-final class StoreGlobalSettingsCommand extends AbstractCommand
+final class PutLocalizationSettingsCommand extends AbstractCommand
 {
 	/**
 	 * @return static

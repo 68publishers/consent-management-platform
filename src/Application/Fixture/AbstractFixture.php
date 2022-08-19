@@ -14,10 +14,10 @@ use App\Domain\Consent\Command\StoreConsentCommand;
 use App\Domain\Project\Command\CreateProjectCommand;
 use App\Domain\Category\Command\CreateCategoryCommand;
 use App\Domain\User\Command\AssignProjectsToUserCommand;
-use App\Domain\GlobalSettings\Command\StoreGlobalSettingsCommand;
 use App\Domain\CookieProvider\Command\CreateCookieProviderCommand;
 use App\Domain\ConsentSettings\Command\StoreConsentSettingsCommand;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
+use App\Domain\GlobalSettings\Command\PutLocalizationSettingsCommand;
 use SixtyEightPublishers\UserBundle\Domain\Command\CreateUserCommand;
 
 abstract class AbstractFixture implements FixtureInterface, ContainerAwareInterface
@@ -43,7 +43,7 @@ abstract class AbstractFixture implements FixtureInterface, ContainerAwareInterf
 	public function load(ObjectManager $manager): void
 	{
 		$commandsByTypes = [
-			'global_settings' => StoreGlobalSettingsCommand::class,
+			'global_settings_localization' => PutLocalizationSettingsCommand::class,
 			'category' => CreateCategoryCommand::class,
 			'cookie_provider' => CreateCookieProviderCommand::class,
 			'cookie' => CreateCookieCommand::class,
