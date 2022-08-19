@@ -87,7 +87,56 @@ module.exports = () => ({
     },
 
     loadProjectsData(start, end) {
-        const codes = [];
+        const doLoad = (codes) => {
+            let query = `?locale=${document.documentElement.lang}&startDate=${start.format('YYYY-MM-DD')}&endDate=${end.format('YYYY-MM-DD')}`;
+
+            for (let i in codes) {
+                query += `&projects[]=${codes[i]}`;
+            }
+
+            const promise = fetch(this.endpoint + query, {
+                method: 'GET'
+            });
+
+            promise.then(response => {
+                return response.json();
+            }).then(json => {
+                if ('success' !== json.status) {
+                    return Promise.reject(json);
+                }
+
+                const data = json.data;
+
+                for (let i in this.projects) {
+                    const project = this.projects[i];
+
+                    if (-1 === codes.indexOf(project.code)) {
+                        continue;
+                    }
+
+                    const projectData = data[project.code];
+
+                    if (!projectData) {
+                        project.status = this.STATUS_MISSING();
+
+                        continue;
+                    }
+
+                    project.data = mergeObjects(project.data, projectData);
+                    project.status = this.STATUS_LOADED();
+                }
+            }).catch((e) => {
+                console.warn(e);
+
+                for (let i in this.projects) {
+                    if (-1 !== codes.indexOf(this.projects[i].code)) {
+                        this.projects[i].status = this.STATUS_ERROR();
+                    }
+                }
+            });
+        };
+
+        let codes = [];
 
         for (let i in this.projects) {
             const project = this.projects[i];
@@ -97,54 +146,16 @@ module.exports = () => ({
             }
 
             codes.push(project.code);
+
+            if (5 === codes.length) {
+                doLoad(codes);
+                codes = [];
+            }
         }
 
-        let query = `?locale=${document.documentElement.lang}&startDate=${start.format('YYYY-MM-DD')}&endDate=${end.format('YYYY-MM-DD')}`;
-
-        for (let i in codes) {
-            query += `&projects[]=${codes[i]}`;
+        if (0 < codes.length) {
+            doLoad(codes);
         }
-
-        const promise = fetch(this.endpoint + query, {
-            method: 'GET'
-        });
-
-        promise.then(response => {
-            return response.json();
-        }).then(json => {
-            if ('success' !== json.status) {
-                return Promise.reject(json);
-            }
-
-            const data = json.data;
-
-            for (let i in this.projects) {
-                const project = this.projects[i];
-
-                if (-1 === codes.indexOf(project.code)) {
-                    continue;
-                }
-
-                const projectData = data[project.code];
-
-                if (!projectData) {
-                    project.status = this.STATUS_MISSING();
-
-                    continue;
-                }
-
-                project.data = mergeObjects(project.data, projectData);
-                project.status = this.STATUS_LOADED();
-            }
-        }).catch((e) => {
-            console.warn(e);
-
-            for (let i in this.projects) {
-                if (-1 !== codes.indexOf(this.projects[i].code)) {
-                    this.projects[i].status = this.STATUS_ERROR();
-                }
-            }
-        });
     },
 
     addProject(data) {
