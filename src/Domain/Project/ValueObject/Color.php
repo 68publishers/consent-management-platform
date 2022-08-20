@@ -16,7 +16,7 @@ final class Color extends AbstractStringValueObject
 	 */
 	public static function fromValidColor(string $color): self
 	{
-		if (!preg_match('/^#([a-f0-9]{3}){1,2}$/i', $color)) {
+		if (!preg_match('/^#([a-fA-F\d]{3}){1,2}$/i', $color)) {
 			throw InvalidColorException::invalidValue($color);
 		}
 

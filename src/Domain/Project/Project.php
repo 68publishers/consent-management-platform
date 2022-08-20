@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Project;
 
-use DateTimeZone;
 use DateTimeImmutable;
 use App\Domain\Project\ValueObject\Code;
 use App\Domain\Project\ValueObject\Name;
@@ -55,8 +54,6 @@ final class Project implements AggregateRootInterface
 	private bool $active;
 
 	private LocalesConfig $locales;
-
-	private DateTimeZone $timezone;
 
 	/** @var \Doctrine\Common\Collections\Collection|\App\Domain\Project\ProjectHasCookieProvider[]  */
 	private Collection $cookieProviders;

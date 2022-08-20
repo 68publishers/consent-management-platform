@@ -39,7 +39,7 @@ final class CookieImporter extends AbstractImporter
 		$result = ImporterResult::of();
 
 		foreach ($rows as $row) {
-			$result = $result->with($this->wrapRowImport($row, function (RowInterface $row) {
+			$result = $result->with($this->wrapRowImport($row, function (RowInterface $row): RowResult {
 				$data = $row->data();
 				assert($data instanceof CookieData);
 

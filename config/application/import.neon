@@ -20,6 +20,7 @@ services:
 			importers:
 				- @import.importer.cookie_provider
 				- @import.importer.cookie
+				- @import.importer.project
 
 	import.importer.cookie_provider:
 		autowired: no
@@ -28,3 +29,7 @@ services:
 	import.importer.cookie:
 		autowired: no
 		factory: App\Application\Cookie\Import\CookieImporter
+
+	import.importer.project:
+		autowired: no
+		factory: App\Application\Project\Import\ProjectImporter

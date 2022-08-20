@@ -38,7 +38,7 @@ final class CookieProviderImporter extends AbstractImporter
 		$existingProviders = $this->findExistingProviders($rows);
 
 		foreach ($rows as $row) {
-			$result = $result->with($this->wrapRowImport($row, function (RowInterface $row) use ($existingProviders) {
+			$result = $result->with($this->wrapRowImport($row, function (RowInterface $row) use ($existingProviders): RowResult {
 				$data = $row->data();
 				assert($data instanceof CookieProviderData);
 
