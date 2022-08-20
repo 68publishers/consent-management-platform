@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Api\V1\Controller;
 
+use App\Api\Cache\Etag;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use App\Application\Cookie\Template;
+use App\Api\Cache\EtagStoreInterface;
 use App\ReadModel\Project\ProjectView;
 use App\ReadModel\Cookie\CookieApiView;
 use App\Domain\Shared\ValueObject\Locale;
@@ -34,16 +36,20 @@ final class CookiesController extends AbstractV1Controller
 
 	private GlobalSettingsInterface $globalSettings;
 
+	private EtagStoreInterface $etagStore;
+
 	/**
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface $queryBus
 	 * @param \App\Application\Cookie\TemplateRendererInterface              $templateRenderer
 	 * @param \App\Application\GlobalSettings\GlobalSettingsInterface        $globalSettings
+	 * @param \App\Api\Cache\EtagStoreInterface                              $etagStore
 	 */
-	public function __construct(QueryBusInterface $queryBus, TemplateRendererInterface $templateRenderer, GlobalSettingsInterface $globalSettings)
+	public function __construct(QueryBusInterface $queryBus, TemplateRendererInterface $templateRenderer, GlobalSettingsInterface $globalSettings, EtagStoreInterface $etagStore)
 	{
 		$this->queryBus = $queryBus;
 		$this->templateRenderer = $templateRenderer;
 		$this->globalSettings = $globalSettings;
+		$this->etagStore = $etagStore;
 	}
 
 	/**
@@ -121,14 +127,23 @@ final class CookiesController extends AbstractV1Controller
 	 * @param \Apitte\Core\Http\ApiResponse $response
 	 *
 	 * @return \Apitte\Core\Http\ApiResponse
+	 * @throws \JsonException
 	 */
 	public function getJson(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		$response = $response->withHeader('Access-Control-Allow-Origin', '*');
-		$project = $this->queryBus->dispatch(GetProjectByCodeQuery::create($request->getParameter('project')));
 
+		$projectCode = $request->getParameter('project');
 		$requestEntity = $request->getEntity();
 		assert($requestEntity instanceof CookiesRequestBody);
+
+		$etagKey = sprintf('%s/%s/[%s]/json', $projectCode, $requestEntity->locale ?? '_', implode(',', (array) $requestEntity->category));
+
+		if ($this->isNotModified($etagKey, $request)) {
+			return $response->withStatus(ApiResponse::S304_NOT_MODIFIED);
+		}
+
+		$project = $this->queryBus->dispatch(GetProjectByCodeQuery::create($projectCode));
 
 		if (!$project instanceof ProjectView) {
 			return $response->withStatus(ApiResponse::S404_NOT_FOUND)
@@ -145,19 +160,16 @@ final class CookiesController extends AbstractV1Controller
 			? Locale::fromValue($requestEntity->locale)
 			: $project->locales->defaultLocale();
 
+		$responseBody = json_encode([
+			'status' => 'success',
+			'data' => $this->getCookiesData($project->id, $locale, $project->locales->defaultLocale(), $requestEntity->category),
+		], JSON_THROW_ON_ERROR);
+
 		$response = $response->withStatus(ApiResponse::S200_OK)
-			->writeJsonBody([
-				'status' => 'success',
-				'data' => $this->getCookiesData($project->id, $locale, $project->locales->defaultLocale(), $requestEntity->category),
-			]);
+			->withHeader('Content-Type', 'application/json')
+			->writeBody($responseBody);
 
-		$cacheControlHeader = $this->globalSettings->apiCache()->cacheControlHeader();
-
-		if (NULL !== $cacheControlHeader) {
-			$response = $response->withHeader('Cache-Control', $cacheControlHeader);
-		}
-
-		return $response;
+		return $this->applyCacheHeaders($etagKey, $responseBody, $response);
 	}
 
 	/**
@@ -177,10 +189,18 @@ final class CookiesController extends AbstractV1Controller
 	public function getTemplate(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		$response = $response->withHeader('Access-Control-Allow-Origin', '*');
+
+		$projectCode = $request->getParameter('project');
 		$requestEntity = $request->getEntity();
 		assert($requestEntity instanceof CookiesRequestBody);
 
-		$projectTemplate = $this->queryBus->dispatch(GetProjectTemplateByCodeAndLocaleWithFallbackQuery::create($request->getParameter('project'), $requestEntity->locale));
+		$etagKey = sprintf('%s/%s/[%s]/html', $projectCode, $requestEntity->locale ?? '_', implode(',', (array) $requestEntity->category));
+
+		if ($this->isNotModified($etagKey, $request)) {
+			return $response->withStatus(ApiResponse::S304_NOT_MODIFIED);
+		}
+
+		$projectTemplate = $this->queryBus->dispatch(GetProjectTemplateByCodeAndLocaleWithFallbackQuery::create($projectCode, $requestEntity->locale));
 
 		if (!$projectTemplate instanceof ProjectTemplateView) {
 			return $response->withStatus(ApiResponse::S404_NOT_FOUND)
@@ -207,14 +227,53 @@ final class CookiesController extends AbstractV1Controller
 			TemplateArguments::create($data->providers, $data->cookies)
 		);
 
+		$responseBody = $this->templateRenderer->render($template);
+
 		$response = $response->withStatus(ApiResponse::S200_OK)
 			->withHeader('Content-Type', 'text/html')
-			->writeBody($this->templateRenderer->render($template));
+			->writeBody($responseBody);
 
-		$cacheControlHeader = $this->globalSettings->apiCache()->cacheControlHeader();
+		return $this->applyCacheHeaders($etagKey, $responseBody, $response);
+	}
+
+	/**
+	 * @param string                       $etagKey
+	 * @param \Apitte\Core\Http\ApiRequest $request
+	 *
+	 * @return bool
+	 */
+	private function isNotModified(string $etagKey, ApiRequest $request): bool
+	{
+		if (!$this->globalSettings->apiCache()->useEntityTag()) {
+			return FALSE;
+		}
+
+		$etag = $this->etagStore->get($etagKey);
+
+		return $etag && $etag->isNotModified($request);
+	}
+
+	/**
+	 * @param string                        $etagKey
+	 * @param string                        $responseBody
+	 * @param \Apitte\Core\Http\ApiResponse $response
+	 *
+	 * @return \Apitte\Core\Http\ApiResponse
+	 */
+	private function applyCacheHeaders(string $etagKey, string $responseBody, ApiResponse $response): ApiResponse
+	{
+		$apiCache = $this->globalSettings->apiCache();
+		$cacheControlHeader = $apiCache->cacheControlHeader();
 
 		if (NULL !== $cacheControlHeader) {
 			$response = $response->withHeader('Cache-Control', $cacheControlHeader);
+		}
+
+		if ($apiCache->useEntityTag()) {
+			$etag = Etag::fromValidator(hash('sha256', $responseBody));
+			$response = $etag->addToResponse($response);
+
+			$this->etagStore->save($etagKey, $etag);
 		}
 
 		return $response;

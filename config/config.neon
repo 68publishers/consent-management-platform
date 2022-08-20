@@ -4,6 +4,7 @@ includes:
 	- packages/@packages.neon
 	- application/@application.neon
 	- model/@model.neon
+	- api/@api.neon
 	- services.neon
 
 parameters:

@@ -1,0 +1,6 @@
+services:
+	-
+		type: App\Api\Cache\EtagStoreInterface
+		factory: App\Api\Cache\EtagStorage
+		arguments:
+			storage: @redis
