@@ -6,7 +6,7 @@
 
 <div n:syntax="double" x-data="dashboard" data-endpoint="{{App\Api\Internal\Controller\StatisticsController::ENDPOINT_PROJECTS}}" data-projects="{{Nette\Utils\Json::encode($projectsData)}}" class="w-full px-4 sm:px-0">
 
-    <div x-data="dropdown" x-bind="dropdown" class="relative">
+    <div x-data="dropdown" x-bind="dropdown" class="relative inline-block">
         <span class="relative z-0 inline-flex shadow-sm rounded-md">
             <button x-on:click="moveToPreviousRange()" type="button" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
                 <span class="sr-only">{{_previous_period}}</span>

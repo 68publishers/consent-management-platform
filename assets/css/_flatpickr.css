@@ -129,29 +129,27 @@ span.flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n+1)) {
 }
 
 .flatpickr-current-month {
-    @apply flex items-center justify-center pt-0 space-x-2;
+    @apply flex items-center justify-between pt-0 space-x-2 w-full left-auto px-2;
+    position: static;
 }
 
 .flatpickr-months {
-    @apply my-2;
+@apply my-2;
 }
 
 .flatpickr-months .flatpickr-prev-month, .flatpickr-months .flatpickr-next-month {
-    @apply static flex items-center;
+@apply flex items-center;
+position: static;
 }
 
 .flatpickr-months .flatpickr-prev-month svg, .flatpickr-months .flatpickr-next-month svg {
-    @apply w-5 h-5;
+@apply w-5 h-5;
 }
 
 .flatpickr-months .flatpickr-prev-month:hover, .flatpickr-months .flatpickr-next-month:hover {
-    @apply text-indigo-700;
+@apply text-indigo-700;
 }
 
 .flatpickr-months .flatpickr-prev-month:hover svg, .flatpickr-months .flatpickr-next-month:hover svg {
-    @apply fill-indigo-700;
-}
-
-.numInputWrapper span {
-    right: -16px;
+@apply fill-indigo-700;
 }
