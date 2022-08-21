@@ -42,6 +42,13 @@ final class ProjectImporter extends AbstractImporter
 					$data->code
 				));
 
+				$locales = $data->locales;
+				$defaultLocale = $data->defaultLocale;
+
+				if (empty($defaultLocale)) {
+					$defaultLocale = (string) reset($locales);
+				}
+
 				if ($projectView instanceof ProjectView) {
 					$command = UpdateProjectCommand::create($projectView->id->toString())
 						->withCode($data->code)
@@ -49,7 +56,7 @@ final class ProjectImporter extends AbstractImporter
 						->withColor($data->color)
 						->withDescription($data->description)
 						->withActive($data->active)
-						->withLocales($data->locales, $data->defaultLocale);
+						->withLocales($locales, $defaultLocale);
 				} else {
 					$command = CreateProjectCommand::create(
 						$data->name,
@@ -57,8 +64,8 @@ final class ProjectImporter extends AbstractImporter
 						$data->description,
 						$data->color,
 						$data->active,
-						$data->locales,
-						$data->defaultLocale
+						$locales,
+						$defaultLocale
 					);
 				}
 

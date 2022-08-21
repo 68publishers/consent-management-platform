@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Application\Project\Import;
 
 use App\Application\DataReader\Description\Required;
+use App\Application\DataReader\Description\Nullable;
 use App\Application\DataReader\Description\Descriptor;
 use App\Application\DataReader\AbstractDescribedObject;
+use App\Application\DataReader\Description\AllowOthers;
 use App\Application\DataReader\Description\DefaultValue;
 use App\Application\DataReader\Description\StructureDescriptor;
 
@@ -24,7 +26,7 @@ final class ProjectData extends AbstractDescribedObject
 
 	public array $locales;
 
-	public string $defaultLocale;
+	public ?string $defaultLocale = NULL;
 
 	/**
 	 * {@inheritDoc}
@@ -32,6 +34,7 @@ final class ProjectData extends AbstractDescribedObject
 	protected static function doDescribe(StructureDescriptor $descriptor): StructureDescriptor
 	{
 		return $descriptor
+			->withProps(new AllowOthers())
 			->withDescriptor('name', Descriptor::string(new Required()))
 			->withDescriptor('code', Descriptor::string(new Required()))
 			->withDescriptor('color', Descriptor::string(new Required()))
@@ -40,6 +43,6 @@ final class ProjectData extends AbstractDescribedObject
 			->withDescriptor('locales', Descriptor::listOf(
 				Descriptor::string(),
 			))
-			->withDescriptor('defaultLocale', Descriptor::string(new Required()));
+			->withDescriptor('defaultLocale', Descriptor::string(new Nullable()));
 	}
 }

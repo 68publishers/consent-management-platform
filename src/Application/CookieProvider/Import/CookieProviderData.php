@@ -7,6 +7,7 @@ namespace App\Application\CookieProvider\Import;
 use App\Application\DataReader\Description\Required;
 use App\Application\DataReader\Description\Descriptor;
 use App\Application\DataReader\AbstractDescribedObject;
+use App\Application\DataReader\Description\AllowOthers;
 use App\Application\DataReader\Description\DefaultValue;
 use App\Application\DataReader\Description\StructureDescriptor;
 
@@ -32,6 +33,7 @@ final class CookieProviderData extends AbstractDescribedObject
 	protected static function doDescribe(StructureDescriptor $descriptor): StructureDescriptor
 	{
 		return $descriptor
+			->withProps(new AllowOthers())
 			->withDescriptor('code', Descriptor::string(new Required()))
 			->withDescriptor('name', Descriptor::string(new Required()))
 			->withDescriptor('type', Descriptor::string(new Required()))
