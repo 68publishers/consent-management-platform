@@ -1,16 +1,6 @@
-cache:
-	docker exec -it cmp-app bin/console
-
-cache-clear:
-	rm -rf var/cache/*
-	rm -rf var/log/*
-	rm -rf var/mail-panel-latte
-
-db-clear:
-	rm -rf var/postgres-data/*
-
 start:
 	docker compose up -d
+	echo "visit http://localhost:8888"
 
 stop:
 	docker compose stop
@@ -23,12 +13,23 @@ restart:
 	make start
 	make data-migration
 
+cache:
+	docker exec -it cmp-app bin/console
+
+cache-clear:
+	rm -rf var/cache/*
+	rm -rf var/log/*
+	rm -rf var/mail-panel-latte
+
+db-clear:
+	rm -rf var/postgres-data/*
+
 build:
 	make install
 	make cache-clear
 	./vendor/bin/tracy-git-version export-repository --output-file ./var/git-version/repository.json -vv
 	make cache
-	docker build -f ./docker/app/prod/Dockerfile -t 68publishers/cmp:0.3.1 .
+	docker build -f ./docker/app/prod/Dockerfile -t 68publishers/cmp:latest .
 
 rebuild:
 	make build
@@ -69,7 +70,7 @@ qa:
 	echo "not implemented"
 
 cs:
-	echo "not implemented"
+	./vendor/bin/php-cs-fixer fix -v
 
 coverage:
 	echo "not implemented"

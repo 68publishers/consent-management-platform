@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Application\Project\Import;
 
-use App\Application\DataReader\Description\Required;
 use App\Application\DataReader\Description\Nullable;
+use App\Application\DataReader\Description\Required;
 use App\Application\DataReader\Description\Descriptor;
 use App\Application\DataReader\AbstractDescribedObject;
 use App\Application\DataReader\Description\AllowOthers;
