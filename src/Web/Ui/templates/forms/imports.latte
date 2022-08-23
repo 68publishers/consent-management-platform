@@ -27,27 +27,25 @@
 
 {define #controls}
     {try}
-        <table>
-            {var $controls = $group instanceof Nette\Forms\Container ? $group->getComponents() : $group->getControls()}
+        {var $controls = $group instanceof Nette\Forms\Container ? $group->getComponents() : $group->getControls()}
 
-            {foreach $controls as $control}
-                {if $control instanceof Nette\Forms\Control}
-                    {continueIf $control->getOption('rendered') || $control->getOption('type') === 'hidden'}
-                    {if $control instanceof Nette\Forms\Controls\CheckboxList && 'checkbox' === $control->getOption('type')}
-                        {do $control->setOption('type', 'checkboxlist')}
-                    {/if}
-
-                    {include #helpers-override-split, blockNamePrefix => pair, control => $control, parameters => [controlsIterator => $iterator]}
-                {elseif $control instanceof Nette\Forms\Container}
-                    {ifset #'container-name-' . $control->getName()}
-                        {include #'container-name-' . $control->getName(), container => $control}
-                    {else}
-                        {include #controls, group => $control}
-                    {/ifset}
+        {foreach $controls as $control}
+            {if $control instanceof Nette\Forms\Control}
+                {continueIf $control->getOption('rendered') || $control->getOption('type') === 'hidden'}
+                {if $control instanceof Nette\Forms\Controls\CheckboxList && 'checkbox' === $control->getOption('type')}
+                    {do $control->setOption('type', 'checkboxlist')}
                 {/if}
-                {else}{rollback}
-            {/foreach}
-        </table>
+
+                {include #helpers-override-split, blockNamePrefix => pair, control => $control, parameters => [controlsIterator => $iterator]}
+            {elseif $control instanceof Nette\Forms\Container}
+                {ifset #'container-name-' . $control->getName()}
+                    {include #'container-name-' . $control->getName(), container => $control}
+                {else}
+                    {include #controls, group => $control}
+                {/ifset}
+            {/if}
+            {else}{rollback}
+        {/foreach}
     {/try}
 {/define}
 
@@ -67,7 +65,9 @@
     <div class="flex justify-end px-4 sm:px-6">
         {block #control-type-button}
             {if !$control->getOption('rendered')}
-                <button data-spinner-for="{$form->getElementPrototype()->id}" n:name="$control" n:class="
+                {var $attrs = !$control->getOption('no-spinner') ? ['data-spinner-for' => $form->getElementPrototype()->id] : []}
+
+                <button n:attr="(expand) $attrs" n:name="$control" n:class="
                     $control->getControlPrototype()->class,
                     'spinner-white ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer'
                 ">{$control->translate($control->getCaption())}</button>

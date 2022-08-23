@@ -28,6 +28,7 @@ module.exports = () => ({
 
             !this.$refs.panel.contains(target)
                 && !this.$el.contains(target)
+                && !target.closest('[x-data="selectOptions"]')
                 && this.close();
         },
         ['x-id']: '["dropdown"]',
@@ -57,7 +58,7 @@ module.exports = () => ({
         ['x-on:click.outside']() {
             const target = this.$event.target;
 
-            !this.$refs.dropdown.contains(target) && this.close(this.$refs.button);
+            !this.$refs.dropdown.contains(target) && !target.closest('[x-data="selectOptions"]') && this.close(this.$refs.button);
         },
         ['x-show']() {
             return this.open

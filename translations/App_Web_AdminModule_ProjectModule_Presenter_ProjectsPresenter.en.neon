@@ -1,5 +1,6 @@
 page_title: Projects
 add_new_project: Add project
+export_projects: Export
 
 alert:
 	no_projects: 'You have no projects available.'

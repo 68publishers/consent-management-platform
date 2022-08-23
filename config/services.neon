@@ -38,6 +38,10 @@ services:
 	- App\Web\FrontModule\Control\ForgotPassword\ForgotPasswordControlFactoryInterface
 	- App\Web\FrontModule\Control\ResetPassword\ResetPasswordControlFactoryInterface
 
+	# Web\AdminModule
+	- App\Web\AdminModule\Control\ExportForm\ExportFormControlFactoryInterface
+	- App\Web\AdminModule\Control\ExportForm\ExportDropdownControlFactoryInterface
+
 	# Web\AdminModule\ApplicationModule
 	- App\Web\AdminModule\ApplicationModule\Control\LocalizationSettingsForm\LocalizationSettingsFormControlFactoryInterface
 	- App\Web\AdminModule\ApplicationModule\Control\ApiCacheSettingsForm\ApiCacheSettingsFormControlFactoryInterface

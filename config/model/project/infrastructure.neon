@@ -55,6 +55,9 @@ services:
 	-
 		autowired: no
 		factory: App\Infrastructure\Project\Doctrine\ReadModel\ProjectExistsQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\Project\Doctrine\ReadModel\ProjectExportQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:

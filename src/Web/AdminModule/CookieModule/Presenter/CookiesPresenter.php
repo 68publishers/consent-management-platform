@@ -9,9 +9,12 @@ use App\Application\Acl\CookieResource;
 use App\Web\Ui\Form\FormFactoryInterface;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
+use App\Web\AdminModule\Control\ExportForm\ExportDropdownControl;
 use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
+use App\Web\AdminModule\Control\ExportForm\Callback\CookiesExportCallback;
 use App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControl;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControl;
+use App\Web\AdminModule\Control\ExportForm\ExportDropdownControlFactoryInterface;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieCreatedEvent;
 use App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControlFactoryInterface;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieFormProcessingFailedEvent;
@@ -26,16 +29,20 @@ final class CookiesPresenter extends AdminPresenter
 
 	private CookieFormModalControlFactoryInterface $cookieFormModalControlFactory;
 
+	private ExportDropdownControlFactoryInterface $exportDropdownControlFactory;
+
 	/**
 	 * @param \App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControlFactoryInterface      $cookieListControlFactory
 	 * @param \App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControlFactoryInterface $cookieFormModalControlFactory
+	 * @param \App\Web\AdminModule\Control\ExportForm\ExportDropdownControlFactoryInterface               $exportDropdownControlFactory
 	 */
-	public function __construct(CookieListControlFactoryInterface $cookieListControlFactory, CookieFormModalControlFactoryInterface $cookieFormModalControlFactory)
+	public function __construct(CookieListControlFactoryInterface $cookieListControlFactory, CookieFormModalControlFactoryInterface $cookieFormModalControlFactory, ExportDropdownControlFactoryInterface $exportDropdownControlFactory)
 	{
 		parent::__construct();
 
 		$this->cookieListControlFactory = $cookieListControlFactory;
 		$this->cookieFormModalControlFactory = $cookieFormModalControlFactory;
+		$this->exportDropdownControlFactory = $exportDropdownControlFactory;
 	}
 
 	/**
@@ -88,5 +95,17 @@ final class CookiesPresenter extends AdminPresenter
 		});
 
 		return $control;
+	}
+
+	/**
+	 * @return \App\Web\AdminModule\Control\ExportForm\ExportDropdownControl
+	 */
+	protected function createComponentExportDropdown(): ExportDropdownControl
+	{
+		if (!$this->getUser()->isAllowed(CookieResource::class, CookieResource::EXPORT)) {
+			throw new InvalidStateException('The user is not allowed to export cookies.');
+		}
+
+		return $this->exportDropdownControlFactory->create(new CookiesExportCallback());
 	}
 }

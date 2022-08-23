@@ -1,5 +1,6 @@
 page_title: List of cookies
 add_new_cookie: Add cookie
+export_cookies: Export
 
 message:
 	cookie_created: The cookie has been created.

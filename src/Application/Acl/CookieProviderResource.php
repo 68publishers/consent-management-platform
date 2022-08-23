@@ -10,4 +10,5 @@ final class CookieProviderResource extends AbstractResource
 	public const CREATE = 'create';
 	public const UPDATE = 'update';
 	public const DELETE = 'delete';
+	public const EXPORT = 'export';
 }

@@ -319,7 +319,7 @@ function Select(Alpine) {
         optionsEl.setAttribute('x-data', 'selectOptions');
         optionsEl.setAttribute('x-bind', 'selectOptions');
         optionsEl.setAttribute('data-cid', cid);
-        optionsEl.setAttribute('class', 'absolute flex flex-col justify-start pointer-events-none z-10 mt-1 w-full text-base focus:outline-none sm:text-sm');
+        optionsEl.setAttribute('class', 'absolute flex flex-col justify-start pointer-events-none mt-1 w-full text-base focus:outline-none sm:text-sm z-30');
         optionsEl.setAttribute('tabindex', '-1');
 
         const containerEl = el.closest('[data-plugin-container]') || null;

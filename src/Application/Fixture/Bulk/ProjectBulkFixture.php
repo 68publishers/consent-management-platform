@@ -153,7 +153,7 @@ final class ProjectBulkFixture extends AbstractFixture
 		return [
 			'cookie_provider_id' => CookieProviderId::new()->toString(),
 			'code' => $code,
-			'type' => ProviderType::THIRD_PARTY,
+			'type' => ProviderType::FIRST_PARTY,
 			'name' => $name,
 			'link' => 'https://www.' . $code . '.com',
 			'purposes' => [
