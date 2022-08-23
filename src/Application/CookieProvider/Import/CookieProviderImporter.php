@@ -6,8 +6,8 @@ namespace App\Application\CookieProvider\Import;
 
 use App\Application\Import\RowResult;
 use App\Application\Import\ImporterResult;
-use App\Application\DataReader\RowInterface;
 use App\Application\Import\AbstractImporter;
+use App\Application\DataProcessor\RowInterface;
 use App\ReadModel\Project\ProjectPermissionView;
 use App\ReadModel\CookieProvider\CookieProviderView;
 use App\Domain\CookieProvider\ValueObject\ProviderType;

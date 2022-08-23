@@ -13,9 +13,9 @@ use App\Application\Import\ImportOptions;
 use App\Web\Ui\Form\FormFactoryInterface;
 use App\Application\Import\RunnerInterface;
 use App\Web\Ui\Form\FormFactoryOptionsTrait;
-use App\Application\DataReader\Reader\CsvReader;
 use App\Application\Import\Helper\KnownDescriptors;
-use App\Application\DataReader\DataReaderFactoryInterface;
+use App\Application\DataProcessor\Read\Reader\CsvReader;
+use App\Application\DataProcessor\Read\DataReaderFactoryInterface;
 use SixtyEightPublishers\UserBundle\Bridge\Nette\Security\Identity;
 use App\Web\AdminModule\ImportModule\Control\ImportForm\Event\ImportEndedEvent;
 use App\Web\AdminModule\ImportModule\Control\ImportForm\Event\ImportFormProcessingFailedEvent;
@@ -48,9 +48,9 @@ final class ImportFormControl extends Control
 	private DataReaderFactoryInterface $dataReaderFactory;
 
 	/**
-	 * @param \App\Web\Ui\Form\FormFactoryInterface                  $formFactory
-	 * @param \App\Application\Import\RunnerInterface                $runner
-	 * @param \App\Application\DataReader\DataReaderFactoryInterface $dataReaderFactory
+	 * @param \App\Web\Ui\Form\FormFactoryInterface                          $formFactory
+	 * @param \App\Application\Import\RunnerInterface                        $runner
+	 * @param \App\Application\DataProcessor\Read\DataReaderFactoryInterface $dataReaderFactory
 	 */
 	public function __construct(FormFactoryInterface $formFactory, RunnerInterface $runner, DataReaderFactoryInterface $dataReaderFactory)
 	{

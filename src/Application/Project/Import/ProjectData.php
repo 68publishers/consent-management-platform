@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Application\Project\Import;
 
-use App\Application\DataReader\Description\Nullable;
-use App\Application\DataReader\Description\Required;
-use App\Application\DataReader\Description\Descriptor;
-use App\Application\DataReader\AbstractDescribedObject;
-use App\Application\DataReader\Description\AllowOthers;
-use App\Application\DataReader\Description\DefaultValue;
-use App\Application\DataReader\Description\StructureDescriptor;
+use App\Application\DataProcessor\Description\Nullable;
+use App\Application\DataProcessor\Description\Required;
+use App\Application\DataProcessor\Description\Descriptor;
+use App\Application\DataProcessor\AbstractDescribedObject;
+use App\Application\DataProcessor\Description\AllowOthers;
+use App\Application\DataProcessor\Description\DefaultValue;
+use App\Application\DataProcessor\Description\StructureDescriptor;
 
 final class ProjectData extends AbstractDescribedObject
 {

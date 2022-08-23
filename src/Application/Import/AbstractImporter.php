@@ -7,7 +7,7 @@ namespace App\Application\Import;
 use Throwable;
 use DomainException;
 use Psr\Log\LoggerInterface;
-use App\Application\DataReader\RowInterface;
+use App\Application\DataProcessor\RowInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 
@@ -32,8 +32,8 @@ abstract class AbstractImporter implements ImporterInterface
 	}
 
 	/**
-	 * @param \App\Application\DataReader\RowInterface $row
-	 * @param callable                                 $importProcess
+	 * @param \App\Application\DataProcessor\RowInterface $row
+	 * @param callable                                    $importProcess
 	 *
 	 * @return \App\Application\Import\RowResult
 	 */

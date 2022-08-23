@@ -6,18 +6,18 @@ namespace App\Application\Import;
 
 use App\Bootstrap;
 use Spatie\Async\Task;
-use App\Application\DataReader\RowInterface;
+use App\Application\DataProcessor\RowInterface;
 
 final class ImportTask extends Task
 {
-	/** @var \App\Application\DataReader\RowInterface[] */
+	/** @var \App\Application\DataProcessor\RowInterface[] */
 	private array $rows;
 
 	private ?ImporterInterface $importer = NULL;
 
 	/**
-	 * @param \App\Application\DataReader\RowInterface[] $rows
-	 * @param \App\Application\Import\ImporterInterface  $importer
+	 * @param \App\Application\DataProcessor\RowInterface[] $rows
+	 * @param \App\Application\Import\ImporterInterface     $importer
 	 */
 	public function __construct(array $rows, ImporterInterface $importer)
 	{

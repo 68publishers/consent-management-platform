@@ -1,0 +1,62 @@
+services:
+	# process factory
+	data_processor.data_process_factory: App\Application\DataProcessor\DataProcessFactory
+
+	# data reader
+	data_processor.reader_factory.csv:
+		autowired: no
+		factory: App\Application\DataProcessor\Read\Reader\CsvReaderFactory
+
+	data_processor.reader_factory.json:
+		autowired: no
+		factory: App\Application\DataProcessor\Read\Reader\JsonReaderFactory
+
+	data_processor.reader_factory.array:
+		autowired: no
+		factory: App\Application\DataProcessor\Read\Reader\ArrayReaderFactory
+
+	data_processor.reader_factory.php:
+		autowired: no
+		factory: App\Application\DataProcessor\Read\Reader\PhpReaderFactory
+
+	data_processor.reader_factory.query:
+		autowired: no
+		factory: App\Application\DataProcessor\Read\Reader\QueryReaderFactory
+
+	data_processor.data_reader.default:
+		autowired: no
+		factory: App\Application\DataProcessor\Read\DataReaderFactory
+		arguments:
+			readerFactories:
+				- @data_processor.reader_factory.csv
+				- @data_processor.reader_factory.json
+				- @data_processor.reader_factory.array
+				- @data_processor.reader_factory.php
+				- @data_processor.reader_factory.query
+
+	data_processor.data_reader:
+		autowired: App\Application\DataProcessor\Read\DataReaderFactoryInterface
+		type: App\Application\DataProcessor\Read\DataReaderFactoryInterface
+		factory: @data_processor.data_reader.default
+
+	# data writer
+	data_processor.writer_factory.json:
+		autowired: no
+		factory: App\Application\DataProcessor\Write\Writer\JsonWriterFactory
+
+	data_processor.writer_factory.csv:
+		autowired: no
+		factory: App\Application\DataProcessor\Write\Writer\CsvWriterFactory
+
+	data_processor.writer_factory.default:
+		autowired: no
+		factory: App\Application\DataProcessor\Write\DataWriterFactory
+		arguments:
+			writerFactories:
+				- @data_processor.writer_factory.json
+				- @data_processor.writer_factory.csv
+
+	data_processor.writer_factory:
+		autowired: App\Application\DataProcessor\Write\DataWriterFactoryInterface
+		type: App\Application\DataProcessor\Write\DataWriterFactoryInterface
+		factory: @data_processor.writer_factory.default

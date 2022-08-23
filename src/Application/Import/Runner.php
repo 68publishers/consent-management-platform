@@ -14,11 +14,11 @@ use App\Domain\Import\Command\FailImportCommand;
 use App\Application\Import\Logger\ComposedLogger;
 use App\Domain\Import\Command\StartImportCommand;
 use App\Domain\Import\Command\CompleteImportCommand;
-use App\Application\DataReader\Event\ReaderErrorEvent;
-use App\Application\DataReader\Reader\ReaderInterface;
-use App\Application\DataReader\AbstractDescribedObject;
-use App\Application\DataReader\Exception\ReaderException;
-use App\Application\DataReader\Exception\RowValidationException;
+use App\Application\DataProcessor\AbstractDescribedObject;
+use App\Application\DataProcessor\Exception\ReaderException;
+use App\Application\DataProcessor\Read\Event\ReaderErrorEvent;
+use App\Application\DataProcessor\Read\Reader\ReaderInterface;
+use App\Application\DataProcessor\Exception\RowValidationException;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 
 final class Runner implements RunnerInterface
@@ -80,9 +80,9 @@ final class Runner implements RunnerInterface
 	}
 
 	/**
-	 * @param \App\Application\DataReader\Reader\ReaderInterface $reader
-	 * @param \App\Application\Import\ImportOptions              $options
-	 * @param \App\Application\Import\ImportState                $state
+	 * @param \App\Application\DataProcessor\Read\Reader\ReaderInterface $reader
+	 * @param \App\Application\Import\ImportOptions                      $options
+	 * @param \App\Application\Import\ImportState                        $state
 	 *
 	 * @return \App\Application\Import\ImportState
 	 */
@@ -139,10 +139,10 @@ final class Runner implements RunnerInterface
 	}
 
 	/**
-	 * @param \Spatie\Async\Pool                         $pool
-	 * @param \App\Application\DataReader\RowInterface[] $rows
-	 * @param \App\Application\Import\ImportState        $state
-	 * @param \Psr\Log\LoggerInterface                   $logger
+	 * @param \Spatie\Async\Pool                            $pool
+	 * @param \App\Application\DataProcessor\RowInterface[] $rows
+	 * @param \App\Application\Import\ImportState           $state
+	 * @param \Psr\Log\LoggerInterface                      $logger
 	 *
 	 * @return void
 	 */
@@ -196,10 +196,10 @@ final class Runner implements RunnerInterface
 	}
 
 	/**
-	 * @param \App\Application\DataReader\RowInterface[] $rows
-	 * @param \Throwable                                 $e
-	 * @param \App\Application\Import\ImportState        $state
-	 * @param \Psr\Log\LoggerInterface                   $logger
+	 * @param \App\Application\DataProcessor\RowInterface[] $rows
+	 * @param \Throwable                                    $e
+	 * @param \App\Application\Import\ImportState           $state
+	 * @param \Psr\Log\LoggerInterface                      $logger
 	 *
 	 * @return void
 	 */
@@ -216,9 +216,9 @@ final class Runner implements RunnerInterface
 	}
 
 	/**
-	 * @param \App\Application\DataReader\RowInterface[] $rows
-	 * @param \App\Application\Import\ImportState        $state
-	 * @param \Psr\Log\LoggerInterface                   $logger
+	 * @param \App\Application\DataProcessor\RowInterface[] $rows
+	 * @param \App\Application\Import\ImportState           $state
+	 * @param \Psr\Log\LoggerInterface                      $logger
 	 *
 	 * @return void
 	 */

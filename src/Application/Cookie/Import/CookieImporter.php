@@ -8,8 +8,8 @@ use App\ReadModel\Cookie\CookieView;
 use App\Application\Import\RowResult;
 use App\ReadModel\Category\CategoryView;
 use App\Application\Import\ImporterResult;
-use App\Application\DataReader\RowInterface;
 use App\Application\Import\AbstractImporter;
+use App\Application\DataProcessor\RowInterface;
 use App\Domain\Cookie\Command\CreateCookieCommand;
 use App\Domain\Cookie\Command\UpdateCookieCommand;
 use App\ReadModel\Category\GetCategoryByCodeQuery;
@@ -64,8 +64,9 @@ final class CookieImporter extends AbstractImporter
 				}
 
 				$result = RowResult::success($row->index(), sprintf(
-					'Cookie "%s" imported',
-					$data->name
+					'Cookie "%s" for provider %s imported',
+					$data->name,
+					$data->provider
 				));
 
 				$cookieView = $this->queryBus->dispatch(GetCookieByNameAndCookieProviderQuery::create($data->name, $cookieProviderView->id->toString()));

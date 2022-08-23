@@ -7,7 +7,7 @@ namespace App\Application\Import;
 use Throwable;
 use DomainException;
 use Psr\Log\LoggerInterface;
-use App\Application\DataReader\RowInterface;
+use App\Application\DataProcessor\RowInterface;
 
 final class ImporterRegistry implements ImporterInterface
 {
@@ -98,9 +98,9 @@ final class ImporterRegistry implements ImporterInterface
 	}
 
 	/**
-	 * @param string                                     $importerClassname
-	 * @param string                                     $message
-	 * @param \App\Application\DataReader\RowInterface[] $rows
+	 * @param string                                        $importerClassname
+	 * @param string                                        $message
+	 * @param \App\Application\DataProcessor\RowInterface[] $rows
 	 *
 	 * @return void
 	 */
@@ -115,8 +115,8 @@ final class ImporterRegistry implements ImporterInterface
 	}
 
 	/**
-	 * @param \App\Application\DataReader\RowInterface[] $rows
-	 * @param string                                     $message
+	 * @param \App\Application\DataProcessor\RowInterface[] $rows
+	 * @param string                                        $message
 	 *
 	 * @return \App\Application\Import\ImporterResult
 	 */
