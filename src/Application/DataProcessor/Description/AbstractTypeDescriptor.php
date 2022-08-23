@@ -105,7 +105,7 @@ abstract class AbstractTypeDescriptor implements DescriptorInterface
 
 		$val = trim($value);
 
-		if ((empty($val) && !$this->isAnyOf([Required::class]))
+		if (('' === $val && !$this->isAnyOf([Required::class]))
 			|| (('null' === $val || 'NULL' === $val) && $this->isAnyOf([Nullable::class]))
 		) {
 			$value = NULL;

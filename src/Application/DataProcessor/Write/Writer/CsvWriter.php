@@ -92,6 +92,8 @@ final class CsvWriter extends AbstractWriter
 		foreach ($flatten as $k => $v) {
 			if (is_array($v)) {
 				$v = implode(',', $v);
+			} elseif (is_bool($v)) {
+				$v = $v ? '1' : '0';
 			}
 
 			$pathInfo = $this->getPathInfo($k);
