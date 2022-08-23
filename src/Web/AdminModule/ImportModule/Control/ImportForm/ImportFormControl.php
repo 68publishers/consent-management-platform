@@ -106,7 +106,7 @@ final class ImportFormControl extends Control
 				->addRule($form::MIME_TYPE, 'file.rule.mime_type.csv', ['text/csv', 'text/plain'])
 				->endCondition()
 			->addConditionOn($form['format'], $form::EQUAL, self::FORMAT_JSON)
-				->addRule($form::MIME_TYPE, 'file.rule.mime_type.json', ['application/json'])
+				->addRule($form::MIME_TYPE, 'file.rule.mime_type.json', ['application/json', 'text/plain'])
 				->endCondition();
 
 		$form->addProtection('//layout.form_protection');
