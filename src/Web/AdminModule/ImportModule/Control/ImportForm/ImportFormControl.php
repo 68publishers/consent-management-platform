@@ -69,6 +69,9 @@ final class ImportFormControl extends Control
 
 		$form->setTranslator($this->getPrefixedTranslator());
 
+		$fileField = $form->addUpload('file', 'file.field')
+			->setRequired('file.required');
+
 		$form->addSelect('type', 'type.field')
 			->setPrompt('-------')
 			->setItems(array_combine(
@@ -100,8 +103,7 @@ final class ImportFormControl extends Control
 			->addConditionOn($form['format'], $form::EQUAL, self::FORMAT_CSV)
 				->setRequired('separator.required');
 
-		$form->addUpload('file', 'file.field')
-			->setRequired('file.required')
+		$fileField
 			->addConditionOn($form['format'], $form::EQUAL, self::FORMAT_CSV)
 				->addRule($form::MIME_TYPE, 'file.rule.mime_type.csv', ['text/csv', 'text/plain'])
 				->endCondition()

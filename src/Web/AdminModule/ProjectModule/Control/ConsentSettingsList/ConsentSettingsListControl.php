@@ -56,14 +56,13 @@ final class ConsentSettingsListControl extends Control
 			'last_update_at' => 'DESC',
 		]);
 
+		$grid->addColumnText('short_identifier', 'short_identifier', 'shortIdentifier.value')
+			->setSortable('shortIdentifier')
+			->setFilterText('shortIdentifier');
+
 		$grid->addColumnText('checksum', 'checksum')
 			->setSortable('checksum')
 			->setFilterText('checksum');
-
-		$grid->addColumnText('shortIdentifier', 'shortIdentifier', 'shortIdentifier.value')
-			->setAlign('center')
-			->setSortable('shortIdentifier')
-			->setFilterText('shortIdentifier');
 
 		$grid->addColumnDateTimeTz('created_at', 'created_at', 'createdAt')
 			->setFormat('j.n.Y H:i:s')

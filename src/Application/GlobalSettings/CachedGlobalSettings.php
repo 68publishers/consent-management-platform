@@ -7,6 +7,7 @@ namespace App\Application\GlobalSettings;
 use Nette\Caching\Cache;
 use Nette\Caching\Storage;
 use App\Domain\GlobalSettings\ValueObject\ApiCache;
+use SixtyEightPublishers\TranslationBridge\Localization\TranslatorLocalizerInterface;
 
 final class CachedGlobalSettings implements GlobalSettingsInterface
 {
@@ -16,16 +17,20 @@ final class CachedGlobalSettings implements GlobalSettingsInterface
 
 	private Cache $cache;
 
+	private TranslatorLocalizerInterface $translatorLocalizer;
+
 	private ?GlobalSettingsInterface $inner = NULL;
 
 	/**
-	 * @param \App\Application\GlobalSettings\GlobalSettingsFactoryInterface $globalSettingsFactory
-	 * @param \Nette\Caching\Storage                                         $storage
+	 * @param \App\Application\GlobalSettings\GlobalSettingsFactoryInterface                    $globalSettingsFactory
+	 * @param \Nette\Caching\Storage                                                            $storage
+	 * @param \SixtyEightPublishers\TranslationBridge\Localization\TranslatorLocalizerInterface $translatorLocalizer
 	 */
-	public function __construct(GlobalSettingsFactoryInterface $globalSettingsFactory, Storage $storage)
+	public function __construct(GlobalSettingsFactoryInterface $globalSettingsFactory, Storage $storage, TranslatorLocalizerInterface $translatorLocalizer)
 	{
 		$this->globalSettingsFactory = $globalSettingsFactory;
 		$this->cache = new Cache($storage, self::class);
+		$this->translatorLocalizer = $translatorLocalizer;
 	}
 
 	/**
@@ -67,7 +72,9 @@ final class CachedGlobalSettings implements GlobalSettingsInterface
 			$this->inner->refresh();
 		}
 
-		$this->cache->remove(self::CACHE_KEY);
+		$this->cache->clean([
+			Cache::All => TRUE,
+		]);
 		$this->inner = NULL;
 	}
 
@@ -77,8 +84,16 @@ final class CachedGlobalSettings implements GlobalSettingsInterface
 	 */
 	private function getInner(): GlobalSettingsInterface
 	{
-		return $this->inner ?? ($this->inner = $this->cache->load(self::CACHE_KEY, function (): GlobalSettingsInterface {
+		return $this->inner ?? ($this->inner = $this->cache->load($this->createKey(), function (): GlobalSettingsInterface {
 			return $this->globalSettingsFactory->create();
 		}));
+	}
+
+	/**
+	 * @return string
+	 */
+	private function createKey(): string
+	{
+		return self::CACHE_KEY . '_' . $this->translatorLocalizer->getLocale();
 	}
 }

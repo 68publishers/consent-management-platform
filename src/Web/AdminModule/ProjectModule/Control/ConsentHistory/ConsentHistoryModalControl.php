@@ -38,6 +38,6 @@ final class ConsentHistoryModalControl extends AbstractModalControl
 	 */
 	protected function createComponentHistory(): ConsentHistoryControl
 	{
-		return $this->consentHistoryControlFactory->create($this->consentView->id);
+		return $this->consentHistoryControlFactory->create($this->consentView->id, $this->consentView->projectId);
 	}
 }

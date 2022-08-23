@@ -64,7 +64,7 @@ final class CookieImporter extends AbstractImporter
 				}
 
 				$result = RowResult::success($row->index(), sprintf(
-					'Cookie "%s" for provider %s imported',
+					'Cookie "%s" for provider "%s" imported',
 					$data->name,
 					$data->provider
 				));

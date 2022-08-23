@@ -69,9 +69,9 @@ final class ConsentListControl extends Control
 			->setSortable('userIdentifier')
 			->setFilterText('userIdentifier');
 
-		$grid->addColumnText('settings_checksum', 'settings_checksum')
-			->setSortable('settingsChecksum')
-			->setFilterText('settingsChecksum');
+		$grid->addColumnText('settings_short_identifier', 'settings_short_identifier')
+			->setSortable('settingsShortIdentifier')
+			->setFilterText('settingsShortIdentifier');
 
 		$grid->addColumnDateTimeTz('created_at', 'created_at', 'createdAt')
 			->setFormat('j.n.Y H:i:s')

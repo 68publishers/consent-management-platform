@@ -10,4 +10,7 @@ final class ConsentHistoryTemplate extends Template
 {
 	/** @var \SixtyEightPublishers\ArchitectureBundle\Domain\Event\AbstractDomainEvent[]  */
 	public array $events;
+
+	/** @var ?int[] */
+	public array $consentSettingsShortIdentifiers;
 }

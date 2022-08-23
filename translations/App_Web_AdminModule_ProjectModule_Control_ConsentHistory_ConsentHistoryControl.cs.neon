@@ -6,4 +6,6 @@ App_Domain_Consent_Event_ConsentCreated:
 
 consents: Souhlasy
 attributes: Atributy
-settings_checksum: Nastavení lišty
+settings_checksum: Cookie lišta
+
+settingsShortIdentifier: verze %shortIdentifier%

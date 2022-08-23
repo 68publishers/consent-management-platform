@@ -1,4 +1,6 @@
 user_identifier: Identifikátor uživatele
-settings_checksum: Nastavení lišty
+settings_short_identifier: Verze lišty
 created_at: Vytvořeno
 last_update_at: Aktualizováno
+
+settingsShortIdentifierValue: verze %shortIdentifier%

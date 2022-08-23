@@ -1,6 +1,6 @@
 title: '''
-Cookie bar
-<span class="inline-flex items-center px-2.5 py-0.5 ml-2 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800">%checksum%</span>
+Cookie widget
 <span class="inline-flex items-center px-2.5 py-0.5 ml-2 rounded-md text-sm font-medium bg-purple-100 text-purple-800">version %shortIdentifier%</span>
+<span class="inline-flex items-center px-2.5 py-0.5 ml-2 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800">%checksum%</span>
 '''
 close_button_text: Close

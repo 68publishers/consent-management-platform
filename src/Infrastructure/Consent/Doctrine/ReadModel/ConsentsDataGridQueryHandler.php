@@ -34,11 +34,12 @@ final class ConsentsDataGridQueryHandler implements QueryHandlerInterface
 					->select('COUNT(c.id)')
 					->from(Consent::class, 'c')
 					->join(Project::class, 'p', Join::WITH, 'c.projectId = p.id AND p.id = :projectId AND p.deletedAt IS NULL')
+					->leftJoin(ConsentSettings::class, 'cs', Join::WITH, 'cs.projectId = p.id AND cs.checksum = c.settingsChecksum')
 					->setParameter('projectId', $query->projectId());
 			},
 			function () use ($query): QueryBuilder {
 				return $this->em->createQueryBuilder()
-					->select('c.id, c.createdAt, c.lastUpdateAt, c.userIdentifier, c.settingsChecksum, cs.id AS settingsId')
+					->select('c.id, c.createdAt, c.lastUpdateAt, c.userIdentifier, c.settingsChecksum, cs.shortIdentifier AS settingsShortIdentifier, cs.id AS settingsId')
 					->from(Consent::class, 'c')
 					->join(Project::class, 'p', Join::WITH, 'c.projectId = p.id AND p.id = :projectId AND p.deletedAt IS NULL')
 					->leftJoin(ConsentSettings::class, 'cs', Join::WITH, 'cs.projectId = p.id AND cs.checksum = c.settingsChecksum')
@@ -47,16 +48,28 @@ final class ConsentsDataGridQueryHandler implements QueryHandlerInterface
 			ConsentListView::class,
 			[
 				'userIdentifier' => ['applyLike', 'c.userIdentifier'],
-				'settingsChecksum' => ['applyLike', 'c.settingsChecksum'],
+				'settingsShortIdentifier' => ['applyShortIdentifier', 'cs.shortIdentifier'],
 				'createdAt' => ['applyDate', 'c.createdAt'],
 				'lastUpdateAt' => ['applyDate', 'c.lastUpdateAt'],
 			],
 			[
 				'userIdentifier' => 'c.userIdentifier',
-				'settingsChecksum' => 'c.settingsChecksum',
+				'settingsShortIdentifier' => 'cs.shortIdentifier',
 				'createdAt' => 'c.createdAt',
 				'lastUpdateAt' => 'c.lastUpdateAt',
 			]
 		);
+	}
+
+	/**
+	 * @param \Doctrine\ORM\QueryBuilder $qb
+	 * @param string                     $column
+	 * @param mixed                      $value
+	 *
+	 * @return void
+	 */
+	private function applyShortIdentifier(QueryBuilder $qb, string $column, $value): void
+	{
+		$this->applyEquals($qb, $column, (int) $value);
 	}
 }

@@ -1,4 +1,6 @@
 user_identifier: User identifier
-settings_checksum: Bar settings
+settings_short_identifier: Widget version
 created_at: Created
 last_update_at: Updated
+
+settingsShortIdentifierValue: version %shortIdentifier%

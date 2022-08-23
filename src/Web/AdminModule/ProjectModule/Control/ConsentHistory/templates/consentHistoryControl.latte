@@ -121,7 +121,8 @@
                         <tr class="border-t border-gray-200">
                             <td colspan="2" class="whitespace-nowrap px-2 py-2 text-sm text-left">
                                 {if NULL !== $settingsChecksum}
-                                    <span x-data x-tooltip.interactive.html.raw="<span class='break-words'>{$settingsChecksum->value()}</span>">{$settingsChecksum->value()|substr:0, 8}</span>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-purple-100 text-purple-800">{_settingsShortIdentifier, ['shortIdentifier' => $consentSettingsShortIdentifiers[$settingsChecksum->value()] ?? '[unkown]']}</span>
+                                    <span x-data x-tooltip.interactive.html.raw="<span class='break-words'>{$settingsChecksum->value()}</span>" class="inline-flex items-center px-2.5 py-0.5 ml-2 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800">{$settingsChecksum->value()|substr:0, 8}</span>
                                 {else}
                                     -
                                 {/if}

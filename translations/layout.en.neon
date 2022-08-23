@@ -17,12 +17,12 @@ sidebar:
 
 sidebar_project:
 	consents: Consents
-	consent_settings: Cookie bars
+	consent_settings: Cookie widgets
 	cookies: Cookies
 	cookies_providers: Providers
 	cookies_cookies: Project cookies
 	integration: Integration
-	edit_project: Edit projekt
+	edit_project: Edit project
 
 profile:
 	settings: User account

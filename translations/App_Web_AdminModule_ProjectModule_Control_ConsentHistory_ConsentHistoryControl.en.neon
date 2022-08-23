@@ -6,4 +6,6 @@ App_Domain_Consent_Event_ConsentCreated:
 
 consents: Consents
 attributes: Attributes
-settings_checksum: Bar settings
+settings_checksum: Cookie widget
+
+settingsShortIdentifier: version %shortIdentifier%
