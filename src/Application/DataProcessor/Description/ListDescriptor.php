@@ -6,7 +6,9 @@ namespace App\Application\DataProcessor\Description;
 
 use Nette\Schema\Expect;
 use Nette\Schema\Schema;
+use App\Application\DataProcessor\Description\Path\Path;
 use App\Application\DataProcessor\Context\ContextInterface;
+use App\Application\DataProcessor\Description\Path\PathInfo;
 
 final class ListDescriptor implements DescriptorInterface
 {
@@ -57,5 +59,32 @@ final class ListDescriptor implements DescriptorInterface
 		}
 
 		return $list;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function pathInfo(Path $path): PathInfo
+	{
+		$part = $path->shift();
+		$pathInfo = new PathInfo();
+
+		if (NULL === $part) {
+			$pathInfo->descriptor = $this;
+			$pathInfo->found = TRUE;
+			$pathInfo->isFinal = FALSE;
+
+			return $pathInfo;
+		}
+
+		if (!is_numeric($part)) {
+			$pathInfo->descriptor = NULL;
+			$pathInfo->found = FALSE;
+			$pathInfo->isFinal = FALSE;
+
+			return $pathInfo;
+		}
+
+		return $this->valueDescriptor->pathInfo($path);
 	}
 }

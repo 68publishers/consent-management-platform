@@ -6,7 +6,9 @@ namespace App\Application\DataProcessor\Description;
 
 use Nette\Schema\Schema;
 use Nette\Schema\Elements\Type;
+use App\Application\DataProcessor\Description\Path\Path;
 use App\Application\DataProcessor\Context\ContextInterface;
+use App\Application\DataProcessor\Description\Path\PathInfo;
 
 abstract class AbstractTypeDescriptor implements DescriptorInterface
 {
@@ -45,6 +47,29 @@ abstract class AbstractTypeDescriptor implements DescriptorInterface
 		}
 
 		return $type;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function pathInfo(Path $path): PathInfo
+	{
+		$part = $path->shift();
+		$pathInfo = new PathInfo();
+
+		if (NULL === $part) {
+			$pathInfo->descriptor = $this;
+			$pathInfo->found = TRUE;
+			$pathInfo->isFinal = TRUE;
+
+			return $pathInfo;
+		}
+
+		$pathInfo->descriptor = NULL;
+		$pathInfo->found = FALSE;
+		$pathInfo->isFinal = FALSE;
+
+		return $pathInfo;
 	}
 
 	/**

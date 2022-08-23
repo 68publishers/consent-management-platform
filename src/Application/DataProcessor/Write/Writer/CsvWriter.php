@@ -7,6 +7,9 @@ namespace App\Application\DataProcessor\Write\Writer;
 use League\Csv\Writer;
 use App\Application\DataProcessor\RowInterface;
 use App\Application\DataProcessor\Helper\FlatResource;
+use App\Application\DataProcessor\Description\Path\Path;
+use App\Application\DataProcessor\Description\Path\PathInfo;
+use App\Application\DataProcessor\Description\ListDescriptor;
 use App\Application\DataProcessor\Write\Helper\FilePutContents;
 use App\Application\DataProcessor\Write\Resource\ResourceInterface;
 use App\Application\DataProcessor\Write\Destination\FileDestination;
@@ -25,6 +28,8 @@ final class CsvWriter extends AbstractWriter
 	private array $headers = [];
 
 	private array $rows = [];
+
+	private array $pathInfos = [];
 
 	/**
 	 * @param \App\Application\DataProcessor\Write\Resource\ResourceInterface  $resource
@@ -56,7 +61,7 @@ final class CsvWriter extends AbstractWriter
 	protected function prepare(): void
 	{
 		$this->writer = $writer = Writer::createFromString();
-		$this->headers = $this->rows = [];
+		$this->headers = $this->rows = $this->pathInfos = [];
 		$options = $this->destination->options();
 
 		if (isset($options[self::OPTION_DELIMITER])) {
@@ -81,14 +86,31 @@ final class CsvWriter extends AbstractWriter
 	 */
 	protected function processRow(RowInterface $row, DestinationInterface $destination): DestinationInterface
 	{
-		$data = FlatResource::toFlattArray($row->data()->toArray());
+		$flatten = FlatResource::toFlattArray($row->data()->toArray());
+		$data = [];
 
-		foreach ($data as $k => $v) {
+		foreach ($flatten as $k => $v) {
 			if (is_array($v)) {
-				$data[$k] = implode(',', $v);
+				$v = implode(',', $v);
 			}
 
-			$this->headers[] = $k;
+			$pathInfo = $this->getPathInfo($k);
+
+			if (NULL === $pathInfo) {
+				$this->headers[] = $k;
+				$data[$k] = $v;
+
+				continue;
+			}
+
+			if (!$pathInfo->found) {
+				continue;
+			}
+
+			if ($pathInfo->isFinal || $pathInfo->descriptor instanceof ListDescriptor) {
+				$this->headers[] = $k;
+				$data[$k] = $v;
+			}
 		}
 
 		$this->rows[] = $data;
@@ -114,7 +136,7 @@ final class CsvWriter extends AbstractWriter
 
 		$content = $this->writer->toString();
 		$this->writer = NULL;
-		$this->headers = $this->rows = [];
+		$this->headers = $this->rows = $this->pathInfos = [];
 
 		if ($destination instanceof StringDestination) {
 			return $destination->append($content);
@@ -125,5 +147,15 @@ final class CsvWriter extends AbstractWriter
 		FilePutContents::put($destination, $content);
 
 		return $destination;
+	}
+
+	/**
+	 * @param string $path
+	 *
+	 * @return \App\Application\DataProcessor\Description\Path\PathInfo|NULL
+	 */
+	private function getPathInfo(string $path): ?PathInfo
+	{
+		return $this->pathInfos[$path] ?? ($this->pathInfos[$path] = NULL !== $this->resource->descriptor() ? $this->resource->descriptor()->pathInfo(Path::fromString($path)) : NULL);
 	}
 }

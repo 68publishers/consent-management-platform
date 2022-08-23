@@ -38,6 +38,14 @@ final class ReaderResource implements ResourceInterface
 	/**
 	 * {@inheritDoc}
 	 */
+	public function descriptor(): ?DescriptorInterface
+	{
+		return $this->descriptor;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function __toString(): string
 	{
 		return sprintf(
