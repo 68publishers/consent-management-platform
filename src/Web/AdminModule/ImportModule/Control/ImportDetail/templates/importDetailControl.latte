@@ -42,7 +42,12 @@
 
             <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <div class="text-sm font-medium text-gray-500">{_duration}</div>
-                <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{$importView->createdAt|date: 'j.n.Y H:i:s'} - {$importView->endedAt ? ($importView->endedAt|date: 'j.n.Y H:i:s') : '?'}</div>
+                <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    <span n:if="$importView->endedAt" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium text-gray-800 bg-gray-100 mb-2">
+                        {App\Application\Helper\DurationFormatter::formatDiff($importView->createdAt, $importView->endedAt)}
+                    </span>
+                    <div>{$importView->createdAt|date: 'j.n.Y H:i:s'} - {$importView->endedAt ? ($importView->endedAt|date: 'j.n.Y H:i:s') : '?'}</div>
+                </div>
             </div>
 
             <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

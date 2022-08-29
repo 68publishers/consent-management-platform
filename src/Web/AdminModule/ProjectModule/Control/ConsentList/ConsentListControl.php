@@ -58,6 +58,7 @@ final class ConsentListControl extends Control
 	{
 		$grid = $this->dataGridFactory->create(ConsentsDataGridQuery::create($this->projectId->toString()));
 
+		$grid->setSessionNamePostfix('p' . $this->projectId->toString());
 		$grid->setTranslator($this->getPrefixedTranslator());
 		$grid->setTemplateFile(__DIR__ . '/templates/datagrid.latte');
 

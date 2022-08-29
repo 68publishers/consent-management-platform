@@ -1,6 +1,6 @@
 page_title: Seznam cookies
 add_new_cookie: Přidat cookie
-export_cookies: Export
+import: Importovat
 
 message:
 	cookie_created: Cookie byla vytvořena.

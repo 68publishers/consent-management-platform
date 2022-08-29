@@ -15,7 +15,7 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewFactoryInterface;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\QueryHandlerInterface;
 use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\ReadModel\DoctrineViewData;
 
-final class GetUserProjectByCodeQueryHandler implements QueryHandlerInterface
+final class GetUsersProjectByCodeQueryHandler implements QueryHandlerInterface
 {
 	private EntityManagerInterface $em;
 

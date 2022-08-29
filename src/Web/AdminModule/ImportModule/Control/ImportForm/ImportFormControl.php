@@ -47,16 +47,20 @@ final class ImportFormControl extends Control
 
 	private DataReaderFactoryInterface $dataReaderFactory;
 
+	private ?string $strictImportType;
+
 	/**
 	 * @param \App\Web\Ui\Form\FormFactoryInterface                          $formFactory
 	 * @param \App\Application\Import\RunnerInterface                        $runner
 	 * @param \App\Application\DataProcessor\Read\DataReaderFactoryInterface $dataReaderFactory
+	 * @param string|NULL                                                    $strictImportType
 	 */
-	public function __construct(FormFactoryInterface $formFactory, RunnerInterface $runner, DataReaderFactoryInterface $dataReaderFactory)
+	public function __construct(FormFactoryInterface $formFactory, RunnerInterface $runner, DataReaderFactoryInterface $dataReaderFactory, ?string $strictImportType = NULL)
 	{
 		$this->formFactory = $formFactory;
 		$this->runner = $runner;
 		$this->dataReaderFactory = $dataReaderFactory;
+		$this->strictImportType = $strictImportType;
 	}
 
 	/**
@@ -72,7 +76,7 @@ final class ImportFormControl extends Control
 		$fileField = $form->addUpload('file', 'file.field')
 			->setRequired('file.required');
 
-		$form->addSelect('type', 'type.field')
+		$typeField = $form->addSelect('type', 'type.field')
 			->setPrompt('-------')
 			->setItems(array_combine(
 				KnownDescriptors::ALL,
@@ -110,6 +114,13 @@ final class ImportFormControl extends Control
 			->addConditionOn($form['format'], $form::EQUAL, self::FORMAT_JSON)
 				->addRule($form::MIME_TYPE, 'file.rule.mime_type.json', ['application/json', 'text/plain'])
 				->endCondition();
+
+		if (NULL !== $this->strictImportType) {
+			$typeField
+				->setDisabled(TRUE)
+				->setOmitted(FALSE)
+				->setDefaultValue($this->strictImportType);
+		}
 
 		$form->addProtection('//layout.form_protection');
 

@@ -29,18 +29,22 @@ final class ImportModalControl extends AbstractModalControl
 
 	private QueryBusInterface $queryBus;
 
+	private ?string $strictImportType;
+
 	private ?ImportView $importView = NULL;
 
 	/**
 	 * @param \App\Web\AdminModule\ImportModule\Control\ImportForm\ImportFormControlFactoryInterface     $importFormControlFactory
 	 * @param \App\Web\AdminModule\ImportModule\Control\ImportDetail\ImportDetailControlFactoryInterface $importDetailControlFactory
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface                             $queryBus
+	 * @param string|NULL                                                                                $strictImportType
 	 */
-	public function __construct(ImportFormControlFactoryInterface $importFormControlFactory, ImportDetailControlFactoryInterface $importDetailControlFactory, QueryBusInterface $queryBus)
+	public function __construct(ImportFormControlFactoryInterface $importFormControlFactory, ImportDetailControlFactoryInterface $importDetailControlFactory, QueryBusInterface $queryBus, ?string $strictImportType = NULL)
 	{
 		$this->importFormControlFactory = $importFormControlFactory;
 		$this->importDetailControlFactory = $importDetailControlFactory;
 		$this->queryBus = $queryBus;
+		$this->strictImportType = $strictImportType;
 	}
 
 	/**
@@ -58,7 +62,7 @@ final class ImportModalControl extends AbstractModalControl
 	 */
 	protected function createComponentForm(): ImportFormControl
 	{
-		$control = $this->importFormControlFactory->create();
+		$control = $this->importFormControlFactory->create($this->strictImportType);
 
 		$control->setFormFactoryOptions([
 			FormFactoryInterface::OPTION_AJAX => TRUE,

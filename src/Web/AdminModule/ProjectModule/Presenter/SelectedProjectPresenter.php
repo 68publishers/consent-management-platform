@@ -8,6 +8,7 @@ use Nette\Application\UI\Component;
 use App\ReadModel\Project\ProjectView;
 use Contributte\MenuControl\MenuContainer;
 use Contributte\MenuControl\UI\MenuComponent;
+use App\ReadModel\Project\FindUserProjectsQuery;
 use Nette\Application\ForbiddenRequestException;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use App\ReadModel\Project\GetUsersProjectByCodeQuery;
@@ -36,6 +37,19 @@ abstract class SelectedProjectPresenter extends AdminPresenter
 	{
 		$this->queryBus = $queryBus;
 		$this->menuContainer = $menuContainer;
+	}
+
+	/**
+	 * @param string $code
+	 *
+	 * @return void
+	 * @throws \Nette\Application\ForbiddenRequestException
+	 * @throws \Nette\Application\AbortException
+	 */
+	public function handleChangeProject(string $code): void
+	{
+		$this->refreshProjectView($code);
+		$this->redirect('this');
 	}
 
 	/**
@@ -90,6 +104,7 @@ abstract class SelectedProjectPresenter extends AdminPresenter
 		$this->template->projectView = $this->projectView;
 		$this->template->projectLocales = $this->validLocalesProvider->getValidLocales($this->projectView->locales);
 		$this->template->defaultProjectLocale = $this->validLocalesProvider->getValidDefaultLocale($this->projectView->locales);
+		$this->template->userProjects = $this->queryBus->dispatch(FindUserProjectsQuery::create($this->getIdentity()->id()->toString()));
 	}
 
 	/**

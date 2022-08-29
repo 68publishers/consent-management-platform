@@ -16,4 +16,7 @@ abstract class SelectedProjectTemplate extends AdminTemplate
 	public array $projectLocales;
 
 	public ?Locale $defaultProjectLocale = NULL;
+
+	/** @var \App\ReadModel\Project\ProjectView[] */
+	public array $userProjects;
 }

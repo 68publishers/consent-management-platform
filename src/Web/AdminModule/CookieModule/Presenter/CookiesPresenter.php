@@ -7,16 +7,19 @@ namespace App\Web\AdminModule\CookieModule\Presenter;
 use Nette\InvalidStateException;
 use App\Application\Acl\CookieResource;
 use App\Web\Ui\Form\FormFactoryInterface;
+use App\Application\Cookie\Import\CookieData;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use App\Web\AdminModule\Control\ExportForm\ExportDropdownControl;
 use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\Control\ExportForm\Callback\CookiesExportCallback;
 use App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControl;
+use App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControl;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControl;
 use App\Web\AdminModule\Control\ExportForm\ExportDropdownControlFactoryInterface;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieCreatedEvent;
 use App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControlFactoryInterface;
+use App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControlFactoryInterface;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieFormProcessingFailedEvent;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControlFactoryInterface;
 
@@ -31,18 +34,22 @@ final class CookiesPresenter extends AdminPresenter
 
 	private ExportDropdownControlFactoryInterface $exportDropdownControlFactory;
 
+	private ImportModalControlFactoryInterface $importModalControlFactory;
+
 	/**
 	 * @param \App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControlFactoryInterface      $cookieListControlFactory
 	 * @param \App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControlFactoryInterface $cookieFormModalControlFactory
 	 * @param \App\Web\AdminModule\Control\ExportForm\ExportDropdownControlFactoryInterface               $exportDropdownControlFactory
+	 * @param \App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControlFactoryInterface    $importModalControlFactory
 	 */
-	public function __construct(CookieListControlFactoryInterface $cookieListControlFactory, CookieFormModalControlFactoryInterface $cookieFormModalControlFactory, ExportDropdownControlFactoryInterface $exportDropdownControlFactory)
+	public function __construct(CookieListControlFactoryInterface $cookieListControlFactory, CookieFormModalControlFactoryInterface $cookieFormModalControlFactory, ExportDropdownControlFactoryInterface $exportDropdownControlFactory, ImportModalControlFactoryInterface $importModalControlFactory)
 	{
 		parent::__construct();
 
 		$this->cookieListControlFactory = $cookieListControlFactory;
 		$this->cookieFormModalControlFactory = $cookieFormModalControlFactory;
 		$this->exportDropdownControlFactory = $exportDropdownControlFactory;
+		$this->importModalControlFactory = $importModalControlFactory;
 	}
 
 	/**
@@ -107,5 +114,13 @@ final class CookiesPresenter extends AdminPresenter
 		}
 
 		return $this->exportDropdownControlFactory->create(new CookiesExportCallback());
+	}
+
+	/**
+	 * @return \App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControl
+	 */
+	protected function createComponentImport(): ImportModalControl
+	{
+		return $this->importModalControlFactory->create(CookieData::class);
 	}
 }

@@ -48,7 +48,7 @@ services:
 		factory: App\Infrastructure\Project\Doctrine\ReadModel\GetProjectByIdQueryHandler
 	-
 		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\GetUserProjectByCodeQueryHandler
+		factory: App\Infrastructure\Project\Doctrine\ReadModel\GetUsersProjectByCodeQueryHandler
 	-
 		autowired: no
 		factory: App\Infrastructure\Project\Doctrine\ReadModel\GetProjectTemplateByCodeAndLocaleWithFallbackQueryHandler

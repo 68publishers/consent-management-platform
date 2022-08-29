@@ -4,9 +4,25 @@
 
 <div n:block="breadcrumbs" class="flex">
 	<div class="flex place-items-center mb-1">
-		<span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2" style="background-color: {$projectView->color->value()|noescape} !important;">
-			{$projectView->name->value()}
-		</span>
+		<div id="project-select">
+			<div x-data>
+				<span x-init="$el.style.display = 'none'" class="inline-block w-auto px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2" style="background-color: {$projectView->color->value()|noescape} !important;">
+					{$projectView->name->value()}
+				</span>
+			</div>
+			<select x-data x-select.searchbar x-cloak x-on:change="window.location.href = $el.options[$el.selectedIndex].getAttribute('data-link')">
+				{foreach $userProjects as $userProject}
+					{capture $itemHtml}
+						<span class="inline-block w-auto px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2" style="background-color: {$userProject->color->value()|noescape} !important;">
+							{$userProject->name->value()}
+						</span>
+					{/capture}
+
+					<option value="{$userProject->code->value()}" data-link="{link changeProject!, $userProject->code->value()}" data-selected-html="{$itemHtml}" n:attr="selected => $userProject->id->equals($projectView->id)">{$userProject->name->value()}</option>
+				{/foreach}
+			</select>
+		</div>
+
 		{*<svg class="flex-shrink-0 h-5 w-5 text-gray-400 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
 			<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
 		</svg>*}

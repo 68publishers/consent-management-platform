@@ -6,13 +6,16 @@ namespace App\Web\AdminModule\ProjectModule\Presenter;
 
 use Nette\InvalidStateException;
 use App\Application\Acl\ProjectResource;
+use App\Application\Project\Import\ProjectData;
 use App\ReadModel\Project\FindUserProjectsQuery;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use App\Web\AdminModule\Control\ExportForm\ExportDropdownControl;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\Control\ExportForm\Callback\ProjectsExportCallback;
+use App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControl;
 use App\Web\AdminModule\Control\ExportForm\ExportDropdownControlFactoryInterface;
+use App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControlFactoryInterface;
 
 /**
  * @IsAllowed(resource=ProjectResource::class, privilege=ProjectResource::READ)
@@ -23,16 +26,20 @@ final class ProjectsPresenter extends AdminPresenter
 
 	private ExportDropdownControlFactoryInterface $exportDropdownControlFactory;
 
+	private ImportModalControlFactoryInterface $importModalControlFactory;
+
 	/**
-	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface                $queryBus
-	 * @param \App\Web\AdminModule\Control\ExportForm\ExportDropdownControlFactoryInterface $exportDropdownControlFactory
+	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface                           $queryBus
+	 * @param \App\Web\AdminModule\Control\ExportForm\ExportDropdownControlFactoryInterface            $exportDropdownControlFactory
+	 * @param \App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControlFactoryInterface $importModalControlFactory
 	 */
-	public function __construct(QueryBusInterface $queryBus, ExportDropdownControlFactoryInterface $exportDropdownControlFactory)
+	public function __construct(QueryBusInterface $queryBus, ExportDropdownControlFactoryInterface $exportDropdownControlFactory, ImportModalControlFactoryInterface $importModalControlFactory)
 	{
 		parent::__construct();
 
 		$this->queryBus = $queryBus;
 		$this->exportDropdownControlFactory = $exportDropdownControlFactory;
+		$this->importModalControlFactory = $importModalControlFactory;
 	}
 
 	/**
@@ -64,5 +71,13 @@ final class ProjectsPresenter extends AdminPresenter
 		}
 
 		return $this->exportDropdownControlFactory->create(new ProjectsExportCallback());
+	}
+
+	/**
+	 * @return \App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControl
+	 */
+	protected function createComponentImport(): ImportModalControl
+	{
+		return $this->importModalControlFactory->create(ProjectData::class);
 	}
 }

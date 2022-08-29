@@ -256,7 +256,7 @@ function Select(Alpine) {
                 <span class="flex flex-wrap -mb-2.5 sm:-mb-1.5">
                     <template x-for="(option, index) in $store.${cid}.options" :key="option.value">
                         <span x-show="$store.${cid}.isSelected(index)" class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800 mr-1.5 mb-1.5 h-full">
-                            <span x-html="option.html"></span>
+                            <span x-html="option.selectedHtml"></span>
                             <button type="button" data-remove-button class="r-0.5 pl-1.5" x-on:click="$store.${cid}.choose(index)">
                                 &times;
                             </button>
@@ -319,7 +319,7 @@ function Select(Alpine) {
         optionsEl.setAttribute('x-data', 'selectOptions');
         optionsEl.setAttribute('x-bind', 'selectOptions');
         optionsEl.setAttribute('data-cid', cid);
-        optionsEl.setAttribute('class', 'absolute flex flex-col justify-start pointer-events-none mt-1 w-full text-base focus:outline-none sm:text-sm z-30');
+        optionsEl.setAttribute('class', 'absolute flex flex-col justify-start pointer-events-none mt-1 w-auto text-base focus:outline-none sm:text-sm z-30');
         optionsEl.setAttribute('tabindex', '-1');
 
         const containerEl = el.closest('[data-plugin-container]') || null;
@@ -330,6 +330,7 @@ function Select(Alpine) {
             selectEl: selectEl,
             optionsEl: optionsEl,
             containerEl: containerEl,
+            _optionsBindTo: null,
             opened: false,
             disabled: el.disabled || false,
             multiple: el.multiple || false,
@@ -352,6 +353,8 @@ function Select(Alpine) {
                             html: opt.hasAttribute('data-html') ? opt.getAttribute('data-html') : opt.innerText,
                             visible: true,
                         };
+
+                        option.selectedHtml = opt.hasAttribute('data-selected-html') ? opt.getAttribute('data-selected-html') : option.html;
 
                         this.options.push(option);
 
@@ -396,6 +399,7 @@ function Select(Alpine) {
                 const optionsVisibility = this.optionsEl.style.visibility;
                 const optionsDisplay = this.optionsEl.style.display;
                 const documentHeight = this.containerEl ? this.containerEl.scrollHeight : document.documentElement.scrollHeight;
+                const documentWidth = this.containerEl ? this.containerEl.scrollWidth : document.documentElement.scrollWidth;
 
                 this.optionsEl.style.visibility = 'hidden';
                 this.optionsEl.style.display = 'block';
@@ -413,7 +417,8 @@ function Select(Alpine) {
                 this.optionsEl.style.display = optionsDisplay;
 
                 this.optionsEl.style.position = 'absolute';
-                this.optionsEl.style.width = this.selectEl.offsetWidth + 'px';
+                this.optionsEl.style.minWidth = this.selectEl.offsetWidth + 'px';
+                this.optionsEl.style.maxWidth = (documentWidth - left - 5) + 'px';
                 this.optionsEl.style.left = left + 'px';
                 this.optionsEl.style.top = top + 'px';
                 this.optionsEl.style.height = height + 'px';
@@ -471,7 +476,7 @@ function Select(Alpine) {
                 const labels = [];
 
                 for (let i in this.selected) {
-                    labels.push(this.options[this.selected[i]].html);
+                    labels.push(this.options[this.selected[i]].selectedHtml);
                 }
 
                 this.selectText = labels.join(', ');
