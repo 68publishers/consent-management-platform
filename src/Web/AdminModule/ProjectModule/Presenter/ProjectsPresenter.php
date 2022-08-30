@@ -15,6 +15,7 @@ use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\Control\ExportForm\Callback\ProjectsExportCallback;
 use App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControl;
 use App\Web\AdminModule\Control\ExportForm\ExportDropdownControlFactoryInterface;
+use App\Web\AdminModule\ImportModule\Control\ImportModal\Event\ShowingImportDetailEvent;
 use App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControlFactoryInterface;
 
 /**
@@ -78,6 +79,13 @@ final class ProjectsPresenter extends AdminPresenter
 	 */
 	protected function createComponentImport(): ImportModalControl
 	{
-		return $this->importModalControlFactory->create(ProjectData::class);
+		$control = $this->importModalControlFactory->create(ProjectData::class);
+
+		$control->addEventListener(ShowingImportDetailEvent::class, function () {
+			$this->redrawControl('before_content');
+			$this->redrawControl('projects');
+		});
+
+		return $control;
 	}
 }

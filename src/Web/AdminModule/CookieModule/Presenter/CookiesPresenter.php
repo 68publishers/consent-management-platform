@@ -18,6 +18,7 @@ use App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControl;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControl;
 use App\Web\AdminModule\Control\ExportForm\ExportDropdownControlFactoryInterface;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieCreatedEvent;
+use App\Web\AdminModule\ImportModule\Control\ImportModal\Event\ShowingImportDetailEvent;
 use App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControlFactoryInterface;
 use App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControlFactoryInterface;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieFormProcessingFailedEvent;
@@ -121,6 +122,12 @@ final class CookiesPresenter extends AdminPresenter
 	 */
 	protected function createComponentImport(): ImportModalControl
 	{
-		return $this->importModalControlFactory->create(CookieData::class);
+		$control = $this->importModalControlFactory->create(CookieData::class);
+
+		$control->addEventListener(ShowingImportDetailEvent::class, function () {
+			$this->redrawControl('cookie_list');
+		});
+
+		return $control;
 	}
 }

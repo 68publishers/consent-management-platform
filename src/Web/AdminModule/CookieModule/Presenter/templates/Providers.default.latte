@@ -1,7 +1,7 @@
 {block #page_size}max-w-14xl{/block}
 
 {block #heading_actions}
-    <a n:if="$user->isAllowed(App\Application\Acl\ImportResource::class, App\Application\Acl\ImportResource::IMPORT)" n:href="openModal! import" data-spinner-for="self" class="ajax inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300">{_import}</a>
+    <a n:if="$user->isAllowed(App\Application\Acl\ImportResource::class, App\Application\Acl\ImportResource::IMPORT)" n:href="openModal! import" data-spinner-for="self" class="ajax inline-flex items-center px-4 py-2 border border-transparent rounded-md text-sm font-medium bg-transparent hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200">{_import}</a>
 
     {if $user->isAllowed(App\Application\Acl\CookieProviderResource::class, App\Application\Acl\CookieProviderResource::EXPORT)}
         {control exportDropdown}
@@ -11,4 +11,6 @@
 
 {block #content}
 
-{control list}
+{snippet providers_list}
+    {control list}
+{/snippet}

@@ -14,6 +14,7 @@ use App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControl;
 use App\Web\AdminModule\CookieModule\Control\ProviderList\ProviderListControl;
 use App\Web\AdminModule\Control\ExportForm\ExportDropdownControlFactoryInterface;
 use App\Web\AdminModule\Control\ExportForm\Callback\CookieProvidersExportCallback;
+use App\Web\AdminModule\ImportModule\Control\ImportModal\Event\ShowingImportDetailEvent;
 use App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControlFactoryInterface;
 use App\Web\AdminModule\CookieModule\Control\ProviderList\ProviderListControlFactoryInterface;
 
@@ -77,6 +78,12 @@ final class ProvidersPresenter extends AdminPresenter
 	 */
 	protected function createComponentImport(): ImportModalControl
 	{
-		return $this->importModalControlFactory->create(CookieProviderData::class);
+		$control = $this->importModalControlFactory->create(CookieProviderData::class);
+
+		$control->addEventListener(ShowingImportDetailEvent::class, function () {
+			$this->redrawControl('providers_list');
+		});
+
+		return $control;
 	}
 }

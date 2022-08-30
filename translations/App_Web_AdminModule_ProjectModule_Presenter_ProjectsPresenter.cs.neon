@@ -1,6 +1,6 @@
 page_title: Projekty
 add_new_project: Přidat projekt
-import: Importovat
+import: Import
 
 alert:
 	no_projects: 'Nemáte k dispozici žádné projekty.'
