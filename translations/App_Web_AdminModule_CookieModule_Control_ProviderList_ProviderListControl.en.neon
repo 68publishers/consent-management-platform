@@ -10,7 +10,8 @@ private: '''
 		</svg>
 	</span>
 </span>
-'''type: Type
+'''
+type: Type
 link: Link
 number_of_cookies: Cookies
 created_at: Created
