@@ -391,7 +391,8 @@ function Select(Alpine) {
                     selectLeft -= containerBounds.left;
                 }
 
-                const left = Math.round(scrollX + selectLeft);
+                let left = Math.round(scrollX + selectLeft);
+                let right = null;
                 let top = Math.round(scrollY + selectTop + this.selectEl.offsetHeight);
                 let flexDirection = 'column';
                 let justifyContent = 'flex-start';
@@ -411,15 +412,26 @@ function Select(Alpine) {
                     justifyContent = 'flex-end';
                 }
 
+                const minWidth = this.selectEl.offsetWidth;
+                let maxWidth = (documentWidth - left - 3);
+
+                if (minWidth > maxWidth) {
+                    maxWidth = (documentWidth - 3);
+                    right = documentWidth - (left + minWidth)
+                    right = right < 0 ? 3 : right;
+                    left = null;
+                }
+
                 const height = this.optionsEl.offsetHeight;
 
                 this.optionsEl.style.visibility = optionsVisibility;
                 this.optionsEl.style.display = optionsDisplay;
 
                 this.optionsEl.style.position = 'absolute';
-                this.optionsEl.style.minWidth = this.selectEl.offsetWidth + 'px';
-                this.optionsEl.style.maxWidth = (documentWidth - left - 5) + 'px';
-                this.optionsEl.style.left = left + 'px';
+                this.optionsEl.style.minWidth = (minWidth < maxWidth ? minWidth : maxWidth) + 'px';
+                this.optionsEl.style.maxWidth = maxWidth + 'px';
+                this.optionsEl.style.left = null !== left ? (left + 'px') : 'auto';
+                this.optionsEl.style.right = null !== right ? (right + 'px') : 'auto';
                 this.optionsEl.style.top = top + 'px';
                 this.optionsEl.style.height = height + 'px';
                 this.optionsEl.style.justifyContent = justifyContent;
