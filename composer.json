@@ -11,10 +11,10 @@
 	],
 	"require": {
 		"php": "^7.4",
-		"ext-json": "*",
-		"ext-mbstring": "*",
 		"ext-dom": "*",
+		"ext-json": "*",
 		"ext-libxml": "*",
+		"ext-mbstring": "*",
 		"68publishers/asset": "^2.1",
 		"68publishers/doctrine-bridge": "^0.2.1",
 		"68publishers/environment": "^0.5",
@@ -65,6 +65,7 @@
 		"scienta/doctrine-json-functions": "^5.0",
 		"sentry/sdk": "^3.1",
 		"spatie/async": "^1.5",
+		"symfony/lock": "^5.4",
 		"symfony/validator": "^5.4",
 		"ublaboo/datagrid": "^6.9",
 		"umpirsky/locale-list": "^1.0"

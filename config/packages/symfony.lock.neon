@@ -1,0 +1,17 @@
+services:
+	symfony.lock.persisting_store.doctrine_dbal_postgresql:
+		autowired: no
+		factory: Symfony\Component\Lock\Store\DoctrineDbalPostgreSqlStore
+		arguments:
+			- @Doctrine\DBAL\Connection
+
+	symfony.lock.factory.doctrine_dbal_postgresql:
+		autowired: no
+		factory: Symfony\Component\Lock\LockFactory
+		arguments:
+			- @symfony.lock.persisting_store.doctrine_dbal_postgresql
+
+	symfony.lock.factory:
+		autowired: Symfony\Component\Lock\LockFactory
+		type: Symfony\Component\Lock\LockFactory
+		factory: @symfony.lock.factory.doctrine_dbal_postgresql

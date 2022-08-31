@@ -27,3 +27,4 @@ includes:
 	- nettrine.fixtures.neon
 	- nettrine.migrations.neon
 	- nettrine.orm.neon
+	- symfony.lock.neon

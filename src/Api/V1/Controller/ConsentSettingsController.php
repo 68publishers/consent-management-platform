@@ -8,6 +8,7 @@ use DomainException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use App\ReadModel\Project\ProjectView;
+use Symfony\Component\Lock\LockFactory;
 use Apitte\Core\Annotation\Controller as Api;
 use App\ReadModel\Project\GetProjectByCodeQuery;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
@@ -23,14 +24,18 @@ final class ConsentSettingsController extends AbstractV1Controller
 
 	private QueryBusInterface $queryBus;
 
+	private LockFactory $lockFactory;
+
 	/**
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface $commandBus
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface   $queryBus
+	 * @param \Symfony\Component\Lock\LockFactory                              $lockFactory
 	 */
-	public function __construct(CommandBusInterface $commandBus, QueryBusInterface $queryBus)
+	public function __construct(CommandBusInterface $commandBus, QueryBusInterface $queryBus, LockFactory $lockFactory)
 	{
 		$this->commandBus = $commandBus;
 		$this->queryBus = $queryBus;
+		$this->lockFactory = $lockFactory;
 	}
 
 	/**
@@ -84,6 +89,13 @@ final class ConsentSettingsController extends AbstractV1Controller
 				]);
 		}
 
+		$lock = $this->lockFactory->createLock(sprintf(
+			'put-consent-settings-%s',
+			$projectView->id
+		));
+
+		$lock->acquire(TRUE);
+
 		try {
 			$this->commandBus->dispatch(StoreConsentSettingsCommand::create(
 				$projectView->id->toString(),
@@ -99,6 +111,8 @@ final class ConsentSettingsController extends AbstractV1Controller
 						'error' => $e->getMessage(),
 					],
 				]);
+		} finally {
+			$lock->release();
 		}
 
 		return $response->withStatus(ApiResponse::S200_OK)
