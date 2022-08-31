@@ -55,7 +55,7 @@ final class ConsentSettings implements AggregateRootInterface
 			$projectId,
 			$checksum,
 			SettingsGroup::fromItems([$settings]),
-			$shortIdentifierGenerator->generate()
+			$shortIdentifierGenerator->generate($projectId)
 		));
 
 		return $consentSettings;

@@ -14,6 +14,7 @@
 
         <unique-constraints>
             <unique-constraint name="uniq_consent_settings_project_id_checksum" columns="project_id,checksum" />
+            <unique-constraint name="uniq_consent_settings_project_id_short_identifier" columns="project_id,short_identifier" />
         </unique-constraints>
 
         <id name="id" column="id" type="App\Domain\ConsentSettings\ValueObject\ConsentSettingsId" unique="true" />
@@ -28,7 +29,7 @@
 
         <field name="settings" column="settings" type="App\Domain\ConsentSettings\ValueObject\SettingsGroup" />
 
-        <field name="shortIdentifier" column="short_identifier" type="App\Domain\ConsentSettings\ValueObject\ShortIdentifier" unique="true" />
+        <field name="shortIdentifier" column="short_identifier" type="App\Domain\ConsentSettings\ValueObject\ShortIdentifier" />
 
         <field name="version" column="version" type="integer" />
     </entity>

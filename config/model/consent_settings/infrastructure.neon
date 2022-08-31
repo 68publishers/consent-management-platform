@@ -20,6 +20,9 @@ services:
 	-
 		autowired: no
 		factory: App\Infrastructure\ConsentSettings\Doctrine\ReadModel\GetConsentSettingByProjectIdAndChecksumQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\ConsentSettings\Doctrine\ReadModel\GetLatestShortIdentifierQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:

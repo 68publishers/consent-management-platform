@@ -4,41 +4,31 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\ConsentSettings\Doctrine;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\DBAL\Exception as DbalException;
+use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\ConsentSettings\ValueObject\ShortIdentifier;
+use App\ReadModel\ConsentSettings\GetLatestShortIdentifierQuery;
 use App\Domain\ConsentSettings\ShortIdentifierGeneratorInterface;
-use App\Domain\ConsentSettings\Exception\ShortIdentifierGeneratorException;
+use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 
 final class ShortIdentifierGenerator implements ShortIdentifierGeneratorInterface
 {
-	public const SEQUENCE_NAME = 'app_consent_settings_short_identifier';
-
-	private EntityManagerInterface $em;
+	private QueryBusInterface $queryBus;
 
 	/**
-	 * @param \Doctrine\ORM\EntityManagerInterface $em
+	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface $queryBus
 	 */
-	public function __construct(EntityManagerInterface $em)
+	public function __construct(QueryBusInterface $queryBus)
 	{
-		$this->em = $em;
+		$this->queryBus = $queryBus;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function generate(): ShortIdentifier
+	public function generate(ProjectId $projectId): ShortIdentifier
 	{
-		$connection = $this->em->getConnection();
-
-		try {
-			$serial = (int) $connection->fetchOne(
-				$connection->getDatabasePlatform()->getSequenceNextValSQL(self::SEQUENCE_NAME)
-			);
-
-			return ShortIdentifier::fromValue($serial);
-		} catch (DbalException $e) {
-			throw ShortIdentifierGeneratorException::from($e);
-		}
+		return ShortIdentifier::fromValue(
+			$this->queryBus->dispatch(GetLatestShortIdentifierQuery::create($projectId->toString())) + 1
+		);
 	}
 }
