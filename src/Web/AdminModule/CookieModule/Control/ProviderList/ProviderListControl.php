@@ -119,6 +119,10 @@ final class ProviderListControl extends Control
 				throw new InvalidStateException('Cookie provider not found.');
 			}
 
+			if ($cookieProviderView->private) {
+				throw new InvalidStateException('Cookie provider is private and can not be deleted.');
+			}
+
 			$name = $cookieProviderView->name->value();
 
 			return $this->confirmModalControlFactory->create(
