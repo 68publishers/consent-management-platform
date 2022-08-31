@@ -2,6 +2,6 @@
     @apply bg-transparent border-0 rounded-none shadow-none p-0 text-left cursor-pointer focus:outline-none focus:ring-0 focus:border-none;
 }
 
-#project-select button[x-bind="selectButton"] > span > svg {
+#project-select button[x-bind="selectButton"] > span > span > svg {
     @apply hidden;
 }

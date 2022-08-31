@@ -38,17 +38,13 @@
                     <div x-bind="sidebarCloseButton" class="absolute top-0 right-0 -mr-12 pt-2">
                         <button type="button" class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                             <span class="sr-only">{_//layout.close_sidebar}</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 text-white">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
+                            {svg common/x-mark.svg, class: 'h-6 w-6 text-white'}
                         </button>
                     </div>
 
                     <div class="flex-shrink-0 flex items-center pr-4 pl-3">
                         <a n:href=":Admin:Dashboard:" class="flex items-center">
-                            <svg fill="none" class="h-8 w-auto mr-2" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-                                <path clip-rule="evenodd" d="m76.7111 110.067c-2.8676 1.293-4.7111 4.134-4.7111 7.28v104.884c0 92.316 41.859 212.241 181.332 258.885 1.706.571 3.619.531 5.302-.103 139.5-52.567 181.366-151.221 181.366-258.782v-104.88c0-3.146-1.844-5.991-4.711-7.284l-176-79.3724c-2.091-.9431-4.487-.9431-6.578 0zm285.0249 107.894c8.601-8.583 8.615-22.512.033-31.113-8.583-8.601-22.512-8.615-31.113-.033l-91.117 90.924-32.94-32.87c-8.601-8.583-22.531-8.568-31.113.032-8.582 8.601-8.568 22.531.033 31.113l48.48 48.378c8.588 8.57 22.492 8.57 31.08 0z" fill="#fff" fill-rule="evenodd"/>
-                            </svg>
+                            {svg logo/white.svg, class: 'h-8 w-auto mr-2'}
                             <span class="text-white text-xl font-medium">CMP</span>
                         </a>
                     </div>
@@ -59,9 +55,8 @@
                     </div>
                     <div class="flex-shrink-0 flex border-t border-indigo-800 p-4">
                         <div class="flex items-center text-white text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
-                            </svg>
+                            {svg common/globe-alt.svg, class: 'h-4 w-4'}
+
                             <span n:snippet="timezone-mobile" class="ml-2">
                                 {include #timezone-info}
                             </span>
@@ -80,9 +75,7 @@
                 <div class="flex flex-col flex-grow pt-5 bg-indigo-700 overflow-y-auto">
                     <div class="flex items-center flex-shrink-0 pr-4 pl-3">
                         <a n:href=":Admin:Dashboard:" class="flex items-center">
-                            <svg fill="none" class="h-8 w-auto mr-2" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-                                <path clip-rule="evenodd" d="m76.7111 110.067c-2.8676 1.293-4.7111 4.134-4.7111 7.28v104.884c0 92.316 41.859 212.241 181.332 258.885 1.706.571 3.619.531 5.302-.103 139.5-52.567 181.366-151.221 181.366-258.782v-104.88c0-3.146-1.844-5.991-4.711-7.284l-176-79.3724c-2.091-.9431-4.487-.9431-6.578 0zm285.0249 107.894c8.601-8.583 8.615-22.512.033-31.113-8.583-8.601-22.512-8.615-31.113-.033l-91.117 90.924-32.94-32.87c-8.601-8.583-22.531-8.568-31.113.032-8.582 8.601-8.568 22.531.033 31.113l48.48 48.378c8.588 8.57 22.492 8.57 31.08 0z" fill="#fff" fill-rule="evenodd"/>
-                            </svg>
+                            {svg logo/white.svg, class: 'h-8 w-auto mr-2'}
                             <span class="text-white text-xl font-medium">CMP</span>
                         </a>
                     </div>
@@ -93,9 +86,8 @@
                     </div>
                     <div class="flex-shrink-0 flex border-t border-indigo-800 p-4">
                         <div class="flex items-center text-white text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
-                            </svg>
+                            {svg common/globe-alt.svg, class: 'h-4 w-4'}
+
                             <span n:snippet="timezone-desktop" class="ml-2">
                                 {include #timezone-info}
                             </span>
@@ -108,10 +100,8 @@
                 <div class="sticky md:static top-0 z-10 flex-shrink-0 flex h-16 bg-white md:bg-transparent shadow md:shadow-none">
                     <button x-data x-on:click="$dispatch('open-sidebar-sidebar-main')" type="button" class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden">
                         <span class="sr-only">{_//layout.open_sidebar}</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                            <path fill-rule="evenodd" d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75H12a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z" clip-rule="evenodd" />
-                        </svg>
 
+                        {svg common/bars-3-bottom-left.svg, class: 'h-6 w-6'}
                     </button>
                     <div class="flex-1 px-4 flex justify-between">
                         <div class="flex-1 flex">
@@ -164,9 +154,7 @@
                                     <div n:if="NULL === $defaultLocale" class="bg-yellow-50 border-l-4 border-yellow-400 p-4 sm:rounded-lg mb-3">
                                         <div class="flex">
                                             <div class="flex-shrink-0">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 text-yellow-400">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                                                </svg>
+                                                {svg common/exclamation-triangle.svg, class: 'h-5 w-5 text-yellow-400'}
                                             </div>
                                             <div class="ml-3">
                                                 <p class="text-sm text-yellow-700">

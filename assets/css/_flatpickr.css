@@ -134,22 +134,22 @@ span.flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n+1)) {
 }
 
 .flatpickr-months {
-@apply my-2;
+    @apply my-2;
 }
 
 .flatpickr-months .flatpickr-prev-month, .flatpickr-months .flatpickr-next-month {
-@apply flex items-center;
-position: static;
+    @apply flex items-center;
+    position: static;
 }
 
 .flatpickr-months .flatpickr-prev-month svg, .flatpickr-months .flatpickr-next-month svg {
-@apply w-5 h-5;
+    @apply w-4 h-4;
 }
 
 .flatpickr-months .flatpickr-prev-month:hover, .flatpickr-months .flatpickr-next-month:hover {
-@apply text-indigo-700;
+    @apply text-indigo-700;
 }
 
 .flatpickr-months .flatpickr-prev-month:hover svg, .flatpickr-months .flatpickr-next-month:hover svg {
-@apply fill-indigo-700;
+    @apply fill-transparent;
 }

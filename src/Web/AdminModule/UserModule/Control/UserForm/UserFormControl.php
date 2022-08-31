@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Web\AdminModule\UserModule\Control\UserForm;
 
 use Throwable;
-use Nette\Utils\Html;
 use App\Web\Ui\Control;
 use App\Domain\User\RolesEnum;
 use Nette\Application\UI\Form;
@@ -107,9 +106,7 @@ final class UserFormControl extends Control
 			->setRequired('roles.required');
 
 		$form->addPassword('password', 'password.field')
-			->setOption('description', Html::el()->setHtml(
-				$translator->translate(NULL === $this->default ? 'password.description.create_user' : ('password.description.update_user.' . (NULL === $this->default->password ? 'create_password': 'change_password')))
-			));
+			->setOption('description', $this->resolvePasswordDescription(NULL !== $this->default, NULL !== $this->default && NULL !== $this->default->password));
 
 		$form->addMultiSelect('projects', 'projects.field', $this->getProjectOptions())
 			->checkDefaultValue(FALSE)
@@ -185,6 +182,7 @@ final class UserFormControl extends Control
 
 		try {
 			$this->commandBus->dispatch($command);
+			$form['password']->setOption('description', $this->resolvePasswordDescription(TRUE, '' !== $values->password));
 		} catch (UsernameUniquenessException|EmailAddressUniquenessException $e) {
 			$emailAddressField = $form->getComponent('email_address');
 			assert($emailAddressField instanceof TextInput);
@@ -216,5 +214,16 @@ final class UserFormControl extends Control
 		}
 
 		return $options;
+	}
+
+	/**
+	 * @param bool $exists
+	 * @param bool $hasPassword
+	 *
+	 * @return string
+	 */
+	private function resolvePasswordDescription(bool $exists, bool $hasPassword): string
+	{
+		return !$exists ? 'password.description.create_user' : ('password.description.update_user.' . (!$hasPassword ? 'create_password': 'change_password'));
 	}
 }

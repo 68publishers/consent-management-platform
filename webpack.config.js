@@ -39,6 +39,10 @@ const appConfig = reconfigureEncore(Encore, 'app')
     .addAliases({
         Vendor: path.resolve(__dirname,  'vendor'),
     })
+    .addRule({
+        test: /\.svg/,
+        type: 'asset/source',
+    })
     .addEntry('app','./assets/app.js')
     .addEntry('nette.ajax.init', './assets/nette.ajax.init.js')
     .addEntry('recaptcha', './assets/recaptcha.js')

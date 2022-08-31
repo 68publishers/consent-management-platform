@@ -11,9 +11,8 @@
                 <div class="absolute top-0 right-0 pt-4 pr-4">
                     <button x-bind="modalCloseButton" type="button" class="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <span class="sr-only">Close</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
+
+                        {svg common/x-mark.svg, class: 'w-6 h-6'}
                     </button>
                 </div>
                 <div n:snippet="content" class="mt-3 sm:mt-0 sm:mx-4 text-left">

@@ -22,14 +22,7 @@
 				{/foreach}
 			</select>
 		</div>
-
-		{*<svg class="flex-shrink-0 h-5 w-5 text-gray-400 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-			<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-		</svg>*}
 	</div>
-	{*<div class="pt-1">
-		{control sidebarProjectMenu:breadcrumbs}
-	</div>*}
 </div>
 
 {block #sidebar_menu_desktop}
@@ -58,9 +51,7 @@
 	<div n:if="NULL === $defaultProjectLocale" class="bg-yellow-50 border-l-4 border-yellow-400 p-4 sm:rounded-lg mb-3">
 		<div class="flex">
 			<div class="flex-shrink-0">
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 text-yellow-400">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-				</svg>
+				{svg common/exclamation-triangle.svg, class: 'h-5 w-5 text-yellow-400'}
 			</div>
 			<div class="ml-3">
 				<p class="text-sm text-yellow-700">

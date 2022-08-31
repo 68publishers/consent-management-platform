@@ -12,9 +12,7 @@
         <div n:foreach="$form->getOwnErrors() as $error" class="rounded-md bg-red-50 p-4">
             <div class="flex">
                 <div class="flex-shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5 text-red-400">
-                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clip-rule="evenodd" />
-                    </svg>
+                    {svg common/x-circle-solid.svg, class: 'h-5 w-5 text-red-400'}
                 </div>
                 <div class="ml-3">
                     <h3 class="text-sm font-medium text-red-800">{$error}</h3>
@@ -70,7 +68,7 @@
                     $control->getControlPrototype()->class,
                     'spinner-white ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer'
                 ">{$control->translate($control->getCaption())}</button>
-                {include #control-help, control => $control}
+                {include #helpers-override-split, blockNamePrefix => help, control => $control}
             {/if}
             {if !$controlsIterator->isLast() && $controlsIterator->getNextValue()->getOption('type') === 'button'}
                 {php $controlsIterator->next()}
@@ -86,7 +84,7 @@
             $control->getLabelPrototype()->class,
             'block text-sm font-medium text-gray-700'
         " />
-        {include #control-help, control => $control}
+        {include #helpers-override-split, blockNamePrefix => help, control => $control}
     </div>
 {/define}
 
@@ -108,7 +106,7 @@
     <div n:foreach="$control->getErrors() as $error" class="text-red-500 text-xs pt-2">{$error}</div>
 {/define}
 
-{define #control-help}
+{define #help-type-default}
     <small n:if="$control->getOption('description') !== null" class="block text-gray-600 text-xs py-2 max-w-lg">{$control->getOption('description')|safeTranslate}</small>
 {/define}
 

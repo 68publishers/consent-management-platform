@@ -14,9 +14,19 @@
                 <div n:foreach="array_keys($locales) as $locale" n:attr="x-cloak => $active === $locale ? TRUE : NULL" x-show.transition.in.opacity.duration.200="activeTab === '{$locale}'">
                     {include #helpers-override-split, blockNamePrefix => control, control => $container[$locale]}
                     <div class="mt-4">
-                        {var $link = App\Api\V1\Controller\CookiesController::getTemplateUrl($projectCode, $locale)}
-                        <div class="mb-1">{$container[$locale]->translate(open_template, [link => $link])|noescape}</div>
-                        <div>{$container[$locale]->translate(more_about_syntax)|noescape}</div>
+                        <div class="mb-1">
+                            <a href="{App\Api\V1\Controller\CookiesController::getTemplateUrl($projectCode, $locale)}" target="_blank" class="text-indigo-700 inline-flex items-center">
+                                {$container[$locale]->translate(open_template)}
+                                {svg common/arrow-top-right-on-square.svg, class: 'h-5 w-5 ml-1'}
+                            </a>
+                        </div>
+                        <div>
+                            {$container[$locale]->translate(more_about_syntax)}
+                            <a href="https://latte.nette.org/en" target="_blank" class="text-indigo-700 inline-flex items-center">
+                                https://latte.nette.org/en
+                                {svg common/arrow-top-right-on-square.svg, class: 'h-5 w-5 ml-1'}
+                            </a>
+                        </div>
                     </div>
                 </div>
             {/formContainer}

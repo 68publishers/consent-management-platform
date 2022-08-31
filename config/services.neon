@@ -5,6 +5,7 @@ services:
 	nette.latteFactory:
 		setup:
 			- App\Bridge\Latte\AppMacroSet::installOnEngine($service, @App\Bridge\Latte\InternalCssRenderer)
+			- App\Bridge\Latte\SvgMacroSet::installOnEngine($service, %assetsDir%/images/icon)
 
 	# Routing
 	routing.router: App\Web\Router\RouterFactory()::create()
