@@ -3,6 +3,7 @@ active: Aktivní
 category_name: Kategorie
 processing_time: Doba zpracování
 provider_name: Poskytovatel
+provider_type: Typ
 projects: Projekty
 created_at: Vytvořeno
 

@@ -20,10 +20,10 @@ use App\Web\Ui\DataGrid\DataGridFactoryInterface;
 use App\Web\Ui\Modal\Confirm\ConfirmModalControl;
 use App\Domain\Cookie\Command\DeleteCookieCommand;
 use App\ReadModel\Project\ProjectSelectOptionView;
+use App\Domain\CookieProvider\ValueObject\ProviderType;
 use App\Application\GlobalSettings\ValidLocalesProvider;
 use App\ReadModel\Project\FindProjectSelectOptionsQuery;
 use App\Domain\CookieProvider\ValueObject\CookieProviderId;
-use App\ReadModel\CookieProvider\CookieProviderSelectOptionView;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use App\Web\Ui\Modal\Confirm\ConfirmModalControlFactoryInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
@@ -151,14 +151,26 @@ final class CookieListControl extends Control
 
 		$grid->addColumnText('category_name', 'category_name')
 			->setSortable('categoryName')
-			->setFilterMultiSelect($this->getCategories(), 'categoryName');
+			->setFilterMultiSelect($this->getCategories(), 'categoryId');
 
 		$grid->addColumnText('processing_time', 'processing_time');
 
 		if (NULL === $this->cookieProviderId) {
+			$providers = $this->getCookieProviders();
+			$providerOptions = [];
+
+			foreach ($providers as $cookieProviderSelectOptionView) {
+				$providerOptions += $cookieProviderSelectOptionView->toOption();
+			}
+
+			$grid->addTemplateVariable('providers', array_combine(array_keys($providerOptions), $providers));
+
 			$grid->addColumnText('provider_name', 'provider_name')
 				->setSortable('providerName')
-				->setFilterMultiSelect($this->getCookieProviders(), 'providerName');
+				->setFilterMultiSelect($providerOptions, 'providerId');
+
+			$grid->addColumnText('provider_type', 'provider_type')
+				->setFilterSelect(FilterHelper::select(ProviderType::values(), FALSE, $grid->getTranslator(), '//layout.cookie_provider_type.'), 'providerType');
 		}
 
 		if ($this->includeProjectsData) {
@@ -279,21 +291,14 @@ final class CookieListControl extends Control
 	}
 
 	/**
-	 * @return array
+	 * @return \App\ReadModel\CookieProvider\CookieProviderSelectOptionView[]
 	 */
 	private function getCookieProviders(): array
 	{
-		$providers = [];
 		$query = FindCookieProviderSelectOptionsQuery::all()
 			->withPrivate(TRUE);
 
-		foreach ($this->queryBus->dispatch($query) as $cookieProviderSelectOptionView) {
-			assert($cookieProviderSelectOptionView instanceof CookieProviderSelectOptionView);
-
-			$providers += $cookieProviderSelectOptionView->toOption();
-		}
-
-		return $providers;
+		return $this->queryBus->dispatch($query);
 	}
 
 	/**

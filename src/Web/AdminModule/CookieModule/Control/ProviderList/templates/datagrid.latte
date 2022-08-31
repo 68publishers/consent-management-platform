@@ -10,6 +10,14 @@
     {/if}
 {/define}
 
+{define col-private}
+    {if $item->private}
+        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">{_//ublaboo_datagrid.boolean_filter.yes}</span>
+    {else}
+        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">{_//ublaboo_datagrid.boolean_filter.no}</span>
+    {/if}
+{/define}
+
 {define col-type}
     {_'//layout.cookie_provider_type.' . $item->type->value()}
 {/define}

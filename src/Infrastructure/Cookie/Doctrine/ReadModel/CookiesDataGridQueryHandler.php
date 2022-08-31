@@ -36,7 +36,7 @@ final class CookiesDataGridQueryHandler implements QueryHandlerInterface
 					->select('COUNT(c.id)')
 					->from(Cookie::class, 'c')
 					->leftJoin(Category::class, 'cat', Join::WITH, 'cat.id = c.categoryId AND cat.deletedAt IS NULL')
-					->leftJoin(CookieProvider::class, 'cp', Join::WITH, 'cp.id = c.cookieProviderId AND cp.deletedAt IS NULL')
+					->join(CookieProvider::class, 'cp', Join::WITH, 'cp.id = c.cookieProviderId AND cp.deletedAt IS NULL')
 					->where('c.deletedAt IS NULL');
 
 				if (NULL !== $query->cookieProviderId()) {
@@ -49,11 +49,11 @@ final class CookiesDataGridQueryHandler implements QueryHandlerInterface
 			function (CookiesDataGridQuery $query): QueryBuilder {
 				$qb = $this->em->createQueryBuilder()
 					->select('c.id AS id, cat.id AS categoryId, c.name AS cookieName, c.processingTime AS processingTime, c.active AS active, cat_t.name AS categoryName, c.createdAt AS createdAt')
-					->addSelect('cp.id AS cookieProviderId, cp.name AS cookieProviderName')
+					->addSelect('cp.id AS cookieProviderId, cp.name AS cookieProviderName, cp.type AS cookieProviderType, cp.private AS cookieProviderPrivate')
 					->from(Cookie::class, 'c')
 					->leftJoin(Category::class, 'cat', Join::WITH, 'cat.id = c.categoryId AND cat.deletedAt IS NULL')
 					->leftJoin('cat.translations', 'cat_t', Join::WITH, 'cat_t.locale = :locale')
-					->leftJoin(CookieProvider::class, 'cp', Join::WITH, 'cp.id = c.cookieProviderId AND cp.deletedAt IS NULL')
+					->join(CookieProvider::class, 'cp', Join::WITH, 'cp.id = c.cookieProviderId AND cp.deletedAt IS NULL')
 					->where('c.deletedAt IS NULL')
 					->setParameters([
 						'locale' => $query->locale() ?? '_unknown_',
@@ -86,8 +86,9 @@ final class CookiesDataGridQueryHandler implements QueryHandlerInterface
 			[
 				'id' => ['applyEquals', 'c.id'],
 				'cookieName' => ['applyLike', 'c.name'],
-				'categoryName' => ['applyIn', 'cat.id'],
-				'providerName' => ['applyIn', 'cp.id'],
+				'categoryId' => ['applyIn', 'cat.id'],
+				'providerId' => ['applyIn', 'cp.id'],
+				'providerType' => ['applyEquals', 'cp.type'],
 				'createdAt' => ['applyDate', 'c.createdAt'],
 				'active' => ['applyEquals', 'c.active'],
 				'projects' => ['applyProjects', '_'],

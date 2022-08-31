@@ -3,6 +3,7 @@ active: Active
 category_name: Category
 processing_time: Processing time
 provider_name: Provider
+provider_type: Type
 projects: Projects
 created_at: Created
 

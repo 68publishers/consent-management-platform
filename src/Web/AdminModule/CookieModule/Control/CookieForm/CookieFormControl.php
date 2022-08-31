@@ -12,6 +12,7 @@ use Nette\Forms\Controls\TextInput;
 use App\ReadModel\Cookie\CookieView;
 use App\ReadModel\Category\CategoryView;
 use App\Web\Ui\Form\FormFactoryInterface;
+use Nepada\FormRenderer\TemplateRenderer;
 use App\Domain\Cookie\ValueObject\Purpose;
 use App\Domain\Cookie\ValueObject\CookieId;
 use App\Web\Ui\Form\FormFactoryOptionsTrait;
@@ -45,6 +46,8 @@ final class CookieFormControl extends Control
 	private ?CookieProviderId $cookieProviderId = NULL;
 
 	private ?CookieView $default;
+
+	private ?array $providerOptions = NULL;
 
 	/**
 	 * @param \App\Web\Ui\Form\FormFactoryInterface                            $formFactory
@@ -81,14 +84,19 @@ final class CookieFormControl extends Control
 	{
 		$form = $this->formFactory->create($this->getFormFactoryOptions());
 		$translator = $this->getPrefixedTranslator();
+		$providers = $this->getCookieProviders();
+		$renderer = $form->getRenderer();
+		assert($renderer instanceof TemplateRenderer);
 
 		$form->setTranslator($translator);
+
+		$renderer->importTemplate(__DIR__ . '/templates/form.imports.latte');
+		$renderer->getTemplate()->providers = $providers;
 
 		$form->addText('name', 'name.field')
 			->setRequired('name.required');
 
-		$providers = $this->getCookieProviders();
-		$providerField = $form->addSelect('provider', 'provider.field', $providers)
+		$providerField = $form->addSelect('provider', 'provider.field', array_map(static fn (CookieProviderSelectOptionView $view): string => $view->name->value(), $providers))
 			->setPrompt('-------')
 			->setRequired('provider.required')
 			->setTranslator(NULL)
@@ -231,16 +239,20 @@ final class CookieFormControl extends Control
 	 */
 	private function getCookieProviders(): array
 	{
-		$providers = [];
+		if (NULL !== $this->providerOptions) {
+			return $this->providerOptions;
+		}
+
+		$options = [];
 		$query = FindCookieProviderSelectOptionsQuery::all()
 			->withPrivate(TRUE);
 
 		foreach ($this->queryBus->dispatch($query) as $cookieProviderSelectOptionView) {
 			assert($cookieProviderSelectOptionView instanceof CookieProviderSelectOptionView);
 
-			$providers += $cookieProviderSelectOptionView->toOption();
+			$options[$cookieProviderSelectOptionView->id->toString()] = $cookieProviderSelectOptionView;
 		}
 
-		return $providers;
+		return $this->providerOptions = $options;
 	}
 }

@@ -39,7 +39,7 @@ final class FindCookieProviderSelectOptionsQueryHandler implements QueryHandlerI
 	public function __invoke(FindCookieProviderSelectOptionsQuery $query): array
 	{
 		$qb = $this->em->createQueryBuilder()
-			->select('c.id, c.name')
+			->select('c.id, c.name, c.private')
 			->from(CookieProvider::class, 'c')
 			->andWhere('c.deletedAt IS NULL')
 			->orderBy('c.name', 'ASC');

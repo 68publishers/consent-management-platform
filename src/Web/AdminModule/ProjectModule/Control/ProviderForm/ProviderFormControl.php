@@ -14,6 +14,7 @@ use App\Web\Ui\Form\FormFactoryInterface;
 use App\Web\Ui\Form\FormFactoryOptionsTrait;
 use App\Domain\CookieProvider\ValueObject\Code;
 use App\Domain\CookieProvider\ValueObject\Purpose;
+use App\ReadModel\CookieProvider\CookieProviderView;
 use App\Application\GlobalSettings\ValidLocalesProvider;
 use App\ReadModel\CookieProvider\GetCookieProviderByIdQuery;
 use App\Domain\CookieProvider\Exception\CodeUniquenessException;
@@ -36,6 +37,8 @@ final class ProviderFormControl extends Control
 	private QueryBusInterface $queryBus;
 
 	private ValidLocalesProvider $validLocalesProvider;
+
+	private ?CookieProviderView $default = NULL;
 
 	/**
 	 * @param \App\ReadModel\Project\ProjectView                               $projectView
@@ -84,7 +87,7 @@ final class ProviderFormControl extends Control
 
 		$form->addSubmit('save', 'update.field');
 
-		$default = $this->queryBus->dispatch(GetCookieProviderByIdQuery::create($this->projectView->cookieProviderId->toString()));
+		$default = $this->getDefault();
 
 		if (NULL !== $default) {
 			$form->setDefaults([
@@ -111,6 +114,7 @@ final class ProviderFormControl extends Control
 	{
 		$values = $form->values;
 		$cookieProviderId = $this->projectView->cookieProviderId;
+		$default = $this->getDefault();
 
 		$command = UpdateCookieProviderCommand::create($cookieProviderId->toString())
 			->withCode($values->code)
@@ -134,7 +138,15 @@ final class ProviderFormControl extends Control
 			return;
 		}
 
-		$this->dispatchEvent(new ProviderUpdatedEvent($cookieProviderId));
+		$this->dispatchEvent(new ProviderUpdatedEvent($cookieProviderId, NULL !== $default ? $default->code->value() : '', $values->code));
 		$this->redrawControl();
+	}
+
+	/**
+	 * @return \App\ReadModel\CookieProvider\CookieProviderView|NULL
+	 */
+	private function getDefault(): ?CookieProviderView
+	{
+		return $this->default ?? $this->default = $this->queryBus->dispatch(GetCookieProviderByIdQuery::create($this->projectView->cookieProviderId->toString()));
 	}
 }

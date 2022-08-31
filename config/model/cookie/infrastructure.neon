@@ -37,6 +37,9 @@ services:
 		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\CookiesDataGridQueryHandler
 	-
 		autowired: no
+		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\FindCookiesByCookieProviderQueryHandler
+	-
+		autowired: no
 		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\FindCookiesForApiQueryHandler
 	-
 		autowired: no

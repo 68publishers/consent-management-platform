@@ -14,6 +14,8 @@ final class CookieProviderSelectOptionView extends AbstractView
 
 	public Name $name;
 
+	public bool $private;
+
 	/**
 	 * @return array
 	 */

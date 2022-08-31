@@ -164,4 +164,17 @@ class DataGrid extends UblabooDataGrid
 
 		return $this;
 	}
+
+	/**
+	 * @param string $name
+	 * @param mixed  $value
+	 *
+	 * @return $this
+	 */
+	public function addTemplateVariable(string $name, $value): self
+	{
+		$this->templateVariables[$name] = $value;
+
+		return $this;
+	}
 }

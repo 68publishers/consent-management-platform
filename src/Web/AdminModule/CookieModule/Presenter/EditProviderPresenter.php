@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Web\AdminModule\CookieModule\Presenter;
 
 use Nette\InvalidStateException;
+use App\ReadModel\Project\ProjectView;
 use App\Application\Acl\CookieResource;
 use App\Web\Ui\Form\FormFactoryInterface;
 use App\Application\Acl\CookieProviderResource;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use App\ReadModel\CookieProvider\CookieProviderView;
+use App\ReadModel\Project\GetProjectByCookieProviderQuery;
 use App\Domain\CookieProvider\ValueObject\CookieProviderId;
 use App\ReadModel\CookieProvider\GetCookieProviderByIdQuery;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
@@ -25,6 +27,10 @@ use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieFormProcessi
 use App\Web\AdminModule\CookieModule\Control\ProviderForm\ProviderFormControlFactoryInterface;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControlFactoryInterface;
 use App\Web\AdminModule\CookieModule\Control\ProviderForm\Event\ProviderFormProcessingFailedEvent;
+use App\Web\AdminModule\ProjectModule\Control\ProviderForm\ProviderFormControl as PrivateProviderFormControl;
+use App\Web\AdminModule\ProjectModule\Control\ProviderForm\Event\ProviderUpdatedEvent as PrivateProviderUpdatedEvent;
+use App\Web\AdminModule\ProjectModule\Control\ProviderForm\ProviderFormControlFactoryInterface as PrivateProviderFormControlFactoryInterface;
+use App\Web\AdminModule\ProjectModule\Control\ProviderForm\Event\ProviderFormProcessingFailedEvent as PrivateProviderFormProcessingFailedEvent;
 
 /**
  * @IsAllowed(resource=CookieProviderResource::class, privilege=CookieProviderResource::UPDATE)
@@ -32,6 +38,8 @@ use App\Web\AdminModule\CookieModule\Control\ProviderForm\Event\ProviderFormProc
 final class EditProviderPresenter extends AdminPresenter
 {
 	private ProviderFormControlFactoryInterface $providerFormControlFactory;
+
+	private PrivateProviderFormControlFactoryInterface $privateProviderFormControlFactory;
 
 	private CookieListControlFactoryInterface $cookieListControlFactory;
 
@@ -41,17 +49,26 @@ final class EditProviderPresenter extends AdminPresenter
 
 	private CookieProviderView $cookieProviderView;
 
+	private ?ProjectView $projectView = NULL;
+
 	/**
 	 * @param \App\Web\AdminModule\CookieModule\Control\ProviderForm\ProviderFormControlFactoryInterface  $providerFormControlFactory
+	 * @param \App\Web\AdminModule\ProjectModule\Control\ProviderForm\ProviderFormControlFactoryInterface $privateProviderFormControlFactory
 	 * @param \App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControlFactoryInterface      $cookieListControlFactory
 	 * @param \App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControlFactoryInterface $cookieFormModalControlFactory
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface                              $queryBus
 	 */
-	public function __construct(ProviderFormControlFactoryInterface $providerFormControlFactory, CookieListControlFactoryInterface $cookieListControlFactory, CookieFormModalControlFactoryInterface $cookieFormModalControlFactory, QueryBusInterface $queryBus)
-	{
+	public function __construct(
+		ProviderFormControlFactoryInterface $providerFormControlFactory,
+		PrivateProviderFormControlFactoryInterface $privateProviderFormControlFactory,
+		CookieListControlFactoryInterface $cookieListControlFactory,
+		CookieFormModalControlFactoryInterface $cookieFormModalControlFactory,
+		QueryBusInterface $queryBus
+	) {
 		parent::__construct();
 
 		$this->providerFormControlFactory = $providerFormControlFactory;
+		$this->privateProviderFormControlFactory = $privateProviderFormControlFactory;
 		$this->cookieListControlFactory = $cookieListControlFactory;
 		$this->cookieFormModalControlFactory = $cookieFormModalControlFactory;
 		$this->queryBus = $queryBus;
@@ -67,7 +84,11 @@ final class EditProviderPresenter extends AdminPresenter
 	{
 		$cookieProviderView = CookieProviderId::isValid($id) ? $this->queryBus->dispatch(GetCookieProviderByIdQuery::create($id)) : NULL;
 
-		if (!$cookieProviderView instanceof CookieProviderView || $cookieProviderView->private) {
+		if ($cookieProviderView instanceof CookieProviderView && $cookieProviderView->private) {
+			$this->projectView = $this->queryBus->dispatch(GetProjectByCookieProviderQuery::create($cookieProviderView->id->toString()));
+		}
+
+		if (!$cookieProviderView instanceof CookieProviderView || ($cookieProviderView->private && NULL === $this->projectView)) {
 			$this->subscribeFlashMessage(FlashMessage::warning('provider_not_found'));
 			$this->redirect('Providers:');
 		}
@@ -81,10 +102,25 @@ final class EditProviderPresenter extends AdminPresenter
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	protected function beforeRender(): void
+	{
+		parent::beforeRender();
+
+		$this->template->cookieProviderView = $this->cookieProviderView;
+		$this->template->projectView = $this->projectView;
+	}
+
+	/**
 	 * @return \App\Web\AdminModule\CookieModule\Control\ProviderForm\ProviderFormControl
 	 */
 	protected function createComponentProviderForm(): ProviderFormControl
 	{
+		if ($this->cookieProviderView->private) {
+			throw new InvalidStateException('Con not create the component because the provider is private.');
+		}
+
 		$control = $this->providerFormControlFactory->create($this->cookieProviderView);
 
 		$control->setFormFactoryOptions([
@@ -103,6 +139,39 @@ final class EditProviderPresenter extends AdminPresenter
 		});
 
 		$control->addEventListener(ProviderFormProcessingFailedEvent::class, function () {
+			$this->subscribeFlashMessage(FlashMessage::error('provider_update_failed'));
+		});
+
+		return $control;
+	}
+
+	/**
+	 * @return \App\Web\AdminModule\ProjectModule\Control\ProviderForm\ProviderFormControl
+	 */
+	protected function createComponentPrivateProviderForm(): PrivateProviderFormControl
+	{
+		if (!$this->cookieProviderView->private || NULL === $this->projectView) {
+			throw new InvalidStateException('Con not create the component because the provider is not private.');
+		}
+
+		$control = $this->privateProviderFormControlFactory->create($this->projectView);
+
+		$control->setFormFactoryOptions([
+			FormFactoryInterface::OPTION_AJAX => TRUE,
+		]);
+
+		$control->addEventListener(PrivateProviderUpdatedEvent::class, function (PrivateProviderUpdatedEvent $event) {
+			$this->subscribeFlashMessage(FlashMessage::success('provider_updated'));
+
+			$this->setBreadcrumbItems([
+				$this->getPrefixedTranslator()->translate('page_title'),
+				$event->newCode(),
+			]);
+
+			$this->redrawControl('heading');
+		});
+
+		$control->addEventListener(PrivateProviderFormProcessingFailedEvent::class, function () {
 			$this->subscribeFlashMessage(FlashMessage::error('provider_update_failed'));
 		});
 

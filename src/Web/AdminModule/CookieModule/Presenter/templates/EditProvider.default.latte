@@ -1,3 +1,5 @@
+{templateType App\Web\AdminModule\CookieModule\Presenter\EditProviderTemplate}
+
 {block #heading_actions}
     <a n:if="$user->isAllowed(App\Application\Acl\CookieProviderResource::class, App\Application\Acl\CookieProviderResource::READ)" n:href="Providers:" data-spinner-for="self" class="spinner-white inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -11,10 +13,21 @@
 
 <div class="bg-white shadow sm:rounded-lg mb-12">
     <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-        <h3 class="text-lg leading-6 font-medium text-gray-900">{_heading_basic}</h3>
+        <h3 class="text-lg leading-6 font-medium text-gray-900">
+            <span class="inline-flex items-center flex-wrap">
+                <span class="block w-full mb-2 sm:w-auto sm:mb-0 sm:mr-4">{_heading_basic}</span>
+                <span n:if="NULL !== $projectView" class="inline-block w-auto px-2.5 py-0.5 rounded-md text-sm font-medium text-white" style="background-color: {$projectView->color->value()|noescape} !important;">
+                    {$projectView->name->value()}
+                </span>
+            </span>
+        </h3>
     </div>
 
-    {control providerForm}
+    {if $cookieProviderView->private}
+        {control privateProviderForm}
+    {else}
+        {control providerForm}
+    {/if}
 </div>
 
 <div n:if="$user->isAllowed(App\Application\Acl\CookieResource::class, App\Application\Acl\CookieResource::READ)" class="bg-white shadow sm:rounded-lg">

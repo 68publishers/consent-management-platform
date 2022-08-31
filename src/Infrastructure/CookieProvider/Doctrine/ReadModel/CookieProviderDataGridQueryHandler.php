@@ -31,8 +31,7 @@ final class CookieProviderDataGridQueryHandler implements QueryHandlerInterface
 				return $this->em->createQueryBuilder()
 					->select('COUNT(c.id)')
 					->from(CookieProvider::class, 'c')
-					->where('c.deletedAt IS NULL')
-					->andWhere('c.private = false');
+					->where('c.deletedAt IS NULL');
 			},
 			function (): QueryBuilder {
 				$numberOfCookiesSubQuery = $this->em->createQueryBuilder()
@@ -50,8 +49,7 @@ final class CookieProviderDataGridQueryHandler implements QueryHandlerInterface
 						$numberOfCookiesSubQuery
 					))
 					->from(CookieProvider::class, 'c')
-					->where('c.deletedAt IS NULL')
-					->andWhere('c.private = false');
+					->where('c.deletedAt IS NULL');
 			},
 			CookieProviderDaraGridItemView::class,
 			[
@@ -59,6 +57,7 @@ final class CookieProviderDataGridQueryHandler implements QueryHandlerInterface
 				'code' => ['applyLike', 'c.code'],
 				'link' => ['applyLike', 'c.link'],
 				'type' => ['applyEquals', 'c.type'],
+				'private' => ['applyEquals', 'c.private'],
 				'createdAt' => ['applyDate', 'c.createdAt'],
 				'active' => ['applyEquals', 'c.active'],
 			],
