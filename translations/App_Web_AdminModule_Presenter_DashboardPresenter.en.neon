@@ -20,3 +20,5 @@ unique_positive: Positivity
 last_consent: Last consent
 providers: Providers
 cookies: Cookies
+
+cookies_tooltip_message: '%common% service cookies, %private% project cookies'

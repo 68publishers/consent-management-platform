@@ -40,6 +40,22 @@ final class CookiesDataGridQuery extends AbstractDataGridQuery
 	}
 
 	/**
+	 * @return string|NULL
+	 */
+	public function projectId(): ?string
+	{
+		return $this->getParam('project_id');
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function projectServicesOnly(): bool
+	{
+		return $this->getParam('project_services_only') ?? FALSE;
+	}
+
+	/**
 	 * @return bool
 	 */
 	public function includeProjectsData(): bool
@@ -55,6 +71,18 @@ final class CookiesDataGridQuery extends AbstractDataGridQuery
 	public function withCookieProviderId(string $cookieProviderId): self
 	{
 		return $this->withParam('cookie_provider_id', $cookieProviderId);
+	}
+
+	/**
+	 * @param string $projectId
+	 * @param bool   $servicesOnly
+	 *
+	 * @return $this
+	 */
+	public function withProjectId(string $projectId, bool $servicesOnly = FALSE): self
+	{
+		return $this->withParam('project_id', $projectId)
+			->withParam('project_services_only', $servicesOnly);
 	}
 
 	/**

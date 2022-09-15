@@ -9,6 +9,7 @@ use Nette\InvalidStateException;
 use App\Web\Ui\DataGrid\DataGrid;
 use App\ReadModel\Import\ImportView;
 use Nette\Application\UI\Multiplier;
+use App\ReadModel\Import\ImportListView;
 use App\Domain\Import\ValueObject\Status;
 use App\ReadModel\Import\GetImportByIdQuery;
 use App\Web\Ui\DataGrid\Helper\FilterHelper;
@@ -62,9 +63,9 @@ final class ImportListControl extends Control
 			->setAlign('center')
 			->setFilterMultiSelect(FilterHelper::items(Status::values(), FALSE, $grid->getTranslator(), 'status_value.'), 'status');
 
-		$grid->addColumnText('author', 'author', 'author.value')
-			->setSortable('author')
-			->setFilterText('author');
+		$grid->addColumnText('author', 'author')
+			->setSortable('authorName')
+			->setFilterText('authorName');
 
 		$grid->addColumnText('summary', 'summary')
 			->setAlign('center')
@@ -82,7 +83,7 @@ final class ImportListControl extends Control
 
 		$grid->addAction('edit', '')
 			->setTemplate(__DIR__ . '/templates/action.detail.latte', [
-				'createLink' => fn (ImportView $view): string => $this->link('openModal!', ['modal' => 'detail-' . $view->id->id()->getHex()->toString()]),
+				'createLink' => fn (ImportListView $view): string => $this->link('openModal!', ['modal' => 'detail-' . $view->id->id()->getHex()->toString()]),
 			]);
 
 		return $grid;

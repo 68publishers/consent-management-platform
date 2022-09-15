@@ -9,3 +9,5 @@ status_value:
 	running: running
 	completed: completed
 	failed: failed
+
+unknown_author: Unknown author

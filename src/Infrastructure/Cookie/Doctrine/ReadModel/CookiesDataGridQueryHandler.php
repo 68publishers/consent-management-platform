@@ -44,6 +44,18 @@ final class CookiesDataGridQueryHandler implements QueryHandlerInterface
 						->setParameter('cookieProviderId', $query->cookieProviderId());
 				}
 
+				if (NULL !== $query->projectId()) {
+					$qb->leftJoin(ProjectHasCookieProvider::class, 'phcp', Join::WITH, 'phcp.cookieProviderId = cp.id')
+						->leftJoin('phcp.project', 'phcp_p', Join::WITH, 'phcp_p.deletedAt IS NULL');
+
+					if (FALSE === $query->projectServicesOnly()) {
+						$qb->leftJoin(Project::class, 'p', Join::WITH, 'p.cookieProviderId = cp.id AND p.deletedAt IS NULL');
+					}
+
+					$qb->andWhere($query->projectServicesOnly() ? 'phcp_p.id = :projectId' : 'phcp_p.id = :projectId OR p.id = :projectId')
+						->setParameter('projectId', $query->projectId());
+				}
+
 				return $qb;
 			},
 			function (CookiesDataGridQuery $query): QueryBuilder {
@@ -62,6 +74,18 @@ final class CookiesDataGridQueryHandler implements QueryHandlerInterface
 				if (NULL !== $query->cookieProviderId()) {
 					$qb->andWhere('cp.id = :cookieProviderId')
 						->setParameter('cookieProviderId', $query->cookieProviderId());
+				}
+
+				if (NULL !== $query->projectId()) {
+					$qb->leftJoin(ProjectHasCookieProvider::class, 'phcp', Join::WITH, 'phcp.cookieProviderId = cp.id')
+						->leftJoin('phcp.project', 'phcp_p', Join::WITH, 'phcp_p.deletedAt IS NULL');
+
+					if (FALSE === $query->projectServicesOnly()) {
+						$qb->leftJoin(Project::class, 'p', Join::WITH, 'p.cookieProviderId = cp.id AND p.deletedAt IS NULL');
+					}
+
+					$qb->andWhere($query->projectServicesOnly() ? 'phcp_p.id = :projectId' : 'phcp_p.id = :projectId OR p.id = :projectId')
+						->setParameter('projectId', $query->projectId());
 				}
 
 				if ($query->includeProjectsData()) {

@@ -21,6 +21,7 @@ sidebar_project:
 	cookies: Cookies
 	cookies_providers: Poskytovatelé
 	cookies_cookies: Cookies projektu
+	cookies_service_cookies: Cookies služeb
 	integration: Integrace
 	edit_project: Upravit projekt
 

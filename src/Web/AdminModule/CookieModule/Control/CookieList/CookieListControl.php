@@ -14,6 +14,7 @@ use App\Web\Ui\Form\FormFactoryInterface;
 use App\Domain\Cookie\ValueObject\CookieId;
 use App\ReadModel\Cookie\GetCookieByIdQuery;
 use App\Web\Ui\DataGrid\Helper\FilterHelper;
+use App\Domain\Project\ValueObject\ProjectId;
 use App\ReadModel\Category\AllCategoriesQuery;
 use App\ReadModel\Cookie\CookiesDataGridQuery;
 use App\Web\Ui\DataGrid\DataGridFactoryInterface;
@@ -51,13 +52,22 @@ final class CookieListControl extends Control
 
 	private ?CookieProviderId $cookieProviderId;
 
+	private ?ProjectId $projectId = NULL;
+
+	private bool $projectServiceOnly = FALSE;
+
+	private bool $includeProjectsData = FALSE;
+
+	private array $actions = [
+		'update' => TRUE,
+		'delete' => FALSE,
+	];
+
 	private array $acl = [
 		'resource' => NULL,
 		'update' => NULL,
 		'delete' => NULL,
 	];
-
-	private bool $includeProjectsData = FALSE;
 
 	/**
 	 * @param \App\Application\GlobalSettings\ValidLocalesProvider                                        $validLocalesProvider
@@ -84,6 +94,16 @@ final class CookieListControl extends Control
 		$this->confirmModalControlFactory = $confirmModalControlFactory;
 		$this->cookieFormModalControlFactory = $cookieFormModalControlFactory;
 		$this->cookieProviderId = $cookieProviderId;
+	}
+
+	public function configureActions(bool $update, bool $delete): self
+	{
+		$this->actions = [
+			'update' => $update,
+			'delete' => $delete,
+		];
+
+		return $this;
 	}
 
 	/**
@@ -115,6 +135,20 @@ final class CookieListControl extends Control
 	}
 
 	/**
+	 * @param \App\Domain\Project\ValueObject\ProjectId $projectId
+	 * @param bool                                      $servicesOnly
+	 *
+	 * @return $this
+	 */
+	public function projectOnly(ProjectId $projectId, bool $servicesOnly = FALSE): self
+	{
+		$this->projectId = $projectId;
+		$this->projectServiceOnly = $servicesOnly;
+
+		return $this;
+	}
+
+	/**
 	 * @return \App\Web\Ui\DataGrid\DataGrid
 	 * @throws \Ublaboo\DataGrid\Exception\DataGridException
 	 */
@@ -126,6 +160,10 @@ final class CookieListControl extends Control
 
 		if (NULL !== $this->cookieProviderId) {
 			$query = $query->withCookieProviderId($this->cookieProviderId->toString());
+		}
+
+		if (NULL !== $this->projectId) {
+			$query = $query->withProjectId($this->projectId->toString(), $this->projectServiceOnly);
 		}
 
 		$grid = $this->dataGridFactory->create($query);
@@ -183,15 +221,19 @@ final class CookieListControl extends Control
 			->setSortable('createdAt')
 			->setFilterDate('createdAt');
 
-		$grid->addAction('edit', '')
-			->setTemplate(__DIR__ . '/templates/action.edit.latte', [
-				'_acl' => $this->acl,
-			]);
+		if ($this->actions['update']) {
+			$grid->addAction('edit', '')
+				->setTemplate(__DIR__ . '/templates/action.edit.latte', [
+					'_acl' => $this->acl,
+				]);
+		}
 
-		$grid->addAction('delete', '')
-			->setTemplate(__DIR__ . '/templates/action.delete.latte', [
-				'_acl' => $this->acl,
-			]);
+		if ($this->actions['delete']) {
+			$grid->addAction('delete', '')
+				->setTemplate(__DIR__ . '/templates/action.delete.latte', [
+					'_acl' => $this->acl,
+				]);
+		}
 
 		return $grid;
 	}
@@ -201,7 +243,7 @@ final class CookieListControl extends Control
 	 */
 	protected function createComponentDeleteConfirm(): Multiplier
 	{
-		if (isset($this->acl['resource'], $this->acl['delete']) && !$this->getUser()->isAllowed($this->acl['resource'], $this->acl['delete'])) {
+		if (!$this->actions['delete'] || (isset($this->acl['resource'], $this->acl['delete']) && !$this->getUser()->isAllowed($this->acl['resource'], $this->acl['delete']))) {
 			throw new InvalidStateException('The user is not allowed to delete cookies.');
 		}
 
@@ -236,7 +278,7 @@ final class CookieListControl extends Control
 	 */
 	protected function createComponentEditModal(): Multiplier
 	{
-		if (isset($this->acl['resource'], $this->acl['update']) && !$this->getUser()->isAllowed($this->acl['resource'], $this->acl['update'])) {
+		if (!$this->actions['update'] || (isset($this->acl['resource'], $this->acl['update']) && !$this->getUser()->isAllowed($this->acl['resource'], $this->acl['update']))) {
 			throw new InvalidStateException('The user is not allowed to update cookies.');
 		}
 

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\Import\Event;
 
 use App\Domain\Import\ValueObject\Name;
-use App\Domain\Import\ValueObject\Author;
 use App\Domain\Import\ValueObject\ImportId;
+use SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Event\AbstractDomainEvent;
 
 final class ImportStarted extends AbstractDomainEvent
@@ -15,25 +15,25 @@ final class ImportStarted extends AbstractDomainEvent
 
 	private Name $name;
 
-	private Author $author;
+	private ?UserId $authorId = NULL;
 
 	/**
-	 * @param \App\Domain\Import\ValueObject\ImportId $id
-	 * @param \App\Domain\Import\ValueObject\Name     $name
-	 * @param \App\Domain\Import\ValueObject\Author   $author
+	 * @param \App\Domain\Import\ValueObject\ImportId                         $id
+	 * @param \App\Domain\Import\ValueObject\Name                             $name
+	 * @param \SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId|NULL $authorId
 	 *
 	 * @return static
 	 */
-	public static function create(ImportId $id, Name $name, Author $author): self
+	public static function create(ImportId $id, Name $name, ?UserId $authorId): self
 	{
 		$event = self::occur($id->toString(), [
 			'name' => $name->value(),
-			'author' => $author->value(),
+			'author_id' => NULL !== $authorId ? $authorId->toString() : NULL,
 		]);
 
 		$event->id = $id;
 		$event->name = $name;
-		$event->author = $author;
+		$event->authorId = $authorId;
 
 		return $event;
 	}
@@ -55,11 +55,11 @@ final class ImportStarted extends AbstractDomainEvent
 	}
 
 	/**
-	 * @return \App\Domain\Import\ValueObject\Author
+	 * @return \SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId|NULL
 	 */
-	public function author(): Author
+	public function authorId(): ?UserId
 	{
-		return $this->author;
+		return $this->authorId;
 	}
 
 	/**
@@ -69,6 +69,6 @@ final class ImportStarted extends AbstractDomainEvent
 	{
 		$this->id = ImportId::fromUuid($this->aggregateId()->id());
 		$this->name = Name::fromValue($parameters['name']);
-		$this->author = Author::fromValue($parameters['author']);
+		$this->authorId = NULL !== $parameters['author_id'] ? UserId::fromString($parameters['author_id']) : NULL;
 	}
 }

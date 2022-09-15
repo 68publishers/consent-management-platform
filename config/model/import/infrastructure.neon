@@ -6,6 +6,10 @@ services:
 
 	# infra: doctrine
 	-
+		autowired: self
+		type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
+		factory: App\Infrastructure\Import\Doctrine\ReadModel\ImportListViewDataTransformer
+	-
 		autowired: no
 		factory: App\Infrastructure\Import\Doctrine\ReadModel\GetImportByIdQueryHandler
 	-
@@ -21,10 +25,6 @@ nettrine.orm.xml:
 nettrine.dbal:
 	connection:
 		types:
-			App\Domain\Import\ValueObject\Author:
-				class: App\Infrastructure\Import\Doctrine\DbalType\AuthorType
-				commented: yes
-
 			App\Domain\Import\ValueObject\ImportId:
 				class: App\Infrastructure\Import\Doctrine\DbalType\ImportIdType
 				commented: yes

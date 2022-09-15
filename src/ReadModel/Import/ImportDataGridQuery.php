@@ -7,7 +7,7 @@ namespace App\ReadModel\Import;
 use App\ReadModel\AbstractDataGridQuery;
 
 /**
- * Returns ImportView[]
+ * Returns ImportListView[]
  */
 final class ImportDataGridQuery extends AbstractDataGridQuery
 {

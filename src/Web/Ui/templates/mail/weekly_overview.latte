@@ -63,7 +63,13 @@
                     {$project['providers']['value']}
                 </td>
                 <td class="text-center">
-                    {$project['cookies']['commonValue']} ({$project['cookies']['privateValue']})
+                    {if 0 >= ($project['cookies']['commonValue'] + $project['cookies']['privateValue'])}
+                        0
+                    {elseif 0 >= $project['cookies']['privateValue']}
+                        {$project['cookies']['commonValue']}
+                    {else}
+                        {$project['cookies']['commonValue']} + {$project['cookies']['privateValue']}
+                    {/if}
                 </td>
                 <td>
                     {$project['lastConsent']['formattedValue'] ?? '-'}

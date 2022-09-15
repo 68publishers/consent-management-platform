@@ -101,6 +101,10 @@ contributte.menu:
 						action: Admin:Project:Cookies:default
 						include:
 							- '^Admin\:Project\:Cookies\:.+$'
+					layout.sidebar_project.cookies_service_cookies:
+						action: Admin:Project:ServiceCookies:default
+						include:
+							- '^Admin\:Project\:ServiceCookies\:.+$'
 				data:
 					icon: cookies
 			layout.sidebar_project.integration:

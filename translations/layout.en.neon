@@ -21,6 +21,7 @@ sidebar_project:
 	cookies: Cookies
 	cookies_providers: Providers
 	cookies_cookies: Project cookies
+	cookies_service_cookies: Service cookies
 	integration: Integration
 	edit_project: Edit project
 

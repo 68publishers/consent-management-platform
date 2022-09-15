@@ -9,3 +9,5 @@ status_value:
 	running: probíhá
 	completed: hotovo
 	failed: neúspěšný
+
+unknown_author: Neznámý autor

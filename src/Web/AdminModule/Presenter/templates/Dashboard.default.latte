@@ -150,8 +150,12 @@
                         <a x-show="project.links.cookies" :href="project.links.cookies" class="text-sm font-medium text-indigo-700 truncate">{{_cookies}}</a>
 
                         <div x-show="null !== project.data.cookies.commonValue" class="mt-2 text-xl font-semibold text-gray-900">
-                            <span x-text="project.data.cookies.commonValue"></span>
-                            <span x-show="null !== project.data.cookies.privateValue" x-text="'(' + project.data.cookies.privateValue + ')'"></span>
+                            <span
+                                    data-tooltip-message="{{_cookies_tooltip_message}}"
+                                    x-data
+                                    x-text="(0 >= (project.data.cookies.commonValue + project.data.cookies.privateValue)) ? '0' : (0 >= project.data.cookies.privateValue ? project.data.cookies.commonValue : (project.data.cookies.commonValue + ' + ' + project.data.cookies.privateValue))"
+                                    x-tooltip.interactive.placement.bottom="$el.getAttribute('data-tooltip-message').replace('%common%', project.data.cookies.commonValue).replace('%private%', project.data.cookies.privateValue)"
+                            ></span>
                         </div>
                     </div>
 

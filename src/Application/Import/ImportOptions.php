@@ -11,7 +11,7 @@ final class ImportOptions
 {
 	private string $describedObjectClassname;
 
-	private string $author;
+	private ?string $authorId = NULL;
 
 	private ?LoggerInterface $logger = NULL;
 
@@ -32,7 +32,7 @@ final class ImportOptions
 	{
 		$options = new self();
 		$options->describedObjectClassname = $describedObjectClassname;
-		$options->author = 'system';
+		$options->authorId = NULL;
 
 		return $options;
 	}
@@ -46,11 +46,11 @@ final class ImportOptions
 	}
 
 	/**
-	 * @return string
+	 * @return string|NULL
 	 */
-	public function author(): string
+	public function authorId(): ?string
 	{
-		return $this->author;
+		return $this->authorId;
 	}
 
 	/**
@@ -78,14 +78,14 @@ final class ImportOptions
 	}
 
 	/**
-	 * @param string $author
+	 * @param string|NULL $authorId
 	 *
 	 * @return $this
 	 */
-	public function withAuthor(string $author): self
+	public function withAuthorId(?string $authorId): self
 	{
 		$options = clone $this;
-		$options->author = $author;
+		$options->authorId = $authorId;
 
 		return $options;
 	}

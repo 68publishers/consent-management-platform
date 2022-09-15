@@ -157,7 +157,7 @@ final class ImportFormControl extends Control
 
 			$reader = $this->dataReaderFactory->fromFile($format, $filename, $options);
 			$options = ImportOptions::create($type)
-				->withAuthor($this->getAuthor())
+				->withAuthorId($this->getAuthorId())
 				->withBatchSize(50);
 
 			$state = $this->runner->run($reader, $options);
@@ -175,20 +175,19 @@ final class ImportFormControl extends Control
 	}
 
 	/**
-	 * @return string
-	 * @throws \SixtyEightPublishers\UserBundle\Application\Exception\IdentityException
+	 * @return string|NULL
 	 */
-	private function getAuthor(): string
+	private function getAuthorId(): ?string
 	{
 		$user = $this->getUser();
 
 		if (!$user->isLoggedIn()) {
-			return 'unknown';
+			return NULL;
 		}
 
 		$identity = $user->getIdentity();
 		assert($identity instanceof Identity);
 
-		return $identity->data()->name->name();
+		return $identity->id()->toString();
 	}
 }

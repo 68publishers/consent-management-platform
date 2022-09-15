@@ -11,6 +11,8 @@
 
         <id name="id" column="id" type="App\Domain\Import\ValueObject\ImportId" unique="true" />
 
+        <field name="authorId" column="author_id" type="SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId" nullable="true" />
+
         <field name="createdAt" column="created_at" type="datetime_immutable" />
 
         <field name="endedAt" column="deleted_at" type="datetime_immutable" nullable="true" />
@@ -18,8 +20,6 @@
         <field name="name" column="name" type="App\Domain\Import\ValueObject\Name" />
 
         <field name="status" column="status" type="App\Domain\Import\ValueObject\Status" />
-
-        <field name="author" column="author" type="App\Domain\Import\ValueObject\Author" />
 
         <field name="imported" column="imported" type="App\Domain\Import\ValueObject\Total" />
 

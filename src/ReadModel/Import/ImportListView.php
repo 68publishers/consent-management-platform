@@ -8,17 +8,15 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use App\Domain\Import\ValueObject\Name;
 use App\Domain\Import\ValueObject\Total;
-use App\Domain\Import\ValueObject\Output;
 use App\Domain\Import\ValueObject\Status;
 use App\Domain\Import\ValueObject\ImportId;
 use SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\AbstractView;
+use SixtyEightPublishers\UserBundle\Domain\ValueObject\Name as AuthorName;
 
-final class ImportView extends AbstractView
+final class ImportListView extends AbstractView
 {
 	public ImportId $id;
-
-	public ?UserId $authorId = NULL;
 
 	public DateTimeImmutable $createdAt;
 
@@ -34,7 +32,9 @@ final class ImportView extends AbstractView
 
 	public Total $warned;
 
-	public Output $output;
+	public ?UserId $authorId = NULL;
+
+	public ?AuthorName $authorName = NULL;
 
 	/**
 	 * @return array
@@ -43,7 +43,6 @@ final class ImportView extends AbstractView
 	{
 		return [
 			'id' => $this->id->toString(),
-			'author_id' => NULL !== $this->authorId ? $this->authorId->toString() : NULL,
 			'createdAt' => $this->createdAt->format(DateTimeInterface::ATOM),
 			'endedAt' => NULL !== $this->endedAt ? $this->endedAt->format(DateTimeInterface::ATOM) : NULL,
 			'name' => $this->name->value(),
@@ -51,7 +50,8 @@ final class ImportView extends AbstractView
 			'imported' => $this->imported->value(),
 			'failed' => $this->failed->value(),
 			'warned' => $this->warned->value(),
-			'output' => $this->output->value(),
+			'author_id' => NULL !== $this->authorId ? $this->authorId->toString() : NULL,
+			'author_name' => NULL !== $this->authorName ? $this->authorName->name() : NULL,
 		];
 	}
 }

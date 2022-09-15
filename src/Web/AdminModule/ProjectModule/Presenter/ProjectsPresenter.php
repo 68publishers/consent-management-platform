@@ -7,6 +7,7 @@ namespace App\Web\AdminModule\ProjectModule\Presenter;
 use Nette\InvalidStateException;
 use App\Application\Acl\ProjectResource;
 use App\Application\Project\Import\ProjectData;
+use App\ReadModel\Project\FindAllProjectsQuery;
 use App\ReadModel\Project\FindUserProjectsQuery;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use App\Web\AdminModule\Control\ExportForm\ExportDropdownControl;
@@ -58,9 +59,10 @@ final class ProjectsPresenter extends AdminPresenter
 	{
 		parent::beforeRender();
 
-		$this->template->projects = $this->queryBus->dispatch(FindUserProjectsQuery::create($this->getIdentity()->id()->toString()));
+		$this->template->projects = $this->getUser()->isAllowed(ProjectResource::class, ProjectResource::READ_ALL)
+			? $this->queryBus->dispatch(FindAllProjectsQuery::create())
+			: $this->queryBus->dispatch(FindUserProjectsQuery::create($this->getIdentity()->id()->toString()));
 	}
-
 
 	/**
 	 * @return \App\Web\AdminModule\Control\ExportForm\ExportDropdownControl

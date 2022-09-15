@@ -1,5 +1,6 @@
 name: Název
 author: Autor
+unknown_author: Neznámý autor
 status: Stav
 
 status_value:

@@ -1,6 +1,6 @@
 {extends $originalTemplate}
 
-{varType App\ReadModel\Import\ImportView $item}
+{varType App\ReadModel\Import\ImportListView $item}
 
 {define col-name}
     {_'//imports.name.' . $item->name->value()}
@@ -15,6 +15,15 @@
         {case $item->status->is(App\Domain\Import\ValueObject\Status::FAILED)}
             <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">{_status_value.failed}</span>
     {/switch}
+{/define}
+
+{define col-author}
+    {dump $item}
+    {if NULL !== $item->authorName}
+        {$item->authorName->name()}
+    {else}
+        {_unknown_author}
+    {/if}
 {/define}
 
 {define col-summary}

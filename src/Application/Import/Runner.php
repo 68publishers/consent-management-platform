@@ -57,7 +57,7 @@ final class Runner implements RunnerInterface
 		$state = new ImportState(ImportId::new()->toString());
 		$options = $options->withLogger(new ComposedLogger(new ImportLogger($state), $options->logger()));
 
-		$this->commandBus->dispatch(StartImportCommand::create($state->id, $options->describedObjectClassname(), $options->author()));
+		$this->commandBus->dispatch(StartImportCommand::create($state->id, $options->describedObjectClassname(), $options->authorId()));
 
 		try {
 			$state = $this->doRun($reader, $options, $state);

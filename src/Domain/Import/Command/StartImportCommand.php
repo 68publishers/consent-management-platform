@@ -9,18 +9,18 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 final class StartImportCommand extends AbstractCommand
 {
 	/**
-	 * @param string $id
-	 * @param string $name
-	 * @param string $author
+	 * @param string      $id
+	 * @param string      $name
+	 * @param string|NULL $authorId
 	 *
 	 * @return static
 	 */
-	public static function create(string $id, string $name, string $author): self
+	public static function create(string $id, string $name, ?string $authorId = NULL): self
 	{
 		return self::fromParameters([
 			'id' => $id,
 			'name' => $name,
-			'author' => $author,
+			'author_id' => $authorId,
 		]);
 	}
 
@@ -43,8 +43,8 @@ final class StartImportCommand extends AbstractCommand
 	/**
 	 * @return string
 	 */
-	public function author(): string
+	public function authorId(): ?string
 	{
-		return $this->getParam('author');
+		return $this->getParam('author_id');
 	}
 }

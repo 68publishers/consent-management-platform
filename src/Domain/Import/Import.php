@@ -8,7 +8,6 @@ use DateTimeImmutable;
 use App\Domain\Import\ValueObject\Name;
 use App\Domain\Import\ValueObject\Total;
 use App\Domain\Import\Event\ImportFailed;
-use App\Domain\Import\ValueObject\Author;
 use App\Domain\Import\ValueObject\Output;
 use App\Domain\Import\ValueObject\Status;
 use App\Domain\Import\Event\ImportStarted;
@@ -18,6 +17,7 @@ use App\Domain\Import\Command\FailImportCommand;
 use App\Domain\Import\Command\StartImportCommand;
 use App\Domain\Import\Command\CompleteImportCommand;
 use App\Domain\Import\Exception\InvalidStatusChangeException;
+use SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId;
 use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AggregateId;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Aggregate\AggregateRootTrait;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Aggregate\AggregateRootInterface;
@@ -28,6 +28,8 @@ final class Import implements AggregateRootInterface
 
 	private ImportId $id;
 
+	private UserId $authorId;
+
 	private DateTimeImmutable $createdAt;
 
 	private ?DateTimeImmutable $endedAt = NULL;
@@ -35,8 +37,6 @@ final class Import implements AggregateRootInterface
 	private Name $name;
 
 	private Status $status;
-
-	private Author $author;
 
 	private Total $imported;
 
@@ -58,7 +58,7 @@ final class Import implements AggregateRootInterface
 		$import->recordThat(ImportStarted::create(
 			ImportId::fromString($command->id()),
 			Name::fromValue($command->name()),
-			Author::fromValue($command->author())
+			NULL !== $command->authorId() ? UserId::fromString($command->authorId()) : NULL
 		));
 
 		return $import;
@@ -127,7 +127,7 @@ final class Import implements AggregateRootInterface
 		$this->createdAt = $event->createdAt();
 		$this->name = $event->name();
 		$this->status = Status::running();
-		$this->author = $event->author();
+		$this->authorId = $event->authorId();
 		$this->imported = Total::fromValue(0);
 		$this->failed = Total::fromValue(0);
 		$this->warned = Total::fromValue(0);

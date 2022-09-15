@@ -6,9 +6,12 @@ namespace App\Web\AdminModule\ProjectModule\Presenter;
 
 use Nette\Application\UI\Component;
 use App\ReadModel\Project\ProjectView;
+use App\Application\Acl\ProjectResource;
 use Contributte\MenuControl\MenuContainer;
 use Contributte\MenuControl\UI\MenuComponent;
+use App\ReadModel\Project\FindAllProjectsQuery;
 use App\ReadModel\Project\FindUserProjectsQuery;
+use App\ReadModel\Project\GetProjectByCodeQuery;
 use Nette\Application\ForbiddenRequestException;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use App\ReadModel\Project\GetUsersProjectByCodeQuery;
@@ -85,7 +88,9 @@ abstract class SelectedProjectPresenter extends AdminPresenter
 	protected function refreshProjectView(string $code): void
 	{
 		$this->project = $code;
-		$projectView = $this->queryBus->dispatch(GetUsersProjectByCodeQuery::create($code, $this->getIdentity()->id()->toString()));
+		$projectView = $this->getUser()->isAllowed(ProjectResource::class, ProjectResource::READ_ALL)
+			? $this->queryBus->dispatch(GetProjectByCodeQuery::create($code))
+			: $this->queryBus->dispatch(GetUsersProjectByCodeQuery::create($code, $this->getIdentity()->id()->toString()));
 
 		if (!$projectView instanceof ProjectView) {
 			throw new ForbiddenRequestException('Project not exists or not associated with the current user.');
@@ -104,7 +109,9 @@ abstract class SelectedProjectPresenter extends AdminPresenter
 		$this->template->projectView = $this->projectView;
 		$this->template->projectLocales = $this->validLocalesProvider->getValidLocales($this->projectView->locales);
 		$this->template->defaultProjectLocale = $this->validLocalesProvider->getValidDefaultLocale($this->projectView->locales);
-		$this->template->userProjects = $this->queryBus->dispatch(FindUserProjectsQuery::create($this->getIdentity()->id()->toString()));
+		$this->template->userProjects = $this->getUser()->isAllowed(ProjectResource::class, ProjectResource::READ_ALL)
+			? $this->queryBus->dispatch(FindAllProjectsQuery::create())
+			: $this->queryBus->dispatch(FindUserProjectsQuery::create($this->getIdentity()->id()->toString()));
 	}
 
 	/**
