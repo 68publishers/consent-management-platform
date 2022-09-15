@@ -182,7 +182,7 @@ final class UserFormControl extends Control
 
 		try {
 			$this->commandBus->dispatch($command);
-			$form['password']->setOption('description', $this->resolvePasswordDescription(TRUE, '' !== $values->password));
+			$form['password']->setOption('description', $this->resolvePasswordDescription(TRUE, '' !== $values->password || (NULL !== $this->default && NULL !== $this->default->password)));
 		} catch (UsernameUniquenessException|EmailAddressUniquenessException $e) {
 			$emailAddressField = $form->getComponent('email_address');
 			assert($emailAddressField instanceof TextInput);
