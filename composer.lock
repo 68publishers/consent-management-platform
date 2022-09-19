@@ -763,16 +763,16 @@
         },
         {
             "name": "contributte/apitte",
-            "version": "v0.10.0",
+            "version": "v0.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/contributte/apitte.git",
-                "reference": "67d760544d6a168c62b850e6362ab4dc1a2fc615"
+                "reference": "2331453dd261da9f679caf2bed7bde7aa81e0704"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/contributte/apitte/zipball/67d760544d6a168c62b850e6362ab4dc1a2fc615",
-                "reference": "67d760544d6a168c62b850e6362ab4dc1a2fc615",
+                "url": "https://api.github.com/repos/contributte/apitte/zipball/2331453dd261da9f679caf2bed7bde7aa81e0704",
+                "reference": "2331453dd261da9f679caf2bed7bde7aa81e0704",
                 "shasum": ""
             },
             "require": {
@@ -798,10 +798,10 @@
                 "nettrine/annotations": "^0.7.0",
                 "ninjify/nunjuck": "^0.4",
                 "ninjify/qa": "^0.13",
-                "phpstan/phpstan": "^1.0.0",
-                "phpstan/phpstan-deprecation-rules": "^1.0.0",
-                "phpstan/phpstan-nette": "^1.0.0",
-                "phpstan/phpstan-strict-rules": "^1.0.0",
+                "phpstan/phpstan": "^1.8.5",
+                "phpstan/phpstan-deprecation-rules": "^1.1.0",
+                "phpstan/phpstan-nette": "^1.1.0",
+                "phpstan/phpstan-strict-rules": "^1.1.0",
                 "psr/log": "^1.1|^2.0|^3.0",
                 "symfony/console": "^5.4.3 || ^6.0.0",
                 "symfony/validator": "^5.4.3 || ^6.0",
@@ -841,7 +841,7 @@
             ],
             "support": {
                 "issues": "https://github.com/contributte/apitte/issues",
-                "source": "https://github.com/contributte/apitte/tree/v0.10.0"
+                "source": "https://github.com/contributte/apitte/tree/v0.10.1"
             },
             "funding": [
                 {
@@ -853,7 +853,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-08-05T10:04:31+00:00"
+            "time": "2022-09-13T15:39:23+00:00"
         },
         {
             "name": "contributte/application",
@@ -4935,21 +4935,21 @@
         },
         {
             "name": "nette/php-generator",
-            "version": "v3.6.7",
+            "version": "v3.6.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/php-generator.git",
-                "reference": "b9ba414c9895fd9420887f20eeb4eabde123677f"
+                "reference": "9073c8ac505b5f65af3bc2d1665be7d256e2dbe3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/php-generator/zipball/b9ba414c9895fd9420887f20eeb4eabde123677f",
-                "reference": "b9ba414c9895fd9420887f20eeb4eabde123677f",
+                "url": "https://api.github.com/repos/nette/php-generator/zipball/9073c8ac505b5f65af3bc2d1665be7d256e2dbe3",
+                "reference": "9073c8ac505b5f65af3bc2d1665be7d256e2dbe3",
                 "shasum": ""
             },
             "require": {
                 "nette/utils": "^3.1.2",
-                "php": ">=7.2 <8.2"
+                "php": ">=7.2 <8.3"
             },
             "require-dev": {
                 "nette/tester": "^2.4",
@@ -4997,9 +4997,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nette/php-generator/issues",
-                "source": "https://github.com/nette/php-generator/tree/v3.6.7"
+                "source": "https://github.com/nette/php-generator/tree/v3.6.8"
             },
-            "time": "2022-03-10T01:51:00+00:00"
+            "time": "2022-09-12T22:13:59+00:00"
         },
         {
             "name": "nette/robot-loader",
@@ -5386,20 +5386,20 @@
         },
         {
             "name": "nette/utils",
-            "version": "v3.2.7",
+            "version": "v3.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/utils.git",
-                "reference": "0af4e3de4df9f1543534beab255ccf459e7a2c99"
+                "reference": "02a54c4c872b99e4ec05c4aec54b5a06eb0f6368"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/0af4e3de4df9f1543534beab255ccf459e7a2c99",
-                "reference": "0af4e3de4df9f1543534beab255ccf459e7a2c99",
+                "url": "https://api.github.com/repos/nette/utils/zipball/02a54c4c872b99e4ec05c4aec54b5a06eb0f6368",
+                "reference": "02a54c4c872b99e4ec05c4aec54b5a06eb0f6368",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2 <8.2"
+                "php": ">=7.2 <8.3"
             },
             "conflict": {
                 "nette/di": "<3.0.6"
@@ -5465,9 +5465,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nette/utils/issues",
-                "source": "https://github.com/nette/utils/tree/v3.2.7"
+                "source": "https://github.com/nette/utils/tree/v3.2.8"
             },
-            "time": "2022-01-24T11:29:14+00:00"
+            "time": "2022-09-12T23:36:20+00:00"
         },
         {
             "name": "nettrine/annotations",
@@ -11242,5 +11242,5 @@
         "ext-mbstring": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.3.0"
 }
