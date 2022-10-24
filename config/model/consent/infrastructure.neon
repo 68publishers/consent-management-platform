@@ -14,7 +14,7 @@ services:
 		factory: App\Infrastructure\Consent\Doctrine\ReadModel\LastConsentDateDataTransformer
 	-
 		autowired: no
-		factory: App\Infrastructure\Consent\Doctrine\ReadModel\CalculateConsentTotalsPerPeriodQueryHandler
+		factory: App\Infrastructure\Consent\Doctrine\ReadModel\CalculateConsentStatisticsPerPeriodQueryHandler
 	-
 		autowired: no
 		factory: App\Infrastructure\Consent\Doctrine\ReadModel\CalculateLastConsentDatesQueryHandler
@@ -27,9 +27,6 @@ services:
 	-
 		autowired: no
 		factory: App\Infrastructure\Consent\Doctrine\ReadModel\GetConsentByProjectIdAndUserIdentifierQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Consent\Doctrine\ReadModel\ScrollThroughConsentsPerPeriodQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:

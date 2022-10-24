@@ -93,16 +93,15 @@ final class ConsentDecreaseNotifierCommand extends Command
 
 		// fetch stats for all projects
 		$projectIds = array_keys($projects);
-		$allConsentPeriodStatistics = $this->projectStatisticsCalculator->calculateConsentPeriodStatistics($projectIds, $currentPeriod, $previousPeriod);
-
+		$allConsentStatistics = $this->projectStatisticsCalculator->calculateConsentStatistics($projectIds, $currentPeriod, $previousPeriod);
 
 		// build stats for each project
 		foreach ($projectIds as $projectId) {
-			$totalConsentPeriodStatistics = $allConsentPeriodStatistics->get($projectId)->totalConsentsPeriodStatistics();
+			$totalConsentStatistics = $allConsentStatistics->get($projectId)->totalConsentsStatistics();
 
 			$averagePeriodStatistics = PeriodStatistics::create(
-				(int) round($totalConsentPeriodStatistics->previousValue() / 7),
-				$totalConsentPeriodStatistics->currentValue()
+				(int) round($totalConsentStatistics->previousValue() / 7),
+				$totalConsentStatistics->currentValue()
 			);
 
 			if (0 < $averagePeriodStatistics->currentValue() && -90 < $averagePeriodStatistics->percentageDiff()) {

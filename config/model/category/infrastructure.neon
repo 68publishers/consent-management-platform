@@ -14,16 +14,19 @@ services:
 		factory: App\Infrastructure\Category\Doctrine\ReadModel\CategoryViewDataTransformer
 	-
 		autowired: no
-		factory: App\Infrastructure\Category\Doctrine\ReadModel\GetCategoryByIdQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Category\Doctrine\ReadModel\GetCategoryByCodeQueryHandler
+		factory: App\Infrastructure\Category\Doctrine\ReadModel\AllCategoriesQueryHandler
 	-
 		autowired: no
 		factory: App\Infrastructure\Category\Doctrine\ReadModel\CategoriesDataGridQueryHandler
 	-
 		autowired: no
-		factory: App\Infrastructure\Category\Doctrine\ReadModel\AllCategoriesQueryHandler
+		factory: App\Infrastructure\Category\Doctrine\ReadModel\FindAllOptionalCategoryCodesQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\Category\Doctrine\ReadModel\GetCategoryByCodeQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\Category\Doctrine\ReadModel\GetCategoryByIdQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:

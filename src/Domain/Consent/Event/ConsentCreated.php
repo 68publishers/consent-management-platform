@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Consent\Event;
 
+use DateTimeImmutable;
 use App\Domain\Shared\ValueObject\Checksum;
 use App\Domain\Consent\ValueObject\Consents;
 use App\Domain\Consent\ValueObject\ConsentId;
@@ -33,10 +34,11 @@ final class ConsentCreated extends AbstractDomainEvent
 	 * @param \App\Domain\Shared\ValueObject\Checksum|NULL   $settingsChecksum
 	 * @param \App\Domain\Consent\ValueObject\Consents       $consents
 	 * @param \App\Domain\Consent\ValueObject\Attributes     $attributes
+	 * @param \DateTimeImmutable|NULL                        $createdAt
 	 *
 	 * @return static
 	 */
-	public static function create(ConsentId $consentId, ProjectId $projectId, UserIdentifier $userIdentifier, ?Checksum $settingsChecksum, Consents $consents, Attributes $attributes): self
+	public static function create(ConsentId $consentId, ProjectId $projectId, UserIdentifier $userIdentifier, ?Checksum $settingsChecksum, Consents $consents, Attributes $attributes, ?DateTimeImmutable $createdAt = NULL): self
 	{
 		$event = self::occur($consentId->toString(), [
 			'project_id' => $projectId->toString(),
@@ -45,6 +47,10 @@ final class ConsentCreated extends AbstractDomainEvent
 			'consents' => $consents->values(),
 			'attributes' => $attributes->values(),
 		]);
+
+		if (NULL !== $createdAt) {
+			$event->createdAt = $createdAt;
+		}
 
 		$event->consentId = $consentId;
 		$event->projectId = $projectId;

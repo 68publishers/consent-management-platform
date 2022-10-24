@@ -57,7 +57,7 @@ final class Consent implements AggregateRootInterface
 
 		$consent = new self();
 
-		$consent->recordThat(ConsentCreated::create($consentId, $projectId, $userIdentifier, $settingsChecksum, $consents, $attributes));
+		$consent->recordThat(ConsentCreated::create($consentId, $projectId, $userIdentifier, $settingsChecksum, $consents, $attributes, $command->createdAt()));
 
 		return $consent;
 	}
@@ -74,7 +74,7 @@ final class Consent implements AggregateRootInterface
 		$settingsChecksum = NULL !== $command->settingsChecksum() ? Checksum::fromValue($command->settingsChecksum()) : NULL;
 
 		if (!$this->consents->equals($consents) || !$this->attributes->equals($attributes) || !$this->areChecksumsEquals($settingsChecksum)) {
-			$this->recordThat(ConsentUpdated::create($this->id, $settingsChecksum, $consents, $attributes));
+			$this->recordThat(ConsentUpdated::create($this->id, $settingsChecksum, $consents, $attributes, $command->createdAt()));
 		}
 	}
 

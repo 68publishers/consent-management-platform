@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Consent\Command;
 
+use DateTimeImmutable;
 use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class StoreConsentCommand extends AbstractCommand
@@ -26,6 +27,16 @@ final class StoreConsentCommand extends AbstractCommand
 			'consents' => $consents,
 			'attributes' => $attributes,
 		]);
+	}
+
+	/**
+	 * @param \DateTimeImmutable $createdAt
+	 *
+	 * @return $this
+	 */
+	public function withCreatedAt(DateTimeImmutable $createdAt): self
+	{
+		return $this->withParam('created_at', $createdAt);
 	}
 
 	/**
@@ -66,5 +77,13 @@ final class StoreConsentCommand extends AbstractCommand
 	public function attributes(): array
 	{
 		return $this->getParam('attributes');
+	}
+
+	/**
+	 * @return \DateTimeImmutable|NULL
+	 */
+	public function createdAt(): ?DateTimeImmutable
+	{
+		return $this->getParam('created_at');
 	}
 }

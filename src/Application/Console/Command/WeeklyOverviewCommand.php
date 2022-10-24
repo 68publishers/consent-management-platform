@@ -87,26 +87,24 @@ final class WeeklyOverviewCommand extends Command
 
 		// fetch stats for all projects
 		$projectIds = array_keys($projects);
-		$allConsentPeriodStatistics = $this->projectStatisticsCalculator->calculateConsentPeriodStatistics($projectIds, $period);
-		$allPositiveConsentPeriodStatistics = $this->projectStatisticsCalculator->calculatePositiveConsentPeriodStatistics($projectIds, $period);
+		$allConsentStatistics = $this->projectStatisticsCalculator->calculateConsentStatistics($projectIds, $period);
 		$allCookieStatistics = $this->projectStatisticsCalculator->calculateCookieStatistics($projectIds, $period->endDate());
 		$allLastConsentDates = $this->projectStatisticsCalculator->calculateLastConsentDate($projectIds, $period->endDate());
 
 		// build stats for each project
 		foreach ($projectIds as $projectId) {
-			$consentPeriodStatistics = $allConsentPeriodStatistics->get($projectId);
-			$positiveConsentPeriodStatistics = $allPositiveConsentPeriodStatistics->get($projectId);
+			$consentStatistics = $allConsentStatistics->get($projectId);
 			$cookieStatistics = $allCookieStatistics->get($projectId);
 			$lastConsentDate = $allLastConsentDates->get($projectId);
 
 			$projects[$projectId] = array_merge($projects[$projectId], [
 				'uniqueConsents' => [
-					'value' => $consentPeriodStatistics->uniqueConsentsPeriodStatistics()->currentValue(),
-					'percentageDiff' => $consentPeriodStatistics->uniqueConsentsPeriodStatistics()->percentageDiff(),
+					'value' => $consentStatistics->uniqueConsentsStatistics()->currentValue(),
+					'percentageDiff' => $consentStatistics->uniqueConsentsStatistics()->percentageDiff(),
 				],
 				'uniquePositive' => [
-					'value' => $positiveConsentPeriodStatistics->uniqueConsentsPeriodStatistics()->currentValue(),
-					'percentageDiff' => $positiveConsentPeriodStatistics->uniqueConsentsPeriodStatistics()->percentageDiff(),
+					'value' => $consentStatistics->uniqueConsentsPositivityStatistics()->currentValue(),
+					'percentageDiff' => $consentStatistics->uniqueConsentsPositivityStatistics()->percentageDiff(),
 				],
 				'lastConsent' => [
 					'value' => NULL !== $lastConsentDate ? $lastConsentDate->format(DateTimeInterface::ATOM) : NULL,

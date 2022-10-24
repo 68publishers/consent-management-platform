@@ -153,14 +153,12 @@ final class StatisticsController extends AbstractInternalController
 
 		$projectIds = array_values($projectIdsByCodes);
 		$period = Period::create($startDate, $endDate);
-		$allConsentPeriodStatistics = $this->projectStatisticsCalculator->calculateConsentPeriodStatistics($projectIds, $period);
-		$allPositiveConsentPeriodStatistics = $this->projectStatisticsCalculator->calculatePositiveConsentPeriodStatistics($projectIds, $period);
+		$allConsentStatistics = $this->projectStatisticsCalculator->calculateConsentStatistics($projectIds, $period);
 		$allCookieStatistics = $this->projectStatisticsCalculator->calculateCookieStatistics($projectIds, $endDate);
 		$allLastConsentDates = $this->projectStatisticsCalculator->calculateLastConsentDate($projectIds, $endDate);
 
 		foreach ($projectIdsByCodes as $code => $projectId) {
-			$consentPeriodStatistics = $allConsentPeriodStatistics->get($projectId);
-			$positiveConsentPeriodStatistics = $allPositiveConsentPeriodStatistics->get($projectId);
+			$consentStatistics = $allConsentStatistics->get($projectId);
 			$cookieStatistics = $allCookieStatistics->get($projectId);
 			$lastConsentDate = $allLastConsentDates->get($projectId);
 
@@ -170,20 +168,20 @@ final class StatisticsController extends AbstractInternalController
 
 			$data[$code] = [
 				'allConsents' => [
-					'value' => $consentPeriodStatistics->totalConsentsPeriodStatistics()->currentValue(),
-					'percentageDiff' => $consentPeriodStatistics->totalConsentsPeriodStatistics()->percentageDiff(),
+					'value' => $consentStatistics->totalConsentsStatistics()->currentValue(),
+					'percentageDiff' => $consentStatistics->totalConsentsStatistics()->percentageDiff(),
 				],
 				'uniqueConsents' => [
-					'value' => $consentPeriodStatistics->uniqueConsentsPeriodStatistics()->currentValue(),
-					'percentageDiff' => $consentPeriodStatistics->uniqueConsentsPeriodStatistics()->percentageDiff(),
+					'value' => $consentStatistics->uniqueConsentsStatistics()->currentValue(),
+					'percentageDiff' => $consentStatistics->uniqueConsentsStatistics()->percentageDiff(),
 				],
 				'allPositive' => [
-					'value' => $positiveConsentPeriodStatistics->totalConsentsPeriodStatistics()->currentValue(),
-					'percentageDiff' => $positiveConsentPeriodStatistics->totalConsentsPeriodStatistics()->percentageDiff(),
+					'value' => $consentStatistics->totalConsentsPositivityStatistics()->currentValue(),
+					'percentageDiff' => $consentStatistics->totalConsentsPositivityStatistics()->percentageDiff(),
 				],
 				'uniquePositive' => [
-					'value' => $positiveConsentPeriodStatistics->uniqueConsentsPeriodStatistics()->currentValue(),
-					'percentageDiff' => $positiveConsentPeriodStatistics->uniqueConsentsPeriodStatistics()->percentageDiff(),
+					'value' => $consentStatistics->uniqueConsentsPositivityStatistics()->currentValue(),
+					'percentageDiff' => $consentStatistics->uniqueConsentsPositivityStatistics()->percentageDiff(),
 				],
 				'lastConsent' => [
 					'value' => NULL !== $lastConsentDate ? $lastConsentDate->format(DateTimeInterface::ATOM) : NULL,

@@ -13,18 +13,9 @@ interface ProjectStatisticsCalculatorInterface
 	 * @param \App\Application\Statistics\Period      $currentPeriod
 	 * @param \App\Application\Statistics\Period|NULL $previousPeriod
 	 *
-	 * @return \App\Application\Statistics\MultiProjectConsentPeriodStatistics
+	 * @return \App\Application\Statistics\MultiProjectConsentStatistics
 	 */
-	public function calculateConsentPeriodStatistics(array $projectIds, Period $currentPeriod, ?Period $previousPeriod = NULL): MultiProjectConsentPeriodStatistics;
-
-	/**
-	 * @param string[]                                $projectIds
-	 * @param \App\Application\Statistics\Period      $currentPeriod
-	 * @param \App\Application\Statistics\Period|null $previousPeriod
-	 *
-	 * @return \App\Application\Statistics\MultiProjectConsentPeriodStatistics
-	 */
-	public function calculatePositiveConsentPeriodStatistics(array $projectIds, Period $currentPeriod, ?Period $previousPeriod = NULL): MultiProjectConsentPeriodStatistics;
+	public function calculateConsentStatistics(array $projectIds, Period $currentPeriod, ?Period $previousPeriod = NULL): MultiProjectConsentStatistics;
 
 	/**
 	 * @param string[]           $projectIds
