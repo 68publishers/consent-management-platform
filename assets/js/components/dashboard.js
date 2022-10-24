@@ -147,7 +147,7 @@ module.exports = () => ({
 
             codes.push(project.code);
 
-            if (5 === codes.length) {
+            if (1 === codes.length) {
                 doLoad(codes);
                 codes = [];
             }
