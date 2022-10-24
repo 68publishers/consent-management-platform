@@ -174,12 +174,15 @@ trait DataGridQueryHandlerTrait
 			$value = new DateTimeImmutable($value, new DateTimeZone('UTC'));
 		}
 
+		$from = (clone $value)->setTime(0, 0)->setTimezone(new DateTimeZone('UTC'));
+		$to = (clone $value)->setTime(23, 59, 59)->setTimezone(new DateTimeZone('UTC'));
+
 		$p1 = $this->newParameterName();
 		$p2 = $this->newParameterName();
 
 		$qb->andWhere(sprintf('%s >= :%s AND %s <= :%s', $column, $p1, $column, $p2))
-			->setParameter($p1, $value->format('Y-m-d 00:00:00'))
-			->setParameter($p2, $value->format('Y-m-d 23:59:59'));
+			->setParameter($p1, $from->format('Y-m-d H:i:s'))
+			->setParameter($p2, $to->format('Y-m-d H:i:s'));
 	}
 
 	/**

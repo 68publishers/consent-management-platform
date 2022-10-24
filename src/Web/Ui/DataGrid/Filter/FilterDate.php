@@ -47,7 +47,7 @@ final class FilterDate extends UblabooFilterDate implements ConvertibleTimezoneD
 		$condition = parent::getCondition();
 
 		foreach ($condition as $column => $value) {
-			$condition[$column] = DateTimeImmutable::createFromFormat($this->getPhpFormat(), $value, new DateTimeZone('UTC'));
+			$condition[$column] = DateTimeImmutable::createFromFormat($this->getPhpFormat(), $value, new DateTimeZone($this->getTimezoneTo()));
 		}
 
 		return $condition;
