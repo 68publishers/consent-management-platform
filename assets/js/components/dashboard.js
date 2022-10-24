@@ -241,6 +241,14 @@ module.exports = () => ({
         return [start, end];
     },
 
+    formatNumber(number) {
+        try {
+            return number.toLocaleString(document.documentElement.lang);
+        } catch (e) {
+            return number;
+        }
+    },
+
     STATUS_LOADING() {
         return 'loading';
     },

@@ -82,7 +82,7 @@
                         </div>
 
                         <div x-show="null !== project.data.uniqueConsents.value">
-                            <div x-text="project.data.uniqueConsents.value" class="mt-2 text-xl font-semibold text-gray-900"></div>
+                            <div x-text="formatNumber(project.data.uniqueConsents.value)" class="mt-2 text-xl font-semibold text-gray-900"></div>
 
                             <p x-show="null !== project.data.uniqueConsents.percentageDiff" :class="{'text-green-600': 0 <= project.data.uniqueConsents.percentageDiff, 'text-red-600': 0 > project.data.uniqueConsents.percentageDiff}" class="mt-4 flex items-baseline text-sm font-semibold">
                                 {{svg common/arrow-sm-up.svg, 'class' => 'self-center flex-shrink-0 h-5 w-5 text-green-500 -ml-1', 'x-show' => "0 <= project.data.uniqueConsents.percentageDiff"}}
@@ -112,7 +112,7 @@
                         <div class="text-sm font-medium text-gray-500 truncate">{{_all_consents}}</div>
 
                         <div x-show="null !== project.data.allConsents.value">
-                            <div x-text="project.data.allConsents.value" class="mt-2 text-xl font-semibold text-gray-900"></div>
+                            <div x-text="formatNumber(project.data.allConsents.value)" class="mt-2 text-xl font-semibold text-gray-900"></div>
 
                             <p x-show="null !== project.data.allConsents.percentageDiff" :class="{'text-green-600': 0 <= project.data.allConsents.percentageDiff, 'text-red-600': 0 > project.data.allConsents.percentageDiff}" class="mt-4 flex items-baseline text-sm font-semibold">
                                 {{svg common/arrow-sm-up.svg, 'class' => 'self-center flex-shrink-0 h-5 w-5 text-green-500 -ml-1', 'x-show' => "0 <= project.data.allConsents.percentageDiff"}}
@@ -142,7 +142,7 @@
                         <span x-show="!project.links.providers" class="text-sm font-medium text-gray-500 truncate">{{_providers}}</span>
                         <a x-show="project.links.providers" :href="project.links.providers" class="text-sm font-medium text-indigo-700 truncate">{{_providers}}</a>
 
-                        <div x-show="null !== project.data.providers.value" x-text="project.data.providers.value" class="mt-2 text-xl font-semibold text-gray-900"></div>
+                        <div x-show="null !== project.data.providers.value" x-text="formatNumber(project.data.providers.value)" class="mt-2 text-xl font-semibold text-gray-900"></div>
                     </div>
 
                     <div :class="{'spinner': STATUS_LOADING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
@@ -153,8 +153,8 @@
                             <span
                                     data-tooltip-message="{{_cookies_tooltip_message}}"
                                     x-data
-                                    x-text="(0 >= (project.data.cookies.commonValue + project.data.cookies.privateValue)) ? '0' : (0 >= project.data.cookies.privateValue ? project.data.cookies.commonValue : (project.data.cookies.commonValue + ' + ' + project.data.cookies.privateValue))"
-                                    x-tooltip.interactive.placement.bottom="$el.getAttribute('data-tooltip-message').replace('%common%', project.data.cookies.commonValue).replace('%private%', project.data.cookies.privateValue)"
+                                    x-text="(0 >= (project.data.cookies.commonValue + project.data.cookies.privateValue)) ? '0' : (0 >= project.data.cookies.privateValue ? formatNumber(project.data.cookies.commonValue) : (formatNumber(project.data.cookies.commonValue) + ' + ' + formatNumber(project.data.cookies.privateValue)))"
+                                    x-tooltip.interactive.placement.bottom="$el.getAttribute('data-tooltip-message').replace('%common%', formatNumber(project.data.cookies.commonValue)).replace('%private%', formatNumber(project.data.cookies.privateValue))"
                             ></span>
                         </div>
                     </div>
