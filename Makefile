@@ -1,6 +1,8 @@
+APP_VERSION=$$(git describe --tags `git rev-list --tags --max-count=1` | cut -c 2- ) # Get latest tag without the "v" prefix
+
 start:
 	docker compose up -d
-	echo "visit http://localhost:8888"
+	@echo "visit http://localhost:8888"
 
 stop:
 	docker compose stop
@@ -25,10 +27,12 @@ db-clear:
 	rm -rf var/postgres-data/*
 
 build:
+	@echo "Building version: $(APP_VERSION)\n-----------------------"
 	make install
 	make cache-clear
 	./vendor/bin/tracy-git-version export-repository --output-file ./var/git-version/repository.json -vv
 	make cache
+	make db-clear
 	docker build -f ./docker/app/prod/Dockerfile -t 68publishers/cmp:latest .
 
 rebuild:
@@ -39,7 +43,7 @@ install:
 	make cache-clear
 	make install-composer
 	make install-assets
- 	# Duplicity with init
+	# Duplicity with init
 	make data-migration
 
 install-composer:
@@ -64,13 +68,16 @@ data-migration:
 	docker exec -it cmp-app bin/console migrations:migrate --no-interaction
 
 tests:
-	echo "not implemented"
+	@echo "not implemented" >&2
 
 qa:
-	echo "not implemented"
+	@echo "not implemented" >&2
 
 cs:
 	./vendor/bin/php-cs-fixer fix -v
 
 coverage:
-	echo "not implemented"
+	@echo "not implemented" >&2
+
+version:
+	@echo ${APP_VERSION}
