@@ -11,6 +11,7 @@ includes:
 	- 68publishers.user_bundle.neon
 	- 68publishers.webpack_encore_bundle.neon
 	- 68publishers.health_check.neon
+	- 68publishers.projection_bundle.neon
 	- contributte.apitte.neon
 	- contributte.translation.neon
 	- contributte.console.neon
@@ -18,6 +19,7 @@ includes:
 	- contributte.mailing.neon
 	- contributte.menu.neon
 	- contributte.monolog.neon
+	- contributte.psr6_caching.neon
 	- contributte.recaptcha.neon
 	- kdyby.redis.neon
 	- nepada.form_renderer.neon

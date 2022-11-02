@@ -28,6 +28,11 @@ services:
 		autowired: no
 		factory: App\Infrastructure\Consent\Doctrine\ReadModel\GetConsentByProjectIdAndUserIdentifierQueryHandler
 
+	# infra: doctrine: projection model
+	-
+		autowired: no
+		factory: App\Infrastructure\Consent\Doctrine\ProjectionModel\ConsentStatisticsProjectionModel
+
 # infra: doctrine mapping
 nettrine.orm.xml:
 	mapping:

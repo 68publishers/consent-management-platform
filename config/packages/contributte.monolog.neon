@@ -22,6 +22,7 @@ contributte.monolog:
 			handlers:
 				console: App\Bridge\Monolog\Handler\ConsoleHandler()
 				sentry: Sentry\Monolog\Handler(@sentry_hub, Monolog\Logger::NOTICE)
+				tracy: Monolog\Handler\PsrHandler(Tracy\Bridges\Psr\TracyToPsrLoggerAdapter(), Monolog\Logger::NOTICE)
 	hook:
-		fromTracy: yes
-		toTracy: yes
+		fromTracy: no
+		toTracy: no

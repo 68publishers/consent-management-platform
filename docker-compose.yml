@@ -19,12 +19,30 @@ services:
                 condition: service_started
             db:
                 condition: service_healthy
+    worker:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: worker
+        container_name: cmp-worker
+        profiles:
+            - worker
+        networks:
+            - backend
+        volumes:
+            - .:/var/www/html:cached
+        depends_on:
+            redis:
+                condition: service_started
+            db:
+                condition: service_healthy
     db:
         build:
             context: .
             dockerfile: Dockerfile
             target: db
         container_name: cmp-db
+        shm_size: 256m
         ports:
             - 5432:5432
         networks:

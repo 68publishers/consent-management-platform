@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f5b61899812415c5c3c63f0567e3d39d",
+    "content-hash": "ed24891106b097417daec1d7a7d55516",
     "packages": [
         {
             "name": "68publishers/asset",
@@ -317,17 +317,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/68publishers/omni.git",
-                "reference": "87fc804bfc4a32a50b132c44c33bf1501671da14"
+                "reference": "9d21b2c1e77098deba618d470783c43ef7450c6c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/68publishers/omni/zipball/87fc804bfc4a32a50b132c44c33bf1501671da14",
-                "reference": "87fc804bfc4a32a50b132c44c33bf1501671da14",
+                "url": "https://api.github.com/repos/68publishers/omni/zipball/9d21b2c1e77098deba618d470783c43ef7450c6c",
+                "reference": "9d21b2c1e77098deba618d470783c43ef7450c6c",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "fmasa/messenger": "^2.0",
+                "fmasa/messenger": "dev-feature/handler-options as 2.0.0",
                 "nette/di": "^3.0.3",
                 "php": "^7.4",
                 "ramsey/uuid": "^4.1"
@@ -347,6 +347,7 @@
             "autoload": {
                 "psr-4": {
                     "SixtyEightPublishers\\UserBundle\\": "src/UserBundle/",
+                    "SixtyEightPublishers\\ProjectionBundle\\": "src/ProjectionBundle/",
                     "SixtyEightPublishers\\ArchitectureBundle\\": "src/ArchitectureBundle/",
                     "SixtyEightPublishers\\FlashMessageBundle\\": "src/FlashMessageBundle/",
                     "SixtyEightPublishers\\ForgotPasswordBundle\\": "src/ForgotPasswordBundle/"
@@ -372,7 +373,7 @@
                 "issues": "https://github.com/68publishers/omni/issues",
                 "source": "https://github.com/68publishers/omni/tree/main"
             },
-            "time": "2022-10-23T22:01:29+00:00"
+            "time": "2022-11-02T03:35:09+00:00"
         },
         {
             "name": "68publishers/smart-nette-component",
@@ -1535,6 +1536,83 @@
                 "source": "https://github.com/contributte/monolog/tree/v0.5.0"
             },
             "time": "2020-12-10T14:31:08+00:00"
+        },
+        {
+            "name": "contributte/psr6-caching",
+            "version": "v0.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/contributte/psr6-caching.git",
+                "reference": "360bf2fac51490b8dedda2e51f31668b0815bd20"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/contributte/psr6-caching/zipball/360bf2fac51490b8dedda2e51f31668b0815bd20",
+                "reference": "360bf2fac51490b8dedda2e51f31668b0815bd20",
+                "shasum": ""
+            },
+            "require": {
+                "nette/caching": "^3.0.0",
+                "php": ">=7.2",
+                "psr/cache": "^1.0.0 || ^2.0.0 || ^3.0.0"
+            },
+            "require-dev": {
+                "nette/di": "^3.0.0",
+                "ninjify/nunjuck": "^0.4",
+                "ninjify/qa": "^0.12",
+                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan-deprecation-rules": "^0.12",
+                "phpstan/phpstan-nette": "^0.12",
+                "phpstan/phpstan-strict-rules": "^0.12"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Contributte\\Psr6\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Filip Šuška",
+                    "homepage": "https://github.com/vody105"
+                },
+                {
+                    "name": "Milan Felix Šulc",
+                    "homepage": "https://f3l1x.io"
+                }
+            ],
+            "description": "PSR-6 (Caching Interface) adapter for Nette Caching",
+            "homepage": "https://github.com/contributte/psr6-caching",
+            "keywords": [
+                "adapter",
+                "caching",
+                "nette",
+                "psr6"
+            ],
+            "support": {
+                "issues": "https://github.com/contributte/psr6-caching/issues",
+                "source": "https://github.com/contributte/psr6-caching/tree/v0.2.1"
+            },
+            "funding": [
+                {
+                    "url": "https://contributte.org/partners.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/f3l1x",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-06-25T18:04:51+00:00"
         },
         {
             "name": "contributte/psr7-http-message",
@@ -2969,16 +3047,16 @@
         },
         {
             "name": "fmasa/messenger",
-            "version": "2.0.0",
+            "version": "dev-feature/handler-options",
             "source": {
                 "type": "git",
-                "url": "https://github.com/fmasa/messenger.git",
-                "reference": "9b3b3d0aa65091fde3baa1f8cd1025cec63df8e0"
+                "url": "https://github.com/tg666/messenger.git",
+                "reference": "104ec4ad46e97bf83f903759cb69afd7ef27f543"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fmasa/messenger/zipball/9b3b3d0aa65091fde3baa1f8cd1025cec63df8e0",
-                "reference": "9b3b3d0aa65091fde3baa1f8cd1025cec63df8e0",
+                "url": "https://api.github.com/repos/tg666/messenger/zipball/104ec4ad46e97bf83f903759cb69afd7ef27f543",
+                "reference": "104ec4ad46e97bf83f903759cb69afd7ef27f543",
                 "shasum": ""
             },
             "require": {
@@ -3004,7 +3082,24 @@
                     "Fmasa\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Fixtures\\": "tests/fixtures"
+                }
+            },
+            "scripts": {
+                "cs": [
+                    "vendor/bin/phpcs"
+                ],
+                "check": [
+                    "vendor/bin/phpunit",
+                    "@stan",
+                    "@cs"
+                ],
+                "stan": [
+                    "vendor/bin/phpstan analyse --level 7 src"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -3016,19 +3111,18 @@
             ],
             "description": "Symfony/Messenger integration into Nette Framework",
             "keywords": [
-                "Messenger",
                 "command bus",
                 "event bus",
                 "message bus",
+                "messenger",
                 "nette",
                 "symfony",
                 "symfony-messenger"
             ],
             "support": {
-                "issues": "https://github.com/fmasa/messenger/issues",
-                "source": "https://github.com/fmasa/messenger/tree/2.0.0"
+                "source": "https://github.com/tg666/messenger/tree/feature/handler-options"
             },
-            "time": "2022-01-31T12:22:07+00:00"
+            "time": "2022-10-31T01:17:52+00:00"
         },
         {
             "name": "friendsofphp/proxy-manager-lts",
@@ -11226,10 +11320,18 @@
             "time": "2022-07-29T07:37:50+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "package": "fmasa/messenger",
+            "version": "dev-feature/handler-options",
+            "alias": "2.0.0",
+            "alias_normalized": "2.0.0.0"
+        }
+    ],
     "minimum-stability": "stable",
     "stability-flags": {
         "68publishers/omni": 20,
+        "fmasa/messenger": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,
