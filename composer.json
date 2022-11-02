@@ -32,8 +32,10 @@
 		"contributte/mailing": "^0.5.2",
 		"contributte/menu-control": "^2.2",
 		"contributte/monolog": "^0.5.0",
+		"contributte/psr6-caching": "^0.2.1",
 		"contributte/recaptcha": "^3.4",
 		"contributte/translation": "^1.0",
+		"fmasa/messenger": "dev-feature/handler-options as 2.0.0",
 		"kdyby/redis": "^6.1",
 		"latte/latte": "^2.11.5",
 		"league/csv": "^9.8",
@@ -76,6 +78,12 @@
 		"friendsofphp/php-cs-fixer": "^3.9",
 		"roave/security-advisories": "dev-latest"
 	},
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/tg666/messenger"
+		}
+	],
 	"config": {
 		"sort-packages": true
 	},

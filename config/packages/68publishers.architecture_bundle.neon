@@ -1,3 +1,19 @@
 extensions:
 	68publishers.architecture_bundle: SixtyEightPublishers\ArchitectureBundle\Bridge\Nette\DI\ArchitectureBundleExtension
 	68publishers.architecture_bundle.doctrine: SixtyEightPublishers\ArchitectureBundle\Bridge\Nette\DI\DoctrineInfrastructureExtension
+
+services:
+	messenger_cache_pool:
+		autowired: no
+		type: Psr\Cache\CacheItemPoolInterface
+		factory: @Contributte\Psr6\ICachePoolFactory::create('symfony_messenger')
+
+	-
+		type: Symfony\Component\Messenger\EventListener\StopWorkerOnRestartSignalListener
+		arguments:
+			cachePool: @messenger_cache_pool
+
+	-
+		type: Symfony\Component\Messenger\Command\StopWorkersCommand
+		arguments:
+			restartSignalCachePool: @messenger_cache_pool

@@ -1,0 +1,7 @@
+extensions:
+	contributte.psr6_caching: Contributte\Psr6\DI\Psr6CachingExtension
+
+services:
+	@Contributte\Psr6\ICachePoolFactory:
+		arguments:
+			storage: @redis
