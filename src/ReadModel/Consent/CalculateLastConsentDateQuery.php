@@ -8,29 +8,30 @@ use DateTimeImmutable;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 /**
- * Returns an array of LastConsentDateView
+ * Returns DateTimeImmutable or NULL
  */
-final class CalculateLastConsentDatesQuery extends AbstractQuery
+final class CalculateLastConsentDateQuery extends AbstractQuery
 {
 	/**
-	 * @param string[] $projectIds
+	 * @param string             $projectId
+	 * @param \DateTimeImmutable $maxDate
 	 *
 	 * @return static
 	 */
-	public static function create(array $projectIds, DateTimeImmutable $maxDate): self
+	public static function create(string $projectId, DateTimeImmutable $maxDate): self
 	{
 		return self::fromParameters([
-			'project_ids' => $projectIds,
+			'project_id' => $projectId,
 			'max_date' => $maxDate,
 		]);
 	}
 
 	/**
-	 * @return string[]
+	 * @return string
 	 */
-	public function projectIds(): array
+	public function projectId(): string
 	{
-		return $this->getParam('project_ids');
+		return $this->getParam('project_id');
 	}
 
 	/**

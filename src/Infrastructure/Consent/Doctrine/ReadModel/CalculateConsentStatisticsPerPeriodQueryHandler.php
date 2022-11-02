@@ -6,9 +6,6 @@ namespace App\Infrastructure\Consent\Doctrine\ReadModel;
 
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Domain\Consent\Event\ConsentCreated;
-use App\Domain\Consent\Event\ConsentUpdated;
-use App\Domain\Project\ValueObject\ProjectId;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use App\ReadModel\Consent\ConsentStatisticsView;
 use App\ReadModel\Consent\CalculateConsentStatisticsPerPeriodQuery;
@@ -35,76 +32,62 @@ final class CalculateConsentStatisticsPerPeriodQueryHandler implements QueryHand
 	/**
 	 * @param \App\ReadModel\Consent\CalculateConsentStatisticsPerPeriodQuery $query
 	 *
-	 * @return array
+	 * @return \App\ReadModel\Consent\ConsentStatisticsView
+	 * @throws \Doctrine\ORM\NoResultException
+	 * @throws \Doctrine\ORM\NonUniqueResultException
 	 */
-	public function __invoke(CalculateConsentStatisticsPerPeriodQuery $query): array
+	public function __invoke(CalculateConsentStatisticsPerPeriodQuery $query): ConsentStatisticsView
 	{
-		$categoryPlaceholders = $totalPositiveCountParts = $totalNegativeCountParts = $uniquePositiveCountParts = $uniqueNegativeCountParts = $innerSelectParts = [];
-
-		foreach ($query->categoryCodes() as $categoryCode) {
-			$categoryPlaceholders[$categoryCode] = $placeholder = '_cat' . count($categoryPlaceholders);
-			$innerSelectParts[] = ", (es.parameters->'consents'->>'$categoryCode')::boolean AS $placeholder";
-		}
-
-		foreach ($categoryPlaceholders as $placeholder) {
-			$totalPositiveCountParts[] = "count(res.$placeholder) FILTER (WHERE res.$placeholder = TRUE)";
-			$totalNegativeCountParts[] = "count(res.$placeholder) FILTER (WHERE res.$placeholder = FALSE)";
-			$uniquePositiveCountParts[] = "count(res.$placeholder) FILTER (WHERE res.$placeholder = TRUE AND res.seq = 0)";
-			$uniqueNegativeCountParts[] = "count(res.$placeholder) FILTER (WHERE res.$placeholder = FALSE AND res.seq = 0)";
-		}
-
-		$totalPositiveCountField = empty($totalPositiveCountParts) ? '0' : implode(' + ', $totalPositiveCountParts);
-		$totalNegativeCountField = empty($totalNegativeCountParts) ? '0' : implode(' + ', $totalNegativeCountParts);
-		$uniquePositiveCountField = empty($uniquePositiveCountParts) ? '0' : implode(' + ', $uniquePositiveCountParts);
-		$uniqueNegativeCountField = empty($uniqueNegativeCountParts) ? '0' : implode(' + ', $uniqueNegativeCountParts);
-		$innerSelect = implode('', $innerSelectParts);
-
-		$sql = "
+		$totalStatisticsQuery = '
 		SELECT
-			res.project_id AS \"projectId\",
-			count(res.event_id) AS \"totalConsentsCount\",
-			count(res.event_id) FILTER (WHERE res.seq = 0) AS \"uniqueConsentsCount\",
-			$totalPositiveCountField AS \"totalPositiveCount\",
-			$totalNegativeCountField AS \"totalNegativeCount\",
-			$uniquePositiveCountField AS \"uniquePositiveCount\",
-			$uniqueNegativeCountField AS \"uniqueNegativeCount\"
-		FROM
-			(SELECT
-				es.id AS event_id,
-				c.project_id AS project_id,
-				row_number() OVER (PARTITION BY c.user_identifier, c.project_id ORDER BY es.id DESC) - 1 AS seq
-				$innerSelect
-			FROM consent_event_stream es
-			JOIN consent c ON c.id = es.aggregate_id
-			JOIN project p ON p.id = c.project_id AND p.id IN (:projectIds) AND p.deleted_at IS NULL
-			WHERE
-				es.event_name IN (:eventNames)
-				AND es.created_at BETWEEN :startDate AND :endDate
-			) res
-		GROUP BY res.project_id
-		";
+			count(*) AS "totalConsentsCount",
+			coalesce(sum(sp.positive_count), 0) AS "totalPositiveCount",
+			coalesce(sum(sp.negative_count), 0) AS "totalNegativeCount"
+		FROM consent_statistics_projection sp
+		WHERE sp.project_id = :projectId AND sp.created_at BETWEEN :startDate AND :endDate
+		';
 
 		$rsm = new ResultSetMappingBuilder($this->em);
-		$rsm->addScalarResult('projectId', 'projectId', ProjectId::class);
 		$rsm->addScalarResult('totalConsentsCount', 'totalConsentsCount', 'integer');
-		$rsm->addScalarResult('uniqueConsentsCount', 'uniqueConsentsCount', 'integer');
 		$rsm->addScalarResult('totalPositiveCount', 'totalPositiveCount', 'integer');
 		$rsm->addScalarResult('totalNegativeCount', 'totalNegativeCount', 'integer');
-		$rsm->addScalarResult('uniquePositiveCount', 'uniquePositiveCount', 'integer');
-		$rsm->addScalarResult('uniqueNegativeCount', 'uniqueNegativeCount', 'integer');
 
-		$data = $this->em->createNativeQuery($sql, $rsm)
+		$totalData = $this->em->createNativeQuery($totalStatisticsQuery, $rsm)
 			->setParameters([
-				'projectIds' => $query->projectIds(),
-				'eventNames' => [
-					ConsentCreated::class,
-					ConsentUpdated::class,
-				],
+				'projectId' => $query->projectId(),
 				'startDate' => $query->startDate(),
 				'endDate' => $query->endDate(),
 			])
-			->getResult(AbstractQuery::HYDRATE_ARRAY);
+			->getSingleResult(AbstractQuery::HYDRATE_ARRAY);
 
-		return array_map(fn (array $row): ConsentStatisticsView => $this->viewFactory->create(ConsentStatisticsView::class, DoctrineViewData::create($row)), $data);
+		$uniqueStatisticsQuery = '
+ 		SELECT
+			count(*) AS "uniqueConsentsCount",
+			coalesce(sum(sp.positive_count), 0) AS "uniquePositiveCount",
+		  	coalesce(sum(sp.negative_count), 0) AS "uniqueNegativeCount"
+		FROM (
+  			SELECT DISTINCT ON (_sp.consent_id) _sp.positive_count, _sp.negative_count
+  			FROM consent_statistics_projection _sp
+  			WHERE _sp.project_id = :projectId AND _sp.created_at BETWEEN :startDate AND :endDate
+  			ORDER BY _sp.consent_id, _sp.created_at DESC
+		) sp
+		';
+
+		$rsm = new ResultSetMappingBuilder($this->em);
+		$rsm->addScalarResult('uniqueConsentsCount', 'uniqueConsentsCount', 'integer');
+		$rsm->addScalarResult('uniquePositiveCount', 'uniquePositiveCount', 'integer');
+		$rsm->addScalarResult('uniqueNegativeCount', 'uniqueNegativeCount', 'integer');
+
+		$uniqueData = $this->em->createNativeQuery($uniqueStatisticsQuery, $rsm)
+			->setParameters([
+				'projectId' => $query->projectId(),
+				'startDate' => $query->startDate(),
+				'endDate' => $query->endDate(),
+			])
+			->getSingleResult(AbstractQuery::HYDRATE_ARRAY);
+
+		$data = array_merge($totalData, $uniqueData);
+
+		return $this->viewFactory->create(ConsentStatisticsView::class, DoctrineViewData::create($data));
 	}
 }

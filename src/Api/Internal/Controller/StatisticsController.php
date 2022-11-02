@@ -151,16 +151,12 @@ final class StatisticsController extends AbstractInternalController
 			return $data;
 		}
 
-		$projectIds = array_values($projectIdsByCodes);
 		$period = Period::create($startDate, $endDate);
-		$allConsentStatistics = $this->projectStatisticsCalculator->calculateConsentStatistics($projectIds, $period);
-		$allCookieStatistics = $this->projectStatisticsCalculator->calculateCookieStatistics($projectIds, $endDate);
-		$allLastConsentDates = $this->projectStatisticsCalculator->calculateLastConsentDate($projectIds, $endDate);
 
 		foreach ($projectIdsByCodes as $code => $projectId) {
-			$consentStatistics = $allConsentStatistics->get($projectId);
-			$cookieStatistics = $allCookieStatistics->get($projectId);
-			$lastConsentDate = $allLastConsentDates->get($projectId);
+			$consentStatistics = $this->projectStatisticsCalculator->calculateConsentStatistics($projectId, $period);
+			$cookieStatistics = $this->projectStatisticsCalculator->calculateCookieStatistics($projectId, $endDate);
+			$lastConsentDate = $this->projectStatisticsCalculator->calculateLastConsentDate($projectId, $endDate);
 
 			if (NULL !== $lastConsentDate) {
 				$lastConsentDate = $lastConsentDate->setTimezone($userTz);

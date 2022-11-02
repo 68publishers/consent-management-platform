@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace App\Application\Statistics;
 
 use DateTimeImmutable;
-use App\Domain\Project\ValueObject\ProjectId;
-use App\ReadModel\Consent\LastConsentDateView;
 use App\ReadModel\Consent\ConsentStatisticsView;
 use App\ReadModel\Project\ProjectCookieTotalsView;
-use App\ReadModel\Consent\CalculateLastConsentDatesQuery;
+use App\ReadModel\Consent\CalculateLastConsentDateQuery;
 use App\ReadModel\Project\CalculateProjectCookieTotalsQuery;
-use App\ReadModel\Category\FindAllOptionalCategoryCodesQuery;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use App\ReadModel\Consent\CalculateConsentStatisticsPerPeriodQuery;
 
@@ -32,101 +29,55 @@ final class ProjectStatisticsCalculator implements ProjectStatisticsCalculatorIn
 	 *
 	 * @throws \Exception
 	 */
-	public function calculateConsentStatistics(array $projectIds, Period $currentPeriod, ?Period $previousPeriod = NULL): MultiProjectConsentStatistics
+	public function calculateConsentStatistics(string $projectId, Period $currentPeriod, ?Period $previousPeriod = NULL): ConsentStatistics
 	{
 		$previousPeriod = $previousPeriod ?? $currentPeriod->createPreviousPeriod();
-		$statisticsResults = array_fill_keys($projectIds, [0 => NULL, 1 => NULL]);
-		$categoryCodes = $this->queryBus->dispatch(FindAllOptionalCategoryCodesQuery::create());
-		$result = MultiProjectConsentStatistics::create();
+		$previousStatistics = $this->queryBus->dispatch(CalculateConsentStatisticsPerPeriodQuery::create($projectId, $previousPeriod->startDate(), $previousPeriod->endDate()));
+		$currentStatistics = $this->queryBus->dispatch(CalculateConsentStatisticsPerPeriodQuery::create($projectId, $currentPeriod->startDate(), $currentPeriod->endDate()));
 
-		if (0 >= count($projectIds)) {
-			return $result;
-		}
+		assert($previousStatistics instanceof ConsentStatisticsView);
+		assert($currentStatistics instanceof ConsentStatisticsView);
 
-		foreach ($this->queryBus->dispatch(CalculateConsentStatisticsPerPeriodQuery::create($projectIds, $categoryCodes, $previousPeriod->startDate(), $previousPeriod->endDate())) as $consentStatisticsView) {
-			assert($consentStatisticsView instanceof ConsentStatisticsView);
+		$previousTotalPositivitySum = $previousStatistics->totalPositiveCount + $previousStatistics->totalNegativeCount;
+		$previousUniquePositivitySum = $previousStatistics->uniquePositiveCount + $previousStatistics->uniqueNegativeCount;
 
-			$statisticsResults[$consentStatisticsView->projectId->toString()][0] = $consentStatisticsView;
-		}
+		$currentTotalPositivitySum = $currentStatistics->totalPositiveCount + $currentStatistics->totalNegativeCount;
+		$currentUniquePositivitySum = $currentStatistics->uniquePositiveCount + $currentStatistics->uniqueNegativeCount;
 
-		foreach ($this->queryBus->dispatch(CalculateConsentStatisticsPerPeriodQuery::create($projectIds, $categoryCodes, $currentPeriod->startDate(), $currentPeriod->endDate())) as $consentStatisticsView) {
-			assert($consentStatisticsView instanceof ConsentStatisticsView);
-
-			$statisticsResults[$consentStatisticsView->projectId->toString()][1] = $consentStatisticsView;
-		}
-
-		foreach ($statisticsResults as $projectId => [$previous, $current]) {
-			$previous = $previous ?? ConsentStatisticsView::createEmpty(ProjectId::fromString($projectId));
-			$current = $current ?? ConsentStatisticsView::createEmpty(ProjectId::fromString($projectId));
-
-			$previousTotalPositivitySum = $previous->totalPositiveCount + $previous->totalNegativeCount;
-			$previousUniquePositivitySum = $previous->uniquePositiveCount + $previous->uniqueNegativeCount;
-
-			$currentTotalPositivitySum = $current->totalPositiveCount + $current->totalNegativeCount;
-			$currentUniquePositivitySum = $current->uniquePositiveCount + $current->uniqueNegativeCount;
-
-			$result = $result->withStatistics($projectId, ConsentStatistics::create(
-				PeriodStatistics::create($previous->totalConsentsCount, $current->totalConsentsCount),
-				PeriodStatistics::create($previous->uniqueConsentsCount, $current->uniqueConsentsCount),
-				PeriodStatistics::create(
-					(int) round(0 === $previousTotalPositivitySum ? 0 : $previous->totalPositiveCount / $previousTotalPositivitySum * 100),
-					(int) round(0 === $currentTotalPositivitySum ? 0 : $current->totalPositiveCount / $currentTotalPositivitySum * 100)
-				),
-				PeriodStatistics::create(
-					(int) round(0 === $previousUniquePositivitySum ? 0 : $previous->uniquePositiveCount / $previousUniquePositivitySum * 100),
-					(int) round(0 === $currentUniquePositivitySum ? 0 : $current->uniquePositiveCount / $currentUniquePositivitySum * 100)
-				)
-			));
-		}
-
-		return $result;
+		return ConsentStatistics::create(
+			PeriodStatistics::create($previousStatistics->totalConsentsCount, $currentStatistics->totalConsentsCount),
+			PeriodStatistics::create($previousStatistics->uniqueConsentsCount, $currentStatistics->uniqueConsentsCount),
+			PeriodStatistics::create(
+				(int) round(0 === $previousTotalPositivitySum ? 0 : $previousStatistics->totalPositiveCount / $previousTotalPositivitySum * 100),
+				(int) round(0 === $currentTotalPositivitySum ? 0 : $currentStatistics->totalPositiveCount / $currentTotalPositivitySum * 100)
+			),
+			PeriodStatistics::create(
+				(int) round(0 === $previousUniquePositivitySum ? 0 : $previousStatistics->uniquePositiveCount / $previousUniquePositivitySum * 100),
+				(int) round(0 === $currentUniquePositivitySum ? 0 : $currentStatistics->uniquePositiveCount / $currentUniquePositivitySum * 100)
+			)
+		);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function calculateCookieStatistics(array $projectIds, DateTimeImmutable $endDate): MultiProjectCookieStatistics
+	public function calculateCookieStatistics(string $projectId, DateTimeImmutable $endDate): CookieStatistics
 	{
-		$result = MultiProjectCookieStatistics::create();
+		$totals = $this->queryBus->dispatch(CalculateProjectCookieTotalsQuery::create($projectId, $endDate));
+		assert($totals instanceof ProjectCookieTotalsView);
 
-		foreach ($this->queryBus->dispatch(CalculateProjectCookieTotalsQuery::create($projectIds, $endDate)) as $projectCookieTotalsView) {
-			assert($projectCookieTotalsView instanceof ProjectCookieTotalsView);
-
-			$result = $result->withStatistics($projectCookieTotalsView->projectId->toString(), CookieStatistics::create(
-				$projectCookieTotalsView->providers,
-				$projectCookieTotalsView->commonCookies,
-				$projectCookieTotalsView->privateCookies
-			));
-		}
-
-		foreach ($projectIds as $projectId) {
-			if (!$result->has($projectId)) {
-				$result = $result->withStatistics($projectId, CookieStatistics::create(0, 0, 0));
-			}
-		}
-
-		return $result;
+		return CookieStatistics::create(
+			$totals->providers,
+			$totals->commonCookies,
+			$totals->privateCookies
+		);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function calculateLastConsentDate(array $projectIds, DateTimeImmutable $endDate): MultiProjectLastConsentDate
+	public function calculateLastConsentDate(string $projectId, DateTimeImmutable $endDate): ?DateTimeImmutable
 	{
-		$result = MultiProjectLastConsentDate::create();
-
-		foreach ($this->queryBus->dispatch(CalculateLastConsentDatesQuery::create($projectIds, $endDate)) as $lastConsentDateView) {
-			assert($lastConsentDateView instanceof LastConsentDateView);
-
-			$result = $result->withDate($lastConsentDateView->projectId->toString(), $lastConsentDateView->lastConsentDate);
-		}
-
-		foreach ($projectIds as $projectId) {
-			if (!$result->has($projectId)) {
-				$result = $result->withDate($projectId, NULL);
-			}
-		}
-
-		return $result;
+		return $this->queryBus->dispatch(CalculateLastConsentDateQuery::create($projectId, $endDate));
 	}
 }

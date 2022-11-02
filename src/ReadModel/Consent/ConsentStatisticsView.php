@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace App\ReadModel\Consent;
 
-use App\Domain\Project\ValueObject\ProjectId;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\AbstractView;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ArrayViewData;
 
 final class ConsentStatisticsView extends AbstractView
 {
-	public ProjectId $projectId;
-
 	public int $totalConsentsCount;
 
 	public int $uniqueConsentsCount;
@@ -25,14 +22,11 @@ final class ConsentStatisticsView extends AbstractView
 	public int $uniqueNegativeCount;
 
 	/**
-	 * @param \App\Domain\Project\ValueObject\ProjectId $projectId
-	 *
 	 * @return static
 	 */
-	public static function createEmpty(ProjectId $projectId): self
+	public static function createEmpty(): self
 	{
 		return self::fromData(new ArrayViewData([
-			'projectId' => $projectId,
 			'totalConsentsCount' => 0,
 			'uniqueConsentsCount' => 0,
 			'totalPositiveCount' => 0,
@@ -48,7 +42,6 @@ final class ConsentStatisticsView extends AbstractView
 	public function jsonSerialize(): array
 	{
 		return [
-			'projectId' => $this->projectId->toString(),
 			'totalConsentsCount' => $this->totalConsentsCount,
 			'uniqueConsentsCount' => $this->uniqueConsentsCount,
 			'totalPositiveCount' => $this->totalPositiveCount,
