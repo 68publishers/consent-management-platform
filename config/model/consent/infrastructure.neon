@@ -9,15 +9,11 @@ services:
 
 	# infra: doctrine
 	-
-		autowired: self
-		type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
-		factory: App\Infrastructure\Consent\Doctrine\ReadModel\LastConsentDateDataTransformer
-	-
 		autowired: no
 		factory: App\Infrastructure\Consent\Doctrine\ReadModel\CalculateConsentStatisticsPerPeriodQueryHandler
 	-
 		autowired: no
-		factory: App\Infrastructure\Consent\Doctrine\ReadModel\CalculateLastConsentDatesQueryHandler
+		factory: App\Infrastructure\Consent\Doctrine\ReadModel\CalculateLastConsentDateQueryHandler
 	-
 		autowired: no
 		factory: App\Infrastructure\Consent\Doctrine\ReadModel\ConsentsDataGridQueryHandler

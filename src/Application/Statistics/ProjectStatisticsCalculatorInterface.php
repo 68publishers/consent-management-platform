@@ -9,27 +9,27 @@ use DateTimeImmutable;
 interface ProjectStatisticsCalculatorInterface
 {
 	/**
-	 * @param string[]                                $projectIds
+	 * @param string                                  $projectId
 	 * @param \App\Application\Statistics\Period      $currentPeriod
 	 * @param \App\Application\Statistics\Period|NULL $previousPeriod
 	 *
-	 * @return \App\Application\Statistics\MultiProjectConsentStatistics
+	 * @return \App\Application\Statistics\ConsentStatistics
 	 */
-	public function calculateConsentStatistics(array $projectIds, Period $currentPeriod, ?Period $previousPeriod = NULL): MultiProjectConsentStatistics;
+	public function calculateConsentStatistics(string $projectId, Period $currentPeriod, ?Period $previousPeriod = NULL): ConsentStatistics;
 
 	/**
-	 * @param string[]           $projectIds
+	 * @param string             $projectId
 	 * @param \DateTimeImmutable $endDate
 	 *
-	 * @return \App\Application\Statistics\MultiProjectCookieStatistics
+	 * @return \App\Application\Statistics\CookieStatistics
 	 */
-	public function calculateCookieStatistics(array $projectIds, DateTimeImmutable $endDate): MultiProjectCookieStatistics;
+	public function calculateCookieStatistics(string $projectId, DateTimeImmutable $endDate): CookieStatistics;
 
 	/**
-	 * @param string[]           $projectIds
+	 * @param string             $projectId
 	 * @param \DateTimeImmutable $endDate
 	 *
-	 * @return \App\Application\Statistics\MultiProjectLastConsentDate
+	 * @return \DateTimeImmutable|NULL
 	 */
-	public function calculateLastConsentDate(array $projectIds, DateTimeImmutable $endDate): MultiProjectLastConsentDate;
+	public function calculateLastConsentDate(string $projectId, DateTimeImmutable $endDate): ?DateTimeImmutable;
 }

@@ -85,17 +85,11 @@ final class WeeklyOverviewCommand extends Command
 			];
 		}
 
-		// fetch stats for all projects
-		$projectIds = array_keys($projects);
-		$allConsentStatistics = $this->projectStatisticsCalculator->calculateConsentStatistics($projectIds, $period);
-		$allCookieStatistics = $this->projectStatisticsCalculator->calculateCookieStatistics($projectIds, $period->endDate());
-		$allLastConsentDates = $this->projectStatisticsCalculator->calculateLastConsentDate($projectIds, $period->endDate());
-
 		// build stats for each project
-		foreach ($projectIds as $projectId) {
-			$consentStatistics = $allConsentStatistics->get($projectId);
-			$cookieStatistics = $allCookieStatistics->get($projectId);
-			$lastConsentDate = $allLastConsentDates->get($projectId);
+		foreach (array_keys($projects) as $projectId) {
+			$consentStatistics = $this->projectStatisticsCalculator->calculateConsentStatistics($projectId, $period);
+			$cookieStatistics = $this->projectStatisticsCalculator->calculateCookieStatistics($projectId, $period->endDate());
+			$lastConsentDate = $this->projectStatisticsCalculator->calculateLastConsentDate($projectId, $period->endDate());
 
 			$projects[$projectId] = array_merge($projects[$projectId], [
 				'uniqueConsents' => [

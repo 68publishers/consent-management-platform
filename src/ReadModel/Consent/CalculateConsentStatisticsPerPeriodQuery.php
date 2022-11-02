@@ -8,42 +8,32 @@ use DateTimeInterface;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 /**
- * Returns ConsentStatisticsView[]
+ * Returns ConsentStatisticsView
  */
 final class CalculateConsentStatisticsPerPeriodQuery extends AbstractQuery
 {
 	/**
-	 * @param string[]           $projectIds
-	 * @param string[]           $categoryCodes
+	 * @param string             $projectId
 	 * @param \DateTimeInterface $startDate
 	 * @param \DateTimeInterface $endDate
 	 *
 	 * @return static
 	 */
-	public static function create(array $projectIds, array $categoryCodes, DateTimeInterface $startDate, DateTimeInterface $endDate): self
+	public static function create(string $projectId, DateTimeInterface $startDate, DateTimeInterface $endDate): self
 	{
 		return self::fromParameters([
-			'project_ids' => $projectIds,
-			'category_codes' => $categoryCodes,
+			'project_id' => $projectId,
 			'start_date' => $startDate,
 			'end_date' => $endDate,
 		]);
 	}
 
 	/**
-	 * @return string[]
+	 * @return string
 	 */
-	public function projectIds(): array
+	public function projectId(): string
 	{
-		return $this->getParam('project_ids');
-	}
-
-	/**
-	 * @return array
-	 */
-	public function categoryCodes(): array
-	{
-		return $this->getParam('category_codes');
+		return $this->getParam('project_id');
 	}
 
 	/**
