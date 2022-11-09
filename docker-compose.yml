@@ -7,6 +7,8 @@ services:
             dockerfile: Dockerfile
             target: app
         container_name: cmp-app
+        profiles:
+            - web
         command: ["run-nginx-unit"]
         ports:
             - 8888:8080
@@ -42,6 +44,8 @@ services:
             dockerfile: Dockerfile
             target: db
         container_name: cmp-db
+        profiles:
+            - web
         shm_size: 256m
         ports:
             - 5432:5432
@@ -67,6 +71,8 @@ services:
     redis:
         image: redis:5.0.8-alpine
         container_name: cmp-redis
+        profiles:
+            - web
         command: redis-server --requirepass redis_pass
         ports:
             - 6379:6379
