@@ -1,14 +1,20 @@
 APP_VERSION=$$(git describe --tags `git rev-list --tags --max-count=1` | cut -c 2- ) # Get latest tag without the "v" prefix
 
 start:
-	docker compose up -d
+	docker compose --profile web up -d
 	@echo "visit http://localhost:8888"
 
+start-worker:
+	docker compose --profile worker up -d
+
 stop:
-	docker compose stop
+	docker compose --profile web --profile worker stop
+
+stop-worker:
+	docker compose --profile worker stop
 
 down:
-	docker compose down
+	docker compose --profile web --profile worker down
 
 restart:
 	make stop
