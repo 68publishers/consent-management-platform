@@ -1,0 +1,117 @@
+version: "3.7"
+
+services:
+  app:
+    image: registry.hptronic.cz/dev/cmp/cmp:latest
+    container_name: cmp-app
+    profiles:
+      - web
+    ports:
+      - "8888:8080"
+    networks:
+      - backend
+    volumes:
+      - .:/var/www/html:cached
+    depends_on:
+      redis:
+        condition: service_started
+      db:
+        condition: service_healthy
+    environment:
+      APP_VERSION: 2.5.1
+      APP_DEBUG: 1
+      APP_DEBUG_COOKIE_SECRET: idontgiveabuck07
+      COOKIE_SECURE: 0
+      PROJECT_URL: http://localhost:8888
+      PROJECT_INTERNAL_URL: http://localhost:8080
+      SUPPORT_EMAIL: support@68publishers.io
+      MAILER_EMAIL: info@68publishers.io
+      MAILER_FROM: "Consent Management Platform"
+      RECAPTCHA_ENABLED: 0
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: cmp
+      DB_USER: root
+      DB_PASSWORD: root
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_AUTH: redis_pass
+      SENTRY_DSN: https://hash@sentry.io/123
+      API_DOCS_ENABLED: 1
+  worker:
+    image: registry.hptronic.cz/dev/cmp/cmp/worker:latest
+    container_name: cmp-worker
+    profiles:
+      - worker
+    networks:
+      - backend
+    volumes:
+      - .:/var/www/html:cached
+    depends_on:
+      redis:
+        condition: service_started
+      db:
+        condition: service_healthy
+    environment:
+      APP_VERSION: 2.5.1
+      APP_DEBUG: 1
+      APP_DEBUG_COOKIE_SECRET: idontgiveabuck07
+      COOKIE_SECURE: 0
+      PROJECT_URL: http://localhost:8888
+      PROJECT_INTERNAL_URL: http://localhost:8080
+      SUPPORT_EMAIL: support@68publishers.io
+      MAILER_EMAIL: info@68publishers.io
+      MAILER_FROM: "Consent Management Platform"
+      RECAPTCHA_ENABLED: 0
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: cmp
+      DB_USER: root
+      DB_PASSWORD: root
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_AUTH: redis_pass
+      SENTRY_DSN: https://hash@sentry.io/123
+      API_DOCS_ENABLED: 1
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: db
+    container_name: cmp-db
+    profiles:
+      - web
+    shm_size: 256m
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+    volumes:
+      - ./docker/postgres/postgres.conf:/etc/postgresql/postgresql.conf:delegated
+      - ./var/postgres-data:/var/lib/postgresql/data:cached
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=cmp
+    command:
+      - postgres
+      - -c
+      - 'config_file=/etc/postgresql/postgresql.conf'
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  redis:
+    image: redis:5.0.8-alpine
+    container_name: cmp-redis
+    profiles:
+      - web
+    command: redis-server --requirepass redis_pass
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+networks:
+  backend:

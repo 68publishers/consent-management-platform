@@ -1,20 +1,21 @@
 APP_VERSION=$$(git describe --tags `git rev-list --tags --max-count=1` | cut -c 2- ) # Get latest tag without the "v" prefix
+DOCKER_COMPOSE_FILE=docker-compose.yml # Use docker-compose.prod.yml to test the built images
 
 start:
-	docker compose --profile web up -d
-	@echo "visit http://localhost:8888"
+	docker compose -f ${DOCKER_COMPOSE_FILE} --profile web up -d
+	make visit
 
 start-worker:
-	docker compose --profile worker up -d
+	docker compose -f ${DOCKER_COMPOSE_FILE} --profile worker up -d
 
 stop:
-	docker compose --profile web --profile worker stop
+	docker compose -f ${DOCKER_COMPOSE_FILE} --profile web --profile worker stop
 
 stop-worker:
-	docker compose --profile worker stop
+	docker compose -f ${DOCKER_COMPOSE_FILE} --profile worker stop
 
 down:
-	docker compose --profile web --profile worker down
+	docker compose -f ${DOCKER_COMPOSE_FILE} --profile web --profile worker down
 
 restart:
 	make stop
@@ -34,16 +35,23 @@ db-clear:
 
 build:
 	@echo "Building version: $(APP_VERSION)\n-----------------------"
+	make start
 	make install
 	make cache-clear
-	./vendor/bin/tracy-git-version export-repository --output-file ./var/git-version/repository.json -vv
+	docker exec -it cmp-app ./vendor/bin/tracy-git-version export-repository --output-file ./var/git-version/repository.json -vv
 	make cache
 	make db-clear
-	docker build -f ./docker/app/prod/Dockerfile -t 68publishers/cmp:latest .
+	docker build -f ./docker/app/Dockerfile -t 68publishers/cmp:latest -t "registry.hptronic.cz/dev/cmp/cmp:latest" -t "registry.hptronic.cz/dev/cmp/cmp:"${APP_VERSION} .
+	docker build -f ./docker/worker/Dockerfile -t 68publishers/cmp:worker-latest -t "registry.hptronic.cz/dev/cmp/cmp/worker:latest" -t "registry.hptronic.cz/dev/cmp/cmp/worker:"${APP_VERSION} .
 
 rebuild:
 	make build
 	make restart
+
+push:
+	@echo "Pushing to docker registry: $(APP_VERSION)\n-------------"
+	docker push registry.hptronic.cz/dev/cmp/cmp:$(APP_VERSION)
+	docker push registry.hptronic.cz/dev/cmp/cmp/worker:$(APP_VERSION)
 
 install:
 	make cache-clear
@@ -65,6 +73,7 @@ init:
 	make start
 	make install
 	make data
+	make visit
 
 data:
 	make data-migration
@@ -85,5 +94,10 @@ cs:
 coverage:
 	@echo "not implemented" >&2
 
-version:
-	@echo ${APP_VERSION}
+visit:
+	@echo "visit http://localhost:8888"
+
+info:
+	@echo APP_VERSION=${APP_VERSION}
+	@echo DOCKER_COMPOSE_FILE=${DOCKER_COMPOSE_FILE}
+	@echo IMAGE_REGISTRY=${IMAGE_REGISTRY}

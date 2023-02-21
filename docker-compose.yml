@@ -11,7 +11,7 @@ services:
             - web
         command: ["run-nginx-unit"]
         ports:
-            - 8888:8080
+            - "8888:8080"
         networks:
             - backend
         volumes:
@@ -26,6 +26,7 @@ services:
             context: .
             dockerfile: Dockerfile
             target: worker
+        command: ["/usr/bin/supervisord", "-n", "-c",  "/etc/supervisor/supervisord.conf"]
         container_name: cmp-worker
         profiles:
             - worker
@@ -48,7 +49,7 @@ services:
             - web
         shm_size: 256m
         ports:
-            - 5432:5432
+            - "5432:5432"
         networks:
             - backend
         volumes:
@@ -75,7 +76,7 @@ services:
             - web
         command: redis-server --requirepass redis_pass
         ports:
-            - 6379:6379
+            - "6379:6379"
         networks:
             - backend
 networks:

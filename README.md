@@ -30,7 +30,7 @@ $ make init
 
 Visit http://localhost:8888 and sign in via `admin@68publishers.io` / `admin` credentials.
 
-See [Makefile](./Makefile) for other usefull commands.
+See [Makefile](./Makefile) for other useful commands.
 
 ## Product Documentation
 ...
