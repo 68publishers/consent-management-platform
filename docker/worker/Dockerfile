@@ -1,4 +1,3 @@
-# PROD
 FROM 68publishers/cmp:latest AS worker
 
 RUN apk add --update --no-cache --allow-untrusted supervisor

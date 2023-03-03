@@ -1,7 +1,7 @@
-FROM 68publishers/docker-images:php-nginx-unit-7.4 AS app
+FROM 68publishers/docker-images:php-nginx-unit-7.4-1.0.0 AS app
 
 ########################################################################################################################
-FROM 68publishers/docker-images:php-nginx-unit-7.4 AS worker
+FROM 68publishers/docker-images:php-nginx-unit-7.4-1.0.0 AS worker
 
 RUN apk add --update --no-cache --allow-untrusted supervisor
 RUN mkdir -p "/etc/supervisor/logs"

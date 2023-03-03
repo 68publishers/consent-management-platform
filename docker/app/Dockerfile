@@ -1,5 +1,4 @@
-# PROD
-FROM 68publishers/docker-images:php-nginx-unit-7.4 AS app
+FROM 68publishers/docker-images:php-nginx-unit-7.4-1.0.0 AS app
 
 MAINTAINER support@68publishers.io
 

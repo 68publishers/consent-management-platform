@@ -1,5 +1,5 @@
 APP_VERSION=$$(git describe --tags `git rev-list --tags --max-count=1` | cut -c 2- ) # Get latest tag without the "v" prefix
-DOCKER_COMPOSE_FILE=docker-compose.yml # Use docker-compose.prod.yml to test the built images
+DOCKER_COMPOSE_FILE=docker-compose.prod.yml # Use docker-compose.prod.yml to test the built images
 
 start:
 	docker compose -f ${DOCKER_COMPOSE_FILE} --profile web up -d
