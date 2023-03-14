@@ -4,7 +4,7 @@
 
 {block #content}
 
-<div n:syntax="double" x-data="dashboard" data-endpoint="{{App\Api\Internal\Controller\StatisticsController::ENDPOINT_PROJECTS}}" data-projects="{{Nette\Utils\Json::encode($projectsData)}}" class="w-full px-4 sm:px-0">
+<div n:syntax="double" x-data="dashboard" data-request="{{Nette\Utils\Json::encode($requestData)}}" data-projects="{{Nette\Utils\Json::encode($projectsData)}}" class="w-full px-4 sm:px-0">
 
     <div x-data="dropdown" x-bind="dropdown" class="relative inline-block">
         <span class="relative z-0 inline-flex shadow-sm rounded-md">

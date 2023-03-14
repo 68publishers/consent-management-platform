@@ -11,9 +11,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Carbon\CarbonInterface;
 use Apitte\Core\Http\ApiRequest;
-use App\ReadModel\User\UserView;
 use Apitte\Core\Http\ApiResponse;
-use Nette\Security\User as NetteUser;
 use App\Application\Statistics\Period;
 use Apitte\Core\Annotation\Controller as Api;
 use App\ReadModel\Project\ProjectPermissionView;
@@ -21,7 +19,6 @@ use App\ReadModel\Project\FindProjectsAccessibilityByCodeQuery;
 use App\Api\Internal\RequestBody\GetProjectStatisticsRequestBody;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use App\Application\Statistics\ProjectStatisticsCalculatorInterface;
-use SixtyEightPublishers\UserBundle\Application\Authentication\Identity;
 
 /**
  * @Api\Path("/statistics")
@@ -30,20 +27,16 @@ final class StatisticsController extends AbstractInternalController
 {
 	public const ENDPOINT_PROJECTS = '/api/internal/statistics/projects';
 
-	private NetteUser $user;
-
 	private QueryBusInterface $queryBus;
 
 	private ProjectStatisticsCalculatorInterface $projectStatisticsCalculator;
 
 	/**
-	 * @param \Nette\Security\User                                             $user
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface   $queryBus
 	 * @param \App\Application\Statistics\ProjectStatisticsCalculatorInterface $projectStatisticsCalculator
 	 */
-	public function __construct(NetteUser $user, QueryBusInterface $queryBus, ProjectStatisticsCalculatorInterface $projectStatisticsCalculator)
+	public function __construct(QueryBusInterface $queryBus, ProjectStatisticsCalculatorInterface $projectStatisticsCalculator)
 	{
-		$this->user = $user;
 		$this->queryBus = $queryBus;
 		$this->projectStatisticsCalculator = $projectStatisticsCalculator;
 	}
@@ -57,36 +50,19 @@ final class StatisticsController extends AbstractInternalController
 	 * @param \Apitte\Core\Http\ApiResponse $response
 	 *
 	 * @return \Apitte\Core\Http\ApiResponse
-	 * @throws \SixtyEightPublishers\UserBundle\Application\Exception\IdentityException
 	 */
 	public function getProjectStatistics(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
-		if (!$this->user->isLoggedIn()) {
-			return $response->withStatus(ApiResponse::S401_UNAUTHORIZED)
-				->writeJsonBody([
-					'status' => 'error',
-					'data' => [
-						'code' => ApiResponse::S401_UNAUTHORIZED,
-						'error' => 'The user is not authorized.',
-					],
-				]);
-		}
-
 		$requestEntity = $request->getEntity();
 		assert($requestEntity instanceof GetProjectStatisticsRequestBody);
 
-		$identity = $this->user->getIdentity();
-		assert($identity instanceof Identity);
-
-		$userData = $identity->data();
-		assert($userData instanceof UserView);
-
+		$timezone = new DateTimeZone($requestEntity->timezone);
 		$projectCodes = (array) $requestEntity->projects;
 		$projectIds = array_fill_keys($projectCodes, NULL);
 		$inaccessible = [];
 
 		// check accessibility for requested projects
-		foreach ($this->queryBus->dispatch(FindProjectsAccessibilityByCodeQuery::create($identity->id()->toString(), $projectCodes)) as $projectPermissionView) {
+		foreach ($this->queryBus->dispatch(FindProjectsAccessibilityByCodeQuery::create($requestEntity->userId, $projectCodes)) as $projectPermissionView) {
 			assert($projectPermissionView instanceof ProjectPermissionView);
 
 			$projectIds[$projectPermissionView->projectCode->value()] = $projectPermissionView->projectId->toString();
@@ -115,7 +91,7 @@ final class StatisticsController extends AbstractInternalController
 		}
 
 		try {
-			[$startDate, $endDate] = $this->createRange($requestEntity, $userData->timezone);
+			[$startDate, $endDate] = $this->createRange($requestEntity, $timezone);
 		} catch (Exception $e) {
 			return $response->withStatus(ApiResponse::S422_UNPROCESSABLE_ENTITY)
 				->writeJsonBody([
@@ -130,7 +106,7 @@ final class StatisticsController extends AbstractInternalController
 		return $response->withStatus(ApiResponse::S200_OK)
 			->writeJsonBody([
 				'status' => 'success',
-				'data' => $this->buildData($projectIds, $requestEntity->locale ?? $userData->profileLocale->value(), $startDate, $endDate, $userData->timezone),
+				'data' => $this->buildData($projectIds, $requestEntity->locale, $startDate, $endDate, $timezone),
 			]);
 	}
 

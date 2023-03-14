@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\Presenter;
 
+use App\ReadModel\User\UserView;
 use App\ReadModel\Project\ProjectView;
 use App\Application\Acl\ProjectCookieResource;
 use App\Application\Acl\ProjectConsentResource;
 use App\ReadModel\Project\FindUserProjectsQuery;
+use App\Api\Internal\Controller\StatisticsController;
 use App\Application\Acl\ProjectCookieProviderResource;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 
@@ -52,5 +54,18 @@ final class DashboardPresenter extends AdminPresenter
 					: NULL,
 			],
 		], $projects);
+
+		$identity = $this->getIdentity();
+		$userData = $identity->data();
+		assert($userData instanceof UserView);
+
+		$this->template->requestData = [
+			'endpoint' => StatisticsController::ENDPOINT_PROJECTS,
+			'query' => [
+				'userId' => $userData->id->toString(),
+				'timezone' => $userData->timezone->getName(),
+				'locale' => $userData->profileLocale->value(),
+			],
+		];
 	}
 }
