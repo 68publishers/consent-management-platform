@@ -10,6 +10,23 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class GetProjectStatisticsRequestBody extends BasicEntity
 {
 	/**
+	 * @Assert\NotBlank()
+	 * @Assert\Uuid(),
+	 *
+	 * @var string|NULL
+	 */
+	public $userId;
+
+	/**
+	 * @Assert\NotBlank()
+	 * @Assert\Timezone(),
+	 *
+	 * @var string|NULL
+	 */
+	public $timezone;
+
+	/**
+	 * @Assert\NotBlank()
 	 * @Assert\Type("string"),
 	 *
 	 * @var string|NULL

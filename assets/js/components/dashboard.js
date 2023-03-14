@@ -17,7 +17,7 @@ const mergeObjects = (target, source) => {
 }
 
 module.exports = () => ({
-    endpoint: null,
+    request: null,
     projects: [],
     range: {
         startDate: null,
@@ -29,11 +29,19 @@ module.exports = () => ({
 
     init() {
         // setup endpoint
-        if (!this.$el.hasAttribute('data-endpoint')) {
-            throw new Error('Missing attribute "data-endpoint".');
+        if (!this.$el.hasAttribute('data-request')) {
+            throw new Error('Missing attribute "data-request".');
         }
 
-        this.endpoint = this.$el.getAttribute('data-endpoint');
+        this.request = JSON.parse(this.$el.getAttribute('data-request')) || {};
+
+        if ('object' !== typeof this.request || !('endpoint' in this.request)) {
+            throw new Error('Missing key "endpoint" the the attribute "data-request".');
+        }
+
+        if (!('query' in this.request)) {
+            throw new Error('Missing key "query" the the attribute "data-request".');
+        }
 
         // create projects
         if (!this.$el.hasAttribute('data-projects')) {
@@ -88,14 +96,22 @@ module.exports = () => ({
 
     loadProjectsData(start, end) {
         const doLoad = (codes) => {
-            let query = `?locale=${document.documentElement.lang}&startDate=${start.format('YYYY-MM-DD')}&endDate=${end.format('YYYY-MM-DD')}`;
+            let query = [];
 
-            for (let i in codes) {
-                query += `&projects[]=${codes[i]}`;
+            for (let requestQueryName in this.request.query) {
+                query.push(`${requestQueryName}=${encodeURIComponent(this.request.query[requestQueryName])}`);
             }
 
-            const promise = fetch(this.endpoint + query, {
-                method: 'GET'
+            query.push(`startDate=${encodeURIComponent(start.format('YYYY-MM-DD'))}`);
+            query.push(`endDate=${encodeURIComponent(end.format('YYYY-MM-DD'))}`);
+
+            for (let i in codes) {
+                query.push(`projects[]=${encodeURIComponent(codes[i])}`);
+            }
+
+            const promise = fetch(this.request.endpoint + '?' + query.join('&'), {
+                method: 'GET',
+                credentials: 'omit',
             });
 
             promise.then(response => {
