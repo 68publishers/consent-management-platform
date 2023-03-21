@@ -51,7 +51,7 @@
 
     <div class="mt-8 md:mt-8">
         <template x-for="project in projects" :key="project.code">
-            <div x-data="collapse" x-bind="collapse" class="mb-2">
+            <div x-data="collapse" x-bind="collapse" x-intersect:enter="toggleProjectVisibility(project.code, true)" x-intersect:leave="toggleProjectVisibility(project.code, false)" class="mb-2">
                 <div class="flex items-center justify-between mb-2">
                     <div class="flex items-center flex-nowrap">
                         <div x-bind="collapseButton" class="flex items-center flex-nowrap cursor-pointer p-2 pl-0">
@@ -70,12 +70,12 @@
                     </div>
 
                     <button x-data x-tooltip.interactive.placement.left.raw="{{_reload_project_data}}" x-on:click="reloadProjectData(project.code)" class="cursor-pointer p-2">
-                        {{svg common/arrow-path.svg, 'class' => 'h-5 w-5 text-indigo-700', ':class' => "{'animate-spin': STATUS_LOADING() === project.status}", 'stroke-width' => 2}}
+                        {{svg common/arrow-path.svg, 'class' => 'h-5 w-5 text-indigo-700', ':class' => "{'animate-spin': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}", 'stroke-width' => 2}}
                     </button>
                 </div>
                 <div x-bind="collapsePanel" class="mb-8 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-7 gap-2">
 
-                    <div :class="{'spinner': STATUS_LOADING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
+                    <div :class="{'spinner': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
                         <div class="text-sm font-medium text-gray-500 truncate">
                             <span x-show="!project.links.consents">{{_unique_consents}}</span>
                             <a x-show="project.links.consents" :href="project.links.consents" class="text-indigo-700">{{_unique_consents}}</a>
@@ -93,7 +93,7 @@
                         </div>
                     </div>
 
-                    <div :class="{'spinner': STATUS_LOADING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
+                    <div :class="{'spinner': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
                         <div class="text-sm font-medium text-gray-500 truncate">{{_unique_positive}}</div>
 
                         <div x-show="null !== project.data.uniquePositive.value">
@@ -108,7 +108,7 @@
                         </div>
                     </div>
 
-                    <div :class="{'spinner': STATUS_LOADING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
+                    <div :class="{'spinner': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
                         <div class="text-sm font-medium text-gray-500 truncate">{{_all_consents}}</div>
 
                         <div x-show="null !== project.data.allConsents.value">
@@ -123,7 +123,7 @@
                         </div>
                     </div>
 
-                    <div :class="{'spinner': STATUS_LOADING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
+                    <div :class="{'spinner': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
                         <div class="text-sm font-medium text-gray-500 truncate">{{_all_positive}}</div>
 
                         <div x-show="null !== project.data.allPositive.value">
@@ -138,14 +138,14 @@
                         </div>
                     </div>
 
-                    <div :class="{'spinner': STATUS_LOADING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
+                    <div :class="{'spinner': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
                         <span x-show="!project.links.providers" class="text-sm font-medium text-gray-500 truncate">{{_providers}}</span>
                         <a x-show="project.links.providers" :href="project.links.providers" class="text-sm font-medium text-indigo-700 truncate">{{_providers}}</a>
 
                         <div x-show="null !== project.data.providers.value" x-text="formatNumber(project.data.providers.value)" class="mt-2 text-xl font-semibold text-gray-900"></div>
                     </div>
 
-                    <div :class="{'spinner': STATUS_LOADING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
+                    <div :class="{'spinner': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
                         <span x-show="!project.links.cookies" class="text-sm font-medium text-gray-500 truncate">{{_cookies}}</span>
                         <a x-show="project.links.cookies" :href="project.links.cookies" class="text-sm font-medium text-indigo-700 truncate">{{_cookies}}</a>
 
@@ -159,7 +159,7 @@
                         </div>
                     </div>
 
-                    <div :class="{'spinner': STATUS_LOADING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
+                    <div :class="{'spinner': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
                         <div class="text-sm font-medium text-gray-500 truncate">{{_last_consent}}</div>
 
                         <div x-show="null !== project.data.lastConsent.value" class="mt-2 text-lg font-semibold text-gray-900">

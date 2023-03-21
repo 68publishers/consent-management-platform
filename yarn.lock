@@ -14,6 +14,11 @@
   dependencies:
     focus-trap "^6.6.1"
 
+"@alpinejs/intersect@^3.12.0":
+  version "3.12.0"
+  resolved "https://registry.yarnpkg.com/@alpinejs/intersect/-/intersect-3.12.0.tgz#935e34a25206c98498502cd49e265f8302491046"
+  integrity sha512-pwaOtU3g4l9tKxOoccbZzCoRWokDyEr35T9hCKO8mWruyJ0WKjaB+8ypCA49TT1Vxw5XMUz82FBzuF3JJboirw==
+
 "@ampproject/remapping@^2.1.0":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@ampproject/remapping/-/remapping-2.1.2.tgz#4edca94973ded9630d20101cd8559cedb8d8bd34"
