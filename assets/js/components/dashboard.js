@@ -62,11 +62,6 @@ module.exports = () => ({
         this.$watch('range', (() => {
             this.reloadAllProjectsData();
         }));
-
-        // load projects
-        this.$nextTick(() => {
-            this.reloadAllProjectsData();
-        });
     },
 
     reloadAllProjectsData() {
@@ -77,7 +72,7 @@ module.exports = () => ({
         this.loadProjectsData(this.range.startDate, this.range.endDate);
     },
 
-    reloadProjectData(code) {
+    reloadProjectData(code, force = false) {
         for (let i in this.projects) {
             const project = this.projects[i];
 
@@ -85,7 +80,7 @@ module.exports = () => ({
                 continue;
             }
 
-            if (this.STATUS_LOADING() !== project.status) {
+            if (force || this.STATUS_LOADING() !== project.status) {
                 project.status = this.STATUS_LOADING();
                 this.loadProjectsData(this.range.startDate, this.range.endDate);
             }
@@ -157,11 +152,12 @@ module.exports = () => ({
         for (let i in this.projects) {
             const project = this.projects[i];
 
-            if (this.STATUS_LOADING() !== project.status) {
+            if (this.STATUS_LOADING() !== project.status || !project.visible) {
                 continue;
             }
 
             codes.push(project.code);
+            project.status = this.STATUS_PROCESSING();
 
             if (1 === codes.length) {
                 doLoad(codes);
@@ -174,6 +170,27 @@ module.exports = () => ({
         }
     },
 
+    toggleProjectVisibility(code, visible) {
+        let found = null;
+
+        for (let project of this.projects) {
+            if (project.code === code) {
+                found = project;
+                break;
+            }
+        }
+
+        if (null === found) {
+            return;
+        }
+
+        found.visible = visible;
+
+        if (visible && this.STATUS_LOADING() === found.status) {
+            this.reloadProjectData(found.code, true);
+        }
+    },
+
     addProject(data) {
         const def = {
             code: null,
@@ -181,6 +198,7 @@ module.exports = () => ({
             color: null,
             status: this.STATUS_LOADING(),
             data: this.createEmptyProjectData(),
+            visible: false,
         };
 
         const project = mergeObjects(def, data);
@@ -267,6 +285,10 @@ module.exports = () => ({
 
     STATUS_LOADING() {
         return 'loading';
+    },
+
+    STATUS_PROCESSING() {
+        return 'processing';
     },
 
     STATUS_LOADED() {

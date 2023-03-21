@@ -5,6 +5,7 @@
   "dependencies": {
     "@alpinejs/collapse": "^3.10.2",
     "@alpinejs/focus": "^3.10.3",
+    "@alpinejs/intersect": "^3.12.0",
     "@babel/core": "^7.17.9",
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@ryangjchandler/alpine-tooltip": "^1.2.0",
