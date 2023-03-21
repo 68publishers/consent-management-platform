@@ -10,6 +10,7 @@
             <index name="idx_consent_project_id_checksum" columns="project_id,user_identifier" />
             <index name="idx_consent_created_at" columns="created_at" />
             <index name="idx_consent_last_update_at" columns="last_update_at" />
+            <index name="idx_consent_last_update_at_project_id" columns="last_update_at,project_id" />
         </indexes>
 
         <unique-constraints>
