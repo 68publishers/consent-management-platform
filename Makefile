@@ -80,7 +80,7 @@ qa:
 	@echo "not implemented" >&2
 
 cs:
-	./vendor/bin/php-cs-fixer fix -v
+	docker exec -it cmp-app ./vendor/bin/php-cs-fixer fix -v
 
 coverage:
 	@echo "not implemented" >&2
