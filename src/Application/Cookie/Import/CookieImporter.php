@@ -15,7 +15,7 @@ use App\Domain\Cookie\Command\UpdateCookieCommand;
 use App\ReadModel\Category\GetCategoryByCodeQuery;
 use App\ReadModel\CookieProvider\CookieProviderView;
 use App\ReadModel\CookieProvider\GetCookieProviderByCodeQuery;
-use App\ReadModel\Cookie\GetCookieByNameAndCookieProviderQuery;
+use App\ReadModel\Cookie\GetCookieByNameAndCookieProviderAndCategoryQuery;
 
 final class CookieImporter extends AbstractImporter
 {
@@ -69,7 +69,7 @@ final class CookieImporter extends AbstractImporter
 					$data->provider
 				));
 
-				$cookieView = $this->queryBus->dispatch(GetCookieByNameAndCookieProviderQuery::create($data->name, $cookieProviderView->id->toString()));
+				$cookieView = $this->queryBus->dispatch(GetCookieByNameAndCookieProviderAndCategoryQuery::create($data->name, $cookieProviderView->id->toString(), $categoryView->id->toString()));
 
 				if ($cookieView instanceof CookieView) {
 					$command = UpdateCookieCommand::create($cookieView->id->toString())

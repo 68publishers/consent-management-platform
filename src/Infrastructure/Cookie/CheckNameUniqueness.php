@@ -7,11 +7,12 @@ namespace App\Infrastructure\Cookie;
 use App\ReadModel\Cookie\CookieView;
 use App\Domain\Cookie\ValueObject\Name;
 use App\Domain\Cookie\ValueObject\CookieId;
+use App\Domain\Category\ValueObject\CategoryId;
 use App\Domain\Cookie\CheckNameUniquenessInterface;
 use App\Domain\Cookie\Exception\NameUniquenessException;
 use App\Domain\CookieProvider\ValueObject\CookieProviderId;
-use App\ReadModel\Cookie\GetCookieByNameAndCookieProviderQuery;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
+use App\ReadModel\Cookie\GetCookieByNameAndCookieProviderAndCategoryQuery;
 
 final class CheckNameUniqueness implements CheckNameUniquenessInterface
 {
@@ -28,9 +29,9 @@ final class CheckNameUniqueness implements CheckNameUniquenessInterface
 	/**
 	 * {@inheritDoc}
 	 */
-	public function __invoke(CookieId $cookieId, Name $name, CookieProviderId $cookieProviderId): void
+	public function __invoke(CookieId $cookieId, Name $name, CookieProviderId $cookieProviderId, CategoryId $categoryId): void
 	{
-		$cookieView = $this->queryBus->dispatch(GetCookieByNameAndCookieProviderQuery::create($name->value(), $cookieProviderId->toString()));
+		$cookieView = $this->queryBus->dispatch(GetCookieByNameAndCookieProviderAndCategoryQuery::create($name->value(), $cookieProviderId->toString(), $categoryId->toString()));
 
 		if (!$cookieView instanceof CookieView) {
 			return;

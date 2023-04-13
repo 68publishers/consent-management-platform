@@ -6,7 +6,7 @@
 
     <entity name="App\Domain\Cookie\Cookie" table="cookie">
         <unique-constraints>
-            <unique-constraint name="uniq_cookie_name_cookie_provider_id" columns="name,cookie_provider_id">
+            <unique-constraint name="uniq_cookie_name_cookie_provider_id_category_id" columns="name,cookie_provider_id,category_id">
                 <options>
                     <option name="where">(deleted_at IS NULL)</option>
                 </options>
