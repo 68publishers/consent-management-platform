@@ -189,6 +189,7 @@ final class EditProviderPresenter extends AdminPresenter
 
 		$control = $this->cookieListControlFactory->create($this->validLocalesProvider, $this->cookieProviderView->id);
 
+		$control->configureActions(TRUE, TRUE);
 		$control->configureAclChecks(CookieResource::class, CookieResource::UPDATE, CookieResource::DELETE);
 
 		return $control;
