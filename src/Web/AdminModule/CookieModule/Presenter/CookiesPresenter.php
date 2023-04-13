@@ -71,6 +71,7 @@ final class CookiesPresenter extends AdminPresenter
 		$control = $this->cookieListControlFactory->create($this->validLocalesProvider);
 
 		$control->includeProjectsData(TRUE);
+		$control->configureActions(TRUE, TRUE);
 		$control->configureAclChecks(CookieResource::class, CookieResource::UPDATE, CookieResource::DELETE);
 
 		return $control;

@@ -57,6 +57,7 @@ final class CookiesPresenter extends SelectedProjectPresenter
 			$this->projectView->cookieProviderId
 		);
 
+		$control->configureActions(TRUE, TRUE);
 		$control->configureAclChecks(ProjectCookieResource::class, ProjectCookieResource::UPDATE, ProjectCookieResource::DELETE);
 
 		return $control;
