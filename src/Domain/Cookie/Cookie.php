@@ -68,7 +68,7 @@ final class Cookie implements AggregateRootInterface
 
 		$checkCategoryExists($categoryId);
 		$checkCookieProviderExists($cookieProviderId);
-		$checkNameUniqueness($id, $name, $cookieProviderId);
+		$checkNameUniqueness($id, $name, $cookieProviderId, $categoryId);
 
 		$cookie->recordThat(CookieCreated::create($id, $categoryId, $cookieProviderId, $name, $processingTime, $active, $purposes));
 
@@ -138,7 +138,7 @@ final class Cookie implements AggregateRootInterface
 	public function changeName(Name $name, CheckNameUniquenessInterface $checkNameUniqueness): void
 	{
 		if (!$this->name->equals($name)) {
-			$checkNameUniqueness($this->id, $name, $this->cookieProviderId);
+			$checkNameUniqueness($this->id, $name, $this->cookieProviderId, $this->categoryId);
 			$this->recordThat(CookieNameChanged::create($this->id, $name));
 		}
 	}
