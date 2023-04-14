@@ -27,7 +27,7 @@ processing_time_mask:
 	field: 'Processing time - expiration'
 	required: Please enter an expiration.
 	rule_pattern: The value is not a valid expiration.
-	description: 'Modifiers "y" (year), "m" (month), "d" (day), "h" (hour) are allowed. For example, expiration of "1y 6m" means that the cookie has an expiration of one year and 6 months.'
+	description: 'Modifiers "y" (year), "m" (month), "d" (day), "h" (hour), "i" (minute), "s" (second) are allowed. For example, expiration of "1y 6m" means that the cookie has an expiration of one year and 6 months.'
 
 purpose:
 	field: 'Purpose - %name%'

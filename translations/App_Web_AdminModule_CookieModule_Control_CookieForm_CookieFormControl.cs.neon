@@ -27,7 +27,7 @@ processing_time_mask:
 	field: 'Doba zpracování - expirace'
 	required: Vyplňte prosím expiraci.
 	rule_pattern: Hodnota není validní expirace.
-	description: 'Jsou povoleny modifikátory "y" (rok), "m" (měsíc), "d" (den), "h" (hodina). Například expirace "1y 6m" znamená, že cookie má expiraci jeden rok a 6 měsíců.'
+	description: 'Jsou povoleny modifikátory "y" (rok), "m" (měsíc), "d" (den), "h" (hodina), "i" (minute), "s" (sekunda). Například expirace "1y 6m" znamená, že cookie má expiraci jeden rok a 6 měsíců.'
 
 purpose:
 	field: 'Účel - %name%'
