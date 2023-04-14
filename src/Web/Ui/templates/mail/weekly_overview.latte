@@ -40,7 +40,7 @@
                     {$project['name']}
                 </td>
                 <td>
-                    {$project['uniqueConsents']['value']}
+                    {$project['uniqueConsents']['value']|formatNumber}
                     <div n:class="'arrow', 0 <= $project['uniqueConsents']['percentageDiff'] ? 'arrow-green' : 'arrow-red'">
                         <i n:if="0 <= $project['uniqueConsents']['percentageDiff']">&uarr;</i>
                         <i n:if="0 > $project['uniqueConsents']['percentageDiff']">&darr;</i>
@@ -60,15 +60,15 @@
                     </div>
                 </td>
                 <td class="text-center">
-                    {$project['providers']['value']}
+                    {$project['providers']['value']|formatNumber}
                 </td>
                 <td class="text-center">
                     {if 0 >= ($project['cookies']['commonValue'] + $project['cookies']['privateValue'])}
                         0
                     {elseif 0 >= $project['cookies']['privateValue']}
-                        {$project['cookies']['commonValue']}
+                        {$project['cookies']['commonValue']|formatNumber}
                     {else}
-                        {$project['cookies']['commonValue']} + {$project['cookies']['privateValue']}
+                        {$project['cookies']['commonValue']|formatNumber} + {$project['cookies']['privateValue']|formatNumber}
                     {/if}
                 </td>
                 <td>

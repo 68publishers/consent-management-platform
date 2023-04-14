@@ -84,7 +84,7 @@ final class ProviderListControl extends Control
 		$grid->addColumnText('link', 'link', 'link.value')
 			->setFilterText('link');
 
-		$grid->addColumnNumber('number_of_cookies', 'number_of_cookies', 'numberOfCookies')
+		$grid->addColumnNumber('number_of_cookies', 'number_of_cookies')
 			->setAlign('center')
 			->setSortable('numberOfCookies');
 

@@ -21,9 +21,9 @@
 
     {foreach $steps as $step}
         {if $step == $paginator->page}
-            <span aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">{$step}</span>
+            <span aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">{$step|formatNumber}</span>
         {else}
-            <a href="{$link('page!', ['page' => $step])}" class="ajax bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">{$step}</a>
+            <a href="{$link('page!', ['page' => $step])}" class="ajax bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">{$step|formatNumber}</a>
         {/if}
 
         {if $iterator->nextValue > $step + 1}
