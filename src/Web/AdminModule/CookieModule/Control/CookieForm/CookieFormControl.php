@@ -121,7 +121,7 @@ final class CookieFormControl extends Control
 			->setOption('description', 'processing_time_mask.description')
 			->addConditionOn($form->getComponent('processing_time'), $form::EQUAL, 'expiration')
 				->setRequired('processing_time_mask.required')
-				->addRule($form::PATTERN, 'processing_time_mask.rule_pattern', '(?:(?<years>\d+)y\s*)?(?:(?<months>\d+)m\s*)?(?:(?<days>\d+)d\s*)?(?:(?<hours>\d+)h\s*)?');
+				->addRule($form::PATTERN, 'processing_time_mask.rule_pattern', '(?:(?<years>\d+)y\s*)?(?:(?<months>\d+)m\s*)?(?:(?<days>\d+)d\s*)?(?:(?<hours>\d+)h\s*)?(?:(?<minutes>\d+)i\s*)?(?:(?<seconds>\d+)s\s*)?');
 
 		$form->addCheckbox('active', 'active.field')
 			->setDefaultValue(TRUE);
