@@ -31,7 +31,7 @@
                         {if $control->getPerPage() === 'all'}
                             {_'ublaboo_datagrid.showing_all_items'|noescape}
                         {else}
-                            {_'ublaboo_datagrid.showing_items', [from => $paginator->getOffset() > 0 ? $paginator->getOffset() + 1 : ($paginator->getItemCount() > 0 ? 1 : 0), to => sizeof($rows) + $paginator->getOffset(), total => $paginator->getItemCount()]|noescape}
+                            {_'ublaboo_datagrid.showing_items', [from => ($paginator->getOffset() > 0 ? $paginator->getOffset() + 1 : ($paginator->getItemCount() > 0 ? 1 : 0)|formatNumber), to => (sizeof($rows) + $paginator->getOffset()|formatNumber), total => ($paginator->getItemCount()|formatNumber)]|noescape}
                         {/if}
                     </p>
                 </div>
