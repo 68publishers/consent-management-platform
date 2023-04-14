@@ -1,3 +1,6 @@
+visit_cmp: Navštívit CMP
+manage_notifications: Nastavení notifikací
+
 password_change_requested:
 	subject: Žádost o změnu hesla
 	header_title: Žádost o změnu hesla

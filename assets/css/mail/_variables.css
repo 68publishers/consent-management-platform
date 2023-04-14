@@ -36,10 +36,10 @@
     --margin--table: 20px 0;
 
     --padding--container: 30px 5px;
-    --padding--table-head: 14px 12px;
-    --padding--table-cell: 16px 12px;
+    --padding--table-head: 14px 8px;
+    --padding--table-cell: 16px 8px;
 
     /* Sizes */
-    --width--container: 680px;
+    --width--container: 720px;
     --width--footer: 100%
 }

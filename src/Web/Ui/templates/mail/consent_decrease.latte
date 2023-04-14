@@ -42,3 +42,9 @@
         <a n:href="Admin:Dashboard:" class="btn btn-primary">{_go_to_dashboard}</a>
     </p>
 {/block}
+
+{block #footer}
+    <a href="{$_projectUrl}">{_//mail.visit_cmp}</a>
+    <span style="margin: 0 4px 0 4px">&middot;</span>
+    <a n:href="Admin:Profile:Settings:#profile-settings-notification-preferences">{_//mail.manage_notifications}</a>
+{/block}

@@ -1,3 +1,6 @@
+visit_cmp: Visit CMP
+manage_notifications: Manage notifications
+
 password_change_requested:
 	subject: Password change request
 	header_title: Password change request
