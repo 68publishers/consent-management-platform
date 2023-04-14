@@ -36,6 +36,19 @@ function Toggle(Alpine) {
             ['x-on:click']() {
                 this.doToggle();
             },
+            ['x-on:keydown.enter.prevent']() {
+                const $form = this.$el.form;
+
+                if (!$form) {
+                    return;
+                }
+
+                const $submitButton = $form.querySelector('input[type="submit"], button[type="submit"]');
+
+                if ($submitButton) {
+                    $submitButton.click();
+                }
+            },
             [':aria-checked']() {
                 return this.checked;
             },
