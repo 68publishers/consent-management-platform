@@ -26,12 +26,12 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">{_col_name}</th>
-                <th scope="col">{_col_consents}</th>
-                <th scope="col">{_col_positivity}</th>
-                <th scope="col" class="text-center">{_col_providers}</th>
-                <th scope="col" class="text-center">{_col_cookies}</th>
-                <th scope="col">{_col_last_consent_date}</th>
+                <th scope="col" style="width: 116px">{_col_name}</th>
+                <th scope="col" style="width: 80px">{_col_consents}</th>
+                <th scope="col" style="width: 80px">{_col_positivity}</th>
+                <th scope="col" class="text-center" style="width: 100px">{_col_providers}</th>
+                <th scope="col" class="text-center" style="width: 80px">{_col_cookies}</th>
+                <th scope="col" style="width: 80px">{_col_last_consent_date}</th>
             </tr>
         </thead>
         <tbody>
@@ -81,4 +81,10 @@
     <p class="text-center" style="margin-top: 24px">
         <a n:href="Admin:Dashboard:" class="btn btn-primary">{_go_to_dashboard}</a>
     </p>
+{/block}
+
+{block #footer}
+    <a href="{$_projectUrl}">{_//mail.visit_cmp}</a>
+    <span style="margin: 0 4px 0 4px">&middot;</span>
+    <a n:href="Admin:Profile:Settings:#profile-settings-notification-preferences">{_//mail.manage_notifications}</a>
 {/block}
