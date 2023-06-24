@@ -8,10 +8,14 @@ sidebar:
 	users_users: Uživatelé
 	users_password_requests: Žádosti o nové heslo
 	application_settings: Nastavení
+	crawler: Crawler
+	crawler_scenario_schedulers: Plánování scénařů
+	crawler_scenarios: Spuštěné scénaře
 	cookies: Cookies
 	cookies_categories: Kategorie
 	cookies_providers: Poskytovatelé
 	cookies_cookies: Seznam cookies
+	cookies_found_cookies: Nalezené cookies
 	imports: Importy
 	projects: Projekty
 

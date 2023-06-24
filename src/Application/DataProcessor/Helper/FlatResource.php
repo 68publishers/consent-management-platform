@@ -17,7 +17,7 @@ final class FlatResource
 	 *
 	 * @return array
 	 */
-	public static function toMultidimensionalArray(array $flatArray): array
+	public static function toMultidimensionalArray(array $flatArray, string $separator = '.'): array
 	{
 		$result = [];
 
@@ -29,7 +29,7 @@ final class FlatResource
 			}
 
 			$last = &$result;
-			$keyParts = explode('.', $key);
+			$keyParts = explode($separator, $key);
 
 			while (NULL !== ($keyPart = array_shift($keyParts))) {
 				if (!array_key_exists($keyPart, $last)) {

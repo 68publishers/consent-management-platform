@@ -1,0 +1,32 @@
+{extends $originalTemplate}
+
+{varType \Closure $getDataSourceError}
+{varType SixtyEightPublishers\CrawlerClient\Controller\ScenarioScheduler\ValueObject\ScenarioSchedulerListingItem $item}
+
+{block noItems}
+    <tr n:if="!$rows">
+        <td colspan="{$control->getColumnsCount()}">
+            {var $error = $getDataSourceError()}
+
+            {if $error instanceof App\Application\Crawler\CrawlerNotConfiguredException}
+                {='crawler_not_configured_error', ['link' => $control->getPresenter()->link(':Admin:Application:Settings:') . '#crawler-settings']|translate|noescape}
+            {elseif $error instanceof SixtyEightPublishers\CrawlerClient\Exception\ControllerResponseExceptionInterface}
+                <div class="mb-4">
+                    {='crawler_api_respond_with_error_status_code', ['code' => $error->getResponse()->getStatusCode()]|translate|noescape}
+                </div>
+
+                <textarea x-data x-codemirror.readonly.wrap="javascript">{=Nette\Utils\Json::encode($error->getResponseBody(), Nette\Utils\Json::PRETTY)}</textarea>
+            {elseif $error instanceof SixtyEightPublishers\CrawlerClient\Exception\ControllerExceptionInterface}
+                {='crawler_api_respond_with_unexpected_error', ['error' => $error->getMessage()]|translate|noescape}
+            {elseif $filter_active}
+                {='ublaboo_datagrid.no_item_found_reset', ['link' => $control->link('resetFilter!')]|translate|noescape}
+            {else}
+                {='ublaboo_datagrid.no_item_found'|translate}
+            {/if}
+        </td>
+    </tr>
+{/block}
+
+{define col-project}
+    {$item->flags['projectName'] ?? '-'}
+{/define}

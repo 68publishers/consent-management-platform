@@ -1,0 +1,42 @@
+{templateType App\Web\AdminModule\CrawlerModule\Control\ScenarioDetail\ScenarioDetailModalTemplate}
+
+{extends $layout}
+
+{block #width}sm:max-w-xl md:max-w-4xl{/block}
+
+{block #title}
+    <span class="break-words">
+        {if null !== $scenarioResponse}
+            {_title, [id => $scenarioId, name => $scenarioResponse->getBody()->name]|noescape}
+        {else}
+            {_title_error, [id => $scenarioId]|noescape}
+        {/if}
+    </span>
+{/block}
+
+{block #body}
+
+{if null !== $scenarioResponse}
+    {control detail}
+{elseif $responseError instanceof SixtyEightPublishers\CrawlerClient\Exception\ControllerResponseExceptionInterface}
+    {include #alert, ('error.crawler_api_respond_with_error_status_code', ['code' => $responseError->getResponse()->getStatusCode()]|translate)}
+
+    <textarea x-data x-codemirror.readonly.wrap="javascript">{=Nette\Utils\Json::encode($responseError->getResponseBody(), Nette\Utils\Json::PRETTY)}</textarea>
+{else}
+    {include #alert, ('error.generic_message'|translate)}
+{/if}
+
+{define #alert, string $message}
+    <div class="bg-red-50 border-l-4 border-red-400 p-4 sm:rounded-lg mb-3">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                {svg common/x-circle-solid.svg, class: 'h-5 w-5 text-red-400'}
+            </div>
+            <div class="ml-3">
+                <p class="text-sm text-yellow-700">
+                    {$message|noescape}
+                </p>
+            </div>
+        </div>
+    </div>
+{/define}

@@ -4,6 +4,9 @@ name:
 	error:
 		duplicated_value: 'Cookie s tímto názvem již existuje.'
 
+domain:
+	field: Doména
+
 provider:
 	field: Poskytovatel
 	required: Zvolte prosím poskytovatele.

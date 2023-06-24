@@ -1,0 +1,49 @@
+{templateType App\Web\AdminModule\CrawlerModule\Control\DeleteScenarioScheduler\DeleteScenarioSchedulerModalTemplate}
+
+{extends $layout}
+
+{block #title}
+    <div class="flex items-center justify-center">
+        <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 sm:mx-0 sm:h-26 sm:w-26">
+            {svg common/exclamation-triangle.svg, class: 'h-8 w-8 text-red-600'}
+        </div>
+    </div>
+{/block}
+
+{block #body}
+    {if null !== $scenarioSchedulerResponse}
+        <div class="text-center mt-5 mb-10">
+            {_question, [name => $scenarioSchedulerResponse->getBody()->name]|noescape}
+        </div>
+    {elseif $responseError instanceof SixtyEightPublishers\CrawlerClient\Exception\ControllerResponseExceptionInterface}
+        {include #alert, ('error.crawler_api_respond_with_error_status_code', ['code' => $responseError->getResponse()->getStatusCode()]|translate)}
+
+        <textarea x-data x-codemirror.readonly.wrap="javascript">{=Nette\Utils\Json::encode($responseError->getResponseBody(), Nette\Utils\Json::PRETTY)}</textarea>
+    {else}
+        {include #alert, ('error.generic_message'|translate)}
+    {/if}
+{/block}
+
+{block #footer}
+    <button x-bind="modalCloseButton" data-modal-autofocus type="button" class="mt-3 w-full inline-flex justify-center sm:flex-1 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm">
+        {if null !== $scenarioSchedulerResponse}{_calcel}{else}{_close}{/if}
+    </button>
+    <a n:if="null !== $scenarioSchedulerResponse" n:href="delete!" data-spinner-for="self" class="ajax spinner-white mt-3 sm:ml-3 w-full inline-flex justify-center sm:flex-1 rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 sm:w-auto sm:text-sm">
+        {_delete}
+    </a>
+{/block}
+
+{define #alert, string $message}
+    <div class="bg-red-50 border-l-4 border-red-400 p-4 sm:rounded-lg mb-3">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                {svg common/x-circle-solid.svg, class: 'h-5 w-5 text-red-400'}
+            </div>
+            <div class="ml-3">
+                <p class="text-sm text-yellow-700">
+                    {$message|noescape}
+                </p>
+            </div>
+        </div>
+    </div>
+{/define}

@@ -1,6 +1,7 @@
 page_title: Projects
 add_new_project: Add project
 import: Import
+search_placeholder: Search project...
 
 alert:
 	no_projects: 'You have no projects available.'

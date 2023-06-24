@@ -1,0 +1,15 @@
+name: Název
+project: Projekt
+expression: Naplánováno
+createdAt: Vytvořeno
+updatedAt: Naposledy aktualizováno
+
+crawler_not_configured_error: 'Crawler není správně nastaven. Můžete ho nakonfigurovat <a class="link" href="%link%">zde</a>.'
+crawler_api_respond_with_error_status_code: 'API vrátilo odpověď s kódem <strong>%code%</strong>'
+crawler_api_respond_with_unexpected_error: 'Volání API vyvovalo neočekávánou chybu: %error%'
+
+message:
+	scenario_scheduler_updated: Plánování scénaře bylo úspěšně upraveno.
+	failed_to_update_scenario_scheduler: Plánování scénaře nebylo možné upravit.
+	scenario_scheduler_deleted: Plánování scénaře bylo úspěšně odstraněno.
+	failed_to_delete_scenario_scheduler: Plánování scénáře nebylo možné odstranit.

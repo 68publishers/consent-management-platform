@@ -1,0 +1,31 @@
+name: Název
+project: Projekt
+username: Uživatel
+created_at: Vytvořeno
+finished_at: Dokončeno
+status: Stav
+categories: Odsouhlasené kategorie
+
+scenario_config: Konfigurace scénaře
+found_cookies: 'Nalezené cookies (%count%)'
+visited_urls: 'Navštívené URL (%count%)'
+screenshots: 'Screenshoty (%count%)'
+
+search:
+	cookies: Hledat v názvu cookie...
+	visited_urls: Hledat URL...
+	screenshots: Hledat v názvu screenshotu...
+
+cookie:
+	name: Název
+	domain: Doména
+	found_on_url: První nález
+
+visited_url:
+	url: URL
+	status_code: Status
+	found_on_url: Nalezeno na URL
+
+screenshot:
+	image: Screenshot
+	found_on_url: Nalezeno na URL

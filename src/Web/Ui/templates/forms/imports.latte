@@ -47,11 +47,13 @@
 {/define}
 
 {define #pair-type-default}
-    <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-b sm:border-gray-200 sm:pb-6 px-4 sm:px-6" n:attr="id => $control->getOption('id')">
+    {var $forceVerticalLayout = $control->getOption('forceVerticalLayout') ?? false}
+
+    <div n:class="!$forceVerticalLayout ? 'sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start' : '', 'sm:border-b sm:border-gray-200 sm:pb-6 px-4 sm:px-6'" n:attr="id => $control->getOption('id')">
         {include #label, control => $control}
 
-        <div class="mt-1 sm:mt-0 sm:col-span-2 h-full">
-            <div class="max-w-lg h-full flex flex-col justify-center">
+        <div n:class="'mt-1 h-full', !$forceVerticalLayout ? 'sm:mt-0 sm:col-span-2'">
+            <div n:class="!$forceVerticalLayout ? 'max-w-lg' : '', 'h-full flex flex-col justify-center'">
                 {include #helpers-override-split, blockNamePrefix => control, control => $control}
             </div>
         </div>

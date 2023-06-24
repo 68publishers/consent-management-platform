@@ -1,0 +1,55 @@
+page_title: 'Nalezené cookies projektu "%name%"'
+
+caption:
+	new_cookies: Nové cookie
+	problematic_cookies: Problematické cookies
+	occurrences: Výskyty
+	warnings: Varování
+	existing_cookie: Informace o cookie z CMP
+	unproblematic_cookies: Bezproblémové cookies
+	ignored_cookies: Ignorované cookies
+
+no_found_cookie:
+	new_cookies: Žádné nové cookies nebyly nalezeny.
+	problematic_cookies: Žádné problematické cookies nebyly nalezeny.
+	unproblematic_cookies: Žádné bezproblémové cookies nebyly nelezeny.
+	ignored_cookies: Žádné ignorované cookies nebyly nelezeny.
+
+tooltip:
+	last_founded_at: Naposledy nalezeno
+	suggestion_contains_warnings: 'Cookie obsahuje varování, pro více informací rozklikněte.'
+
+not_found_in_cmp: Nenalezeno v CMP
+found_in_cmp: Nalezeno v CMP
+
+resolve_suggestion: Vyřešit
+
+occurrences_table:
+	scanerio_name: Název scénáře
+	last_found_at: Naposledy nalezeno
+	accepted_categories: Povolené kategorie
+	found_on_url: URL prvního nálezu
+
+existing_cookie_table:
+	name: Název
+	domain: Doména
+	category: Kategorie
+	provider: Poskytovatel
+
+warning:
+	cookie_domain_not_set: 'Nastavte prosím doménu v editaci cookie. Bez ní nelze přesně vyhodnotit, ke kterému poskytovateli je cookie přiřazena, pokud dojde k duplicitám.'
+
+problem:
+	cookie_is_in_category_that_is_not_accepted: 'Scénář <span class="font-semibold">"%scenarioName%"</span> byl spuštěn s kategoriemi <span class="font-semibold">[%acceptedCategories%]</span>, ale cookie se nechází v kategorii <span class="font-semibold">%categoryCode%</span>.'
+
+solution:
+	associate_cookie_provider_with_project: Přidat poskytovatele na projekt
+	change_cookie_category: Změnit kategorii cookie
+	create_new_cookie: Vytvořit novou cookie
+	create_new_cookie_with_not_accepted_category: Vytvořit stejnou cookie s jinou kategorii
+	ignore_until_next_occurrence: Ignorovat do dalšího výskytu
+
+message:
+	unable_to_process_solution: Řešení nebylo možné zpracovat.
+	suggestion_resolved: Návrh byl úspěšně vyřešen.
+	unable_to_resolve_solution: Při vyhodnocování návrhu došlo k chybě.

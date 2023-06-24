@@ -1,9 +1,12 @@
 page_title: Nastavení
 heading_localization: Lokalizace
 heading_api_cache: Výkon
+heading_crawler: Crawler
 
 message:
 	localization_settings_updated: Nastavení lokalizace bylo uloženo.
 	localization_settings_update_failed: Při ukládaní nastavení došlo k chybě.
 	api_cache_settings_updated: Nastavení výkonu bylo uloženo.
 	api_cache_settings_update_failed: Při ukládaní nastavení došlo k chybě.
+	crawler_settings_updated: Nastavení Crawleru bylo uloženo.
+	crawler_settings_update_failed: Při ukládaní nastavení došlo k chybě.

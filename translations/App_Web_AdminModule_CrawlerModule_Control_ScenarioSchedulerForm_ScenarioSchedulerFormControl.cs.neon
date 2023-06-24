@@ -1,0 +1,30 @@
+name:
+	field: Název
+	required: Vyplňte prosím název
+	rule_max_length: Maximální povolená délka je 255 znaků.
+
+expression:
+	field: Crontab výraz
+	required: Vyplňte prosím výraz.
+
+project:
+	field: Projekt
+	required: Zvolte prosím projekt.
+
+categories:
+	field: 'Kategorie, které scénář spouští'
+
+config:
+	field: Konfigurace scénaře
+	required: Nakonfigurujte prosím scénař.
+	error:
+		invalid_json: Konfigurace obsahuje nevalidní JSON.
+
+save:
+	field: Naplánovat
+
+update:
+	field: Upravit
+
+error:
+	crawler_api_respond_with_error_status_code: 'API vrátilo odpověď s kódem <strong>%code%</strong>'

@@ -1,6 +1,7 @@
 page_title: Projekty
 add_new_project: Přidat projekt
 import: Import
+search_placeholder: Hledat projekt...
 
 alert:
 	no_projects: 'Nemáte k dispozici žádné projekty.'

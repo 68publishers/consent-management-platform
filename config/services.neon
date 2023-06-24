@@ -48,6 +48,25 @@ services:
 	# Web\AdminModule\ApplicationModule
 	- App\Web\AdminModule\ApplicationModule\Control\LocalizationSettingsForm\LocalizationSettingsFormControlFactoryInterface
 	- App\Web\AdminModule\ApplicationModule\Control\ApiCacheSettingsForm\ApiCacheSettingsFormControlFactoryInterface
+	- App\Web\AdminModule\ApplicationModule\Control\CrawlerSettingsForm\CrawlerSettingsFormControlFactoryInterface
+
+	# Web\AdminModule\CrawlerModule
+	- App\Web\AdminModule\CrawlerModule\Control\ScenarioList\ScenarioListControlFactoryInterface
+	- App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerList\ScenarioSchedulerListControlFactoryInterface
+	- App\Web\AdminModule\CrawlerModule\Control\ScenarioDetail\ScenarioDetailControlFactoryInterface
+	- App\Web\AdminModule\CrawlerModule\Control\ScenarioDetail\ScenarioDetailModalControlFactoryInterface
+	-
+		implement: App\Web\AdminModule\CrawlerModule\Control\RunScenarioForm\RunScenarioFormControlFactoryInterface
+		arguments:
+			projectUrl: ::env(PROJECT_URL)
+	- App\Web\AdminModule\CrawlerModule\Control\RunScenarioForm\RunScenarioFormModalControlFactoryInterface
+	-
+		implement: App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerForm\ScenarioSchedulerFormControlFactoryInterface
+		arguments:
+			projectUrl: ::env(PROJECT_URL)
+	- App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerForm\ScenarioSchedulerFormModalControlFactoryInterface
+	- App\Web\AdminModule\CrawlerModule\Control\DeleteScenarioScheduler\DeleteScenarioSchedulerModalControlFactoryInterface
+	- App\Web\AdminModule\CrawlerModule\Control\AbortScenario\AbortScenarioModalControlFactoryInterface
 
 	# Web\AdminModule\AccountModule
 	- App\Web\AdminModule\ProfileModule\Control\BasicInformation\BasicInformationControlFactoryInterface

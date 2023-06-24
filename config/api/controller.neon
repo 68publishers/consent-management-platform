@@ -1,23 +1,26 @@
 services:
-	# api/health-check
+	# /api/health-check
 	- App\Api\Controller\HealthCheckController(%debugMode%)
 
-	# api/docs
-	# api/docs/schema/{version}
+	# /api/docs
+	# /api/docs/schema/{version}
 	- App\Api\Controller\DocsController(
 		::env(API_DOCS_ENABLED|bool, false),
 		%appDir%/../config/openapi
 	)
 
-	# api/v1/consent-settings/{project}/{checksum}
+	# /api/v1/consent-settings/{project}/{checksum}
 	- App\Api\V1\Controller\ConsentSettingsController
 
-	# api/v1/consent/{project}/{userIdentifier}
+	# /api/v1/consent/{project}/{userIdentifier}
 	- App\Api\V1\Controller\ConsentController
 
-	# api/v1/cookies/{project}
-	# api/v1/cookies/{project}/template
+	# /api/v1/cookies/{project}
+	# /api/v1/cookies/{project}/template
 	- App\Api\V1\Controller\CookiesController
 
-	# api/internal/statistics/projects
+	# /api/internal/statistics/projects
 	- App\Api\Internal\Controller\StatisticsController
+
+	# POST /api/crawler/receive-result
+	- App\Api\Crawler\ReceiveResultController

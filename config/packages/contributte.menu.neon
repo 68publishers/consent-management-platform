@@ -56,8 +56,25 @@ contributte.menu:
 						action: Admin:Cookie:Cookies:default
 						include:
 							- '^Admin\:Cookie\:Cookies\:.+$'
+					layout.sidebar.cookies_found_cookies:
+						action: Admin:Cookie:FoundCookiesProjects:default
+						include:
+							- '^Admin\:Cookie\:FoundCookiesProjects\:.+$'
+							- '^Admin\:Cookie\:FoundCookies\:.+$'
 				data:
 					icon: cookies
+			layout.sidebar.crawler:
+				items:
+					layout.sidebar.crawler_scenario_schedulers:
+						action: Admin:Crawler:ScenarioSchedulers:default
+						include:
+							- '^Admin\:Crawler\:ScenarioSchedulers\:.+$'
+					layout.sidebar.crawler_scenarios:
+						action: Admin:Crawler:Scenarios:default
+						include:
+							- '^Admin\:Crawler\:Scenarios\:.+$'
+				data:
+					icon: crawler
 			layout.sidebar.imports:
 				action: Admin:Import:Imports:default
 				include:

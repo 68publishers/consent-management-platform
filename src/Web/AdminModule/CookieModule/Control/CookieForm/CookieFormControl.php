@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\CookieModule\Control\CookieForm;
 
+use Closure;
 use Throwable;
 use Nette\Utils\Html;
 use App\Web\Ui\Control;
@@ -49,6 +50,10 @@ final class CookieFormControl extends Control
 
 	private ?array $providerOptions = NULL;
 
+	private ?Closure $formProcessor = NULL;
+
+	private ?array $overwrittenDefaults = NULL;
+
 	/**
 	 * @param \App\Web\Ui\Form\FormFactoryInterface                            $formFactory
 	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface $commandBus
@@ -65,16 +70,21 @@ final class CookieFormControl extends Control
 		$this->default = $default;
 	}
 
-	/**
-	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId $cookieProviderId
-	 *
-	 * @return $this
-	 */
 	public function setCookieProviderId(CookieProviderId $cookieProviderId): self
 	{
 		$this->cookieProviderId = $cookieProviderId;
 
 		return $this;
+	}
+
+	public function setFormProcessor(Closure $formProcessor): void
+	{
+		$this->formProcessor = $formProcessor;
+	}
+
+	public function setOverwrittenDefaults(array $overwrittenDefaults): void
+	{
+		$this->overwrittenDefaults = $overwrittenDefaults;
 	}
 
 	/**
@@ -95,6 +105,8 @@ final class CookieFormControl extends Control
 
 		$form->addText('name', 'name.field')
 			->setRequired('name.required');
+
+		$form->addText('domain', 'domain.field');
 
 		$providerField = $form->addSelect('provider', 'provider.field', array_map(static fn (CookieProviderSelectOptionView $view): string => $view->name->value(), $providers))
 			->setPrompt('-------')
@@ -141,6 +153,7 @@ final class CookieFormControl extends Control
 
 			$form->setDefaults([
 				'name' => $this->default->name->value(),
+				'domain' => $this->default->domain->value(),
 				'provider' => $providerDefaultValue = $this->default->cookieProviderId->toString(),
 				'category' => $this->default->categoryId->toString(),
 				'processing_time' => !$isExpiration ? $this->default->processingTime->value() : 'expiration',
@@ -152,6 +165,10 @@ final class CookieFormControl extends Control
 			$form->setDefaults([
 				'provider' => $providerDefaultValue = $this->cookieProviderId->toString(),
 			]);
+		}
+
+		if (NULL !== $this->overwrittenDefaults) {
+			$form->setDefaults($this->overwrittenDefaults);
 		}
 
 		if (isset($providerDefaultValue) && array_key_exists($providerDefaultValue, $providers)) {
@@ -174,6 +191,12 @@ final class CookieFormControl extends Control
 	 */
 	private function saveCookie(Form $form): void
 	{
+		if (NULL !== $this->formProcessor) {
+			($this->formProcessor)($form, $this);
+
+			return;
+		}
+
 		$values = $form->values;
 
 		if (NULL === $this->default) {
@@ -182,6 +205,7 @@ final class CookieFormControl extends Control
 				$values->category,
 				$values->provider,
 				$values->name,
+				$values->domain,
 				'expiration' === $values->processing_time ? $values->processing_time_mask : $values->processing_time,
 				$values->active,
 				(array) $values->purposes,
@@ -192,6 +216,7 @@ final class CookieFormControl extends Control
 			$command = UpdateCookieCommand::create($cookieId->toString())
 				->withCategoryId($values->category)
 				->withName($values->name)
+				->withDomain($values->domain)
 				->withProcessingTime('expiration' === $values->processing_time ? $values->processing_time_mask : $values->processing_time)
 				->withActive($values->active)
 				->withPurposes((array) $values->purposes);
