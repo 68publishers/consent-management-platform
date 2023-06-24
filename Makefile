@@ -73,8 +73,9 @@ data:
 data-migration:
 	docker exec -it cmp-app bin/console migrations:migrate --no-interaction
 
+.PHONY: tests
 tests:
-	@echo "not implemented" >&2
+	docker exec cmp-app vendor/bin/tester -C -s ./tests
 
 qa:
 	@echo "not implemented" >&2
