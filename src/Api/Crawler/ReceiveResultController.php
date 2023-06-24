@@ -61,7 +61,7 @@ final class ReceiveResultController extends AbstractCrawlerController
 		try {
 			$scenarioResponseBody = $this->crawlerClientProvider->get()
 				->getSerializer()
-				->deserialize($request->getBody(), ScenarioResponseBody::class);
+				->deserialize($request->getBody()->getContents(), ScenarioResponseBody::class);
 
 			assert($scenarioResponseBody instanceof ScenarioResponseBody);
 		} catch (Throwable $e) {
