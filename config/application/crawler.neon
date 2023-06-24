@@ -1,0 +1,5 @@
+services:
+	- App\Application\Crawler\CrawlerClientProvider(
+		cacheDir: %tempDir%/cache/68publishers.crawler-client
+		debugMode: %debugMode%
+	)

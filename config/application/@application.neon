@@ -1,6 +1,8 @@
 includes:
 	- console.neon
 	- cookie.neon
+	- cookie_suggestion.neon
+	- crawler.neon
 	- data_processor.neon
 	- event_metadata_extender.neon
 	- global_settings.neon

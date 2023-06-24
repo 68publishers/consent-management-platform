@@ -1,0 +1,6 @@
+services:
+	-
+		type: App\Application\CookieSuggestion\CookieSuggestionsStoreInterface
+		factory: App\Application\CookieSuggestion\CookieSuggestionsStore(
+			dataStore: App\Application\CookieSuggestion\DataStore\SessionDataStore()
+		)
