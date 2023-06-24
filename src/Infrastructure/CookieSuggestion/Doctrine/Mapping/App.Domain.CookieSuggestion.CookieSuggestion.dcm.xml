@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                                      https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Domain\CookieSuggestion\CookieSuggestion" table="cookie_suggestion">
+        <unique-constraints>
+            <unique-constraint name="uniq_cookie_suggestion_project_id_name_domain" columns="project_id,name,domain" />
+        </unique-constraints>
+
+        <indexes>
+            <index name="idx_cookie_suggestion_project_id" columns="project_id" />
+        </indexes>
+
+        <id name="id" column="id" type="App\Domain\CookieSuggestion\ValueObject\CookieSuggestionId" unique="true" />
+
+        <field name="projectId" column="project_id" type="App\Domain\Project\ValueObject\ProjectId" />
+
+        <field name="name" column="name" type="App\Domain\CookieSuggestion\ValueObject\Name" />
+
+        <field name="domain" column="domain" type="App\Domain\CookieSuggestion\ValueObject\Domain" />
+
+        <field name="ignoredUntilNextOccurrence" column="ignored_until_next_occurrence" type="boolean" />
+
+        <field name="version" column="version" type="integer" />
+
+        <one-to-many field="occurrences" target-entity="App\Domain\CookieSuggestion\CookieOccurrence" mapped-by="cookieSuggestion" orphan-removal="true">
+            <cascade>
+                <cascade-persist />
+                <cascade-remove />
+            </cascade>
+        </one-to-many>
+    </entity>
+
+</doctrine-mapping>

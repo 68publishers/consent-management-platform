@@ -4,6 +4,7 @@ includes:
 	- consent_settings/@default.neon
 	- cookie/@default.neon
 	- cookie_provider/@default.neon
+	- cookie_suggestion/@default.neon
 	- global_settings/@default.neon
 	- import/@default.neon
 	- password_request/@default.neon

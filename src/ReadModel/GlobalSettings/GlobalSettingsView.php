@@ -8,6 +8,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use App\Domain\Shared\ValueObject\LocalesConfig;
 use App\Domain\GlobalSettings\ValueObject\ApiCache;
+use App\Domain\GlobalSettings\ValueObject\CrawlerSettings;
 use App\Domain\GlobalSettings\ValueObject\GlobalSettingsId;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\AbstractView;
 
@@ -22,6 +23,8 @@ final class GlobalSettingsView extends AbstractView
 	public LocalesConfig $locales;
 
 	public ApiCache $apiCache;
+
+	public CrawlerSettings $crawlerSettings;
 
 	/**
 	 * @return array
@@ -40,6 +43,7 @@ final class GlobalSettingsView extends AbstractView
 				'cacheControlDirectives' => $this->apiCache->cacheControlDirectives(),
 				'useEntityTag' => $this->apiCache->useEntityTag(),
 			],
+			'crawlerSettings' => $this->crawlerSettings->values(),
 		];
 	}
 }

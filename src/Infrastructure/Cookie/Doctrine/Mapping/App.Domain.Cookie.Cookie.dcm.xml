@@ -32,6 +32,8 @@
 
         <field name="name" column="name" type="App\Domain\Cookie\ValueObject\Name" />
 
+        <field name="domain" column="domain" type="App\Domain\Cookie\ValueObject\Domain" />
+
         <field name="processingTime" column="processing_time" type="App\Domain\Cookie\ValueObject\ProcessingTime" />
 
         <field name="active" column="active" type="boolean" />

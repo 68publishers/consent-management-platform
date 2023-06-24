@@ -52,7 +52,8 @@ final class GlobalSettingsFactory implements GlobalSettingsFactoryInterface
 		return new GlobalSettings(
 			$locales,
 			Locale::create($defaultLocaleValue, $list[$defaultLocaleValue] ?? $defaultLocaleValue),
-			$globalSettingsView->apiCache
+			$globalSettingsView->apiCache,
+			$globalSettingsView->crawlerSettings,
 		);
 	}
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                                      https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Domain\CookieSuggestion\CookieOccurrence" table="cookie_occurrence">
+        <unique-constraints>
+            <unique-constraint name="uniq_cookie_occurrence_cookie_suggestion_id_scenario_name" columns="cookie_suggestion_id,scenario_name" />
+        </unique-constraints>
+
+        <indexes>
+            <index name="idx_cookie_suggestion_last_found_at" columns="last_found_at" />
+        </indexes>
+
+        <id name="id" column="id" type="App\Domain\CookieSuggestion\ValueObject\CookieOccurrenceId" unique="true" />
+
+        <many-to-one field="cookieSuggestion" target-entity="App\Domain\CookieSuggestion\CookieSuggestion">
+            <join-column name="cookie_suggestion_id" referenced-column-name="id" nullable="false" on-delete="CASCADE" />
+        </many-to-one>
+
+        <field name="scenarioName" column="scenario_name" type="App\Domain\CookieSuggestion\ValueObject\ScenarioName" />
+
+        <field name="foundOnUrl" column="found_on_url" type="App\Domain\CookieSuggestion\ValueObject\FoundOnUrl" />
+
+        <field name="acceptedCategories" column="accepted_categories" type="App\Domain\CookieSuggestion\ValueObject\AcceptedCategories">
+            <options>
+                <option name="jsonb">true</option>
+            </options>
+        </field>
+
+        <field name="lastFoundAt" column="last_found_at" type="datetime_immutable" />
+    </entity>
+
+</doctrine-mapping>

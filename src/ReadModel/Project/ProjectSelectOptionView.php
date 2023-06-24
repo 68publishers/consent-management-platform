@@ -15,7 +15,7 @@ final class ProjectSelectOptionView extends AbstractView
 	public Name $name;
 
 	/**
-	 * @return array
+	 * @return array<string, string>
 	 */
 	public function toOption(): array
 	{

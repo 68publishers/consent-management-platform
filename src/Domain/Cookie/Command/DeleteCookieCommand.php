@@ -8,11 +8,6 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class DeleteCookieCommand extends AbstractCommand
 {
-	/**
-	 * @param string $cookieId
-	 *
-	 * @return static
-	 */
 	public static function create(string $cookieId): self
 	{
 		return self::fromParameters([
@@ -20,9 +15,6 @@ final class DeleteCookieCommand extends AbstractCommand
 		]);
 	}
 
-	/**
-	 * @return string
-	 */
 	public function cookieId(): string
 	{
 		return $this->getParam('cookie_id');
