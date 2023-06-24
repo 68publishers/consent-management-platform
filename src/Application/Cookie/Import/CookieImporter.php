@@ -74,6 +74,7 @@ final class CookieImporter extends AbstractImporter
 				if ($cookieView instanceof CookieView) {
 					$command = UpdateCookieCommand::create($cookieView->id->toString())
 						->withName($data->name)
+						->withDomain($data->domain)
 						->withActive($data->active)
 						->withCategoryId($categoryView->id->toString())
 						->withProcessingTime($data->processingTime)
@@ -83,9 +84,10 @@ final class CookieImporter extends AbstractImporter
 						$categoryView->id->toString(),
 						$cookieProviderView->id->toString(),
 						$data->name,
+						$data->domain,
 						$data->processingTime,
 						$data->active,
-						$data->purpose
+						$data->purpose,
 					);
 				}
 
