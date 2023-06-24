@@ -85,7 +85,7 @@ final class ProjectBulkFixture extends AbstractFixture
 		# create 4 - 6 cookies per provider
 		foreach (array_merge($projectCookieProviders, $cookieProviders) as $cookieProvider) {
 			for ($i = 0; $i < $fakerEn->numberBetween(2, 6); $i++) {
-				$cookies[] = $this->createCookie($fakerEn, $fakerCs, $fakerEn->randomElement($categoryIds), $cookieProvider['cookie_provider_id']);
+				$cookies[] = $this->createCookie($fakerEn, $fakerCs, $fakerEn->randomElement($categoryIds), $cookieProvider['cookie_provider_id'], $cookieProvider['code']);
 			}
 		}
 
@@ -173,7 +173,7 @@ final class ProjectBulkFixture extends AbstractFixture
 	 *
 	 * @return array
 	 */
-	private function createCookie(Faker $fakerEn, Faker $fakerCs, string $categoryId, string $cookieProviderId): array
+	private function createCookie(Faker $fakerEn, Faker $fakerCs, string $categoryId, string $cookieProviderId, string $code): array
 	{
 		switch ($fakerEn->numberBetween(1, 3)) {
 			case 1:
@@ -194,6 +194,7 @@ final class ProjectBulkFixture extends AbstractFixture
 			'category_id' => $categoryId,
 			'cookie_provider_id' => $cookieProviderId,
 			'name' => '__' . $fakerEn->lexify('?????'),
+			'domain' => $code . '.com',
 			'processing_time' => $processingTime,
 			'active' => TRUE,
 			'purposes' => [

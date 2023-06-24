@@ -15,6 +15,8 @@ final class CookieData extends AbstractDescribedObject
 {
 	public string $name;
 
+	public string $domain;
+
 	public string $category;
 
 	public string $provider;
@@ -33,6 +35,7 @@ final class CookieData extends AbstractDescribedObject
 		return $descriptor
 			->withProps(new AllowOthers())
 			->withDescriptor('name', Descriptor::string(new Required()))
+			->withDescriptor('domain', Descriptor::string(new DefaultValue('')))
 			->withDescriptor('category', Descriptor::string(new Required()))
 			->withDescriptor('provider', Descriptor::string(new Required()))
 			->withDescriptor('processingTime', Descriptor::string(new Required()))
