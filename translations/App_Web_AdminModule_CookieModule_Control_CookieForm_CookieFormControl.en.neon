@@ -4,6 +4,9 @@ name:
 	error:
 		duplicated_value: 'A cookie with this name already exists.'
 
+domain:
+	field: Domain
+
 provider:
 	field: Provider
 	required: Please select a provider.

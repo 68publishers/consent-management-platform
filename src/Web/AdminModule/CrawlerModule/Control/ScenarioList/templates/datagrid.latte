@@ -1,0 +1,47 @@
+{extends $originalTemplate}
+
+{varType \Closure $getDataSourceError}
+{varType SixtyEightPublishers\CrawlerClient\Controller\Scenario\ValueObject\ScenarioListingItem $item}
+
+{block noItems}
+    <tr n:if="!$rows">
+        <td colspan="{$control->getColumnsCount()}">
+            {var $error = $getDataSourceError()}
+
+            {if $error instanceof App\Application\Crawler\CrawlerNotConfiguredException}
+                {='crawler_not_configured_error', ['link' => $control->getPresenter()->link(':Admin:Application:Settings:') . '#crawler-settings']|translate|noescape}
+            {elseif $error instanceof SixtyEightPublishers\CrawlerClient\Exception\ControllerResponseExceptionInterface}
+                <div class="mb-4">
+                    {='crawler_api_respond_with_error_status_code', ['code' => $error->getResponse()->getStatusCode()]|translate|noescape}
+                </div>
+
+                <textarea x-data x-codemirror.readonly.wrap="javascript">{=Nette\Utils\Json::encode($error->getResponseBody(), Nette\Utils\Json::PRETTY)}</textarea>
+            {elseif $error instanceof SixtyEightPublishers\CrawlerClient\Exception\ControllerExceptionInterface}
+                {='crawler_api_respond_with_unexpected_error', ['error' => $error->getMessage()]|translate|noescape}
+            {elseif $filter_active}
+                {='ublaboo_datagrid.no_item_found_reset', ['link' => $control->link('resetFilter!')]|translate|noescape}
+            {else}
+                {='ublaboo_datagrid.no_item_found'|translate}
+            {/if}
+        </td>
+    </tr>
+{/block}
+
+{define col-status}
+    {switch true}
+        {case 'completed' === $item->status}
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">{$item->status}</span>
+        {case 'failed' === $item->status}
+            <span x-data x-tooltip.interactive.placement.top.raw="{$item->error}" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">{$item->status}</span>
+        {case 'aborted' === $item->status}
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">{$item->status}</span>
+        {case 'waiting' === $item->status}
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">{$item->status}</span>
+        {default}
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">{$item->status}</span>
+    {/switch}
+{/define}
+
+{define col-project}
+    {$item->flags['projectName'] ?? '-'}
+{/define}

@@ -1,0 +1,8 @@
+question: 'Opravdu si přejete odstranit plánováný scénář <strong>"%name%"</strong>?'
+calcel: Zrušit
+delete: Odstranit
+close: Zavřít
+
+error:
+	crawler_api_respond_with_error_status_code: 'API vrátilo odpověď s kódem <strong>%code%</strong>'
+	generic_message: Data scénaře se nepovedlo získat.

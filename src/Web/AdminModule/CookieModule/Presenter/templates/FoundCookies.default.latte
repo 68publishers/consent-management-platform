@@ -1,0 +1,314 @@
+{templateType App\Web\AdminModule\CookieModule\Presenter\FoundCookiesTemplate}
+
+{block #page_title}{_page_title, [name => $projectView->name->value()]}{/block}
+
+<div n:block="breadcrumbs" class="flex">
+    <div class="flex place-items-center mb-1">
+        <div id="project-select">
+            <div x-data>
+				<span x-init="$el.style.display = 'none'" class="inline-block w-auto px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2" style="background-color: {$projectView->color->value()|noescape} !important;">
+					{$projectView->name->value()}
+				</span>
+            </div>
+            <select x-data x-select.searchbar x-cloak x-on:change="window.location.href = $el.options[$el.selectedIndex].getAttribute('data-link')">
+                {foreach $allProjects as $projectOption}
+                    {capture $itemHtml}
+                        <span class="inline-block w-auto px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2" style="background-color: {$projectOption->color->value()|noescape} !important;">
+							{$projectOption->name->value()}
+						</span>
+                    {/capture}
+
+                    <option value="{$projectOption->code->value()}" data-link="{link FoundCookies:, id: $projectOption->id->toString()}" data-selected-html="{$itemHtml}" n:attr="selected => $projectOption->id->equals($projectView->id)">{$projectOption->name->value()}</option>
+                {/foreach}
+            </select>
+        </div>
+    </div>
+</div>
+
+{block #content}
+
+<div n:snippet="suggestions">
+    {* ===== NEW COOKIES ===== *}
+    <div x-data="collapse" x-bind="collapse" class="bg-white shadow sm:rounded-lg mb-6">
+        <div x-bind="collapseButton" class="px-4 py-5 sm:px-6 border-b border-gray-200 flex items-center justify-between cursor-pointer">
+            <h3 class="text-lg leading-6 font-medium text-gray-900 flex items-center">
+                {svg 'common/plus-circle.svg', class: 'h-6 w-6 text-indigo-700 mr-3'}
+                {_caption.new_cookies}
+            </h3>
+            <span>
+                {svg 'common/chevron-up.svg', class: 'w-5 h-5', x-show: 'expanded', x-cloak: true}
+                {svg 'common/chevron-down.svg', class: 'w-5 h-5', x-show: '!expanded', x-cloak: true}
+            </span>
+        </div>
+
+        <div x-bind="collapsePanel">
+            <div class="p-4">
+                {foreach $missingCookieSuggestions as $suggestion}
+                    <div>
+                        {include #missing-cookie-suggestion, suggestion: $suggestion}
+                    </div>
+                {/foreach}
+
+                {foreach $unassociatedCookieSuggestions as $suggestion}
+                    {include #unassociated-cookie-suggestion, suggestion: $suggestion}
+                {/foreach}
+
+                <div n:if="0 >= (count($missingCookieSuggestions) + count($unassociatedCookieSuggestions))" class="text-sm">
+                    {_'no_found_cookie.new_cookies'}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {* ===== PROBLEMATIC COOKIES ===== *}
+    <div x-data="collapse" x-bind="collapse" class="bg-white shadow sm:rounded-lg mb-6">
+        <div x-bind="collapseButton" class="px-4 py-5 sm:px-6 border-b border-gray-200 flex items-center justify-between cursor-pointer">
+            <h3 class="text-lg leading-6 font-medium text-gray-900 flex items-center">
+                {svg 'common/exclamation-triangle.svg', class: 'h-6 w-6 text-red-700 mr-3'}
+                {_caption.problematic_cookies}
+            </h3>
+            <span>
+                {svg 'common/chevron-up.svg', class: 'w-5 h-5', x-show: 'expanded', x-cloak: true}
+                {svg 'common/chevron-down.svg', class: 'w-5 h-5', x-show: '!expanded', x-cloak: true}
+            </span>
+        </div>
+
+        <div x-bind="collapsePanel">
+            <div class="p-4">
+                {foreach $problematicCookieSuggestions as $suggestion}
+                    {include #problematic-cookie-suggestion, suggestion: $suggestion}
+                {/foreach}
+
+                <div n:if="0 >= count($problematicCookieSuggestions)" class="text-sm">
+                    {_'no_found_cookie.problematic_cookies'}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {* ===== UNPROBLEMATIC COOKIES ===== *}
+    <div x-data="collapse" x-bind="collapse" class="bg-white shadow sm:rounded-lg mb-6">
+        <div x-bind="collapseButton" class="px-4 py-5 sm:px-6 border-b border-gray-200 flex items-center justify-between cursor-pointer">
+            <h3 class="text-lg leading-6 font-medium text-gray-900 flex items-center">
+                {svg 'common/check-circle.svg', class: 'h-6 w-6 text-green-700 mr-3'}
+                {_caption.unproblematic_cookies}
+            </h3>
+            <span>
+                {svg 'common/chevron-up.svg', class: 'w-5 h-5', x-show: 'expanded', x-cloak: true}
+                {svg 'common/chevron-down.svg', class: 'w-5 h-5', x-show: '!expanded', x-cloak: true}
+            </span>
+        </div>
+
+        <div x-bind="collapsePanel">
+            <div class="p-4">
+                {foreach $unproblematicCookieSuggestions as $suggestion}
+                    {include #unproblematic-cookie-suggestion, suggestion: $suggestion}
+                {/foreach}
+
+                <div n:if="0 >= count($unproblematicCookieSuggestions)" class="text-sm">
+                    {_'no_found_cookie.unproblematic_cookies'}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {* ===== IGNORED COOKIES ===== *}
+    <div x-data="collapse" x-bind="collapse" class="bg-white shadow sm:rounded-lg mb-6">
+        <div x-bind="collapseButton" class="px-4 py-5 sm:px-6 border-b border-gray-200 flex items-center justify-between cursor-pointer">
+            <h3 class="text-lg leading-6 font-medium text-gray-900 flex items-center">
+                {svg 'common/no-symbol.svg', class: 'h-6 w-6 text-gray-700 mr-3'}
+                {_caption.ignored_cookies}
+            </h3>
+            <span>
+                {svg 'common/chevron-up.svg', class: 'w-5 h-5', x-show: 'expanded', x-cloak: true}
+                {svg 'common/chevron-down.svg', class: 'w-5 h-5', x-show: '!expanded', x-cloak: true}
+            </span>
+        </div>
+
+        <div x-bind="collapsePanel">
+            <div class="p-4">
+                {foreach $ignoredCookieSuggestions as $suggestion}
+                    {var $originalSuggestion = $suggestion->getOriginalSuggestion()}
+
+                    {switch true}
+                        {case $originalSuggestion instanceof App\Application\CookieSuggestion\Suggestion\MissingCookieSuggestion}
+                            {include #missing-cookie-suggestion, suggestion: $originalSuggestion, withSolutions: false}
+                        {case $originalSuggestion instanceof App\Application\CookieSuggestion\Suggestion\UnassociatedCookieSuggestion}
+                            {include #unassociated-cookie-suggestion, suggestion: $originalSuggestion, withSolutions: false}
+                        {case $originalSuggestion instanceof App\Application\CookieSuggestion\Suggestion\ProblematicCookieSuggestion}
+                            {include #problematic-cookie-suggestion, suggestion: $originalSuggestion, withSolutions: false}
+                    {/switch}
+                {/foreach}
+
+                <div n:if="0 >= count($ignoredCookieSuggestions)" class="text-sm">
+                    {_'no_found_cookie.ignored_cookies'}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{define #missing-cookie-suggestion, $suggestion, $withSolutions = true}
+    <div x-data="collapse" x-bind="collapse" class="bg-white rounded mb-2 border border-gray-150 text-sm p-2">
+        {include #suggestion-header, suggestion: $suggestion, foundInCmp: false, solutions: $withSolutions ? $suggestion->getSolutions() : null}
+
+        <div x-bind="collapsePanel" x-cloak>
+            {include #warnings, suggestion: $suggestion}
+            {include #occurrences-table, suggestion: $suggestion}
+        </div>
+    </div>
+{/define}
+
+{define #unassociated-cookie-suggestion, $suggestion, $withSolutions = true}
+    <div x-data="collapse" x-bind="collapse" class="bg-white rounded mb-2 border border-gray-150 text-sm p-2">
+        {include #suggestion-header, suggestion: $suggestion, foundInCmp: true, solutions: $withSolutions ? $suggestion->getSolutions() : null}
+
+        <div x-bind="collapsePanel" x-cloak>
+            {include #warnings, suggestion: $suggestion}
+            {include #existing-cookie, existingCookie: $suggestion->getExistingCookie()}
+            {include #occurrences-table, suggestion: $suggestion}
+        </div>
+    </div>
+{/define}
+
+{define #problematic-cookie-suggestion, $suggestion, $withSolutions = true}
+    <div x-data="collapse" x-bind="collapse" class="bg-white rounded mb-2 border border-gray-150 text-sm p-2">
+        {include #suggestion-header, suggestion: $suggestion}
+
+        <div n:foreach="$suggestion->getProblems() as $problem" n:class="'px-2 py-3 mt-3 border border-red-100 rounded', !$iterator->isLast() ? 'mb-2' : ''">
+            <div class="text-red-700">
+                {_'problem.' . $problem->getType(), $problem->getTranslatorArgs()|noescape}
+            </div>
+            <div n:if="$withSolutions" class="mt-2 flex items-center flex-wrap">
+                {include #solutions, solutions: $problem->getSolutions(), cookieSuggestionId: $suggestion->getSuggestionId()}
+            </div>
+        </div>
+
+        <div x-bind="collapsePanel" x-cloak>
+            {include #warnings, suggestion: $suggestion}
+            {include #existing-cookie, existingCookie: $suggestion->getExistingCookie()}
+            {include #occurrences-table, suggestion: $suggestion}
+        </div>
+    </div>
+{/define}
+
+{define #unproblematic-cookie-suggestion, $suggestion}
+    <div x-data="collapse" x-bind="collapse" class="bg-white rounded mb-2 border border-gray-150 text-sm p-2">
+        {include #suggestion-header, suggestion: $suggestion}
+
+        <div x-bind="collapsePanel" x-cloak>
+            {include #warnings, suggestion: $suggestion}
+            {include #existing-cookie, existingCookie: $suggestion->getExistingCookie()}
+            {include #occurrences-table, suggestion: $suggestion}
+        </div>
+    </div>
+{/define}
+
+{define #suggestion-header, $suggestion, $foundInCmp = null, $solutions = null}
+    <div>
+        {var $latestOccurrence = $suggestion->getLatestOccurrence()}
+        <div x-bind="collapseButton" class="flex items-center flex-wrap hover:bg-gray-50 rounded p-2 cursor-pointer">
+            <div class="font-semibold mr-6 my-0.5 flex items-center flex-nowrap">
+                {if 0 < count($suggestion->getWarnings())}
+                    <span x-data x-tooltip.placement.top.raw="{_tooltip.suggestion_contains_warnings}">
+                        {svg 'common/exclamation-triangle.svg', class: 'h-5 w-5 text-yellow-600 mr-3'}
+                    </span>
+                {/if}
+                {$suggestion->getSuggestionName()}
+            </div>
+            <div class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 mr-2 my-0.5">{$suggestion->getSuggestionDomain()}</div>
+            <div x-data x-tooltip.placement.top.raw="{_tooltip.last_founded_at}" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 mr-2 my-0.5">{$latestOccurrence->lastFoundAt->setTimezone(App\Application\Localization\ApplicationDateTimeZone::get())|date: 'j.n.Y H:i:s'}</div>
+            <div n:if="false === $foundInCmp" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800 mr-2 my-0.5">{_not_found_in_cmp}</div>
+            <div n:if="true === $foundInCmp" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 mr-2 my-0.5">{_found_in_cmp}</div>
+        </div>
+        <div n:if="null !== $solutions" class="mt-2 flex items-center flex-wrap">
+            {include #solutions, solutions: $solutions, cookieSuggestionId: $suggestion->getSuggestionId()}
+        </div>
+    </div>
+{/define}
+
+{define #solutions, $solutions, $cookieSuggestionId}
+    {var $dataForResolving = $solutions->getDataForResolving() ?? []}
+
+    <a
+        n:foreach="$solutions->all() as $solution"
+        n:href="solution! (expand) $solutions->getSolutionArguments($solution), cookieSuggestionId: $cookieSuggestionId"
+        data-spinner-for="self"
+        n:class="
+            'ajax rounded bg-white px-2 py-1 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 mr-1 my-0.5',
+            $solution->getType() === ($dataForResolving['solutionType'] ?? '') ? 'ring-indigo-500'
+        "
+    >
+        {_'solution.' . $solution->getType()}
+    </a>
+
+    <a n:if="!empty($dataForResolving)" n:href="resolve! (expand) $dataForResolving, cookieSuggestionId: $cookieSuggestionId" data-spinner-for="self" class="ajax flex items-center rounded bg-white px-2 py-1 text-sm text-green-900 shadow-sm ring-1 ring-inset ring-green-900 hover:bg-gray-50 mr-1 ml-3 my-0.5">
+        {svg 'common/check-circle.svg', class: 'h-5 w-5 text-green-700 mr-2'}
+        {_resolve_suggestion}
+    </a>
+{/define}
+
+{define #occurrences-table, $suggestion}
+    <div class="p-2 mt-5">
+        <h4 class="py-2 rounded font-semibold text-gray-600">{_caption.occurrences}:</h4>
+        <div class="overflow-auto max-h-[400px]">
+            <table class="w-full divide-y divide-gray-300">
+                <thead>
+                    <tr>
+                        <td class="pr-2 py-4 text-sm font-medium text-gray-500 text-left whitespace-nowrap">{_occurrences_table.scanerio_name}</td>
+                        <td class="px-2 py-4 text-sm font-medium text-gray-500 text-left whitespace-nowrap">{_occurrences_table.last_found_at}</td>
+                        <td class="px-2 py-4 text-sm font-medium text-gray-500 text-left whitespace-nowrap">{_occurrences_table.accepted_categories}</td>
+                        <td class="pl-2 py-4 text-sm font-medium text-gray-500 text-left whitespace-nowrap">{_occurrences_table.found_on_url}</td>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    <tr n:foreach="$suggestion->getOccurrences() as $occurrence">
+                        <td class="py-2 pr-2 whitespace-nowrap">{$occurrence->scenarioName}</td>
+                        <td class="py-2 px-2 whitespace-nowrap">{$occurrence->lastFoundAt|date: 'j.n.Y H:i:s'}</td>
+                        <td class="py-2 px-2 whitespace-nowrap">
+                            <div n:foreach="$occurrence->acceptedCategories as $categoryCode" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 mr-2 my-0.5">{$categoryCode}</div>
+                        </td>
+                        <td class="py-2 pl-2 whitespace-nowrap">
+                            <a href="{$occurrence->foundOnUrl}" target="_blank" class="text-indigo-700">{$occurrence->foundOnUrl}</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{/define}
+
+{define #existing-cookie, $existingCookie}
+    <div class="p-2 mt-5">
+        <h4 class="py-2 rounded font-semibold text-gray-600">{_caption.existing_cookie}:</h4>
+        <table>
+            <tbody>
+                <tr>
+                    <td class="py-2 pr-4 whitespace-nowrap">{_existing_cookie_table.name}:</td>
+                    <td class="py-2 pl-4 whitespace-nowrap">{$existingCookie->cookieName}</td>
+                </tr>
+                <tr>
+                    <td class="py-2 pr-4 whitespace-nowrap">{_existing_cookie_table.domain}:</td>
+                    <td class="py-2 pl-4 whitespace-nowrap">{$existingCookie->cookieDomain ?: '-'}</td>
+                </tr>
+                <tr>
+                    <td class="py-2 pr-4 whitespace-nowrap">{_existing_cookie_table.category}:</td>
+                    <td class="py-2 pl-4 whitespace-nowrap">{$existingCookie->categoryCode}</td>
+                </tr>
+                <tr>
+                    <td class="py-2 pr-4 whitespace-nowrap">{_existing_cookie_table.provider}:</td>
+                    <td class="py-2 pl-4 whitespace-nowrap">{$existingCookie->providerName}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{/define}
+
+{define #warnings, $suggestion}
+    {if 0 < count($suggestion->getWarnings())}
+        <div class="p-2 mt-5">
+            <h4 class="py-2 rounded font-semibold text-yellow-600">{_caption.warnings}:</h4>
+            <div n:foreach="$suggestion->getWarnings() as $warning" class="text-yellow-600 mb-2">{_'warning.' . $warning->getMessage()}</div>
+        </div>
+    {/if}
+{/define}

@@ -1,0 +1,14 @@
+title:
+	create: Náplanovat nový scénář
+	update: '''
+	<span class="mr-2">%name%</span>
+	<span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800">%id%</span>
+	'''
+	update_error: '''
+	<span class="mr-2">Chyba</span>
+	<span class="inline-flex items-center px-2.5 py-0.5 ml-2 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800">%id%</span>
+	'''
+
+error:
+	crawler_api_respond_with_error_status_code: 'API vrátilo odpověď s kódem <strong>%code%</strong>'
+	generic_message: Data scénaře se nepovedlo získat.

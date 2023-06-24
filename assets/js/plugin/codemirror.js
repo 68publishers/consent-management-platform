@@ -14,7 +14,7 @@ function Codemirror(Alpine) {
             return;
         }
 
-        const editor = codemirror.fromTextArea(el, {
+        const options = {
             mode: expression,
             indentWithTabs: true,
             indentUnit: 4,
@@ -24,7 +24,24 @@ function Codemirror(Alpine) {
             lineNumbers: -1 !== modifiers.indexOf('linenumbers'),
             readOnly: -1 !== modifiers.indexOf('readonly'),
             lineWrapping: -1 !== modifiers.indexOf('wrap'),
-        });
+        };
+
+        if ('json' === expression) {
+            options.mode = {
+                name: 'javascript',
+                json: true,
+            }
+
+            if (modifiers.indexOf('pretty')) {
+                try {
+                    el.innerHTML = JSON.stringify(JSON.parse(el.innerText), null, 4);
+                } catch (err) {
+                    // ignore
+                }
+            }
+        }
+
+        const editor = codemirror.fromTextArea(el, options);
 
         editor.on('change', function() {
             editor.save();

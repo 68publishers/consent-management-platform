@@ -1,0 +1,22 @@
+{templateType App\Web\AdminModule\CrawlerModule\Control\RunScenarioForm\RunScenarioFormTemplate}
+
+{snippet}
+    {if null !== $responseException}
+        <div class="bg-red-50 border-l-4 border-red-400 p-4 sm:rounded-lg mb-3">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    {svg common/x-circle-solid.svg, class: 'h-5 w-5 text-red-400'}
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-yellow-700">
+                        {_error.crawler_api_respond_with_error_status_code, ['code' => $responseException->getResponse()->getStatusCode()]|noescape}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <textarea x-data x-codemirror.readonly.wrap="json">{=Nette\Utils\Json::encode($responseException->getResponseBody(), Nette\Utils\Json::PRETTY)}</textarea>
+    {/if}
+
+    {control form}
+{/snippet}

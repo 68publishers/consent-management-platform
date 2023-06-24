@@ -1,0 +1,5 @@
+{varType SixtyEightPublishers\CrawlerClient\Controller\Scenario\ValueObject\ScenarioListingItem $item}
+
+<a n:if="$user->isAllowed(App\Application\Acl\CrawlerScenariosResource::class, App\Application\Acl\CrawlerScenariosResource::ABORT) && in_array($item->status, ['waiting', 'running'])" href="{$linkFactory('openModal!', ['abort-' . Ramsey\Uuid\Uuid::fromString($item->id)->getHex()->toString()])}" data-spinner-for="self" class="ajax spinner-white inline-flex items-center px-1.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+    {svg common/x-circle-solid.svg, class: 'w-4 h-4'}
+</a>

@@ -1,0 +1,13 @@
+name: Název
+status: Stav
+project: Projekt
+createdAt: Vytvořeno
+finishedAt: Dokončeno
+
+crawler_not_configured_error: 'Crawler není správně nastaven. Můžete ho nakonfigurovat <a class="link" href="%link%">zde</a>.'
+crawler_api_respond_with_error_status_code: 'API vrátilo odpověď s kódem <strong>%code%</strong>'
+crawler_api_respond_with_unexpected_error: 'Volání API vyvovalo neočekávánou chybu: %error%'
+
+message:
+	scenario_aborted: Scénář byl úspěšně přerušen.
+	failed_to_abort_scenario: Scénař nebylo možné přerušit.

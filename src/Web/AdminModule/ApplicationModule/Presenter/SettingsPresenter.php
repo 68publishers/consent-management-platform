@@ -9,10 +9,14 @@ use App\Web\AdminModule\Presenter\AdminPresenter;
 use App\Application\Acl\ApplicationSettingsResource;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
+use App\Web\AdminModule\ApplicationModule\Control\CrawlerSettingsForm\CrawlerSettingsFormControl;
 use App\Web\AdminModule\ApplicationModule\Control\ApiCacheSettingsForm\ApiCacheSettingsFormControl;
+use App\Web\AdminModule\ApplicationModule\Control\CrawlerSettingsForm\Event\CrawlerSettingsUpdatedEvent;
 use App\Web\AdminModule\ApplicationModule\Control\ApiCacheSettingsForm\Event\ApiCacheSettingsUpdatedEvent;
 use App\Web\AdminModule\ApplicationModule\Control\LocalizationSettingsForm\LocalizationSettingsFormControl;
+use App\Web\AdminModule\ApplicationModule\Control\CrawlerSettingsForm\Event\CrawlerSettingsUpdateFailedEvent;
 use App\Web\AdminModule\ApplicationModule\Control\ApiCacheSettingsForm\Event\ApiCacheSettingsUpdateFailedEvent;
+use App\Web\AdminModule\ApplicationModule\Control\CrawlerSettingsForm\CrawlerSettingsFormControlFactoryInterface;
 use App\Web\AdminModule\ApplicationModule\Control\LocalizationSettingsForm\Event\LocalizationSettingsUpdatedEvent;
 use App\Web\AdminModule\ApplicationModule\Control\ApiCacheSettingsForm\ApiCacheSettingsFormControlFactoryInterface;
 use App\Web\AdminModule\ApplicationModule\Control\LocalizationSettingsForm\Event\LocalizationSettingsUpdateFailedEvent;
@@ -27,21 +31,20 @@ final class SettingsPresenter extends AdminPresenter
 
 	private ApiCacheSettingsFormControlFactoryInterface $apiCacheSettingsFormControlFactory;
 
-	/**
-	 * @param \App\Web\AdminModule\ApplicationModule\Control\LocalizationSettingsForm\LocalizationSettingsFormControlFactoryInterface $localizationSettingsFormControlFactory
-	 * @param \App\Web\AdminModule\ApplicationModule\Control\ApiCacheSettingsForm\ApiCacheSettingsFormControlFactoryInterface         $apiCacheSettingsFormControlFactory
-	 */
-	public function __construct(LocalizationSettingsFormControlFactoryInterface $localizationSettingsFormControlFactory, ApiCacheSettingsFormControlFactoryInterface $apiCacheSettingsFormControlFactory)
-	{
+	private CrawlerSettingsFormControlFactoryInterface $crawlerSettingsFormControlFactory;
+
+	public function __construct(
+		LocalizationSettingsFormControlFactoryInterface $localizationSettingsFormControlFactory,
+		ApiCacheSettingsFormControlFactoryInterface $apiCacheSettingsFormControlFactory,
+		CrawlerSettingsFormControlFactoryInterface $crawlerSettingsFormControlFactory
+	) {
 		parent::__construct();
 
 		$this->localizationSettingsFormControlFactory = $localizationSettingsFormControlFactory;
 		$this->apiCacheSettingsFormControlFactory = $apiCacheSettingsFormControlFactory;
+		$this->crawlerSettingsFormControlFactory = $crawlerSettingsFormControlFactory;
 	}
 
-	/**
-	 * @return \App\Web\AdminModule\ApplicationModule\Control\LocalizationSettingsForm\LocalizationSettingsFormControl
-	 */
 	protected function createComponentLocalizationForm(): LocalizationSettingsFormControl
 	{
 		$control = $this->localizationSettingsFormControlFactory->create();
@@ -62,9 +65,6 @@ final class SettingsPresenter extends AdminPresenter
 		return $control;
 	}
 
-	/**
-	 * @return \App\Web\AdminModule\ApplicationModule\Control\ApiCacheSettingsForm\ApiCacheSettingsFormControl
-	 */
 	protected function createComponentApiCacheForm(): ApiCacheSettingsFormControl
 	{
 		$control = $this->apiCacheSettingsFormControlFactory->create();
@@ -81,6 +81,25 @@ final class SettingsPresenter extends AdminPresenter
 
 		$control->addEventListener(ApiCacheSettingsUpdateFailedEvent::class, function (): void {
 			$this->subscribeFlashMessage(FlashMessage::error('api_cache_settings_update_failed'));
+		});
+
+		return $control;
+	}
+
+	protected function createComponentCrawlerForm(): CrawlerSettingsFormControl
+	{
+		$control = $this->crawlerSettingsFormControlFactory->create();
+
+		$control->setFormFactoryOptions([
+			FormFactoryInterface::OPTION_AJAX => TRUE,
+		]);
+
+		$control->addEventListener(CrawlerSettingsUpdatedEvent::class, function (): void {
+			$this->subscribeFlashMessage(FlashMessage::success('crawler_settings_updated'));
+		});
+
+		$control->addEventListener(CrawlerSettingsUpdateFailedEvent::class, function (): void {
+			$this->subscribeFlashMessage(FlashMessage::error('crawler_settings_update_failed'));
 		});
 
 		return $control;

@@ -1,0 +1,240 @@
+{templateType App\Web\AdminModule\CrawlerModule\Control\ScenarioDetail\ScenarioDetailTemplate}
+
+<div class="bg-white overflow-hidden sm:rounded-lg">
+    <div class="px-4 py-5 sm:p-0">
+        <div class="sm:divide-y sm:divide-gray-200 border-b border-gray-200">
+
+            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <div class="text-sm font-medium text-gray-500">{_name}</div>
+                <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{$scenarioResponseBody->name}</div>
+            </div>
+
+            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <div class="text-sm font-medium text-gray-500">{_project}</div>
+                <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{$scenarioResponseBody->flags['projectName'] ?? '-'}</div>
+            </div>
+
+            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <div class="text-sm font-medium text-gray-500">{_username}</div>
+                <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{$scenarioResponseBody->username ?? 'unknown'}</div>
+            </div>
+
+            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <div class="text-sm font-medium text-gray-500">{_created_at}</div>
+                <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {$scenarioResponseBody->createdAt->setTimezone(App\Application\Localization\ApplicationDateTimeZone::get())->format('j.n.Y H:i:s')}
+                </div>
+            </div>
+
+            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <div class="text-sm font-medium text-gray-500">{_finished_at}</div>
+                <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {$scenarioResponseBody->finishedAt ? $scenarioResponseBody->finishedAt->setTimezone(App\Application\Localization\ApplicationDateTimeZone::get())->format('j.n.Y H:i:s') : '-'}
+                </div>
+            </div>
+
+            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <div class="text-sm font-medium text-gray-500">{_status}</div>
+                <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {switch true}
+                        {case 'completed' === $scenarioResponseBody->status}
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">{$scenarioResponseBody->status}</span>
+                        {case 'failed' === $scenarioResponseBody->status}
+                            <span x-data x-tooltip.interactive.placement.top.raw="{$scenarioResponseBody->error}" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">{$scenarioResponseBody->status}</span>
+                        {case 'aborted' === $scenarioResponseBody->status}
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">{$scenarioResponseBody->status}</span>
+                        {case 'waiting' === $scenarioResponseBody->status}
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">{$scenarioResponseBody->status}</span>
+                        {default}
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">{$scenarioResponseBody->status}</span>
+                    {/switch}
+                </div>
+            </div>
+
+            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <div class="text-sm font-medium text-gray-500">{_categories}</div>
+                <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {var $hasAnyCategory = false}
+                    <table n:ifcontent>
+                        <tr n:foreach="$scenarioResponseBody->flags as $flagKey => $flagValue" n:if="Nette\Utils\Strings::startsWith($flagKey, 'category.')">
+                            {do $hasAnyCategory = true}
+
+                            <td n:class="'whitespace-nowrap pr-2 pl-0 text-sm text-gray-500 w-px', $iterator->isFirst() ? 'pb-2' : ($iterator->isLast() ? 'pt-2' : 'py-2')">{$flagKey|substr: 9}</td>
+                            <td n:class="'whitespace-nowrap pl-8 text-sm text-left', $iterator->isFirst() ? 'pb-2' : ($iterator->isLast() ? 'pt-2' : 'py-2')">
+                                {if $flagValue}
+                                    {svg common/check-circle-solid.svg, class: 'h-5 w-5 text-green-700'}
+                                {else}
+                                    {svg common/x-circle-solid.svg, class: 'h-5 w-5 text-red-700'}
+                                {/if}
+                            </td>
+                        </tr>
+                    </table>
+                    <span n:if="!$hasAnyCategory">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {* Config *}
+    <div x-data="collapse" x-bind="collapse" class="px-4 pt-3 pb-2 sm:px-0">
+        <div x-bind="collapseButton" class="flex items-center justify-between text-sm font-medium text-gray-500 cursor-pointer bg-gray-50 rounded py-2 px-6">
+            {_scenario_config}
+            <span>
+                {svg 'common/chevron-up.svg', class: 'w-5 h-5', x-show: 'expanded', x-cloak: true}
+                {svg 'common/chevron-down.svg', class: 'w-5 h-5', x-show: '!expanded', x-cloak: true}
+            </span>
+        </div>
+        <div x-bind="collapsePanel" x-cloak class="text-sm px-2 py-2">
+            <div class="w-full">
+                <textarea x-data x-codemirror.linenumbers.readonly.wrap.pretty="json" class="codemirror-h-auto">{$serializedScenarioConfig|noescape}</textarea>
+            </div>
+        </div>
+    </div>
+
+    {* === Cookies === *}
+    {if 0 < $scenarioResponseBody->stats->cookies}
+        <div x-data="collapse" x-bind="collapse" class="px-4 pt-3 pb-2 sm:px-0">
+            <div x-bind="collapseButton" class="flex items-center justify-between text-sm font-medium text-gray-500 cursor-pointer bg-gray-50 rounded py-2 px-6">
+                {_found_cookies, [count => $scenarioResponseBody->stats->cookies]}
+                <span>
+                    {svg 'common/chevron-up.svg', class: 'w-5 h-5', x-show: 'expanded', x-cloak: true}
+                    {svg 'common/chevron-down.svg', class: 'w-5 h-5', x-show: '!expanded', x-cloak: true}
+                </span>
+            </div>
+            <div x-bind="collapsePanel" x-cloak class="text-sm px-2 py-2">
+                <div x-data="{
+                    search: ''
+                }">
+                    <input x-model="search" type="text" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-1/2 text-sm border-gray-300 rounded-md my-3" placeholder="{_search.cookies}">
+                    <div class="overflow-auto max-h-[400px]">
+                        <table class="w-full divide-y divide-gray-300">
+                            <thead>
+                                <tr>
+                                    <td class="px-2 py-4 text-sm font-medium text-gray-500 text-left">{_cookie.name}</td>
+                                    <td class="px-2 py-4 text-sm font-medium text-gray-500 text-left">{_cookie.domain}</td>
+                                    <td class="px-2 py-4 text-sm font-medium text-gray-500 text-left">{_cookie.found_on_url}</td>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr n:foreach="$scenarioResponseBody->results->cookies as $cookie" x-show="'' === search || '{$cookie->name}'.toLowerCase().includes(search.toLowerCase())">
+                                    <td class="py-2 px-2">{$cookie->name}</td>
+                                    <td class="py-2 px-2">{$cookie->domain}</td>
+                                    <td class="py-2 px-2">
+                                        <a href="{$cookie->foundOnUrl}" target="_blank" class="text-indigo-700">{$cookie->foundOnUrl}</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {else}
+        <div class="px-4 pt-3 pb-2 sm:px-0">
+            <div class="flex items-center justify-between text-sm font-medium text-gray-500 bg-gray-50 rounded py-2 px-6">
+                {_found_cookies, [count => $scenarioResponseBody->stats->cookies]}
+            </div>
+        </div>
+    {/if}
+
+    {* === Visited URLs === *}
+    {if 0 < $scenarioResponseBody->stats->visitedUrls}
+        <div x-data="collapse" x-bind="collapse" class="px-4 pt-3 pb-2 sm:px-0">
+            <div x-bind="collapseButton" class="flex items-center justify-between text-sm font-medium text-gray-500 cursor-pointer bg-gray-50 rounded py-2 px-6">
+                {_visited_urls, [count => $scenarioResponseBody->stats->visitedUrls]}
+                <span>
+                    {svg 'common/chevron-up.svg', class: 'w-5 h-5', x-show: 'expanded', x-cloak: true}
+                    {svg 'common/chevron-down.svg', class: 'w-5 h-5', x-show: '!expanded', x-cloak: true}
+                </span>
+            </div>
+            <div x-bind="collapsePanel" x-cloak class="text-sm px-2 py-2">
+                <div x-data="{
+                    search: ''
+                }">
+                    <input x-model="search" type="text" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-1/2 text-sm border-gray-300 rounded-md my-3" placeholder="{_search.visited_urls}">
+                    <div class="overflow-auto max-h-[400px]">
+                        <table class="w-full divide-y divide-gray-300">
+                            <thead>
+                                <tr>
+                                    <td class="px-2 py-4 text-sm font-medium text-gray-500 text-left">{_visited_url.url}</td>
+                                    <td class="px-2 py-4 text-sm font-medium text-gray-500 text-left">{_visited_url.status_code}</td>
+                                    <td class="px-2 py-4 text-sm font-medium text-gray-500 text-left">{_visited_url.found_on_url}</td>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr n:foreach="$scenarioResponseBody->results->visitedUrls as $visitedUrl" x-show="'' === search || '{$visitedUrl->url}'.toLowerCase().includes(search.toLowerCase())">
+                                    <td class="py-2 px-2">
+                                        <a href="{$visitedUrl->url}" target="_blank" class="text-indigo-700">{$visitedUrl->url}</a>
+                                    </td>
+                                    <td n:if="300 > $visitedUrl->statusCode" class="py-2 px-2 text-green-700">{$visitedUrl->statusCode}</td>
+                                    <td n:if="300 <= $visitedUrl->statusCode" x-data x-tooltip.interactive.placement.top.raw="{$visitedUrl->error}" class="py-2 px-2 text-red-700">{$visitedUrl->statusCode}</td>
+                                    <td class="py-2 px-2">
+                                        <a n:if="null !== $visitedUrl->foundOnUrl" href="{$visitedUrl->foundOnUrl}" target="_blank" class="text-indigo-700">{$visitedUrl->foundOnUrl}</a>
+                                        <span n:if="null === $visitedUrl->foundOnUrl">-</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {else}
+        <div class="px-4 pt-3 pb-2 sm:px-0">
+            <div class="flex items-center justify-between text-sm font-medium text-gray-500 bg-gray-50 rounded py-2 px-6">
+                {_visited_urls, [count => $scenarioResponseBody->stats->visitedUrls]}
+            </div>
+        </div>
+    {/if}
+
+    {* === Screenshots === *}
+    {if 0 < $scenarioResponseBody->stats->screenshots}
+        <div x-data="collapse" x-bind="collapse" class="px-4 pt-3 pb-2 sm:px-0">
+            <div x-bind="collapseButton" class="flex items-center justify-between text-sm font-medium text-gray-500 cursor-pointer bg-gray-50 rounded py-2 px-6">
+                {_screenshots, [count => $scenarioResponseBody->stats->screenshots]}
+                <span>
+                    {svg 'common/chevron-up.svg', class: 'w-5 h-5', x-show: 'expanded', x-cloak: true}
+                    {svg 'common/chevron-down.svg', class: 'w-5 h-5', x-show: '!expanded', x-cloak: true}
+                </span>
+            </div>
+            <div x-bind="collapsePanel" x-cloak class="text-sm px-2 py-2">
+                <div x-data="{
+                    search: ''
+                }">
+                    <input x-model="search" type="text" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-1/2 text-sm border-gray-300 rounded-md my-3" placeholder="{_search.screenshots}">
+                    <div class="overflow-auto max-h-[400px]">
+                        <table class="w-full divide-y divide-gray-300">
+                            <thead>
+                                <tr>
+                                    <td class="px-2 py-4 text-sm font-medium text-gray-500 text-left">{_screenshot.image}</td>
+                                    <td class="px-2 py-4 text-sm font-medium text-gray-500 text-left">{_screenshot.found_on_url}</td>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr n:foreach="$scenarioResponseBody->results->screenshots as $screenshot" x-show="'' === search || '{$screenshot->name}'.toLowerCase().includes(search.toLowerCase())">
+                                    <td class="py-2 px-2">
+                                        <div class="flex items-center">
+                                            <a href="{$screenshot->screenshot}" target="_blank">
+                                                <img src="{$screenshot->screenshot}" alt="" class="h-10 w-10 mr-3">
+                                            </a>
+                                            <span>{$screenshot->name}</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-2 px-2">
+                                        <a href="{$screenshot->foundOnUrl}" target="_blank" class="text-indigo-700">{$screenshot->foundOnUrl}</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {else}
+        <div class="px-4 pt-3 pb-2 sm:px-0">
+            <div class="flex items-center justify-between text-sm font-medium text-gray-500 bg-gray-50 rounded py-2 px-6">
+                {_screenshots, [count => $scenarioResponseBody->stats->screenshots]}
+            </div>
+        </div>
+    {/if}
+</div>
