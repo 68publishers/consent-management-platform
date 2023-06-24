@@ -6,8 +6,5 @@ namespace App\Application\GlobalSettings;
 
 interface GlobalSettingsFactoryInterface
 {
-	/**
-	 * @return \App\Application\GlobalSettings\GlobalSettingsInterface
-	 */
 	public function create(): GlobalSettingsInterface;
 }

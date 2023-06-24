@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Application\GlobalSettings;
 
+use Throwable;
 use Nette\Caching\Cache;
 use Nette\Caching\Storage;
 use App\Domain\GlobalSettings\ValueObject\ApiCache;
+use App\Domain\GlobalSettings\ValueObject\CrawlerSettings;
 use SixtyEightPublishers\TranslationBridge\Localization\TranslatorLocalizerInterface;
 
 final class CachedGlobalSettings implements GlobalSettingsInterface
@@ -21,11 +23,6 @@ final class CachedGlobalSettings implements GlobalSettingsInterface
 
 	private ?GlobalSettingsInterface $inner = NULL;
 
-	/**
-	 * @param \App\Application\GlobalSettings\GlobalSettingsFactoryInterface                    $globalSettingsFactory
-	 * @param \Nette\Caching\Storage                                                            $storage
-	 * @param \SixtyEightPublishers\TranslationBridge\Localization\TranslatorLocalizerInterface $translatorLocalizer
-	 */
 	public function __construct(GlobalSettingsFactoryInterface $globalSettingsFactory, Storage $storage, TranslatorLocalizerInterface $translatorLocalizer)
 	{
 		$this->globalSettingsFactory = $globalSettingsFactory;
@@ -34,9 +31,7 @@ final class CachedGlobalSettings implements GlobalSettingsInterface
 	}
 
 	/**
-	 * {@inheritDoc}
-	 *
-	 * @throws \Throwable
+	 * @throws Throwable
 	 */
 	public function locales(): array
 	{
@@ -44,9 +39,7 @@ final class CachedGlobalSettings implements GlobalSettingsInterface
 	}
 
 	/**
-	 * {@inheritDoc}
-	 *
-	 * @throws \Throwable
+	 * @throws Throwable
 	 */
 	public function defaultLocale(): Locale
 	{
@@ -54,9 +47,7 @@ final class CachedGlobalSettings implements GlobalSettingsInterface
 	}
 
 	/**
-	 * {@inheritDoc}
-	 *
-	 * @throws \Throwable
+	 * @throws Throwable
 	 */
 	public function apiCache(): ApiCache
 	{
@@ -64,8 +55,13 @@ final class CachedGlobalSettings implements GlobalSettingsInterface
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @throws Throwable
 	 */
+	public function crawlerSettings(): CrawlerSettings
+	{
+		return $this->getInner()->crawlerSettings();
+	}
+
 	public function refresh(): void
 	{
 		if (NULL !== $this->inner) {
@@ -79,8 +75,7 @@ final class CachedGlobalSettings implements GlobalSettingsInterface
 	}
 
 	/**
-	 * @return \App\Application\GlobalSettings\GlobalSettingsInterface
-	 * @throws \Throwable
+	 * @throws Throwable
 	 */
 	private function getInner(): GlobalSettingsInterface
 	{
@@ -89,9 +84,6 @@ final class CachedGlobalSettings implements GlobalSettingsInterface
 		}));
 	}
 
-	/**
-	 * @return string
-	 */
 	private function createKey(): string
 	{
 		return self::CACHE_KEY . '_' . $this->translatorLocalizer->getLocale();

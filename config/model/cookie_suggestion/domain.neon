@@ -1,0 +1,10 @@
+services:
+	-
+		autowired: no
+		factory: App\Domain\CookieSuggestion\CommandHandler\CreateCookieSuggestionCommandHandler
+	-
+		autowired: no
+		factory: App\Domain\CookieSuggestion\CommandHandler\AddCookieSuggestionOccurrencesCommandHandler
+	-
+		autowired: no
+		factory: App\Domain\CookieSuggestion\CommandHandler\IgnoreCookieSuggestionUntilNextOccurrenceCommandHandler

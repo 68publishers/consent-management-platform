@@ -5,3 +5,6 @@ services:
 	-
 		autowired: no
 		factory: App\Domain\GlobalSettings\CommandHandler\PutApiCacheSettingsCommandHandler
+	-
+		autowired: no
+		factory: App\Domain\GlobalSettings\CommandHandler\PutCrawlerSettingsCommandHandler

@@ -15,6 +15,12 @@
 
         <embedded name="apiCache" class="App\Domain\GlobalSettings\ValueObject\ApiCache" use-column-prefix="false" />
 
+        <field name="crawlerSettings" column="crawler_settings" type="App\Domain\GlobalSettings\ValueObject\CrawlerSettings">
+            <options>
+                <option name="jsonb">true</option>
+            </options>
+        </field>
+
         <field name="version" column="version" type="integer" />
     </entity>
 

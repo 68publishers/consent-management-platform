@@ -7,6 +7,7 @@ namespace App\ReadModel\Cookie;
 use DateTimeImmutable;
 use DateTimeInterface;
 use App\Domain\Cookie\ValueObject\Name;
+use App\Domain\Cookie\ValueObject\Domain;
 use App\Domain\Cookie\ValueObject\Purpose;
 use App\Domain\Cookie\ValueObject\CookieId;
 use App\Domain\Category\ValueObject\CategoryId;
@@ -28,6 +29,8 @@ final class CookieView extends AbstractView
 
 	public Name $name;
 
+	public Domain $domain;
+
 	public ProcessingTime $processingTime;
 
 	public bool $active;
@@ -47,6 +50,7 @@ final class CookieView extends AbstractView
 			'createdAt' => $this->createdAt->format(DateTimeInterface::ATOM),
 			'deletedAt' => NULL !== $this->deletedAt ? $this->deletedAt->format(DateTimeInterface::ATOM) : NULL,
 			'name' => $this->name->value(),
+			'domain' => $this->domain->value(),
 			'processingTime' => $this->processingTime->value(),
 			'active' => $this->active,
 			'purposes' => array_map(static fn (Purpose $purpose): string => $purpose->value(), $this->purposes),

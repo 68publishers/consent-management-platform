@@ -6,6 +6,7 @@ namespace App\Infrastructure\GlobalSettings\Doctrine\ReadModel;
 
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use App\Domain\GlobalSettings\GlobalSettings;
 use App\ReadModel\GlobalSettings\GlobalSettingsView;
 use App\ReadModel\GlobalSettings\GetGlobalSettingsQuery;
@@ -20,8 +21,8 @@ final class GetGlobalSettingsQueryHandler implements QueryHandlerInterface
 	private ViewFactoryInterface $viewFactory;
 
 	/**
-	 * @param \Doctrine\ORM\EntityManagerInterface                                         $em
-	 * @param \SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewFactoryInterface $viewFactory
+	 * @param EntityManagerInterface $em
+	 * @param ViewFactoryInterface   $viewFactory
 	 */
 	public function __construct(EntityManagerInterface $em, ViewFactoryInterface $viewFactory)
 	{
@@ -30,10 +31,10 @@ final class GetGlobalSettingsQueryHandler implements QueryHandlerInterface
 	}
 
 	/**
-	 * @param \App\ReadModel\GlobalSettings\GetGlobalSettingsQuery $query
+	 * @param GetGlobalSettingsQuery $query
 	 *
-	 * @return \App\ReadModel\GlobalSettings\GlobalSettingsView|NULL
-	 * @throws \Doctrine\ORM\NonUniqueResultException
+	 * @return GlobalSettingsView|NULL
+	 * @throws NonUniqueResultException
 	 */
 	public function __invoke(GetGlobalSettingsQuery $query): ?GlobalSettingsView
 	{

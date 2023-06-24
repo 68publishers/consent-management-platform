@@ -6,6 +6,7 @@ namespace App\Subscribers\GlobalSettings;
 
 use App\Domain\GlobalSettings\Event\GlobalSettingsCreated;
 use App\Application\GlobalSettings\GlobalSettingsInterface;
+use App\Domain\GlobalSettings\Event\CrawlerSettingsChanged;
 use App\Domain\GlobalSettings\Event\ApiCacheSettingsChanged;
 use App\Domain\GlobalSettings\Event\LocalizationSettingsChanged;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
@@ -31,6 +32,7 @@ final class RefreshGlobalSettingsWhenChanged implements EventHandlerInterface, M
 		yield GlobalSettingsCreated::class;
 		yield LocalizationSettingsChanged::class;
 		yield ApiCacheSettingsChanged::class;
+		yield CrawlerSettingsChanged::class;
 	}
 
 	/**

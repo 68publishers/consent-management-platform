@@ -79,6 +79,7 @@ final class CookieExportQueryHandler implements QueryHandlerInterface
 	{
 		$item = [
 			'name' => $row['cookie']['name'],
+			'domain' => $row['cookie']['domain'],
 			'category' => $row['category'],
 			'provider' => $row['provider'],
 			'processingTime' => $row['cookie']['processingTime'],
