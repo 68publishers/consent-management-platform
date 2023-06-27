@@ -22,11 +22,12 @@ use App\Domain\CookieSuggestion\Command\CreateCookieSuggestionCommand;
 use App\Domain\CookieSuggestion\Event\CookieOccurrenceFoundOnUrlChanged;
 use App\Domain\CookieSuggestion\Event\CookieOccurrenceLastFoundAtChanged;
 use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AggregateId;
-use App\Domain\CookieSuggestion\Event\CookieIgnoredUntilNextOccurrenceChanged;
 use App\Domain\CookieSuggestion\Event\CookieOccurrenceAcceptedCategoriesChanged;
+use App\Domain\CookieSuggestion\Event\CookieSuggestionIgnoredPermanentlyChanged;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Aggregate\AggregateRootTrait;
 use App\Domain\CookieSuggestion\Command\CookieOccurrence as CommandCookieOccurrence;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Aggregate\AggregateRootInterface;
+use App\Domain\CookieSuggestion\Event\CookieSuggestionIgnoredUntilNextOccurrenceChanged;
 
 final class CookieSuggestion implements AggregateRootInterface
 {
@@ -36,11 +37,15 @@ final class CookieSuggestion implements AggregateRootInterface
 
 	private ProjectId $projectId;
 
+	private DateTimeImmutable $createdAt;
+
 	private Name $name;
 
 	private Domain $domain;
 
 	private bool $ignoredUntilNextOccurrence;
+
+	private bool $ignoredPermanently;
 
 	private Collection $occurrences;
 
@@ -110,7 +115,25 @@ final class CookieSuggestion implements AggregateRootInterface
 	public function ignoreUntilNextOccurrence(): void
 	{
 		if (FALSE === $this->ignoredUntilNextOccurrence) {
-			$this->recordThat(CookieIgnoredUntilNextOccurrenceChanged::create($this->id, TRUE));
+			$this->recordThat(CookieSuggestionIgnoredUntilNextOccurrenceChanged::create($this->id, TRUE));
+		}
+	}
+
+	public function ignorePermanently(): void
+	{
+		if (FALSE === $this->ignoredPermanently) {
+			$this->recordThat(CookieSuggestionIgnoredPermanentlyChanged::create($this->id, TRUE));
+		}
+	}
+
+	public function doNotIgnore(): void
+	{
+		if (TRUE === $this->ignoredUntilNextOccurrence) {
+			$this->recordThat(CookieSuggestionIgnoredUntilNextOccurrenceChanged::create($this->id, FALSE));
+		}
+
+		if (TRUE === $this->ignoredPermanently) {
+			$this->recordThat(CookieSuggestionIgnoredPermanentlyChanged::create($this->id, FALSE));
 		}
 	}
 
@@ -123,6 +146,7 @@ final class CookieSuggestion implements AggregateRootInterface
 	{
 		$this->id = $event->cookieSuggestionId();
 		$this->projectId = $event->projectId();
+		$this->createdAt = $event->createdAt();
 		$this->name = $event->name();
 		$this->domain = $event->domain();
 		$this->ignoredUntilNextOccurrence = FALSE;
@@ -172,8 +196,13 @@ final class CookieSuggestion implements AggregateRootInterface
 		$this->ignoredUntilNextOccurrence = FALSE;
 	}
 
-	protected function whenCookieIgnoredUntilNextOccurrenceChanged(CookieIgnoredUntilNextOccurrenceChanged $event): void
+	protected function whenCookieSuggestionIgnoredUntilNextOccurrenceChanged(CookieSuggestionIgnoredUntilNextOccurrenceChanged $event): void
 	{
 		$this->ignoredUntilNextOccurrence = $event->ignoredUntilNextOccurrence();
+	}
+
+	protected function whenCookieSuggestionIgnoredPermanentlyChanged(CookieSuggestionIgnoredPermanentlyChanged $event): void
+	{
+		$this->ignoredPermanently = $event->ignoredPermanently();
 	}
 }

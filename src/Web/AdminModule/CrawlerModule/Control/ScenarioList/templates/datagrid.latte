@@ -27,6 +27,12 @@
     </tr>
 {/block}
 
+{define col-name}
+    <a href="{$linkFactory('openModal!', ['modal' => 'detail-' . Ramsey\Uuid\Uuid::fromString($item->id)->getHex()->toString()])}" data-spinner-for="self" class="ajax">
+        {$item->name}
+    </a>
+{/define}
+
 {define col-status}
     {switch true}
         {case 'completed' === $item->status}
@@ -44,4 +50,11 @@
 
 {define col-project}
     {$item->flags['projectName'] ?? '-'}
+{/define}
+
+{define col-duration}
+    {App\Application\Helper\DurationFormatter::formatDiff(
+        $item->createdAt->setTimezone(App\Application\Localization\ApplicationDateTimeZone::get()),
+        ($item->finishedAt ?? new \DateTimeImmutable('now'))->setTimezone(App\Application\Localization\ApplicationDateTimeZone::get())
+    )}
 {/define}

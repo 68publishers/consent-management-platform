@@ -2,7 +2,14 @@
 
 {varType App\ReadModel\Cookie\CookieDataGridItemView $item}
 {varType App\Application\GlobalSettings\Locale|null $_locale}
+{varType array $_acl}
 {varType App\ReadModel\CookieProvider\CookieProviderSelectOptionView[]|null $providers}
+
+{define col-name}
+    <a n:tag-if="isset($_acl['resource'], $_acl['update']) && $user->isAllowed($_acl['resource'], $_acl['update'])" href="{$linkFactory('openModal!', ['editModal-' . $item->id->id()->getHex()->toString()])}" data-spinner-for="self" class="ajax">
+        {$item->cookieName->value()}
+    </a>
+{/define}
 
 {define col-category_name}
     {if NULL !== $item->categoryName}

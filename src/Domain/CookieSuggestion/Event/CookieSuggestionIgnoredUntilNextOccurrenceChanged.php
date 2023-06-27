@@ -7,7 +7,7 @@ namespace App\Domain\CookieSuggestion\Event;
 use App\Domain\CookieSuggestion\ValueObject\CookieSuggestionId;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Event\AbstractDomainEvent;
 
-final class CookieIgnoredUntilNextOccurrenceChanged extends AbstractDomainEvent
+final class CookieSuggestionIgnoredUntilNextOccurrenceChanged extends AbstractDomainEvent
 {
 	private CookieSuggestionId $cookieSuggestionId;
 

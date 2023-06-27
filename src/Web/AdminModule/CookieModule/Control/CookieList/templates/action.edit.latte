@@ -1,6 +1,6 @@
 {varType App\ReadModel\Cookie\CookieDataGridItemView $item}
 {varType array $_acl}
 
-<a n:if="!isset($_acl['resource'], $_acl['update']) || $user->isAllowed($_acl['resource'], $_acl['update'])" href="{$linkFactory('openModal!', ['editModal-' . $item->id->id()->getHex()->toString()])}" data-spinner-for="self" class="ajax spinner-white inline-flex items-center px-1.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+<a n:if="isset($_acl['resource'], $_acl['update']) && $user->isAllowed($_acl['resource'], $_acl['update'])" href="{$linkFactory('openModal!', ['editModal-' . $item->id->id()->getHex()->toString()])}" data-spinner-for="self" class="ajax spinner-white inline-flex items-center px-1.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
     {svg common/pencil.svg, class: 'w-4 h-4'}
 </a>

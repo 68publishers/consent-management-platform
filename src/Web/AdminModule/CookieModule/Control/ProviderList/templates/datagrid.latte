@@ -2,6 +2,12 @@
 
 {varType App\ReadModel\CookieProvider\CookieProviderDaraGridItemView $item}
 
+{define col-name}
+    <a n:tag-if="$user->isAllowed(App\Application\Acl\CookieProviderResource::class, App\Application\Acl\CookieProviderResource::UPDATE)" href="{plink :Admin:Cookie:EditProvider: id => $item->id->toString()}" data-spinner-for="self">
+        {$item->name->value()}
+    </a>
+{/define}
+
 {define col-active}
     {if $item->active}
         <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">{_active_value}</span>

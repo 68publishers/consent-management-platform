@@ -1,8 +1,7 @@
 name: Název
 project: Projekt
 username: Uživatel
-created_at: Vytvořeno
-finished_at: Dokončeno
+duration: Doba trvání
 status: Stav
 categories: Odsouhlasené kategorie
 

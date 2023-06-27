@@ -94,6 +94,8 @@ final class ScenarioListControl extends Control
 			->setReplacement([ '' => '-' ])
 			->setFilterDate('finished');
 
+		$grid->addColumnText('duration', 'duration');
+
 		$grid->addAction('abort', '')
 			->setTemplate(__DIR__ . '/templates/action.abort.latte');
 

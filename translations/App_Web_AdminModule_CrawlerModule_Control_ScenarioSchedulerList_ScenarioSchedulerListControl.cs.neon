@@ -2,7 +2,7 @@ name: Název
 project: Projekt
 expression: Naplánováno
 createdAt: Vytvořeno
-updatedAt: Naposledy aktualizováno
+updatedAt: Aktualizováno
 
 crawler_not_configured_error: 'Crawler není správně nastaven. Můžete ho nakonfigurovat <a class="link" href="%link%">zde</a>.'
 crawler_api_respond_with_error_status_code: 'API vrátilo odpověď s kódem <strong>%code%</strong>'

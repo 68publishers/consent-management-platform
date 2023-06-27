@@ -2,6 +2,12 @@
 
 {varType App\ReadModel\User\UserView $item}
 
+{define col-id}
+    <a n:tag-if="$user->isAllowed(App\Application\Acl\UserResource::class, App\Application\Acl\UserResource::UPDATE)" href="{plink :Admin:User:EditUser: id => $item->id->toString()}" data-spinner-for="self">
+        {$item->id->toString()}
+    </a>
+{/define}
+
 {define col-roles}
     {foreach $item->roles->all() as $role}
         {varType SixtyEightPublishers\UserBundle\Domain\ValueObject\Role $role}

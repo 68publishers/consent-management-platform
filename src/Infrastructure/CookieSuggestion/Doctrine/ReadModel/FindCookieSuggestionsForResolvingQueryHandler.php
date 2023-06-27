@@ -31,14 +31,14 @@ final class FindCookieSuggestionsForResolvingQueryHandler implements QueryHandle
 		
 		$result = [];
 		$rows = $connection->createQueryBuilder()
-			->select('cs.id, cs.name, cs.domain, cs.ignored_until_next_occurrence')
+			->select('cs.id, cs.name, cs.domain, cs.created_at, cs.ignored_until_next_occurrence, cs.ignored_permanently')
 			->addSelect('JSON_AGG(JSON_BUILD_OBJECT(
                 \'id\', oc.id,
                 \'scenario_name\', oc.scenario_name,
                 \'found_on_url\', oc.found_on_url,
                 \'accepted_categories\', oc.accepted_categories,
                 \'last_found_at\', oc.last_found_at
-            )) AS occurrences')
+            ) ORDER BY oc.last_found_at DESC) AS occurrences')
 			->from('cookie_suggestion', 'cs')
 			->leftJoin('cs', 'cookie_occurrence', 'oc', 'cs.id = oc.cookie_suggestion_id')
 			->where('cs.project_id = :projectId')
@@ -55,6 +55,7 @@ final class FindCookieSuggestionsForResolvingQueryHandler implements QueryHandle
 				$occurrences[] = new CookieOccurrenceForResolving(
 					$occurrenceRow['id'],
 					$occurrenceRow['scenario_name'],
+					$row['name'],
 					$occurrenceRow['found_on_url'],
 					$occurrenceRow['accepted_categories'],
 					new DateTimeImmutable($occurrenceRow['last_found_at']),
@@ -65,7 +66,9 @@ final class FindCookieSuggestionsForResolvingQueryHandler implements QueryHandle
 				$row['id'],
 				$row['name'],
 				$row['domain'],
+				new DateTimeImmutable($row['created_at']),
 				$row['ignored_until_next_occurrence'],
+				$row['ignored_permanently'],
 				$occurrences,
 			);
 		}

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\ReadModel\CookieSuggestion;
 
+use DateTimeImmutable;
+
 final class CookieSuggestion
 {
 	public string $id;
@@ -14,19 +16,19 @@ final class CookieSuggestion
 
 	public string $domain;
 
-	public bool $ignored;
+	public DateTimeImmutable $createdAt;
 
 	public function __construct(
 		string $id,
 		string $projectId,
 		string $name,
 		string $domain,
-		bool $ignored
+		DateTimeImmutable $createdAt
 	) {
 		$this->id = $id;
 		$this->projectId = $projectId;
 		$this->name = $name;
 		$this->domain = $domain;
-		$this->ignored = $ignored;
+		$this->createdAt = $createdAt;
 	}
 }

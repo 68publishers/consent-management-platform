@@ -11,17 +11,22 @@
 
         <indexes>
             <index name="idx_cookie_suggestion_project_id" columns="project_id" />
+            <index name="idx_cookie_suggestion_created_at" columns="created_at" />
         </indexes>
 
         <id name="id" column="id" type="App\Domain\CookieSuggestion\ValueObject\CookieSuggestionId" unique="true" />
 
         <field name="projectId" column="project_id" type="App\Domain\Project\ValueObject\ProjectId" />
 
+        <field name="createdAt" column="created_at" type="datetime_immutable" />
+
         <field name="name" column="name" type="App\Domain\CookieSuggestion\ValueObject\Name" />
 
         <field name="domain" column="domain" type="App\Domain\CookieSuggestion\ValueObject\Domain" />
 
         <field name="ignoredUntilNextOccurrence" column="ignored_until_next_occurrence" type="boolean" />
+
+        <field name="ignoredPermanently" column="ignored_permanently" type="boolean" />
 
         <field name="version" column="version" type="integer" />
 

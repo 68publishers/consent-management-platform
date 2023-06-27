@@ -4,13 +4,21 @@ declare(strict_types=1);
 
 namespace App\Application\CookieSuggestion\Suggestion;
 
+use App\Application\CookieSuggestion\Solution\Solutions;
+
 final class IgnoredCookieSuggestion implements SuggestionInterface
 {
 	private SuggestionInterface $originalSuggestion;
 
-	public function __construct(SuggestionInterface $originalSuggestion)
+	private bool $permanentlyIgnored;
+
+	private Solutions $solutions;
+
+	public function __construct(SuggestionInterface $originalSuggestion, bool $permanentlyIgnored, Solutions $solutions)
 	{
 		$this->originalSuggestion = $originalSuggestion;
+		$this->permanentlyIgnored = $permanentlyIgnored;
+		$this->solutions = $solutions;
 	}
 
 	public function getSuggestionId(): string
@@ -46,5 +54,15 @@ final class IgnoredCookieSuggestion implements SuggestionInterface
 	public function getOriginalSuggestion(): SuggestionInterface
 	{
 		return $this->originalSuggestion;
+	}
+
+	public function isPermanentlyIgnored(): bool
+	{
+		return $this->permanentlyIgnored;
+	}
+
+	public function getSolutions(): Solutions
+	{
+		return $this->solutions;
 	}
 }

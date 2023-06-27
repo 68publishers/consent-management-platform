@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\CookieSuggestion\Doctrine\ReadModel;
 
-use Doctrine\DBAL\Exception;
+use Exception;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use App\ReadModel\CookieSuggestion\CookieSuggestion;
 use App\ReadModel\CookieSuggestion\GetCookieSuggestionByIdQuery;
@@ -27,7 +28,7 @@ final class GetCookieSuggestionByIdQueryHandler implements QueryHandlerInterface
 		$connection = $this->em->getConnection();
 
 		$result = $connection->createQueryBuilder()
-			->select('cs.id, cs.project_id, cs.name, cs.domain, cs.ignored_until_next_occurrence')
+			->select('cs.id, cs.project_id, cs.name, cs.domain, cs.created_at')
 			->from('cookie_suggestion', 'cs')
 			->where('cs.id = :id')
 			->setParameters([
@@ -41,7 +42,7 @@ final class GetCookieSuggestionByIdQueryHandler implements QueryHandlerInterface
 			$result['project_id'],
 			$result['name'],
 			$result['domain'],
-			$result['ignored_until_next_occurrence'],
+			new DateTimeImmutable($result['created_at']),
 		) : NULL;
 	}
 }

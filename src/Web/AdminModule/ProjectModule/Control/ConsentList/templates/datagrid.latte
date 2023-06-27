@@ -2,6 +2,12 @@
 
 {varType App\ReadModel\Consent\ConsentListView $item}
 
+{define col-user_identifier}
+    <a href="{$linkFactory('openModal!', ['modal' => 'history-' . $item->id->id()->getHex()->toString()])}" data-spinner-for="self" class="ajax">
+        {$item->userIdentifier->value()}
+    </a>
+{/define}
+
 {define col-settings_short_identifier}
     {if NULL !== $item->settingsShortIdentifier}
         {if NULL !== $item->settingsId}
