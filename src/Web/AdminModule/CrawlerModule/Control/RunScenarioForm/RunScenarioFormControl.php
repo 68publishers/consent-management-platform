@@ -75,15 +75,17 @@ final class RunScenarioFormControl extends Control
 			->addRule($form::MAX_LENGTH, 'name.rule_max_length', 255);
 
 		$form->addSelect('project', 'project.field', $this->getProjectOptions())
+			->checkDefaultValue(FALSE)
+			->setRequired('project.required')
+			->setPrompt('-----')
 			->setTranslator(NULL)
-			->setOption('searchbar', TRUE)
-			->setDefaultValue(NULL);
+			->setOption('searchbar', TRUE);
 
-		[$categoryOptions, $necessaryCategories] = $this->getCategoryOptions();
+		$categoryOptions = $this->getCategoryOptions();
 
 		$form->addCheckboxList('categories', 'categories.field', $categoryOptions)
-			->setTranslator(NULL)
-			->setDefaultValue($necessaryCategories);
+			->checkDefaultValue(FALSE)
+			->setTranslator(NULL);
 
 		$form->addTextArea('config', 'config.field', NULL, 4)
 			->setRequired('config.required')
@@ -122,7 +124,7 @@ final class RunScenarioFormControl extends Control
 			'projectName' => $this->getProjectOptions()[$values->project] ?? 'unknown',
 		];
 
-		$categoryOptions = $this->getCategoryOptions()[0];
+		$categoryOptions = $this->getCategoryOptions();
 
 		foreach (array_keys($categoryOptions) as $categoryCode) {
 			$enabled = in_array($categoryCode, $values->categories);
@@ -175,24 +177,18 @@ final class RunScenarioFormControl extends Control
 	}
 
 	/**
-	 * @return array{0: array<string, string>, 1: array<int, string>}
+	 * @return array<string, string>
 	 */
 	private function getCategoryOptions(): array
 	{
 		$categories = [];
-		$necessary = [];
 		$locale = $this->validLocalesProvider->getValidDefaultLocale();
 
 		foreach ($this->queryBus->dispatch(AllCategoriesQuery::create()) as $categoryView) {
 			assert($categoryView instanceof CategoryView);
-
 			$categories[$categoryView->code->value()] = NULL !== $locale && isset($categoryView->names[$locale->code()]) ? $categoryView->names[$locale->code()]->value() : $categoryView->code->value();
-
-			if ($categoryView->necessary) {
-				$necessary[] = $categoryView->code->value();
-			}
 		}
 
-		return [$categories, $necessary];
+		return $categories;
 	}
 }

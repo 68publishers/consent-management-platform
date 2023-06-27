@@ -11,9 +11,11 @@ use Psr\Log\LoggerInterface;
 use App\ReadModel\Cookie\CookieDataForSuggestion;
 use App\ReadModel\CookieSuggestion\CookieSuggestion;
 use App\Application\CookieSuggestion\Solution\Solutions;
+use App\Application\CookieSuggestion\Solution\DoNotIgnore;
 use App\ReadModel\Cookie\FindCookieDataForSuggestionQuery;
 use App\Application\CookieSuggestion\Solution\CreateNewCookie;
 use App\Application\CookieSuggestion\Suggestion\ExistingCookie;
+use App\Application\CookieSuggestion\Solution\IgnorePermanently;
 use App\Application\CookieSuggestion\Warning\CookieDomainNotSet;
 use App\ReadModel\CookieSuggestion\CookieOccurrenceForResolving;
 use App\ReadModel\CookieSuggestion\CookieSuggestionForResolving;
@@ -183,43 +185,69 @@ final class CookieSuggestionsStore implements CookieSuggestionsStoreInterface
 	/**
 	 * @return array<int, array{
 	 *     suggestion: CookieSuggestionForResolving,
-	 *     matched: array<int, CookieDataForSuggestion>,
-	 *     matchedWithoutDomain: array<int, CookieDataForSuggestion>,
+	 *     matched: array<string, CookieDataForSuggestion>,
+	 *     matchedWithoutDomain: array<string, CookieDataForSuggestion>,
 	 * }>
 	 */
 	private function pairSuggestionsWithCookies(string $projectId): array
 	{
 		$cookieSuggestionsForResolving = $this->queryBus->dispatch(FindCookieSuggestionsForResolvingQuery::create($projectId));
 		$cookiesDataForSuggestion = $this->queryBus->dispatch(FindCookieDataForSuggestionQuery::create($projectId));
-
 		$pairedSuggestions = [];
+
+		usort(
+			$cookieSuggestionsForResolving,
+			static fn (CookieSuggestionForResolving $left, CookieSuggestionForResolving $right): int =>
+			[$left->createdAt, $left->id] <=> [$right->createdAt, $right->id]
+		);
 
 		foreach ($cookieSuggestionsForResolving as $cookieSuggestionForResolving) {
 			assert($cookieSuggestionForResolving instanceof CookieSuggestionForResolving);
 
-			$matched = [];
-			$matchedWithoutDomain = [];
+			$paired = FALSE;
 
 			foreach ($cookiesDataForSuggestion as $cookieRow) {
 				assert($cookieRow instanceof CookieDataForSuggestion);
 
 				$matchType = $this->matchCookie($cookieRow->name, $cookieRow->domain, $cookieSuggestionForResolving->name, $cookieSuggestionForResolving->domain);
 
-				if (1 === $matchType) {
-					$matched[] = $cookieRow;
-				} elseif (2 === $matchType) {
-					$matchedWithoutDomain[] = $cookieRow;
+				if (0 === $matchType) {
+					continue;
 				}
+
+				$suggestion = $cookieSuggestionForResolving->withName($cookieRow->name);
+				$key = $suggestion->domain . '__x__' . $suggestion->name;
+				$paired = TRUE;
+
+				if (!isset($pairedSuggestions[$key])) {
+					$pairedSuggestions[$key] = [
+						'suggestion' => $suggestion,
+						'matched' => [],
+						'matchedWithoutDomain' => [],
+					];
+				} else {
+					$pairedSuggestions[$key]['suggestion'] = $pairedSuggestions[$key]['suggestion']->mergeOccurrences($suggestion->occurrences);
+				}
+
+				if (2 === $matchType) {
+					$pairedSuggestions[$key]['matchedWithoutDomain'][$cookieRow->id] = $cookieRow;
+
+					continue;
+				}
+
+				$pairedSuggestions[$key]['matched'][$cookieRow->id] = $cookieRow;
 			}
 
-			$pairedSuggestions[] = [
-				'suggestion' => $cookieSuggestionForResolving,
-				'matched' => $matched,
-				'matchedWithoutDomain' => $matchedWithoutDomain,
-			];
+			if (!$paired) {
+				$pairedSuggestions[] = [
+					'suggestion' => $cookieSuggestionForResolving,
+					'matched' => [],
+					'matchedWithoutDomain' => [],
+				];
+			}
 		}
 
-		return $pairedSuggestions;
+		return array_values($pairedSuggestions);
 	}
 
 	private function suggestMissingCookie(string $projectId, CookieSuggestionForResolving $cookieSuggestionForResolving): SuggestionInterface
@@ -244,11 +272,24 @@ final class CookieSuggestionsStore implements CookieSuggestionsStoreInterface
 				$this->dataStore,
 				new CreateNewCookie(),
 				new IgnoreUntilNexOccurrence(),
+				new IgnorePermanently(),
 			),
 		);
 
-		if ($cookieSuggestionForResolving->ignored) {
-			$suggestion = new IgnoredCookieSuggestion($suggestion);
+		if ($cookieSuggestionForResolving->isIgnored()) {
+			$suggestion = new IgnoredCookieSuggestion(
+				$suggestion,
+				$cookieSuggestionForResolving->ignoredPermanently,
+				new Solutions(
+					[
+						$projectId,
+						$cookieSuggestionForResolving->id,
+						'IgnoredCookieSuggestion',
+					],
+					$this->dataStore,
+					new DoNotIgnore(),
+				),
+			);
 		}
 
 		return $suggestion;
@@ -287,11 +328,25 @@ final class CookieSuggestionsStore implements CookieSuggestionsStoreInterface
 				new AssociateCookieProviderWithProject($cookieDataForSuggestion->providerId),
 				new CreateNewCookie(),
 				new IgnoreUntilNexOccurrence(),
+				new IgnorePermanently(),
 			),
 		);
 
-		if ($cookieSuggestionForResolving->ignored) {
-			$suggestion = new IgnoredCookieSuggestion($suggestion);
+		if ($cookieSuggestionForResolving->isIgnored()) {
+			$suggestion = new IgnoredCookieSuggestion(
+				$suggestion,
+				$cookieSuggestionForResolving->ignoredPermanently,
+				new Solutions(
+					[
+						$projectId,
+						$cookieSuggestionForResolving->id,
+						$cookieDataForSuggestion->id,
+						'IgnoredCookieSuggestion',
+					],
+					$this->dataStore,
+					new DoNotIgnore(),
+				),
+			);
 		}
 
 		return $suggestion;
@@ -310,7 +365,16 @@ final class CookieSuggestionsStore implements CookieSuggestionsStoreInterface
 			$occurrences[] = $cookieOccurrence = $this->createCookieOccurrence($occurrence);
 
 			if (!in_array($cookieDataForSuggestion->categoryCode, $cookieOccurrence->acceptedCategories)) {
-				$problems[] = new CookieIsInCategoryThatIsNotAcceptedByScenario(
+				$acceptedCategories = $cookieOccurrence->acceptedCategories;
+				sort($acceptedCategories);
+
+				$problemKey = sprintf(
+					'CookieIsInCategoryThatIsNotAcceptedByScenario_%s_%s',
+					$cookieDataForSuggestion->categoryCode,
+					implode(';', $acceptedCategories),
+				);
+
+				$problems[$problemKey] = new CookieIsInCategoryThatIsNotAcceptedByScenario(
 					$cookieDataForSuggestion->categoryCode,
 					$cookieOccurrence->acceptedCategories,
 					$cookieOccurrence,
@@ -327,6 +391,7 @@ final class CookieSuggestionsStore implements CookieSuggestionsStoreInterface
 						new ChangeCookieCategory($cookieDataForSuggestion->id),
 						new CreateNewCookieWithNotAcceptedCategory($cookieDataForSuggestion->id),
 						new IgnoreUntilNexOccurrence(),
+						new IgnorePermanently(),
 					),
 				);
 			}
@@ -345,7 +410,7 @@ final class CookieSuggestionsStore implements CookieSuggestionsStoreInterface
 				$occurrences,
 				$warnings,
 				$existingCookie,
-				$problems,
+				array_values($problems),
 			)
 			: new UnproblematicCookieSuggestion(
 				$cookieSuggestionForResolving->id,
@@ -356,8 +421,21 @@ final class CookieSuggestionsStore implements CookieSuggestionsStoreInterface
 				$existingCookie,
 			);
 
-		if ($cookieSuggestionForResolving->ignored && $suggestion instanceof ProblematicCookieSuggestion) {
-			$suggestion = new IgnoredCookieSuggestion($suggestion);
+		if ($cookieSuggestionForResolving->isIgnored() && $suggestion instanceof ProblematicCookieSuggestion) {
+			$suggestion = new IgnoredCookieSuggestion(
+				$suggestion,
+				$cookieSuggestionForResolving->ignoredPermanently,
+				new Solutions(
+					[
+						$projectId,
+						$cookieSuggestionForResolving->id,
+						$cookieDataForSuggestion->id,
+						'IgnoredCookieSuggestion',
+					],
+					$this->dataStore,
+					new DoNotIgnore(),
+				),
+			);
 		}
 
 		return $suggestion;

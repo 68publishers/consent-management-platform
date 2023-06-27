@@ -2,6 +2,12 @@
 
 {varType App\ReadModel\ConsentSettings\ConsentSettingsView $item}
 
+{define col-short_identifier}
+    <a href="{$linkFactory('openModal!', ['modal' => 'detail-' . $item->id->id()->getHex()->toString()])}" data-spinner-for="self" class="ajax">
+        {$item->shortIdentifier->value()}
+    </a>
+{/define}
+
 {define col-checksum}
     {if NULL !== $item->checksum}
         <span x-data x-tooltip.interactive.html.raw="<span class='break-words'>{$item->checksum->value()}</span>">{$item->checksum->value()|substr:0, 8}</span>

@@ -3,7 +3,9 @@
 {varType App\ReadModel\Import\ImportListView $item}
 
 {define col-name}
-    {_'//imports.name.' . $item->name->value()}
+    <a href="{$linkFactory('openModal!', ['modal' => 'detail-' . $item->id->id()->getHex()->toString()])}" data-spinner-for="self" class="ajax">
+        {_'//imports.name.' . $item->name->value()}
+    </a>
 {/define}
 
 {define col-status}

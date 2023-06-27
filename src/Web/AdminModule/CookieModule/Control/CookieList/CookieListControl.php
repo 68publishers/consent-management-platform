@@ -173,6 +173,7 @@ final class CookieListControl extends Control
 		$grid->setTemplateFile(__DIR__ . '/templates/datagrid.latte');
 		$grid->setTemplateVariables([
 			'_locale' => $locale,
+			'_acl' => $this->acl,
 		]);
 
 		$grid->setDefaultSort([

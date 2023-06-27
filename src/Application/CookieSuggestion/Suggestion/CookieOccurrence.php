@@ -13,6 +13,8 @@ final class CookieOccurrence
 
 	public string $scenarioName;
 
+	public string $cookieName;
+
 	public string $foundOnUrl;
 
 	/** @var array<int, string> */
@@ -26,12 +28,14 @@ final class CookieOccurrence
 	public function __construct(
 		string $id,
 		string $scenarioName,
+		string $cookieName,
 		string $foundOnUrl,
 		array $acceptedCategories,
 		DateTimeImmutable $lastFoundAt
 	) {
 		$this->id = $id;
 		$this->scenarioName = $scenarioName;
+		$this->cookieName = $cookieName;
 		$this->foundOnUrl = $foundOnUrl;
 		$this->acceptedCategories = $acceptedCategories;
 		$this->lastFoundAt = $lastFoundAt;
@@ -42,6 +46,7 @@ final class CookieOccurrence
 		return new self(
 			$cookieOccurrenceForResolving->id,
 			$cookieOccurrenceForResolving->scenarioName,
+			$cookieOccurrenceForResolving->cookieName,
 			$cookieOccurrenceForResolving->foundOnUrl,
 			$cookieOccurrenceForResolving->acceptedCategories,
 			$cookieOccurrenceForResolving->lastFoundAt,

@@ -3,7 +3,7 @@ status: Stav
 author: Autor
 summary: Přehled
 created_at: Spuštěno
-ended_at: Skončeno
+ended_at: Dokončeno
 
 status_value:
 	running: probíhá

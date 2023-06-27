@@ -23,7 +23,7 @@ final class DurationFormatter
 			'mo' => $interval->m,
 			'd' => $interval->d,
 			'h' => $interval->h,
-			'm' => $interval->m,
+			'm' => $interval->i,
 			's' => $interval->s,
 		], static fn (int $val): bool => $val > 0);
 

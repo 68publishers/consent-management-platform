@@ -88,6 +88,28 @@ final class CookieFormControl extends Control
 	}
 
 	/**
+	 * @return array<string, CookieProviderSelectOptionView>
+	 */
+	public function getCookieProviders(): array
+	{
+		if (NULL !== $this->providerOptions) {
+			return $this->providerOptions;
+		}
+
+		$options = [];
+		$query = FindCookieProviderSelectOptionsQuery::all()
+			->withPrivate(TRUE);
+
+		foreach ($this->queryBus->dispatch($query) as $cookieProviderSelectOptionView) {
+			assert($cookieProviderSelectOptionView instanceof CookieProviderSelectOptionView);
+
+			$options[$cookieProviderSelectOptionView->id->toString()] = $cookieProviderSelectOptionView;
+		}
+
+		return $this->providerOptions = $options;
+	}
+
+	/**
 	 * @return \Nette\Application\UI\Form
 	 */
 	protected function createComponentForm(): Form
@@ -257,27 +279,5 @@ final class CookieFormControl extends Control
 		}
 
 		return $categories;
-	}
-
-	/**
-	 * @return array
-	 */
-	private function getCookieProviders(): array
-	{
-		if (NULL !== $this->providerOptions) {
-			return $this->providerOptions;
-		}
-
-		$options = [];
-		$query = FindCookieProviderSelectOptionsQuery::all()
-			->withPrivate(TRUE);
-
-		foreach ($this->queryBus->dispatch($query) as $cookieProviderSelectOptionView) {
-			assert($cookieProviderSelectOptionView instanceof CookieProviderSelectOptionView);
-
-			$options[$cookieProviderSelectOptionView->id->toString()] = $cookieProviderSelectOptionView;
-		}
-
-		return $this->providerOptions = $options;
 	}
 }

@@ -26,7 +26,6 @@ final class ScenarioDetailControl extends Control
 		$template = $this->getTemplate();
 		assert($template instanceof ScenarioDetailTemplate);
 
-		bdump($this->serializedScenarioConfig);
 		$template->scenarioResponseBody = $this->scenarioResponseBody;
 		$template->serializedScenarioConfig = $this->serializedScenarioConfig;
 	}

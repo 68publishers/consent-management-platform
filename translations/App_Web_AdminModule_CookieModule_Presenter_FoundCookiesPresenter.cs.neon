@@ -1,7 +1,7 @@
-page_title: 'Nalezené cookies projektu "%name%"'
+page_title: 'Návrhy cookies projektu "%name%"'
 
 caption:
-	new_cookies: Nové cookie
+	new_cookies: Nové cookies
 	problematic_cookies: Problematické cookies
 	occurrences: Výskyty
 	warnings: Varování
@@ -18,14 +18,17 @@ no_found_cookie:
 tooltip:
 	last_founded_at: Naposledy nalezeno
 	suggestion_contains_warnings: 'Cookie obsahuje varování, pro více informací rozklikněte.'
+	domain: Doména
 
 not_found_in_cmp: Nenalezeno v CMP
 found_in_cmp: Nalezeno v CMP
 
-resolve_suggestion: Vyřešit
+resolve_suggestion: Akceptovat
+reset_solution: Zrušit změny
 
 occurrences_table:
 	scanerio_name: Název scénáře
+	cookie_name: Název cookie
 	last_found_at: Naposledy nalezeno
 	accepted_categories: Povolené kategorie
 	found_on_url: URL prvního nálezu
@@ -48,8 +51,11 @@ solution:
 	create_new_cookie: Vytvořit novou cookie
 	create_new_cookie_with_not_accepted_category: Vytvořit stejnou cookie s jinou kategorii
 	ignore_until_next_occurrence: Ignorovat do dalšího výskytu
+	ignore_permanently: Ignorovat trvale
+	do_not_ignore: Neignorovat
 
 message:
 	unable_to_process_solution: Řešení nebylo možné zpracovat.
 	suggestion_resolved: Návrh byl úspěšně vyřešen.
 	unable_to_resolve_solution: Při vyhodnocování návrhu došlo k chybě.
+	cookie_is_no_longer_ignored: Návrh již není ignorován.

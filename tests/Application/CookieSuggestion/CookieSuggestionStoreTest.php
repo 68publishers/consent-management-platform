@@ -10,12 +10,14 @@ use Mockery;
 use App\ReadModel\Cookie\CookieDataForSuggestion;
 use App\ReadModel\CookieSuggestion\CookieSuggestion;
 use App\Application\CookieSuggestion\Solution\Solutions;
+use App\Application\CookieSuggestion\Solution\DoNotIgnore;
 use App\Application\CookieSuggestion\Solution\CreateNewCookie;
 use App\Application\CookieSuggestion\DataStore\MemoryDataStore;
 use App\Application\CookieSuggestion\Suggestion\ExistingCookie;
 use App\ReadModel\CookieSuggestion\CookieSuggestionForResolving;
 use App\ReadModel\CookieSuggestion\CookieOccurrenceForResolving;
 use App\Application\CookieSuggestion\Warning\CookieDomainNotSet;
+use App\Application\CookieSuggestion\Solution\IgnorePermanently;
 use App\Application\CookieSuggestion\Suggestion\CookieOccurrence;
 use App\Application\CookieSuggestion\Solution\ChangeCookieCategory;
 use App\Domain\CookieSuggestion\Command\CreateCookieSuggestionCommand;
@@ -33,6 +35,7 @@ use App\Application\CookieSuggestion\CookieSuggestionsStore;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 use DateTimeImmutable;
+use DateTimeZone;
 use DateTimeInterface;
 use App\Domain\CookieSuggestion\Command\AddCookieSuggestionOccurrencesCommand;
 use App\Application\CookieSuggestion\Solution\CreateNewCookieWithNotAcceptedCategory;
@@ -70,7 +73,7 @@ final class CookieSuggestionStoreTest extends TestCase
                 ],
                 [
                     GetCookieSuggestionByProjectIdAndNameAndDomainQuery::create($projectId, 'ExistingCookie', 'example.com'),
-                    new CookieSuggestion('f17fdace-f261-4cda-9524-ab4b7e6f1968', $projectId, 'ExistingCookie', 'example.com', false),
+                    new CookieSuggestion('f17fdace-f261-4cda-9524-ab4b7e6f1968', $projectId, 'ExistingCookie', 'example.com', new DateTimeImmutable('2023-06-27 12:00:00')),
                 ],
                 [
                     GetCookieSuggestionByProjectIdAndNameAndDomainQuery::create($projectId, 'MissingCookie', 'example.com'),
@@ -78,7 +81,7 @@ final class CookieSuggestionStoreTest extends TestCase
                 ],
                 [
                     GetCookieSuggestionByProjectIdAndNameAndDomainQuery::create($projectId, 'AssociatedWildcardCookie*', 'example.com'),
-                    new CookieSuggestion('13e2446e-d61b-430e-8085-c96f99e82b41', $projectId, 'AssociatedWildcardCookie*', 'example.com', false),
+                    new CookieSuggestion('13e2446e-d61b-430e-8085-c96f99e82b41', $projectId, 'AssociatedWildcardCookie*', 'example.com', new DateTimeImmutable('2023-06-27 13:00:00')),
                 ],
                 [
                     GetCookieSuggestionByProjectIdAndNameAndDomainQuery::create($projectId, 'NonAssociatedWildcardCookie987654', 'example.com'),
@@ -139,59 +142,60 @@ final class CookieSuggestionStoreTest extends TestCase
     public function testCookieSuggestionsResolving(): void
     {
         $projectId = '1786dd53-4493-4e52-aefe-059863757c70';
+        $createdAt = new DateTimeImmutable('2023-06-27 12:00:00', new DateTimeZone('UTC'));
 
         # ===== Missing =====
-        $missingNormal = new CookieSuggestionForResolving('9189459d-f5f5-41b9-b1fd-b4a6cc914ebc', 'Missing_normal', 'example.com', false, [
-            $missingNormalOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'https://www.example.com/page1', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 12:00:00')),
+        $missingNormal = new CookieSuggestionForResolving('9189459d-f5f5-41b9-b1fd-b4a6cc914ebc', 'Missing_normal', 'example.com', $createdAt = $createdAt->modify('+ 1 second'), false, false, [
+            $missingNormalOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'Missing_normal', 'https://www.example.com/page1', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 12:00:00')),
         ]);
-        $missingIgnored = new CookieSuggestionForResolving('86a0ecaf-44ec-4847-b43b-562a966c7c86', 'Missing_ignored', 'example.com', true, [
-            $missingIgnoredOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'https://www.example.com/page1', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 12:00:00')),
+        $missingIgnored = new CookieSuggestionForResolving('86a0ecaf-44ec-4847-b43b-562a966c7c86', 'Missing_ignored', 'example.com', $createdAt = $createdAt->modify('+ 1 second'), true, false, [
+            $missingIgnoredOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'Missing_ignored', 'https://www.example.com/page1', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 12:00:00')),
         ]);
 
         # ===== Unproblematic =====
-        $unproblematicNormal = new CookieSuggestionForResolving('17af2175-7970-436f-8ae5-d36400d17b2a', 'Unproblematic_normal', 'example.com', false, [
-            $unproblematicNormalOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'https://www.example.com/page1', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 12:00:00')),
+        $unproblematicNormal = new CookieSuggestionForResolving('17af2175-7970-436f-8ae5-d36400d17b2a', 'Unproblematic_normal', 'example.com', $createdAt = $createdAt->modify('+ 1 second'), false, false, [
+            $unproblematicNormalOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'Unproblematic_normal', 'https://www.example.com/page1', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 12:00:00')),
         ]);
-        $unproblematicWildcard = new CookieSuggestionForResolving('0007e99a-49a4-4c63-9eaf-eb6464cc9d04', 'Unproblematic_wildcard_12234', 'example.com', false, [
-            $unproblematicWildcardOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'https://www.example.com/page1', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 12:00:00')),
+        $unproblematicWildcard = new CookieSuggestionForResolving('0007e99a-49a4-4c63-9eaf-eb6464cc9d04', 'Unproblematic_wildcard_12234', 'example.com', $createdAt = $createdAt->modify('+ 1 second'), false, false, [
+            $unproblematicWildcardOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'Unproblematic_wildcard_12234', 'https://www.example.com/page1', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 12:00:00')),
         ]);
-        $unproblematicWildcard2 = new CookieSuggestionForResolving('0007e99a-49a4-4c63-9eaf-eb6464cc9d04', 'Unproblematic_wildcard_*', 'example.com', false, [
-            $unproblematicWildcard2Occurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'https://www.example.com/page1', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 12:00:00')),
+        $unproblematicWildcard2 = new CookieSuggestionForResolving('0007e99a-49a4-4c63-9eaf-eb6464cc9d04', 'Unproblematic_wildcard_*', 'example.com', $createdAt = $createdAt->modify('+ 1 second'), false, false, [
+            $unproblematicWildcard2Occurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'Unproblematic_wildcard_*', 'https://www.example.com/page1', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 12:00:00')),
         ]);
-        $unproblematicNoDomain = new CookieSuggestionForResolving('37c9d6c6-e7b4-48bc-8341-14695a63cbc1', 'Unproblematic_no_domain', 'example.com', false, [
-            $unproblematicNoDomainOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'https://www.example.com/page1', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 12:00:00')),
+        $unproblematicNoDomain = new CookieSuggestionForResolving('37c9d6c6-e7b4-48bc-8341-14695a63cbc1', 'Unproblematic_no_domain', 'example.com', $createdAt = $createdAt->modify('+ 1 second'), false, false, [
+            $unproblematicNoDomainOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'Unproblematic_no_domain', 'https://www.example.com/page1', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 12:00:00')),
         ]);
 
         # ===== Unassociated =====
-        $unassociatedNormal = new CookieSuggestionForResolving('9df8977b-9d44-46be-94ea-f6399cc327b1', 'Unassociated_normal', 'example.com', false, [
-            $unassociatedNormalOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'https://www.example.com/page1', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 12:00:00')),
+        $unassociatedNormal = new CookieSuggestionForResolving('9df8977b-9d44-46be-94ea-f6399cc327b1', 'Unassociated_normal', 'example.com', $createdAt = $createdAt->modify('+ 1 second'), false, false, [
+            $unassociatedNormalOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'Unassociated_normal', 'https://www.example.com/page1', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 12:00:00')),
         ]);
-        $unassociatedWildcard = new CookieSuggestionForResolving('0d5db7d0-b81d-4514-98e5-04a218451d17', 'Unassociated_wildcard_34556a', 'example.com', false, [
-            $unassociatedWildcardOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'https://www.example.com/page1', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 12:00:00')),
+        $unassociatedWildcard = new CookieSuggestionForResolving('0d5db7d0-b81d-4514-98e5-04a218451d17', 'Unassociated_wildcard_34556a', 'example.com', $createdAt = $createdAt->modify('+ 1 second'), false, false, [
+            $unassociatedWildcardOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'Unassociated_wildcard_34556a', 'https://www.example.com/page1', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 12:00:00')),
         ]);
-        $unassociatedIgnored = new CookieSuggestionForResolving('fa47cb13-90a8-4eb4-b2b1-30c0acc8b54b', 'Unassociated_ignored', 'example.com', true, [
-            $unassociatedIgnoredOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'https://www.example.com/page1', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 12:00:00')),
+        $unassociatedIgnored = new CookieSuggestionForResolving('fa47cb13-90a8-4eb4-b2b1-30c0acc8b54b', 'Unassociated_ignored', 'example.com', $createdAt = $createdAt->modify('+ 1 second'), false, true, [
+            $unassociatedIgnoredOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'Unassociated_ignored', 'https://www.example.com/page1', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 12:00:00')),
         ]);
-        $unassociatedNoDomain = new CookieSuggestionForResolving('9df8977b-9d44-46be-94ea-f6399cc327b1', 'Unassociated_no_domain', 'example.com', false, [
-            $unassociatedNoDomainOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'https://www.example.com/page1', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 12:00:00')),
+        $unassociatedNoDomain = new CookieSuggestionForResolving('9df8977b-9d44-46be-94ea-f6399cc327b1', 'Unassociated_no_domain', 'example.com', $createdAt = $createdAt->modify('+ 1 second'), false, false, [
+            $unassociatedNoDomainOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'Unassociated_no_domain', 'https://www.example.com/page1', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 12:00:00')),
         ]);
 
         # ===== Problematic =====
-        $problematicSingleCategory = new CookieSuggestionForResolving('9df8977b-9d44-46be-94ea-f6399cc327b1', 'Problematic_single_category', 'example.com', false, [
-            $problematicSingleCategoryOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'https://www.example.com/page1', ['categoryA', 'categoryB', 'categoryC'], new DateTimeImmutable('2023-06-24 12:00:00')),
-            $problematicSingleCategoryOccurrence2 = new CookieOccurrenceForResolving('561109e2-5944-44ae-aedb-dcbc58e62d55', 'ScenarioB', 'https://www.example.com/page2', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 14:00:00')),
+        $problematicSingleCategory = new CookieSuggestionForResolving('9df8977b-9d44-46be-94ea-f6399cc327b1', 'Problematic_single_category', 'example.com', $createdAt = $createdAt->modify('+ 1 second'), false, false, [
+            $problematicSingleCategoryOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'Problematic_single_category', 'https://www.example.com/page1', ['categoryA', 'categoryB', 'categoryC'], new DateTimeImmutable('2023-06-24 12:00:00')),
+            $problematicSingleCategoryOccurrence2 = new CookieOccurrenceForResolving('561109e2-5944-44ae-aedb-dcbc58e62d55', 'ScenarioB', 'Problematic_single_category', 'https://www.example.com/page2', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 14:00:00')),
         ]);
-        $problematicSingleCategoryIgnored = new CookieSuggestionForResolving('46ac6172-9f8e-492a-bef7-832f5055e201', 'Problematic_single_category_ignored', 'example.com', true, [
-            $problematicSingleCategoryIgnoredOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'https://www.example.com/page1', ['categoryA', 'categoryB', 'categoryC'], new DateTimeImmutable('2023-06-24 12:00:00')),
-            $problematicSingleCategoryIgnoredOccurrence2 = new CookieOccurrenceForResolving('561109e2-5944-44ae-aedb-dcbc58e62d55', 'ScenarioB', 'https://www.example.com/page2', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 14:00:00')),
+        $problematicSingleCategoryIgnored = new CookieSuggestionForResolving('46ac6172-9f8e-492a-bef7-832f5055e201', 'Problematic_single_category_ignored', 'example.com', $createdAt = $createdAt->modify('+ 1 second'), true, true, [
+            $problematicSingleCategoryIgnoredOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'Problematic_single_category_ignored', 'https://www.example.com/page1', ['categoryA', 'categoryB', 'categoryC'], new DateTimeImmutable('2023-06-24 12:00:00')),
+            $problematicSingleCategoryIgnoredOccurrence2 = new CookieOccurrenceForResolving('561109e2-5944-44ae-aedb-dcbc58e62d55', 'ScenarioB', 'Problematic_single_category_ignored', 'https://www.example.com/page2', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 14:00:00')),
         ]);
-        $problematicSingleCategoryMissingDomain = new CookieSuggestionForResolving('43cc8ac0-24b9-4489-9ccf-b1c5bae3e4ef', 'Problematic_single_category_missing_domain', 'example.com', false, [
-            $problematicSingleCategoryMissingDomainOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'https://www.example.com/page1', ['categoryA', 'categoryB', 'categoryC'], new DateTimeImmutable('2023-06-24 12:00:00')),
-            $problematicSingleCategoryMissingDomainOccurrence2 = new CookieOccurrenceForResolving('561109e2-5944-44ae-aedb-dcbc58e62d55', 'ScenarioB', 'https://www.example.com/page2', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 14:00:00')),
+        $problematicSingleCategoryMissingDomain = new CookieSuggestionForResolving('43cc8ac0-24b9-4489-9ccf-b1c5bae3e4ef', 'Problematic_single_category_missing_domain', 'example.com', $createdAt = $createdAt->modify('+ 1 second'), false, false, [
+            $problematicSingleCategoryMissingDomainOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'Problematic_single_category_missing_domain', 'https://www.example.com/page1', ['categoryA', 'categoryB', 'categoryC'], new DateTimeImmutable('2023-06-24 12:00:00')),
+            $problematicSingleCategoryMissingDomainOccurrence2 = new CookieOccurrenceForResolving('561109e2-5944-44ae-aedb-dcbc58e62d55', 'ScenarioB', 'Problematic_single_category_missing_domain', 'https://www.example.com/page2', ['categoryA', 'categoryB'], new DateTimeImmutable('2023-06-24 14:00:00')),
         ]);
-        $problematicTwoCategories = new CookieSuggestionForResolving('42c660ce-6770-4002-abd8-338a4015444d', 'Problematic_two_categories', 'example.com', false, [
-            $problematicTwoCategoriesOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'https://www.example.com/page1', ['categoryA', 'categoryB', 'categoryC'], new DateTimeImmutable('2023-06-24 12:00:00')),
-            $problematicTwoCategoriesOccurrence2 = new CookieOccurrenceForResolving('561109e2-5944-44ae-aedb-dcbc58e62d55', 'ScenarioB', 'https://www.example.com/page2', ['categoryA', 'categoryB', 'categoryD'], new DateTimeImmutable('2023-06-24 14:00:00')),
+        $problematicTwoCategories = new CookieSuggestionForResolving('42c660ce-6770-4002-abd8-338a4015444d', 'Problematic_two_categories', 'example.com', $createdAt = $createdAt->modify('+ 1 second'), false, false, [
+            $problematicTwoCategoriesOccurrence1 = new CookieOccurrenceForResolving('babc3c1a-71cc-4776-a70e-b9ac4f4ed16c', 'ScenarioA', 'Problematic_two_categories', 'https://www.example.com/page1', ['categoryA', 'categoryB', 'categoryC'], new DateTimeImmutable('2023-06-24 12:00:00')),
+            $problematicTwoCategoriesOccurrence2 = new CookieOccurrenceForResolving('561109e2-5944-44ae-aedb-dcbc58e62d55', 'ScenarioB', 'Problematic_two_categories', 'https://www.example.com/page2', ['categoryA', 'categoryB', 'categoryD'], new DateTimeImmutable('2023-06-24 14:00:00')),
         ]);
 
         $store = $this->createStore([
@@ -247,45 +251,70 @@ final class CookieSuggestionStoreTest extends TestCase
 
         # ===== Ignored =====
         Assert::equal([
-            new IgnoredCookieSuggestion(new MissingCookieSuggestion(
-                '86a0ecaf-44ec-4847-b43b-562a966c7c86',
-                'Missing_ignored',
-                'example.com',
-                [CookieOccurrence::fromCookieOccurrenceForResolving($missingIgnoredOccurrence1)],
-                [],
-                new Solutions([$projectId, '86a0ecaf-44ec-4847-b43b-562a966c7c86', 'MissingCookieSuggestion'], $store->getDataStore(), new CreateNewCookie(), new IgnoreUntilNexOccurrence()),
-            )),
-            new IgnoredCookieSuggestion(new UnassociatedCookieSuggestion(
-                'fa47cb13-90a8-4eb4-b2b1-30c0acc8b54b',
-                'Unassociated_ignored',
-                'example.com',
-                [CookieOccurrence::fromCookieOccurrenceForResolving($unassociatedIgnoredOccurrence1)],
-                [],
-                ExistingCookie::fromCookieDataForSuggestion($unassociatedIgnoredCookie),
-                new Solutions([$projectId, 'fa47cb13-90a8-4eb4-b2b1-30c0acc8b54b', 'b59ac571-538e-4412-9888-cd5a8f834118', 'UnassociatedCookieSuggestion'], $store->getDataStore(), new AssociateCookieProviderWithProject('7b6348f1-9ce0-4dd4-a12c-20a5925e680c'), new CreateNewCookie(), new IgnoreUntilNexOccurrence()),
-            )),
-            new IgnoredCookieSuggestion(new ProblematicCookieSuggestion(
-                '46ac6172-9f8e-492a-bef7-832f5055e201',
-                'Problematic_single_category_ignored',
-                'example.com',
-                [CookieOccurrence::fromCookieOccurrenceForResolving($problematicSingleCategoryIgnoredOccurrence1), CookieOccurrence::fromCookieOccurrenceForResolving($problematicSingleCategoryIgnoredOccurrence2)],
-                [],
-                ExistingCookie::fromCookieDataForSuggestion($problematicSingleCategoryIgnoredCookie),
-                [
-                    new CookieIsInCategoryThatIsNotAcceptedByScenario(
-                        'categoryC',
-                        ['categoryA', 'categoryB'],
-                        CookieOccurrence::fromCookieOccurrenceForResolving($problematicSingleCategoryIgnoredOccurrence2),
-                        new Solutions(
-                            [$projectId, '46ac6172-9f8e-492a-bef7-832f5055e201', 'cccbb209-d4ea-4fdb-997d-285208061891', '561109e2-5944-44ae-aedb-dcbc58e62d55', 'ProblematicCookieSuggestion', CookieIsInCategoryThatIsNotAcceptedByScenario::TYPE],
-                            $store->getDataStore(),
-                            new ChangeCookieCategory('cccbb209-d4ea-4fdb-997d-285208061891'),
-                            new CreateNewCookieWithNotAcceptedCategory('cccbb209-d4ea-4fdb-997d-285208061891'),
-                            new IgnoreUntilNexOccurrence(),
-                        ),
-                    )
-                ],
-            )),
+            new IgnoredCookieSuggestion(
+                new MissingCookieSuggestion(
+                    '86a0ecaf-44ec-4847-b43b-562a966c7c86',
+                    'Missing_ignored',
+                    'example.com',
+                    [CookieOccurrence::fromCookieOccurrenceForResolving($missingIgnoredOccurrence1)],
+                    [],
+                    new Solutions([$projectId, '86a0ecaf-44ec-4847-b43b-562a966c7c86', 'MissingCookieSuggestion'], $store->getDataStore(), new CreateNewCookie(), new IgnoreUntilNexOccurrence(), new IgnorePermanently()),
+                ),
+                false,
+                new Solutions(
+                    [$projectId, '86a0ecaf-44ec-4847-b43b-562a966c7c86', 'IgnoredCookieSuggestion'],
+                    $store->getDataStore(),
+                    new DoNotIgnore(),
+                ),
+            ),
+            new IgnoredCookieSuggestion(
+                    new UnassociatedCookieSuggestion(
+                    'fa47cb13-90a8-4eb4-b2b1-30c0acc8b54b',
+                    'Unassociated_ignored',
+                    'example.com',
+                    [CookieOccurrence::fromCookieOccurrenceForResolving($unassociatedIgnoredOccurrence1)],
+                    [],
+                    ExistingCookie::fromCookieDataForSuggestion($unassociatedIgnoredCookie),
+                    new Solutions([$projectId, 'fa47cb13-90a8-4eb4-b2b1-30c0acc8b54b', 'b59ac571-538e-4412-9888-cd5a8f834118', 'UnassociatedCookieSuggestion'], $store->getDataStore(), new AssociateCookieProviderWithProject('7b6348f1-9ce0-4dd4-a12c-20a5925e680c'), new CreateNewCookie(), new IgnoreUntilNexOccurrence(), new IgnorePermanently()),
+                ),
+                true,
+                new Solutions(
+                    [$projectId, 'fa47cb13-90a8-4eb4-b2b1-30c0acc8b54b', 'b59ac571-538e-4412-9888-cd5a8f834118', 'IgnoredCookieSuggestion'],
+                    $store->getDataStore(),
+                    new DoNotIgnore(),
+                ),
+            ),
+            new IgnoredCookieSuggestion(
+                    new ProblematicCookieSuggestion(
+                    '46ac6172-9f8e-492a-bef7-832f5055e201',
+                    'Problematic_single_category_ignored',
+                    'example.com',
+                    [CookieOccurrence::fromCookieOccurrenceForResolving($problematicSingleCategoryIgnoredOccurrence1), CookieOccurrence::fromCookieOccurrenceForResolving($problematicSingleCategoryIgnoredOccurrence2)],
+                    [],
+                    ExistingCookie::fromCookieDataForSuggestion($problematicSingleCategoryIgnoredCookie),
+                    [
+                        new CookieIsInCategoryThatIsNotAcceptedByScenario(
+                            'categoryC',
+                            ['categoryA', 'categoryB'],
+                            CookieOccurrence::fromCookieOccurrenceForResolving($problematicSingleCategoryIgnoredOccurrence2),
+                            new Solutions(
+                                [$projectId, '46ac6172-9f8e-492a-bef7-832f5055e201', 'cccbb209-d4ea-4fdb-997d-285208061891', '561109e2-5944-44ae-aedb-dcbc58e62d55', 'ProblematicCookieSuggestion', CookieIsInCategoryThatIsNotAcceptedByScenario::TYPE],
+                                $store->getDataStore(),
+                                new ChangeCookieCategory('cccbb209-d4ea-4fdb-997d-285208061891'),
+                                new CreateNewCookieWithNotAcceptedCategory('cccbb209-d4ea-4fdb-997d-285208061891'),
+                                new IgnoreUntilNexOccurrence(),
+                                new IgnorePermanently(),
+                            ),
+                        )
+                    ],
+                ),
+                true,
+                new Solutions(
+                    [$projectId, '46ac6172-9f8e-492a-bef7-832f5055e201', 'cccbb209-d4ea-4fdb-997d-285208061891', 'IgnoredCookieSuggestion'],
+                    $store->getDataStore(),
+                    new DoNotIgnore(),
+                ),
+            ),
         ], $ignoredCookieSuggestions);
 
         # ===== Missing =====
@@ -296,7 +325,7 @@ final class CookieSuggestionStoreTest extends TestCase
                 'example.com',
                 [CookieOccurrence::fromCookieOccurrenceForResolving($missingNormalOccurrence1)],
                 [],
-                new Solutions([$projectId, '9189459d-f5f5-41b9-b1fd-b4a6cc914ebc', 'MissingCookieSuggestion'], $store->getDataStore(), new CreateNewCookie(), new IgnoreUntilNexOccurrence()),
+                new Solutions([$projectId, '9189459d-f5f5-41b9-b1fd-b4a6cc914ebc', 'MissingCookieSuggestion'], $store->getDataStore(), new CreateNewCookie(), new IgnoreUntilNexOccurrence(), new IgnorePermanently()),
             )
         ], $missingCookieSuggestions);
 
@@ -312,17 +341,9 @@ final class CookieSuggestionStoreTest extends TestCase
             ),
             new UnproblematicCookieSuggestion(
                 '0007e99a-49a4-4c63-9eaf-eb6464cc9d04',
-                'Unproblematic_wildcard_12234',
-                'example.com',
-                [CookieOccurrence::fromCookieOccurrenceForResolving($unproblematicWildcardOccurrence1)],
-                [],
-                ExistingCookie::fromCookieDataForSuggestion($unproblematicWildcardCookie),
-            ),
-            new UnproblematicCookieSuggestion(
-                '0007e99a-49a4-4c63-9eaf-eb6464cc9d04',
                 'Unproblematic_wildcard_*',
                 'example.com',
-                [CookieOccurrence::fromCookieOccurrenceForResolving($unproblematicWildcard2Occurrence1)],
+                [CookieOccurrence::fromCookieOccurrenceForResolving($unproblematicWildcardOccurrence1), CookieOccurrence::fromCookieOccurrenceForResolving($unproblematicWildcard2Occurrence1)],
                 [],
                 ExistingCookie::fromCookieDataForSuggestion($unproblematicWildcardCookie),
             ),
@@ -345,16 +366,16 @@ final class CookieSuggestionStoreTest extends TestCase
                 [CookieOccurrence::fromCookieOccurrenceForResolving($unassociatedNormalOccurrence1)],
                 [],
                 ExistingCookie::fromCookieDataForSuggestion($unassociatedNormalCookie),
-                new Solutions([$projectId, '9df8977b-9d44-46be-94ea-f6399cc327b1', 'c8ebc9c9-aed2-4742-bfb5-d25b738e0285', 'UnassociatedCookieSuggestion'], $store->getDataStore(), new AssociateCookieProviderWithProject('7b6348f1-9ce0-4dd4-a12c-20a5925e680c'), new CreateNewCookie(), new IgnoreUntilNexOccurrence()),
+                new Solutions([$projectId, '9df8977b-9d44-46be-94ea-f6399cc327b1', 'c8ebc9c9-aed2-4742-bfb5-d25b738e0285', 'UnassociatedCookieSuggestion'], $store->getDataStore(), new AssociateCookieProviderWithProject('7b6348f1-9ce0-4dd4-a12c-20a5925e680c'), new CreateNewCookie(), new IgnoreUntilNexOccurrence(), new IgnorePermanently()),
             ),
             new UnassociatedCookieSuggestion(
                 '0d5db7d0-b81d-4514-98e5-04a218451d17',
-                'Unassociated_wildcard_34556a',
+                'Unassociated_wildcard_*',
                 'example.com',
                 [CookieOccurrence::fromCookieOccurrenceForResolving($unassociatedWildcardOccurrence1)],
                 [],
                 ExistingCookie::fromCookieDataForSuggestion($unassociatedWildcardCookie),
-                new Solutions([$projectId, '0d5db7d0-b81d-4514-98e5-04a218451d17', '7bf422e9-9ac3-4484-97f3-36d81980f7c2', 'UnassociatedCookieSuggestion'], $store->getDataStore(), new AssociateCookieProviderWithProject('7b6348f1-9ce0-4dd4-a12c-20a5925e680c'), new CreateNewCookie(), new IgnoreUntilNexOccurrence()),
+                new Solutions([$projectId, '0d5db7d0-b81d-4514-98e5-04a218451d17', '7bf422e9-9ac3-4484-97f3-36d81980f7c2', 'UnassociatedCookieSuggestion'], $store->getDataStore(), new AssociateCookieProviderWithProject('7b6348f1-9ce0-4dd4-a12c-20a5925e680c'), new CreateNewCookie(), new IgnoreUntilNexOccurrence(), new IgnorePermanently()),
             ),
             new UnassociatedCookieSuggestion(
                 '9df8977b-9d44-46be-94ea-f6399cc327b1',
@@ -363,7 +384,7 @@ final class CookieSuggestionStoreTest extends TestCase
                 [CookieOccurrence::fromCookieOccurrenceForResolving($unassociatedNoDomainOccurrence1)],
                 [new CookieDomainNotSet()],
                 ExistingCookie::fromCookieDataForSuggestion($unassociatedNoDomainCookie),
-                new Solutions([$projectId, '9df8977b-9d44-46be-94ea-f6399cc327b1', '30b87e4d-cfe7-4699-a70c-5d9ddc34deb7', 'UnassociatedCookieSuggestion'], $store->getDataStore(), new AssociateCookieProviderWithProject('7b6348f1-9ce0-4dd4-a12c-20a5925e680c'), new CreateNewCookie(), new IgnoreUntilNexOccurrence()),
+                new Solutions([$projectId, '9df8977b-9d44-46be-94ea-f6399cc327b1', '30b87e4d-cfe7-4699-a70c-5d9ddc34deb7', 'UnassociatedCookieSuggestion'], $store->getDataStore(), new AssociateCookieProviderWithProject('7b6348f1-9ce0-4dd4-a12c-20a5925e680c'), new CreateNewCookie(), new IgnoreUntilNexOccurrence(), new IgnorePermanently()),
             ),
         ], $unassociatedCookieSuggestions);
 
@@ -387,6 +408,7 @@ final class CookieSuggestionStoreTest extends TestCase
                             new ChangeCookieCategory('1f5d336e-7c96-4846-921c-f39b78ed8d21'),
                             new CreateNewCookieWithNotAcceptedCategory('1f5d336e-7c96-4846-921c-f39b78ed8d21'),
                             new IgnoreUntilNexOccurrence(),
+                            new IgnorePermanently(),
                         ),
                     )
                 ],
@@ -409,6 +431,7 @@ final class CookieSuggestionStoreTest extends TestCase
                             new ChangeCookieCategory('997637a7-595e-4242-8ccd-7dc1476aeb63'),
                             new CreateNewCookieWithNotAcceptedCategory('997637a7-595e-4242-8ccd-7dc1476aeb63'),
                             new IgnoreUntilNexOccurrence(),
+                            new IgnorePermanently(),
                         ),
                     )
                 ],
@@ -417,7 +440,7 @@ final class CookieSuggestionStoreTest extends TestCase
                 '42c660ce-6770-4002-abd8-338a4015444d',
                 'Problematic_two_categories',
                 'example.com',
-                [CookieOccurrence::fromCookieOccurrenceForResolving($problematicTwoCategoriesOccurrence1), CookieOccurrence::fromCookieOccurrenceForResolving($problematicTwoCategoriesOccurrence2)],
+                [CookieOccurrence::fromCookieOccurrenceForResolving($problematicTwoCategoriesOccurrence2), CookieOccurrence::fromCookieOccurrenceForResolving($problematicTwoCategoriesOccurrence1)],
                 [],
                 ExistingCookie::fromCookieDataForSuggestion($problematicTwoCategoriesCookie1),
                 [
@@ -431,6 +454,7 @@ final class CookieSuggestionStoreTest extends TestCase
                             new ChangeCookieCategory('ac2cc255-8056-455f-92e8-716c6e17814e'),
                             new CreateNewCookieWithNotAcceptedCategory('ac2cc255-8056-455f-92e8-716c6e17814e'),
                             new IgnoreUntilNexOccurrence(),
+                            new IgnorePermanently(),
                         ),
                     )
                 ],
@@ -439,7 +463,7 @@ final class CookieSuggestionStoreTest extends TestCase
                 '42c660ce-6770-4002-abd8-338a4015444d',
                 'Problematic_two_categories',
                 'example.com',
-                [CookieOccurrence::fromCookieOccurrenceForResolving($problematicTwoCategoriesOccurrence1), CookieOccurrence::fromCookieOccurrenceForResolving($problematicTwoCategoriesOccurrence2)],
+                [CookieOccurrence::fromCookieOccurrenceForResolving($problematicTwoCategoriesOccurrence2), CookieOccurrence::fromCookieOccurrenceForResolving($problematicTwoCategoriesOccurrence1)],
                 [],
                 ExistingCookie::fromCookieDataForSuggestion($problematicTwoCategoriesCookie2),
                 [
@@ -453,6 +477,7 @@ final class CookieSuggestionStoreTest extends TestCase
                             new ChangeCookieCategory('b9e3920f-9d67-4dd6-bd9b-1d3ce244a60c'),
                             new CreateNewCookieWithNotAcceptedCategory('b9e3920f-9d67-4dd6-bd9b-1d3ce244a60c'),
                             new IgnoreUntilNexOccurrence(),
+                            new IgnorePermanently(),
                         ),
                     )
                 ],

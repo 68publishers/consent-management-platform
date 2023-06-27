@@ -35,10 +35,12 @@ use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 use App\Application\CookieSuggestion\CookieSuggestionsStoreInterface;
 use App\Application\CookieSuggestion\Suggestion\IgnoredCookieSuggestion;
 use App\Application\CookieSuggestion\Suggestion\MissingCookieSuggestion;
+use App\Domain\CookieSuggestion\Command\DoNotIgnoreCookieSuggestionCommand;
 use App\Application\CookieSuggestion\Suggestion\ProblematicCookieSuggestion;
 use App\Application\CookieSuggestion\Suggestion\UnassociatedCookieSuggestion;
 use App\Application\CookieSuggestion\Suggestion\UnproblematicCookieSuggestion;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControl;
+use App\Domain\CookieSuggestion\Command\IgnoreCookieSuggestionPermanentlyCommand;
 use App\Domain\CookieSuggestion\Command\IgnoreCookieSuggestionUntilNextOccurrenceCommand;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControlFactoryInterface;
 
@@ -121,6 +123,16 @@ final class FoundCookiesPresenter extends AdminPresenter
 		$this->resolveSolution($cookieSuggestionId, $solutionsUniqueId, $solutionUniqueId, $solutionType, $values);
 	}
 
+	/**
+	 * @throws AbortException
+	 */
+	public function handleResetSolution(string $solutionsUniqueId): void
+	{
+		$this->cookieSuggestionsStore->getDataStore()->remove($solutionsUniqueId);
+		$this->redrawControl();
+		$this->redirectIfNotAjax();
+	}
+
 	protected function beforeRender(): void
 	{
 		parent::beforeRender();
@@ -180,9 +192,22 @@ final class FoundCookiesPresenter extends AdminPresenter
 		) {
 			$inner->setOverwrittenDefaults($solutionsData['values']['form_values']);
 		} elseif ('create_new_cookie' === $solutionType) {
+			$defaultProviderId = NULL;
+
+			foreach ($inner->getCookieProviders() as $cookieProviderId => $cookieProviderOption) {
+				$providerCode = $cookieProviderOption->code->value();
+
+				if ($providerCode === substr($cookieSuggestion->domain, -strlen($providerCode))) {
+					$defaultProviderId = $cookieProviderId;
+
+					break;
+				}
+			}
+
 			$inner->setOverwrittenDefaults([
 				'name' => $cookieSuggestion->name,
 				'domain' => $cookieSuggestion->domain,
+				'provider' => $defaultProviderId,
 			]);
 		} elseif ('create_new_cookie_with_not_accepted_category' === $solutionType && $cookieView instanceof CookieView) {
 			$isExpiration = !in_array($cookieView->processingTime->value(), [ProcessingTime::PERSISTENT, ProcessingTime::SESSION], TRUE);
@@ -237,6 +262,8 @@ final class FoundCookiesPresenter extends AdminPresenter
 
 		switch ($this->solution['solutionType']) {
 			case 'ignore_until_next_occurrence':
+			case 'ignore_permanently':
+			case 'do_not_ignore':
 				$this->storeSolutionValues($this->solution, []);
 				$this->redrawControl();
 				$this->redirectIfNotAjax();
@@ -281,7 +308,15 @@ final class FoundCookiesPresenter extends AdminPresenter
 	{
 		switch ($solutionType) {
 			case 'ignore_until_next_occurrence':
-				$this->resolveIgnoreUntilNextOccurrence($cookieSuggestionId, $solutionsUniqueId);
+				$this->resolveIgnore($cookieSuggestionId, $solutionsUniqueId, FALSE);
+
+				break;
+			case 'ignore_permanently':
+				$this->resolveIgnore($cookieSuggestionId, $solutionsUniqueId, TRUE);
+
+				break;
+			case 'do_not_ignore':
+				$this->resolveDoNotIgnore($cookieSuggestionId, $solutionsUniqueId);
 
 				break;
 			case 'associate_cookie_provider_with_project':
@@ -310,11 +345,35 @@ final class FoundCookiesPresenter extends AdminPresenter
 	/**
 	 * @throws AbortException
 	 */
-	private function resolveIgnoreUntilNextOccurrence(string $cookieSuggestionId, string $solutionsUniqueId): void
+	private function resolveIgnore(string $cookieSuggestionId, string $solutionsUniqueId, bool $permanently): void
 	{
 		try {
-			$this->commandBus->dispatch(IgnoreCookieSuggestionUntilNextOccurrenceCommand::create($cookieSuggestionId));
+			$this->commandBus->dispatch(
+				$permanently
+				? IgnoreCookieSuggestionPermanentlyCommand::create($cookieSuggestionId)
+				: IgnoreCookieSuggestionUntilNextOccurrenceCommand::create($cookieSuggestionId)
+			);
 			$this->subscribeFlashMessage(FlashMessage::success('suggestion_resolved'));
+
+			$this->cookieSuggestionsStore->getDataStore()->remove($solutionsUniqueId);
+			$this->solution = NULL;
+		} catch (Throwable $e) {
+			if (!$e instanceof DomainException) {
+				$this->logger->error((string) $e);
+			}
+
+			$this->subscribeFlashMessage(FlashMessage::error('unable_to_resolve_solution'));
+		}
+
+		$this->redrawControl();
+		$this->redirectIfNotAjax();
+	}
+
+	private function resolveDoNotIgnore(string $cookieSuggestionId, string $solutionsUniqueId): void
+	{
+		try {
+			$this->commandBus->dispatch(DoNotIgnoreCookieSuggestionCommand::create($cookieSuggestionId));
+			$this->subscribeFlashMessage(FlashMessage::success('cookie_is_no_longer_ignored'));
 
 			$this->cookieSuggestionsStore->getDataStore()->remove($solutionsUniqueId);
 			$this->solution = NULL;
