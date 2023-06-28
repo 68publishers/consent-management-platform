@@ -33,4 +33,8 @@ final class FoundCookiesTemplate extends AdminTemplate
 
 	/** @var array<int, IgnoredCookieSuggestion> */
 	public array $ignoredCookieSuggestions;
+
+	public int $totalNumberOfResolvableSuggestions;
+
+	public int $totalNumberOfReadyToResolveSuggestions;
 }

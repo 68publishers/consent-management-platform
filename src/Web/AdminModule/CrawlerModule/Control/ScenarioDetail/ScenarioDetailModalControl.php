@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Web\AdminModule\CrawlerModule\Control\ScenarioDetail;
 
 use Throwable;
+use Nette\Security\User;
 use App\Web\Ui\Modal\AbstractModalControl;
 use Nette\Application\BadRequestException;
 use App\Application\Crawler\CrawlerClientProvider;
@@ -20,17 +21,24 @@ final class ScenarioDetailModalControl extends AbstractModalControl
 
 	private ScenarioDetailControlFactoryInterface $scenarioDetailControlFactory;
 
+	private User $user;
+
 	private ?ScenarioResponse $scenarioResponse = NULL;
 
 	private ?string $serializedScenarioConfig = NULL;
 
 	private ?Throwable $responseError = NULL;
 
-	public function __construct(string $scenarioId, CrawlerClientProvider $crawlerClientProvider, ScenarioDetailControlFactoryInterface $scenarioDetailControlFactory)
-	{
+	public function __construct(
+		string $scenarioId,
+		CrawlerClientProvider $crawlerClientProvider,
+		ScenarioDetailControlFactoryInterface $scenarioDetailControlFactory,
+		User $user
+	) {
 		$this->scenarioId = $scenarioId;
 		$this->crawlerClientProvider = $crawlerClientProvider;
 		$this->scenarioDetailControlFactory = $scenarioDetailControlFactory;
+		$this->user = $user;
 	}
 
 	protected function beforeRender(): void
@@ -43,6 +51,7 @@ final class ScenarioDetailModalControl extends AbstractModalControl
 		$template->scenarioId = $this->scenarioId;
 		$template->scenarioResponse = $this->getScenarioResponse();
 		$template->responseError = $this->responseError;
+		$template->user = $this->user;
 	}
 
 	/**

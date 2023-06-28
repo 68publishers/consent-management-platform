@@ -8,24 +8,41 @@ final class MemoryDataStore implements DataStoreInterface
 {
 	private array $storage;
 
-	public function store(string $solutionsUniqueId, string $solutionUniqueId, string $solutionType, array $values): void
+	public function store(string $projectId, string $solutionsUniqueId, string $solutionUniqueId, string $solutionType, string $cookieSuggestionId, array $values): void
 	{
-		$this->storage[$solutionsUniqueId] = [
-			'solution_unique_id' => $solutionsUniqueId,
-			'solution_type' => $solutionType,
+		$section = $this->getAll($projectId);
+		$section[$solutionsUniqueId] = [
+			'solutionUniqueId' => $solutionUniqueId,
+			'solutionType' => $solutionType,
+			'cookieSuggestionId' => $cookieSuggestionId,
 			'values' => $values,
 		];
+		$this->storage[$projectId] = $section;
 	}
 
-	public function remove(string $solutionsUniqueId): void
+	public function remove(string $projectId, string $solutionsUniqueId): void
 	{
-		if (isset($this->storage[$solutionsUniqueId])) {
-			unset($this->storage[$solutionsUniqueId]);
+		if (isset($this->storage[$projectId], $this->storage[$projectId][$solutionsUniqueId])) {
+			unset($this->storage[$projectId][$solutionsUniqueId]);
 		}
 	}
 
-	public function get(string $solutionsUniqueId): ?array
+	public function removeAll(string $projectId): void
 	{
-		return $this->storage[$solutionsUniqueId] ?? NULL;
+		if (isset($this->storage[$projectId])) {
+			unset($this->storage[$projectId]);
+		}
+	}
+
+	public function get(string $projectId, string $solutionsUniqueId): ?array
+	{
+		$section = $this->storage[$projectId] ?? [];
+
+		return $section[$solutionsUniqueId] ?? NULL;
+	}
+
+	public function getAll(string $projectId): array
+	{
+		return $this->storage[$projectId] ?? [];
 	}
 }

@@ -9,6 +9,10 @@ use App\Application\CookieSuggestion\DataStore\DataStoreInterface;
 
 final class Solutions
 {
+	private string $projectId;
+
+	private string $cookieSuggestionId;
+
 	private string $uniqueKey;
 
 	private DataStoreInterface $dataStore;
@@ -20,13 +24,25 @@ final class Solutions
 	 * @param non-empty-list<string> $compositeKey
 	 */
 	public function __construct(
+		string $projectId,
+		string $cookieSuggestionId,
 		array $compositeKey,
 		DataStoreInterface $dataStore,
 		SolutionInterface ...$solutions
 	) {
-		$this->uniqueKey = md5(implode('__', $compositeKey));
+		$this->projectId = $projectId;
+		$this->cookieSuggestionId = $cookieSuggestionId;
 		$this->dataStore = $dataStore;
 		$this->solutions = $solutions;
+		$this->uniqueKey = md5(
+			implode(
+				'__',
+				array_merge(
+					[$projectId, $cookieSuggestionId],
+					$compositeKey
+				)
+			)
+		);
 	}
 
 	/**
@@ -39,7 +55,7 @@ final class Solutions
 
 	public function reset(): void
 	{
-		$this->dataStore->remove($this->uniqueKey);
+		$this->dataStore->remove($this->projectId, $this->uniqueKey);
 	}
 
 	/**
@@ -68,6 +84,7 @@ final class Solutions
 			'solutionsUniqueId' => $this->uniqueKey,
 			'solutionUniqueId' => $solution->getUniqueId(),
 			'solutionType' => $solution->getType(),
+			'cookieSuggestionId' => $this->cookieSuggestionId,
 			'args' => $solution->getArguments(),
 		];
 	}
@@ -82,7 +99,7 @@ final class Solutions
 	 */
 	public function getDataForResolving(): ?array
 	{
-		$data = $this->dataStore->get($this->uniqueKey);
+		$data = $this->dataStore->get($this->projectId, $this->uniqueKey);
 
 		if (!is_array($data)) {
 			return NULL;
@@ -97,6 +114,7 @@ final class Solutions
 					'solutionsUniqueId' => $this->uniqueKey,
 					'solutionUniqueId' => $solutionUniqueId,
 					'solutionType' => $solutionType,
+					'cookieSuggestionId' => $data['cookieSuggestionId'],
 					'values' => $data['values'] ?? [],
 				];
 			}

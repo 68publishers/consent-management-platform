@@ -2,6 +2,16 @@
 
 {block #page_title}{_page_title, [name => $projectView->name->value()]}{/block}
 
+{block #heading_actions}
+    <a n:if="$user->isAllowed(App\Application\Acl\CrawlerScenariosResource::class, App\Application\Acl\CrawlerScenariosResource::READ)" n:href='":Admin:Crawler:Scenarios:?scenarioList-grid-filter[project]={$projectView->id->toString()}"' data-spinner-for="self" class="spinner-white inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+        {_running_scenarios}
+    </a>
+    <a n:if="$user->isAllowed(App\Application\Acl\FoundCookiesProjectsResource::class, App\Application\Acl\FoundCookiesProjectsResource::READ)" n:href="FoundCookiesProjects:" data-spinner-for="self" class="spinner-white inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        {svg common/chevron-left.svg, class: 'h-4 w-4 mr-2'}
+        {_back_to_list}
+    </a>
+{/block}
+
 <div n:block="breadcrumbs" class="flex">
     <div class="flex place-items-center mb-1">
         <div id="project-select">
@@ -44,7 +54,7 @@
             </span>
         </div>
 
-        <div x-bind="collapsePanel">
+        <div x-bind="collapsePanel" n:attr="'x-cloak' => 0 >= (count($missingCookieSuggestions) + count($unassociatedCookieSuggestions))">
             <div n:snippet="new-cookies-panel" class="p-4 pb-6 border-b border-gray-200">
                 {foreach $missingCookieSuggestions as $suggestion}
                     <div>
@@ -79,7 +89,7 @@
             </span>
         </div>
 
-        <div x-bind="collapsePanel">
+        <div x-bind="collapsePanel" n:attr="'x-cloak' => 0 >= count($problematicCookieSuggestions)">
             <div n:snippet="problematic-cookies-panel" class="p-4 pb-6 border-b border-gray-200">
                 {foreach $problematicCookieSuggestions as $suggestion}
                     {include #problematic-cookie-suggestion, suggestion: $suggestion}
@@ -108,7 +118,7 @@
             </span>
         </div>
 
-        <div x-bind="collapsePanel">
+        <div x-bind="collapsePanel" n:attr="'x-cloak' => 0 >= count($unproblematicCookieSuggestions)">
             <div n:snippet="unproblematic-cookies-panel" class="p-4 pb-6 border-b border-gray-200">
                 {foreach $unproblematicCookieSuggestions as $suggestion}
                     {include #unproblematic-cookie-suggestion, suggestion: $suggestion}
@@ -137,7 +147,7 @@
             </span>
         </div>
 
-        <div x-bind="collapsePanel">
+        <div x-bind="collapsePanel" n:attr="'x-cloak' => 0 >= count($ignoredCookieSuggestions)">
             <div n:snippet="ignored-cookies-panel" class="p-4 pb-6">
                 {foreach $ignoredCookieSuggestions as $suggestion}
                     {var $originalSuggestion = $suggestion->getOriginalSuggestion()}
@@ -158,6 +168,18 @@
             </div>
         </div>
     </div>
+</div>
+
+<div n:snippet="group-actions" class="flex items-center justify-end mt-4 mb-10 px-4 sm:px-0">
+    <a n:if="0 < $totalNumberOfResolvableSuggestions && 0 < $totalNumberOfReadyToResolveSuggestions" n:href="resolveAll!" data-spinner-for="self" class="ajax flex items-center rounded bg-white px-2.5 py-1.5 text-sm text-green-700 shadow-sm ring-1 ring-inset ring-green-700 hover:bg-gray-50 mr-1 mt-1">
+        {svg 'common/check-circle.svg', class: 'h-5 w-5 text-green-700 mr-2'}
+        {_resolve_all_suggestions, [total: $totalNumberOfResolvableSuggestions, changed: $totalNumberOfReadyToResolveSuggestions]}
+    </a>
+
+    <a n:if="0 < $totalNumberOfResolvableSuggestions && 0 < $totalNumberOfReadyToResolveSuggestions" n:href="resetAll!" data-spinner-for="self" class="ajax flex items-center rounded bg-white px-2.5 py-1.5 text-sm text-red-600 shadow-sm ring-1 ring-inset ring-red-600 hover:bg-gray-50 mr-1 mt-1">
+        {svg 'common/x-circle.svg', class: 'h-5 w-5 text-red-600 mr-2'}
+        {_reset_all_solutions, [total: $totalNumberOfResolvableSuggestions, changed: $totalNumberOfReadyToResolveSuggestions]}
+    </a>
 </div>
 
 {define #missing-cookie-suggestion, $suggestion, $solutions = null}
@@ -192,7 +214,7 @@
                 {_'problem.' . $problem->getType(), $problem->getTranslatorArgs()|noescape}
             </div>
             <div n:if="null === $solutions" class="mt-2 flex items-center flex-wrap">
-                {include #solutions, solutions: $problem->getSolutions(), cookieSuggestionId: $suggestion->getSuggestionId()}
+                {include #solutions, solutions: $problem->getSolutions()}
             </div>
         </div>
 
@@ -234,19 +256,19 @@
             <div n:if="true === $foundInCmp" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 mr-2 my-0.5">{_found_in_cmp}</div>
         </div>
         <div n:if="null !== $solutions" class="mt-2 flex items-center flex-wrap">
-            {include #solutions, solutions: $solutions, cookieSuggestionId: $suggestion->getSuggestionId()}
+            {include #solutions, solutions: $solutions}
         </div>
     </div>
 {/define}
 
-{define #solutions, $solutions, $cookieSuggestionId}
+{define #solutions, $solutions}
     {var $dataForResolving = $solutions->getDataForResolving() ?? []}
 
     <div class="flex items-center flex-wrap w-full">
         <div class="flex items-center flex-wrap mr-2">
             <a
                 n:foreach="$solutions->all() as $solution"
-                n:href="solution! (expand) $solutions->getSolutionArguments($solution), cookieSuggestionId: $cookieSuggestionId"
+                n:href="solution! (expand) $solutions->getSolutionArguments($solution)"
                 data-spinner-for="self"
                 n:class="
                     'ajax rounded bg-white px-2 py-1 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 mr-1 mt-1',
@@ -257,13 +279,13 @@
             </a>
         </div>
         <div class="flex items-center flex-nowrap">
-            <a n:if="!empty($dataForResolving)" n:href="resolve! (expand) $dataForResolving, cookieSuggestionId: $cookieSuggestionId" data-spinner-for="self" class="ajax flex items-center rounded bg-white px-2 py-1 text-sm text-green-700 shadow-sm ring-1 ring-inset ring-green-700 hover:bg-gray-50 mr-1 mt-1">
+            <a n:if="!empty($dataForResolving)" n:href="resolve! (expand) $dataForResolving" data-spinner-for="self" class="ajax flex items-center rounded bg-white px-2 py-1 text-sm text-green-700 shadow-sm ring-1 ring-inset ring-green-700 hover:bg-gray-50 mr-1 mt-1">
                 {svg 'common/check-circle.svg', class: 'h-5 w-5 text-green-700 mr-2'}
                 {_resolve_suggestion}
             </a>
 
             <a n:if="!empty($dataForResolving)" n:href="resetSolution! solutionsUniqueId: $dataForResolving['solutionsUniqueId']" data-spinner-for="self" class="ajax flex items-center rounded bg-white px-2 py-1 text-sm text-red-600 shadow-sm ring-1 ring-inset ring-red-600 hover:bg-gray-50 mr-1 mt-1">
-                {svg 'common/x-mark.svg', class: 'h-5 w-5 text-red-600 mr-2'}
+                {svg 'common/x-circle.svg', class: 'h-5 w-5 text-red-600 mr-2'}
                 {_reset_solution}
             </a>
         </div>
