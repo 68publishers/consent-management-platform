@@ -45,7 +45,7 @@ final class ConsentsDataGridQueryHandler implements QueryHandlerInterface
 			},
 			ConsentListView::class,
 			[
-				'userIdentifier' => ['applyLike', 'c.userIdentifier'],
+				'userIdentifier' => ['applyEquals', 'c.userIdentifier'],
 				'createdAt' => ['applyDate', 'c.createdAt'],
 				'lastUpdateAt' => ['applyDate', 'c.lastUpdateAt'],
 			],
