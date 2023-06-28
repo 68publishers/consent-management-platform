@@ -28,7 +28,7 @@
 {/block}
 
 {define col-name}
-    <a n:tag-if="$user->isAllowed(App\Application\Acl\CrawlerScenarioSchedulersResource::class, App\Application\Acl\CrawlerScenarioSchedulersResource::UPDATE)" href="{$linkFactory('openModal!', ['modal' => 'edit-' . Ramsey\Uuid\Uuid::fromString($item->id)->getHex()->toString()])}" data-spinner-for="self" class="ajax">
+    <a n:tag-if="$user->isAllowed(App\Application\Acl\CrawlerScenarioSchedulersResource::class, App\Application\Acl\CrawlerScenarioSchedulersResource::UPDATE)" href="{$linkFactory('openModal!', ['modal' => 'edit-' . Ramsey\Uuid\Uuid::fromString($item->id)->getHex()->toString()])}" data-spinner-for="self" class="ajax font-semibold">
         {$item->name}
     </a>
 {/define}

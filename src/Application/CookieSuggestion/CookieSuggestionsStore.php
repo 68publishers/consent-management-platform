@@ -264,9 +264,9 @@ final class CookieSuggestionsStore implements CookieSuggestionsStoreInterface
 			$occurrences,
 			[],
 			new Solutions(
+				$projectId,
+				$cookieSuggestionForResolving->id,
 				[
-					$projectId,
-					$cookieSuggestionForResolving->id,
 					'MissingCookieSuggestion',
 				],
 				$this->dataStore,
@@ -281,9 +281,9 @@ final class CookieSuggestionsStore implements CookieSuggestionsStoreInterface
 				$suggestion,
 				$cookieSuggestionForResolving->ignoredPermanently,
 				new Solutions(
+					$projectId,
+					$cookieSuggestionForResolving->id,
 					[
-						$projectId,
-						$cookieSuggestionForResolving->id,
 						'IgnoredCookieSuggestion',
 					],
 					$this->dataStore,
@@ -318,9 +318,9 @@ final class CookieSuggestionsStore implements CookieSuggestionsStoreInterface
 			$warnings,
 			$this->createExistingCookie($cookieDataForSuggestion),
 			new Solutions(
+				$projectId,
+				$cookieSuggestionForResolving->id,
 				[
-					$projectId,
-					$cookieSuggestionForResolving->id,
 					$cookieDataForSuggestion->id,
 					'UnassociatedCookieSuggestion',
 				],
@@ -337,9 +337,9 @@ final class CookieSuggestionsStore implements CookieSuggestionsStoreInterface
 				$suggestion,
 				$cookieSuggestionForResolving->ignoredPermanently,
 				new Solutions(
+					$projectId,
+					$cookieSuggestionForResolving->id,
 					[
-						$projectId,
-						$cookieSuggestionForResolving->id,
 						$cookieDataForSuggestion->id,
 						'IgnoredCookieSuggestion',
 					],
@@ -379,9 +379,9 @@ final class CookieSuggestionsStore implements CookieSuggestionsStoreInterface
 					$cookieOccurrence->acceptedCategories,
 					$cookieOccurrence,
 					new Solutions(
+						$projectId,
+						$cookieSuggestionForResolving->id,
 						[
-							$projectId,
-							$cookieSuggestionForResolving->id,
 							$cookieDataForSuggestion->id,
 							$cookieOccurrence->id,
 							'ProblematicCookieSuggestion',
@@ -426,9 +426,9 @@ final class CookieSuggestionsStore implements CookieSuggestionsStoreInterface
 				$suggestion,
 				$cookieSuggestionForResolving->ignoredPermanently,
 				new Solutions(
+					$projectId,
+					$cookieSuggestionForResolving->id,
 					[
-						$projectId,
-						$cookieSuggestionForResolving->id,
 						$cookieDataForSuggestion->id,
 						'IgnoredCookieSuggestion',
 					],

@@ -3,7 +3,7 @@
 {varType App\ReadModel\User\UserView $item}
 
 {define col-id}
-    <a n:tag-if="$user->isAllowed(App\Application\Acl\UserResource::class, App\Application\Acl\UserResource::UPDATE)" href="{plink :Admin:User:EditUser: id => $item->id->toString()}" data-spinner-for="self">
+    <a n:tag-if="$user->isAllowed(App\Application\Acl\UserResource::class, App\Application\Acl\UserResource::UPDATE)" href="{plink :Admin:User:EditUser: id => $item->id->toString()}" data-spinner-for="self"  class="font-semibold">
         {$item->id->toString()}
     </a>
 {/define}

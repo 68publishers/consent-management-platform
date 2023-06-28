@@ -1,4 +1,6 @@
 page_title: 'Návrhy cookies projektu "%name%"'
+back_to_list: Zpět na výpis projektů
+running_scenarios: Spuštěné scénaře
 
 caption:
 	new_cookies: Nové cookies
@@ -24,7 +26,9 @@ not_found_in_cmp: Nenalezeno v CMP
 found_in_cmp: Nalezeno v CMP
 
 resolve_suggestion: Akceptovat
+resolve_all_suggestions: 'Akceptovat provedené změny (%changed%/%total%)'
 reset_solution: Zrušit změny
+reset_all_solutions: 'Zrušit provedené změny (%changed%/%total%)'
 
 occurrences_table:
 	scanerio_name: Název scénáře
@@ -55,7 +59,10 @@ solution:
 	do_not_ignore: Neignorovat
 
 message:
+	project_not_found: Projekt nebyl nalezen.
 	unable_to_process_solution: Řešení nebylo možné zpracovat.
 	suggestion_resolved: Návrh byl úspěšně vyřešen.
 	unable_to_resolve_solution: Při vyhodnocování návrhu došlo k chybě.
 	cookie_is_no_longer_ignored: Návrh již není ignorován.
+	multiple_suggestions_resolved: '{1} Jeden návrh byl úspěšně vyřešen.|[2,4] Celkem %count% návrhy byly úspěšně vyřešeny.|[5,Inf[ Celkem %count% návrhů bylo úspěšně vyřešeno.'
+	unable_to_resolve_multiple_solutions: '{1} Jeden návrh nebylo možné vyřešit.|[2,4] Celkem %count% návrhy nebylo možné vyřešit.|[5,Inf[ Celkem %count% návrhů nebylo možné vyřešit.'

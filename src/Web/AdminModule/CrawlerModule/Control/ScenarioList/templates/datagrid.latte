@@ -28,7 +28,7 @@
 {/block}
 
 {define col-name}
-    <a href="{$linkFactory('openModal!', ['modal' => 'detail-' . Ramsey\Uuid\Uuid::fromString($item->id)->getHex()->toString()])}" data-spinner-for="self" class="ajax">
+    <a href="{$linkFactory('openModal!', ['modal' => 'detail-' . Ramsey\Uuid\Uuid::fromString($item->id)->getHex()->toString()])}" data-spinner-for="self" class="ajax font-semibold">
         {$item->name}
     </a>
 {/define}

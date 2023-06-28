@@ -5,7 +5,7 @@
 
 {define col-name}
     {if NULL !== $_locale && isset($item->names[$_locale->code()])}
-        <a n:tag-if="$user->isAllowed(App\Application\Acl\CategoryResource::class, App\Application\Acl\CategoryResource::UPDATE)" href="{plink :Admin:Cookie:EditCategory: id => $item->id->toString()}" data-spinner-for="self">
+        <a n:tag-if="$user->isAllowed(App\Application\Acl\CategoryResource::class, App\Application\Acl\CategoryResource::UPDATE)" href="{plink :Admin:Cookie:EditCategory: id => $item->id->toString()}" data-spinner-for="self" class="font-semibold">
             {$item->names[$_locale->code()]->value()}
         </a>
     {/if}

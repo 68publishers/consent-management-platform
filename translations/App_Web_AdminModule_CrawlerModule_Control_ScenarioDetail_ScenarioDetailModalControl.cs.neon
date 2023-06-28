@@ -7,6 +7,7 @@ title_error: '''
 <span class="inline-flex items-center px-2.5 py-0.5 ml-2 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800">%id%</span>
 '''
 
+manage_suggestions: Spravovat návrhy
 close_button_text: Zavřít
 
 error:

@@ -99,6 +99,9 @@ final class ScenarioListControl extends Control
 		$grid->addAction('abort', '')
 			->setTemplate(__DIR__ . '/templates/action.abort.latte');
 
+		$grid->addAction('suggestions', '')
+			->setTemplate(__DIR__ . '/templates/action.suggestions.latte');
+
 		$grid->addAction('detail', '')
 			->setTemplate(__DIR__ . '/templates/action.detail.latte');
 

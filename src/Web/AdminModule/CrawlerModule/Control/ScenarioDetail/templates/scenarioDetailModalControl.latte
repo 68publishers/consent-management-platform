@@ -15,16 +15,24 @@
 {/block}
 
 {block #body}
+    {if null !== $scenarioResponse}
+        {control detail}
+    {elseif $responseError instanceof SixtyEightPublishers\CrawlerClient\Exception\ControllerResponseExceptionInterface}
+        {include #alert, ('error.crawler_api_respond_with_error_status_code', ['code' => $responseError->getResponse()->getStatusCode()]|translate)}
 
-{if null !== $scenarioResponse}
-    {control detail}
-{elseif $responseError instanceof SixtyEightPublishers\CrawlerClient\Exception\ControllerResponseExceptionInterface}
-    {include #alert, ('error.crawler_api_respond_with_error_status_code', ['code' => $responseError->getResponse()->getStatusCode()]|translate)}
+        <textarea x-data x-codemirror.readonly.wrap="javascript">{=Nette\Utils\Json::encode($responseError->getResponseBody(), Nette\Utils\Json::PRETTY)}</textarea>
+    {else}
+        {include #alert, ('error.generic_message'|translate)}
+    {/if}
+{/block}
 
-    <textarea x-data x-codemirror.readonly.wrap="javascript">{=Nette\Utils\Json::encode($responseError->getResponseBody(), Nette\Utils\Json::PRETTY)}</textarea>
-{else}
-    {include #alert, ('error.generic_message'|translate)}
-{/if}
+{block #footer}
+    <a n:if="isset($scenarioResponse->getBody()->flags['projectId']) && $user->isAllowed(App\Application\Acl\FoundCookiesResource::class, App\Application\Acl\FoundCookiesResource::READ)" href="{plink :Admin:Cookie:FoundCookies: id => $scenarioResponse->getBody()->flags['projectId']}" data-spinner-for="self" class="spinner-white mt-3 sm:ml-3 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm sm:mr-2">
+        {_manage_suggestions}
+    </a>
+
+    {include parent}
+{/block}
 
 {define #alert, string $message}
     <div class="bg-red-50 border-l-4 border-red-400 p-4 sm:rounded-lg mb-3">
