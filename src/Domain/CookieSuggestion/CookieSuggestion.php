@@ -150,6 +150,7 @@ final class CookieSuggestion implements AggregateRootInterface
 		$this->name = $event->name();
 		$this->domain = $event->domain();
 		$this->ignoredUntilNextOccurrence = FALSE;
+		$this->ignoredPermanently = FALSE;
 		$this->occurrences = new ArrayCollection();
 	}
 
