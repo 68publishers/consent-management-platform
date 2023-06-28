@@ -70,9 +70,7 @@ final class ConsentListControl extends Control
 			->setSortable('userIdentifier')
 			->setFilterText('userIdentifier');
 
-		$grid->addColumnText('settings_short_identifier', 'settings_short_identifier')
-			->setSortable('settingsShortIdentifier')
-			->setFilterText('settingsShortIdentifier');
+		$grid->addColumnText('settings_short_identifier', 'settings_short_identifier');
 
 		$grid->addColumnDateTimeTz('created_at', 'created_at', 'createdAt')
 			->setFormat('j.n.Y H:i:s')
