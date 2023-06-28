@@ -11,6 +11,7 @@ nettrine.orm:
 			CAST: Oro\ORM\Query\AST\Functions\Cast
 			JSONB_CONTAINS: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql\JsonbContains
 			JSON_AGG: App\Infrastructure\Shared\Doctrine\Query\Ast\Functions\JsonAggFunction
+			COUNT_ROWS: App\Infrastructure\Shared\Doctrine\Query\Ast\Functions\CountRows
 
 nettrine.orm.xml:
 	mapping: []
