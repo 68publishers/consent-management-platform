@@ -199,7 +199,7 @@
 
         <div x-bind="collapsePanel" x-cloak>
             {include #warnings, suggestion: $suggestion}
-            {include #existing-cookie, existingCookie: $suggestion->getExistingCookie()}
+            {include #existing-cookie, existingCookie: $suggestion->getExistingCookie(), suggestionId: $suggestion->getSuggestionId()}
             {include #occurrences-table, suggestion: $suggestion}
         </div>
     </div>
@@ -222,7 +222,7 @@
 
         <div x-bind="collapsePanel" x-cloak>
             {include #warnings, suggestion: $suggestion}
-            {include #existing-cookie, existingCookie: $suggestion->getExistingCookie()}
+            {include #existing-cookie, existingCookie: $suggestion->getExistingCookie(), suggestionId: $suggestion->getSuggestionId()}
             {include #occurrences-table, suggestion: $suggestion}
         </div>
     </div>
@@ -234,7 +234,7 @@
 
         <div x-bind="collapsePanel" x-cloak>
             {include #warnings, suggestion: $suggestion}
-            {include #existing-cookie, existingCookie: $suggestion->getExistingCookie()}
+            {include #existing-cookie, existingCookie: $suggestion->getExistingCookie(), suggestionId: $suggestion->getSuggestionId()}
             {include #occurrences-table, suggestion: $suggestion}
         </div>
     </div>
@@ -334,7 +334,7 @@
     </div>
 {/define}
 
-{define #existing-cookie, $existingCookie}
+{define #existing-cookie, $existingCookie, $suggestionId = null}
     <div class="p-2 mt-5">
         <h4 class="py-2 rounded font-semibold text-gray-600">{_caption.existing_cookie}</h4>
         <table>
@@ -357,7 +357,7 @@
                 </tr>
             </tbody>
         </table>
-        <a n:href="'openModal!', 'editCookieModal-' . Ramsey\Uuid\Uuid::fromString($existingCookie->cookieId)->getHex()->toString()" data-spinner-for="self" class="ajax spinner-white inline-flex items-center px-2 py-1 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mt-2">
+        <a n:href="'openModal!', modal: 'editCookieModal-' . Ramsey\Uuid\Uuid::fromString($existingCookie->cookieId)->getHex()->toString(), cookieSuggestionId: $suggestionId" data-spinner-for="self" class="ajax spinner-white inline-flex items-center px-2 py-1 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mt-2">
             {_edit_cookie}
         </a>
     </div>

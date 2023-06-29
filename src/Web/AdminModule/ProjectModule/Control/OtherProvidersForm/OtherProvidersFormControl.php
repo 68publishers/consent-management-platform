@@ -66,7 +66,7 @@ final class OtherProvidersFormControl extends Control
 		$form->addSubmit('save', 'update.field');
 
 		$form->setDefaults([
-			'cookie_providers' => array_map(static fn (CookieProviderSelectOptionView $view): string => $view->id->toString(), $this->queryBus->dispatch(FindCookieProviderSelectOptionsQuery::byProject($this->projectView->id->toString()))),
+			'cookie_providers' => array_map(static fn (CookieProviderSelectOptionView $view): string => $view->id->toString(), $this->queryBus->dispatch(FindCookieProviderSelectOptionsQuery::assignedToProject($this->projectView->id->toString()))),
 		]);
 
 		$form->onSuccess[] = function (Form $form): void {

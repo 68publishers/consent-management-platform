@@ -30,6 +30,8 @@ use App\Domain\Cookie\Command\UpdateCookieCommand;
 use App\ReadModel\CookieSuggestion\CookieSuggestion;
 use App\Domain\Cookie\Exception\NameUniquenessException;
 use SixtyEightPublishers\FlashMessageBundle\Domain\Phrase;
+use App\Domain\CookieSuggestion\ValueObject\CookieSuggestionId;
+use App\ReadModel\CookieProvider\CookieProviderSelectOptionView;
 use App\ReadModel\CookieSuggestion\GetCookieSuggestionByIdQuery;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use App\Domain\Project\Command\AddCookieProvidersToProjectCommand;
@@ -37,6 +39,7 @@ use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 use App\Application\CookieSuggestion\CookieSuggestionsStoreInterface;
+use App\ReadModel\CookieProvider\FindCookieProviderSelectOptionsQuery;
 use App\Application\CookieSuggestion\Suggestion\IgnoredCookieSuggestion;
 use App\Application\CookieSuggestion\Suggestion\MissingCookieSuggestion;
 use App\Domain\CookieSuggestion\Command\DoNotIgnoreCookieSuggestionCommand;
@@ -269,16 +272,23 @@ final class FoundCookiesPresenter extends AdminPresenter
 			$inner->setOverwrittenDefaults($solutionsData['values']['form_values']);
 		} elseif ('create_new_cookie' === $solutionType) {
 			$defaultProviderId = NULL;
+			$providerOptions = [];
+			$query = FindCookieProviderSelectOptionsQuery::all()
+				->withPrivate($this->projectView->id->toString());
 
-			foreach ($inner->getCookieProviders() as $cookieProviderId => $cookieProviderOption) {
-				$providerCode = $cookieProviderOption->code->value();
+			foreach ($this->queryBus->dispatch($query) as $cookieProviderOptionView) {
+				assert($cookieProviderOptionView instanceof CookieProviderSelectOptionView);
+				$providerCode = $cookieProviderOptionView->code->value();
+				$providerId = $cookieProviderOptionView->id->toString();
 
-				if ($providerCode === substr($cookieSuggestion->domain, -strlen($providerCode))) {
-					$defaultProviderId = $cookieProviderId;
-
-					break;
+				if (NULL === $defaultProviderId && $providerCode === substr($cookieSuggestion->domain, -strlen($providerCode))) {
+					$defaultProviderId = $providerId;
 				}
+
+				$providerOptions[$providerId] = $cookieProviderOptionView;
 			}
+
+			$inner->setCookieProviderOptions($providerOptions);
 
 			$inner->setOverwrittenDefaults([
 				'name' => $cookieSuggestion->name,
@@ -335,6 +345,17 @@ final class FoundCookiesPresenter extends AdminPresenter
 
 			$control = $this->cookieFormModalControlFactory->create($this->validLocalesProvider, $cookieView);
 			$inner = $control->getInnerControl();
+			$cookieSuggestionId = $this->getParameter('cookieSuggestionId');
+
+			if (empty($cookieView->domain->value()) && $cookieSuggestionId && CookieSuggestionId::isValid($cookieSuggestionId)) {
+				$cookieSuggestion = $this->queryBus->dispatch(GetCookieSuggestionByIdQuery::create($cookieSuggestionId));
+
+				if ($cookieSuggestion instanceof CookieSuggestion) {
+					$inner->setOverwrittenDefaults([
+						'domain' => $cookieSuggestion->domain,
+					]);
+				}
+			}
 
 			$inner->setFormFactoryOptions([
 				FormFactoryInterface::OPTION_AJAX => TRUE,
