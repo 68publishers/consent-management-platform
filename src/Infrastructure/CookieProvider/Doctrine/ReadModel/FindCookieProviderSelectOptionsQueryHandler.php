@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\CookieProvider\Doctrine\ReadModel;
 
+use App\Domain\Project\Project;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Domain\CookieProvider\CookieProvider;
+use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\Project\ProjectHasCookieProvider;
 use App\ReadModel\CookieProvider\CookieProviderSelectOptionView;
 use App\ReadModel\CookieProvider\FindCookieProviderSelectOptionsQuery;
@@ -44,14 +46,20 @@ final class FindCookieProviderSelectOptionsQueryHandler implements QueryHandlerI
 			->andWhere('c.deletedAt IS NULL')
 			->orderBy('c.name', 'ASC');
 
-		if (NULL !== $query->projectId()) {
-			$qb->join(ProjectHasCookieProvider::class, 'phc', Join::WITH, 'phc.cookieProviderId = c.id AND phc.project = :projectId')
+		if (NULL !== $query->assignedProjectId()) {
+			$qb->join(ProjectHasCookieProvider::class, 'phc', Join::WITH, 'phc.cookieProviderId = c.id AND phc.project = :assignedProjectId')
 				->join('phc.project', 'p', Join::WITH, 'p.deletedAt IS NULL')
-				->setParameter('projectId', $query->projectId());
+				->setParameter('assignedProjectId', $query->assignedProjectId());
 		}
 
-		if (!$query->privateAllowed()) {
+		$private = $query->private();
+
+		if (FALSE === $private) {
 			$qb->andWhere('c.private = false');
+		} elseif (is_string($private) && ProjectId::isValid($private)) {
+			$qb->leftJoin(Project::class, 'pr', Join::WITH, 'pr.cookieProviderId = c.id AND pr.id = :privateProjectId')
+				->andWhere('(c.private = false OR pr.id IS NOT NULL)')
+				->setParameter('privateProjectId', $private);
 		}
 
 		$data = $qb->getQuery()

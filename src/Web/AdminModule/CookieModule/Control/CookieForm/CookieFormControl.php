@@ -88,25 +88,11 @@ final class CookieFormControl extends Control
 	}
 
 	/**
-	 * @return array<string, CookieProviderSelectOptionView>
+	 * @param array<string, CookieProviderSelectOptionView> $providerOptions
 	 */
-	public function getCookieProviders(): array
+	public function setCookieProviderOptions(array $providerOptions): void
 	{
-		if (NULL !== $this->providerOptions) {
-			return $this->providerOptions;
-		}
-
-		$options = [];
-		$query = FindCookieProviderSelectOptionsQuery::all()
-			->withPrivate(TRUE);
-
-		foreach ($this->queryBus->dispatch($query) as $cookieProviderSelectOptionView) {
-			assert($cookieProviderSelectOptionView instanceof CookieProviderSelectOptionView);
-
-			$options[$cookieProviderSelectOptionView->id->toString()] = $cookieProviderSelectOptionView;
-		}
-
-		return $this->providerOptions = $options;
+		$this->providerOptions = $providerOptions;
 	}
 
 	/**
@@ -194,7 +180,7 @@ final class CookieFormControl extends Control
 		}
 
 		if (isset($providerDefaultValue) && array_key_exists($providerDefaultValue, $providers)) {
-			$providerField->setDisabled(TRUE)
+			$providerField->setDisabled()
 				->setOmitted(FALSE)
 				->setDefaultValue($providerDefaultValue);
 		}
@@ -279,5 +265,27 @@ final class CookieFormControl extends Control
 		}
 
 		return $categories;
+	}
+
+	/**
+	 * @return array<string, CookieProviderSelectOptionView>
+	 */
+	private function getCookieProviders(): array
+	{
+		if (NULL !== $this->providerOptions) {
+			return $this->providerOptions;
+		}
+
+		$options = [];
+		$query = FindCookieProviderSelectOptionsQuery::all()
+			->withPrivate(TRUE);
+
+		foreach ($this->queryBus->dispatch($query) as $cookieProviderSelectOptionView) {
+			assert($cookieProviderSelectOptionView instanceof CookieProviderSelectOptionView);
+
+			$options[$cookieProviderSelectOptionView->id->toString()] = $cookieProviderSelectOptionView;
+		}
+
+		return $this->providerOptions = $options;
 	}
 }

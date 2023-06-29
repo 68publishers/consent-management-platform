@@ -24,36 +24,34 @@ final class FindCookieProviderSelectOptionsQuery extends AbstractQuery
 	 *
 	 * @return static
 	 */
-	public static function byProject(string $projectId): self
+	public static function assignedToProject(string $projectId): self
 	{
 		return self::fromParameters([
-			'project_id' => $projectId,
+			'assigned_project_id' => $projectId,
 		]);
 	}
 
 	/**
-	 * @param bool $privateAllowed
-	 *
-	 * @return $this
+	 * @param bool|string $booleanOrProjectId
 	 */
-	public function withPrivate(bool $privateAllowed): self
+	public function withPrivate($booleanOrProjectId): self
 	{
-		return $this->withParam('private_allowed', $privateAllowed);
+		return $this->withParam('private', $booleanOrProjectId);
 	}
 
 	/**
 	 * @return string|NULL
 	 */
-	public function projectId(): ?string
+	public function assignedProjectId(): ?string
 	{
-		return $this->getParam('project_id');
+		return $this->getParam('assigned_project_id');
 	}
 
 	/**
-	 * @return bool
+	 * @return bool|string
 	 */
-	public function privateAllowed(): bool
+	public function private()
 	{
-		return $this->getParam('private_allowed') ?? FALSE;
+		return $this->getParam('private') ?? FALSE;
 	}
 }
