@@ -8,13 +8,16 @@ use Throwable;
 use DomainException;
 use Psr\Log\LoggerInterface;
 use Nette\Application\UI\Form;
+use Nette\InvalidStateException;
 use Nette\Forms\Controls\TextInput;
 use App\ReadModel\Cookie\CookieView;
+use Nette\Application\UI\Multiplier;
 use Nette\Application\AbortException;
 use App\ReadModel\Project\ProjectView;
 use App\Web\Ui\Form\FormFactoryInterface;
 use App\Domain\Cookie\ValueObject\Purpose;
 use Nette\Application\BadRequestException;
+use App\Domain\Cookie\ValueObject\CookieId;
 use App\ReadModel\Cookie\GetCookieByIdQuery;
 use App\Application\Acl\FoundCookiesResource;
 use App\Domain\Project\ValueObject\ProjectId;
@@ -38,11 +41,14 @@ use App\Application\CookieSuggestion\Suggestion\IgnoredCookieSuggestion;
 use App\Application\CookieSuggestion\Suggestion\MissingCookieSuggestion;
 use App\Domain\CookieSuggestion\Command\DoNotIgnoreCookieSuggestionCommand;
 use App\Application\CookieSuggestion\Suggestion\ProblematicCookieSuggestion;
+use SixtyEightPublishers\UserBundle\Application\Exception\IdentityException;
 use App\Application\CookieSuggestion\Suggestion\UnassociatedCookieSuggestion;
 use App\Application\CookieSuggestion\Suggestion\UnproblematicCookieSuggestion;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControl;
 use App\Domain\CookieSuggestion\Command\IgnoreCookieSuggestionPermanentlyCommand;
+use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieUpdatedEvent;
 use App\Domain\CookieSuggestion\Command\IgnoreCookieSuggestionUntilNextOccurrenceCommand;
+use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieFormProcessingFailedEvent;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControlFactoryInterface;
 
 /**
@@ -79,6 +85,19 @@ final class FoundCookiesPresenter extends AdminPresenter
 		$this->cookieSuggestionsStore = $cookieSuggestionsStore;
 		$this->logger = $logger;
 		$this->cookieFormModalControlFactory = $cookieFormModalControlFactory;
+	}
+
+	/**
+	 * @throws IdentityException
+	 * @throws BadRequestException
+	 */
+	protected function startup(): void
+	{
+		parent::startup();
+
+		if (!$this->globalSettings->crawlerSettings()->enabled()) {
+			$this->error('Crawler is disabled.');
+		}
 	}
 
 	/**
@@ -302,6 +321,37 @@ final class FoundCookiesPresenter extends AdminPresenter
 		});
 
 		return $control;
+	}
+
+	protected function createComponentEditCookieModal(): Multiplier
+	{
+		return new Multiplier(function (string $id): CookieFormModalControl {
+			$cookieId = CookieId::fromString($id);
+			$cookieView = $this->queryBus->dispatch(GetCookieByIdQuery::create($cookieId->toString()));
+
+			if (!$cookieView instanceof CookieView) {
+				throw new InvalidStateException('Cookie not found.');
+			}
+
+			$control = $this->cookieFormModalControlFactory->create($this->validLocalesProvider, $cookieView);
+			$inner = $control->getInnerControl();
+
+			$inner->setFormFactoryOptions([
+				FormFactoryInterface::OPTION_AJAX => TRUE,
+			]);
+
+			$inner->addEventListener(CookieUpdatedEvent::class, function () {
+				$this->subscribeFlashMessage(FlashMessage::success('cookie_updated'));
+				$this->redrawControl();
+				$this->closeModal();
+			});
+
+			$inner->addEventListener(CookieFormProcessingFailedEvent::class, function () {
+				$this->subscribeFlashMessage(FlashMessage::error('cookie_update_failed'));
+			});
+
+			return $control;
+		});
 	}
 
 	/**

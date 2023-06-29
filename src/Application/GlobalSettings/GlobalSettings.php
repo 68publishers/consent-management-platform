@@ -34,7 +34,7 @@ final class GlobalSettings implements GlobalSettingsInterface
 			[],
 			Locale::unknown(),
 			ApiCache::create([]),
-			CrawlerSettings::fromValues(NULL, NULL, NULL, NULL)
+			CrawlerSettings::fromValues(FALSE, NULL, NULL, NULL, NULL)
 		);
 	}
 

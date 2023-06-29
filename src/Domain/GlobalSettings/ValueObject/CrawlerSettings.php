@@ -11,6 +11,7 @@ use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AbstractArrayValu
 final class CrawlerSettings extends AbstractArrayValueObject
 {
 	public static function fromValues(
+		bool $enabled,
 		?string $hostUrl,
 		?string $username,
 		?string $password,
@@ -21,11 +22,17 @@ final class CrawlerSettings extends AbstractArrayValueObject
 		}
 
 		return self::fromArray([
+			'enabled' => $enabled,
 			'host_url' => $hostUrl,
 			'username' => $username,
 			'password' => $password,
 			'callback_uri_token' => $callbackUriToken,
 		]);
+	}
+
+	public function enabled(): bool
+	{
+		return $this->get('enabled') ?? FALSE;
 	}
 
 	public function hostUrl(): ?string

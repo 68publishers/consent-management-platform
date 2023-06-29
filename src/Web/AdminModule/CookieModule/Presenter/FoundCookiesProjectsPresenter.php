@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\CookieModule\Presenter;
 
+use Nette\Application\BadRequestException;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use App\Application\Acl\FoundCookiesProjectsResource;
 use App\ReadModel\Project\FoundCookiesProjectsListingQuery;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
+use SixtyEightPublishers\UserBundle\Application\Exception\IdentityException;
 
 /**
  * @IsAllowed(resource=FoundCookiesProjectsResource::class, privilege=FoundCookiesProjectsResource::READ)
@@ -22,6 +24,19 @@ final class FoundCookiesProjectsPresenter extends AdminPresenter
 		parent::__construct();
 
 		$this->queryBus = $queryBus;
+	}
+
+	/**
+	 * @throws IdentityException
+	 * @throws BadRequestException
+	 */
+	protected function startup(): void
+	{
+		parent::startup();
+
+		if (!$this->globalSettings->crawlerSettings()->enabled()) {
+			$this->error('Crawler is disabled.');
+		}
 	}
 
 	protected function beforeRender(): void

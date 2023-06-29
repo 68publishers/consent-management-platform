@@ -2,12 +2,43 @@
 
 module.exports = () => ({
     expanded: false,
-    collapse: {
-        ['x-init']() {
-            if (!this.$el.querySelector('[x-bind="collapsePanel"]').hasAttribute('x-cloak')) {
-                this.expanded = true;
+    storageName: null,
+    storageKey: null,
+
+    init() {
+        let expanded = undefined;
+        const storageName = this.$el.getAttribute('data-storage-name');
+        const storageKey = this.$el.getAttribute('data-storage-key');
+
+        if (storageName) {
+            this.storageName = storageName;
+        }
+
+        if (storageKey) {
+            this.storageKey = storageKey;
+        }
+
+        if ('string' === typeof this.storageName && 'string' === typeof this.storageKey) {
+            let store;
+
+            try {
+                store = JSON.parse(window.sessionStorage.getItem(this.storageName) || '{}');
+            } catch (err) {
+                // ignore
             }
-        },
+
+            if (store && this.storageKey in store) {
+                expanded = store[this.storageKey];
+            }
+        }
+
+        if (undefined === expanded && !this.$el.querySelector('[x-bind="collapsePanel"]').hasAttribute('x-cloak')) {
+            expanded = true;
+        }
+
+        this.expanded = undefined !== expanded ? expanded : false;
+    },
+    collapse: {
         ['x-id']: '["collapse"]',
     },
 
@@ -15,6 +46,20 @@ module.exports = () => ({
         ['x-ref']: 'button',
         ['x-on:click']() {
             this.expanded = !this.expanded;
+
+            if ('string' === typeof this.storageName && 'string' === typeof this.storageKey) {
+                let store = {};
+
+                try {
+                    store = JSON.parse(window.sessionStorage.getItem(this.storageName) || '{}');
+                } catch (err) {
+                    // ignore
+                }
+
+                store[this.storageKey] = this.expanded;
+
+                window.sessionStorage.setItem(this.storageName, JSON.stringify(store));
+            }
         },
         [':aria-expanded']() {
             return this.expanded;

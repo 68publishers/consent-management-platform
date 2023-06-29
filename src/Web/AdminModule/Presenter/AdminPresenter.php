@@ -134,6 +134,12 @@ abstract class AdminPresenter extends Presenter
 		return $identity;
 	}
 
+	protected function redrawSidebar(): void
+	{
+		$this->redrawControl('sidebar-menu-mobile');
+		$this->redrawControl('sidebar-menu-desktop');
+	}
+
 	/**
 	 * @return \Contributte\MenuControl\UI\MenuComponent
 	 */
