@@ -29,6 +29,7 @@ resolve_suggestion: Akceptovat
 resolve_all_suggestions: 'Akceptovat provedené změny (%changed%/%total%)'
 reset_solution: Zrušit změny
 reset_all_solutions: 'Zrušit provedené změny (%changed%/%total%)'
+edit_cookie: Upravit
 
 occurrences_table:
 	scanerio_name: Název scénáře
@@ -66,3 +67,5 @@ message:
 	cookie_is_no_longer_ignored: Návrh již není ignorován.
 	multiple_suggestions_resolved: '{1} Jeden návrh byl úspěšně vyřešen.|[2,4] Celkem %count% návrhy byly úspěšně vyřešeny.|[5,Inf[ Celkem %count% návrhů bylo úspěšně vyřešeno.'
 	unable_to_resolve_multiple_solutions: '{1} Jeden návrh nebylo možné vyřešit.|[2,4] Celkem %count% návrhy nebylo možné vyřešit.|[5,Inf[ Celkem %count% návrhů nebylo možné vyřešit.'
+	cookie_updated: Cookie byla upravena.
+	cookie_update_failed: Při upravování cookie došlo k chybě.

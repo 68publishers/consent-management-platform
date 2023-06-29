@@ -138,7 +138,7 @@ final class ReceiveResultController extends AbstractCrawlerController
 		$crawlerSettings = $this->globalSettings->crawlerSettings();
 		[$username, $callbackUriToken] = $credentials;
 
-		if ($username !== $crawlerSettings->username() || $callbackUriToken !== $crawlerSettings->callbackUriToken()) {
+		if (FALSE === $crawlerSettings->enabled() || $username !== $crawlerSettings->username() || $callbackUriToken !== $crawlerSettings->callbackUriToken()) {
 			return $response->withStatus(ApiResponse::S401_UNAUTHORIZED)
 				->writeJsonBody([
 					'status' => 'error',

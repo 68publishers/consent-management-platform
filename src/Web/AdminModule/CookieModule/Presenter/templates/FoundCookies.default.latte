@@ -37,7 +37,7 @@
 
 {block #content}
 
-<div n:snippet="suggestions" class="bg-white shadow sm:rounded-lg">
+<div class="bg-white shadow sm:rounded-lg">
     {* ===== NEW COOKIES ===== *}
     <div x-data="collapse" x-bind="collapse">
         <div x-bind="collapseButton" class="px-4 py-5 sm:px-6 border-b border-gray-200 flex items-center justify-between cursor-pointer">
@@ -48,14 +48,14 @@
                     {count($missingCookieSuggestions) + count($unassociatedCookieSuggestions)}
                 </span>
             </h3>
-            <span>
+            <span class="text-gray-600">
                 {svg 'common/chevron-up.svg', class: 'w-5 h-5', x-show: 'expanded', x-cloak: true}
                 {svg 'common/chevron-down.svg', class: 'w-5 h-5', x-show: '!expanded', x-cloak: true}
             </span>
         </div>
 
         <div x-bind="collapsePanel" n:attr="'x-cloak' => 0 >= (count($missingCookieSuggestions) + count($unassociatedCookieSuggestions))">
-            <div n:snippet="new-cookies-panel" class="p-4 pb-6 border-b border-gray-200">
+            <div n:snippet="new-cookies-panel" class="p-4 pb-6 border-b border-gray-200 divide-y divide-gray-150">
                 {foreach $missingCookieSuggestions as $suggestion}
                     <div>
                         {include #missing-cookie-suggestion, suggestion: $suggestion}
@@ -83,14 +83,14 @@
                     {count($problematicCookieSuggestions)}
                 </span>
             </h3>
-            <span>
+            <span class="text-gray-600">
                 {svg 'common/chevron-up.svg', class: 'w-5 h-5', x-show: 'expanded', x-cloak: true}
                 {svg 'common/chevron-down.svg', class: 'w-5 h-5', x-show: '!expanded', x-cloak: true}
             </span>
         </div>
 
         <div x-bind="collapsePanel" n:attr="'x-cloak' => 0 >= count($problematicCookieSuggestions)">
-            <div n:snippet="problematic-cookies-panel" class="p-4 pb-6 border-b border-gray-200">
+            <div n:snippet="problematic-cookies-panel" class="p-4 pb-6 border-b border-gray-200 divide-y divide-gray-150">
                 {foreach $problematicCookieSuggestions as $suggestion}
                     {include #problematic-cookie-suggestion, suggestion: $suggestion}
                 {/foreach}
@@ -112,14 +112,14 @@
                     {count($unproblematicCookieSuggestions)}
                 </span>
             </h3>
-            <span>
+            <span class="text-gray-600">
                 {svg 'common/chevron-up.svg', class: 'w-5 h-5', x-show: 'expanded', x-cloak: true}
                 {svg 'common/chevron-down.svg', class: 'w-5 h-5', x-show: '!expanded', x-cloak: true}
             </span>
         </div>
 
         <div x-bind="collapsePanel" n:attr="'x-cloak' => 0 >= count($unproblematicCookieSuggestions)">
-            <div n:snippet="unproblematic-cookies-panel" class="p-4 pb-6 border-b border-gray-200">
+            <div n:snippet="unproblematic-cookies-panel" class="p-4 pb-6 border-b border-gray-200 divide-y divide-gray-150">
                 {foreach $unproblematicCookieSuggestions as $suggestion}
                     {include #unproblematic-cookie-suggestion, suggestion: $suggestion}
                 {/foreach}
@@ -141,24 +141,24 @@
                     {count($ignoredCookieSuggestions)}
                 </span>
             </h3>
-            <span>
+            <span class="text-gray-600">
                 {svg 'common/chevron-up.svg', class: 'w-5 h-5', x-show: 'expanded', x-cloak: true}
                 {svg 'common/chevron-down.svg', class: 'w-5 h-5', x-show: '!expanded', x-cloak: true}
             </span>
         </div>
 
         <div x-bind="collapsePanel" n:attr="'x-cloak' => 0 >= count($ignoredCookieSuggestions)">
-            <div n:snippet="ignored-cookies-panel" class="p-4 pb-6">
+            <div n:snippet="ignored-cookies-panel" class="p-4 pb-6 divide-y divide-gray-150">
                 {foreach $ignoredCookieSuggestions as $suggestion}
                     {var $originalSuggestion = $suggestion->getOriginalSuggestion()}
 
                     {switch true}
                         {case $originalSuggestion instanceof App\Application\CookieSuggestion\Suggestion\MissingCookieSuggestion}
-                            {include #missing-cookie-suggestion, suggestion: $originalSuggestion, solutions: $suggestion->getSolutions()}
+                            {include #missing-cookie-suggestion, suggestion: $originalSuggestion, solutions: $suggestion->getSolutions(), collapseStorageName: 'ignored'}
                         {case $originalSuggestion instanceof App\Application\CookieSuggestion\Suggestion\UnassociatedCookieSuggestion}
-                            {include #unassociated-cookie-suggestion, suggestion: $originalSuggestion, solutions: $suggestion->getSolutions()}
+                            {include #unassociated-cookie-suggestion, suggestion: $originalSuggestion, solutions: $suggestion->getSolutions(), collapseStorageName: 'ignored'}
                         {case $originalSuggestion instanceof App\Application\CookieSuggestion\Suggestion\ProblematicCookieSuggestion}
-                            {include #problematic-cookie-suggestion, suggestion: $originalSuggestion, solutions: $suggestion->getSolutions()}
+                            {include #problematic-cookie-suggestion, suggestion: $originalSuggestion, solutions: $suggestion->getSolutions(), collapseStorageName: 'ignored'}
                     {/switch}
                 {/foreach}
 
@@ -170,20 +170,20 @@
     </div>
 </div>
 
-<div n:snippet="group-actions" class="flex items-center justify-end mt-4 mb-10 px-4 sm:px-0">
-    <a n:if="0 < $totalNumberOfResolvableSuggestions && 0 < $totalNumberOfReadyToResolveSuggestions" n:href="resolveAll!" data-spinner-for="self" class="ajax flex items-center rounded bg-white px-2.5 py-1.5 text-sm text-green-700 shadow-sm ring-1 ring-inset ring-green-700 hover:bg-gray-50 mr-1 mt-1">
-        {svg 'common/check-circle.svg', class: 'h-5 w-5 text-green-700 mr-2'}
+<div n:snippet="group-actions" class="flex flex-wrap items-center justify-end mt-4 mb-10 px-4 sm:px-0">
+    <a n:if="0 < $totalNumberOfResolvableSuggestions && 0 < $totalNumberOfReadyToResolveSuggestions" n:href="resolveAll!" data-spinner-for="self" class="ajax spinner-white inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 mt-2">
+        {svg 'common/check-circle.svg', class: 'h-5 w-5 text-white mr-2'}
         {_resolve_all_suggestions, [total: $totalNumberOfResolvableSuggestions, changed: $totalNumberOfReadyToResolveSuggestions]}
     </a>
 
-    <a n:if="0 < $totalNumberOfResolvableSuggestions && 0 < $totalNumberOfReadyToResolveSuggestions" n:href="resetAll!" data-spinner-for="self" class="ajax flex items-center rounded bg-white px-2.5 py-1.5 text-sm text-red-600 shadow-sm ring-1 ring-inset ring-red-600 hover:bg-gray-50 mr-1 mt-1">
-        {svg 'common/x-circle.svg', class: 'h-5 w-5 text-red-600 mr-2'}
+    <a n:if="0 < $totalNumberOfResolvableSuggestions && 0 < $totalNumberOfReadyToResolveSuggestions" n:href="resetAll!" data-spinner-for="self" class="ajax spinner-white inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 mt-2 ml-2">
+        {svg 'common/x-circle.svg', class: 'h-5 w-5 text-white mr-2'}
         {_reset_all_solutions, [total: $totalNumberOfResolvableSuggestions, changed: $totalNumberOfReadyToResolveSuggestions]}
     </a>
 </div>
 
-{define #missing-cookie-suggestion, $suggestion, $solutions = null}
-    <div x-data="collapse" x-bind="collapse" class="bg-white rounded mb-2 border border-gray-150 text-sm p-2">
+{define #missing-cookie-suggestion, $suggestion, $solutions = null, $collapseStorageName = 'missing'}
+    <div x-data="collapse" x-bind="collapse" data-storage-name="suggestions-{$collapseStorageName}-{$projectView->id->toString()}" data-storage-key="{$suggestion->getSuggestionId()}" class="bg-white mb-2 text-sm px-2 py-4">
         {include #suggestion-header, suggestion: $suggestion, foundInCmp: false, solutions: $solutions ?? $suggestion->getSolutions()}
 
         <div x-bind="collapsePanel" x-cloak>
@@ -193,8 +193,8 @@
     </div>
 {/define}
 
-{define #unassociated-cookie-suggestion, $suggestion, $solutions = null}
-    <div x-data="collapse" x-bind="collapse" class="bg-white rounded mb-2 border border-gray-150 text-sm p-2">
+{define #unassociated-cookie-suggestion, $suggestion, $solutions = null, $collapseStorageName = 'unassociated'}
+    <div x-data="collapse" x-bind="collapse" data-storage-name="suggestions-{$collapseStorageName}-{$projectView->id->toString()}" data-storage-key="{$suggestion->getSuggestionId()}" class="bg-white mb-2 text-sm  px-2 py-4">
         {include #suggestion-header, suggestion: $suggestion, foundInCmp: true, solutions: $solutions ?? $suggestion->getSolutions()}
 
         <div x-bind="collapsePanel" x-cloak>
@@ -205,16 +205,18 @@
     </div>
 {/define}
 
-{define #problematic-cookie-suggestion, $suggestion, $solutions = null}
-    <div x-data="collapse" x-bind="collapse" class="bg-white rounded mb-2 border border-gray-150 text-sm p-2">
+{define #problematic-cookie-suggestion, $suggestion, $solutions = null, $collapseStorageName = 'problematic'}
+    <div x-data="collapse" x-bind="collapse" data-storage-name="suggestions-{$collapseStorageName}-{$projectView->id->toString()}" data-storage-key="{$suggestion->getSuggestionId()}" class="bg-white mb-2 text-sm px-2 py-4">
         {include #suggestion-header, suggestion: $suggestion, solutions: $solutions}
 
-        <div n:foreach="$suggestion->getProblems() as $problem" n:class="'px-2 py-3 mt-3 border border-red-100 rounded', !$iterator->isLast() ? 'mb-2' : ''">
-            <div class="text-red-700">
-                {_'problem.' . $problem->getType(), $problem->getTranslatorArgs()|noescape}
-            </div>
-            <div n:if="null === $solutions" class="mt-2 flex items-center flex-wrap">
-                {include #solutions, solutions: $problem->getSolutions()}
+        <div class="divide-y divide-red-100  mt-2">
+            <div n:foreach="$suggestion->getProblems() as $problem" n:class="'px-2 py-4', !$iterator->isLast() ? 'mb-2' : ''">
+                <div class="text-red-700">
+                    {_'problem.' . $problem->getType(), $problem->getTranslatorArgs()|noescape}
+                </div>
+                <div n:if="null === $solutions" class="mt-2 flex items-center flex-wrap">
+                    {include #solutions, solutions: $problem->getSolutions()}
+                </div>
             </div>
         </div>
 
@@ -226,8 +228,8 @@
     </div>
 {/define}
 
-{define #unproblematic-cookie-suggestion, $suggestion}
-    <div x-data="collapse" x-bind="collapse" class="bg-white rounded mb-2 border border-gray-150 text-sm p-2">
+{define #unproblematic-cookie-suggestion, $suggestion, $collapseStorageName = 'unproblematic'}
+    <div x-data="collapse" x-bind="collapse" data-storage-name="suggestions-{$collapseStorageName}-{$projectView->id->toString()}" data-storage-key="{$suggestion->getSuggestionId()}" class="bg-white text-sm px-2 py-4">
         {include #suggestion-header, suggestion: $suggestion}
 
         <div x-bind="collapsePanel" x-cloak>
@@ -241,19 +243,27 @@
 {define #suggestion-header, $suggestion, $foundInCmp = null, $solutions = null}
     <div>
         {var $latestOccurrence = $suggestion->getLatestOccurrence()}
-        <div x-bind="collapseButton" class="flex items-center flex-wrap hover:bg-gray-50 rounded p-2 cursor-pointer">
-            <div class="font-semibold mr-6 my-0.5 flex items-center flex-nowrap">
-                {if 0 < count($suggestion->getWarnings())}
-                    <span x-data x-tooltip.placement.top.raw="{_tooltip.suggestion_contains_warnings}">
-                        {svg 'common/exclamation-triangle.svg', class: 'h-5 w-5 text-yellow-600 mr-3'}
-                    </span>
-                {/if}
-                {$suggestion->getSuggestionName()}
+        <div x-bind="collapseButton" class="flex items-center flex-nowrap justify-between hover:bg-gray-50 rounded p-2 cursor-pointer">
+            <div class="flex items-start w-full">
+                <div class="font-semibold mr-6 my-0.5 flex items-center flex-nowrap">
+                    {if 0 < count($suggestion->getWarnings())}
+                        <span x-data x-tooltip.placement.top.raw="{_tooltip.suggestion_contains_warnings}">
+                            {svg 'common/exclamation-triangle.svg', class: 'h-5 w-5 text-yellow-600 mr-3'}
+                        </span>
+                    {/if}
+                    {$suggestion->getSuggestionName()}
+                </div>
+                <div class="flex items-center flex-wrap">
+                    <div x-data x-tooltip.placement.top.raw="{_tooltip.domain}" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 mr-2 my-0.5">{$suggestion->getSuggestionDomain()}</div>
+                    <div x-data x-tooltip.placement.top.raw="{_tooltip.last_founded_at}" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 mr-2 my-0.5">{$latestOccurrence->lastFoundAt->setTimezone(App\Application\Localization\ApplicationDateTimeZone::get())|date: 'j.n.Y H:i:s'}</div>
+                    <div n:if="false === $foundInCmp" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800 mr-2 my-0.5">{_not_found_in_cmp}</div>
+                    <div n:if="true === $foundInCmp" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 mr-2 my-0.5">{_found_in_cmp}</div>
+                </div>
             </div>
-            <div x-data x-tooltip.placement.top.raw="{_tooltip.domain}" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 mr-2 my-0.5">{$suggestion->getSuggestionDomain()}</div>
-            <div x-data x-tooltip.placement.top.raw="{_tooltip.last_founded_at}" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 mr-2 my-0.5">{$latestOccurrence->lastFoundAt->setTimezone(App\Application\Localization\ApplicationDateTimeZone::get())|date: 'j.n.Y H:i:s'}</div>
-            <div n:if="false === $foundInCmp" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800 mr-2 my-0.5">{_not_found_in_cmp}</div>
-            <div n:if="true === $foundInCmp" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 mr-2 my-0.5">{_found_in_cmp}</div>
+            <span class="text-gray-600">
+                {svg 'common/chevron-up.svg', class: 'w-4 h-4', x-show: 'expanded', x-cloak: true}
+                {svg 'common/chevron-down.svg', class: 'w-4 h-4', x-show: '!expanded', x-cloak: true}
+            </span>
         </div>
         <div n:if="null !== $solutions" class="mt-2 flex items-center flex-wrap">
             {include #solutions, solutions: $solutions}
@@ -347,6 +357,9 @@
                 </tr>
             </tbody>
         </table>
+        <a n:href="'openModal!', 'editCookieModal-' . Ramsey\Uuid\Uuid::fromString($existingCookie->cookieId)->getHex()->toString()" data-spinner-for="self" class="ajax spinner-white inline-flex items-center px-2 py-1 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mt-2">
+            {_edit_cookie}
+        </a>
     </div>
 {/define}
 

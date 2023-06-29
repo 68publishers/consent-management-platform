@@ -96,6 +96,7 @@ final class SettingsPresenter extends AdminPresenter
 
 		$control->addEventListener(CrawlerSettingsUpdatedEvent::class, function (): void {
 			$this->subscribeFlashMessage(FlashMessage::success('crawler_settings_updated'));
+			$this->redrawSidebar();
 		});
 
 		$control->addEventListener(CrawlerSettingsUpdateFailedEvent::class, function (): void {

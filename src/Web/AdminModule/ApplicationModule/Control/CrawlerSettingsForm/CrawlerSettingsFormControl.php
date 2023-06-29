@@ -39,17 +39,32 @@ final class CrawlerSettingsFormControl extends Control
 
 		$form->setTranslator($translator);
 
+		$enabledField = $form->addCheckbox('enabled', 'enabled.field');
+
+		$enabledField->addCondition($form::EQUAL, TRUE)
+			->toggle('#' . $this->getUniqueId() . '-host_url-container')
+			->toggle('#' . $this->getUniqueId() . '-username-container')
+			->toggle('#' . $this->getUniqueId() . '-password-container')
+			->toggle('#' . $this->getUniqueId() . '-callback_uri_token-container');
+
 		$form->addText('host_url', 'host_url.field')
-			->setRequired('host_url.required')
-			->addRule($form::URL, 'host_url.rule.url');
+			->setOption('id', $this->getUniqueId() . '-host_url-container')
+			->addConditionOn($enabledField, $form::EQUAL, TRUE)
+				->setRequired('host_url.required')
+				->addRule($form::URL, 'host_url.rule.url');
 
 		$form->addText('username', 'username.field')
-			->setRequired('username.required');
+			->setOption('id', $this->getUniqueId() . '-username-container')
+			->addConditionOn($enabledField, $form::EQUAL, TRUE)
+				->setRequired('username.required');
 
-		$form->addText('password', 'password.field');
+		$form->addText('password', 'password.field')
+			->setOption('id', $this->getUniqueId() . '-password-container');
 
 		$form->addText('callback_uri_token', 'callback_uri_token.field')
-			->setRequired('callback_uri_token.required');
+			->setOption('id', $this->getUniqueId() . '-callback_uri_token-container')
+			->addConditionOn($enabledField, $form::EQUAL, TRUE)
+				->setRequired('callback_uri_token.required');
 
 		$form->addProtection('//layout.form_protection');
 
@@ -58,10 +73,11 @@ final class CrawlerSettingsFormControl extends Control
 		$defaults = $this->globalSettings->crawlerSettings();
 
 		$form->setDefaults([
-			'host_url' => $defaults->hostUrl(),
-			'username' => $defaults->username(),
-			'password' => $defaults->password(),
-			'callback_uri_token' => $defaults->callbackUriToken(),
+			'enabled' => $defaults->enabled(),
+			'host_url' => (string) $defaults->hostUrl(),
+			'username' => (string) $defaults->username(),
+			'password' => (string) $defaults->password(),
+			'callback_uri_token' => (string) $defaults->callbackUriToken(),
 		]);
 
 		$form->onSuccess[] = function (Form $form): void {
@@ -75,10 +91,11 @@ final class CrawlerSettingsFormControl extends Control
 	{
 		$values = $form->getValues();
 		$command = PutCrawlerSettingsCommand::create(
-			$values->host_url,
-			$values->username,
+			$values->enabled,
+			$values->host_url ?: NULL,
+			$values->username ?: NULL,
 			$values->password,
-			$values->callback_uri_token,
+			$values->callback_uri_token ?: NULL,
 		);
 
 		try {

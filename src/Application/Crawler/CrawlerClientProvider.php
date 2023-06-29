@@ -39,7 +39,7 @@ final class CrawlerClientProvider
 
 		$crawlerSettings = $this->globalSettings->crawlerSettings();
 
-		if (NULL === $crawlerSettings->hostUrl() || NULL === $crawlerSettings->username() || NULL === $crawlerSettings->password()) {
+		if (FALSE === $crawlerSettings->enabled() || NULL === $crawlerSettings->hostUrl() || NULL === $crawlerSettings->username() || NULL === $crawlerSettings->password()) {
 			throw new CrawlerNotConfiguredException('');
 		}
 

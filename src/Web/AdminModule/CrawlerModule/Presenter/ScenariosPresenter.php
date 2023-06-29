@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Web\AdminModule\CrawlerModule\Presenter;
 
 use Nette\InvalidStateException;
+use Nette\Application\BadRequestException;
 use App\Application\Acl\CrawlerScenariosResource;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
+use SixtyEightPublishers\UserBundle\Application\Exception\IdentityException;
 use App\Web\AdminModule\CrawlerModule\Control\ScenarioList\ScenarioListControl;
 use App\Web\AdminModule\CrawlerModule\Control\RunScenarioForm\Event\ScenarioRunningEvent;
 use App\Web\AdminModule\CrawlerModule\Control\RunScenarioForm\RunScenarioFormModalControl;
@@ -33,6 +35,19 @@ final class ScenariosPresenter extends AdminPresenter
 
 		$this->scenarioListControlFactory = $scenarioListControlFactory;
 		$this->runScenarioFormModalControlFactory = $runScenarioFormModalControlFactory;
+	}
+
+	/**
+	 * @throws IdentityException
+	 * @throws BadRequestException
+	 */
+	protected function startup(): void
+	{
+		parent::startup();
+
+		if (!$this->globalSettings->crawlerSettings()->enabled()) {
+			$this->error('Crawler is disabled.');
+		}
 	}
 
 	protected function createComponentScenarioList(): ScenarioListControl

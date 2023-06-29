@@ -77,7 +77,7 @@ final class GlobalSettings implements AggregateRootInterface
 		$this->lastUpdateAt = $event->createdAt();
 		$this->locales = LocalesConfig::create(Locales::reconstitute(['en']), Locale::fromValue('en')); // setup defaults to en
 		$this->apiCache = ApiCache::create([]);
-		$this->crawlerSettings = CrawlerSettings::fromValues(NULL, NULL, NULL, NULL);
+		$this->crawlerSettings = CrawlerSettings::fromValues(FALSE, NULL, NULL, NULL, NULL);
 	}
 
 	protected function whenLocalizationSettingsChanged(LocalizationSettingsChanged $event): void

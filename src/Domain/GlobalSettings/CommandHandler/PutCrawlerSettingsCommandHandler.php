@@ -28,6 +28,7 @@ final class PutCrawlerSettingsCommandHandler implements CommandHandlerInterface
 		}
 
 		$globalSettings->updateCrawlerSettings(CrawlerSettings::fromValues(
+			$command->enabled(),
 			$command->hostUrl(),
 			$command->username(),
 			$command->password(),

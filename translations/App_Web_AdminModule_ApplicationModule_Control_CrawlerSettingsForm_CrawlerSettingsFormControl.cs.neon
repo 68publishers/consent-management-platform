@@ -1,3 +1,6 @@
+enabled:
+	field: Zapnuto
+
 host_url:
 	field: URL
 	required: Vyplňte prosím URL.
