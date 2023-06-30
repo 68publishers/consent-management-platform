@@ -99,6 +99,10 @@ final class CookieSuggestion implements AggregateRootInterface
 			return;
 		}
 
+		if ($lastFoundAt < $existing->lastFoundAt()) {
+			return;
+		}
+
 		if (!$existing->foundOnUrl()->equals($foundOnUrl)) {
 			$this->recordThat(CookieOccurrenceFoundOnUrlChanged::create($this->id, $existing->id(), $foundOnUrl));
 		}

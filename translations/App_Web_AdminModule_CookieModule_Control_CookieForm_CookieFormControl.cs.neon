@@ -6,6 +6,7 @@ name:
 
 domain:
 	field: Doména
+	description: 'Ponechte prázdné pokud je cookie vždy nastavená pro doménu daného projektu.'
 
 provider:
 	field: Poskytovatel

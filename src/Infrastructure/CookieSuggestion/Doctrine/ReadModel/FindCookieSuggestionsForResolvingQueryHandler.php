@@ -52,6 +52,10 @@ final class FindCookieSuggestionsForResolvingQueryHandler implements QueryHandle
 			$occurrences = [];
 
 			foreach (json_decode($row['occurrences'], TRUE, 512, JSON_THROW_ON_ERROR) as $occurrenceRow) {
+				if (NULL === ($occurrenceRow['id'] ?? NULL)) {
+					continue;
+				}
+
 				$occurrences[] = new CookieOccurrenceForResolving(
 					$occurrenceRow['id'],
 					$occurrenceRow['scenario_name'],

@@ -114,7 +114,8 @@ final class CookieFormControl extends Control
 		$form->addText('name', 'name.field')
 			->setRequired('name.required');
 
-		$form->addText('domain', 'domain.field');
+		$form->addText('domain', 'domain.field')
+			->setOption('description', 'domain.description');
 
 		$providerField = $form->addSelect('provider', 'provider.field', array_map(static fn (CookieProviderSelectOptionView $view): string => $view->name->value(), $providers))
 			->setPrompt('-------')

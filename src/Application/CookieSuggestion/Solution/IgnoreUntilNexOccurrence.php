@@ -6,6 +6,13 @@ namespace App\Application\CookieSuggestion\Solution;
 
 final class IgnoreUntilNexOccurrence implements SolutionInterface
 {
+	private bool $virtualSuggestion;
+
+	public function __construct(bool $virtualSuggestion = FALSE)
+	{
+		$this->virtualSuggestion = $virtualSuggestion;
+	}
+
 	public function getType(): string
 	{
 		return 'ignore_until_next_occurrence';
@@ -17,6 +24,13 @@ final class IgnoreUntilNexOccurrence implements SolutionInterface
 	}
 
 	public function getArguments(): array
+	{
+		return [
+			'virtual_suggestion' => $this->virtualSuggestion,
+		];
+	}
+
+	public function getTranslatorArgs(): array
 	{
 		return [];
 	}

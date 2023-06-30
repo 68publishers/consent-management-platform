@@ -20,6 +20,7 @@ use Nette\Application\BadRequestException;
 use App\Domain\Cookie\ValueObject\CookieId;
 use App\ReadModel\Cookie\GetCookieByIdQuery;
 use App\Application\Acl\FoundCookiesResource;
+use App\Application\CookieSuggestion\Matcher;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\ReadModel\Project\GetProjectByIdQuery;
 use App\ReadModel\Project\FindAllProjectsQuery;
@@ -30,7 +31,6 @@ use App\Domain\Cookie\Command\UpdateCookieCommand;
 use App\ReadModel\CookieSuggestion\CookieSuggestion;
 use App\Domain\Cookie\Exception\NameUniquenessException;
 use SixtyEightPublishers\FlashMessageBundle\Domain\Phrase;
-use App\Domain\CookieSuggestion\ValueObject\CookieSuggestionId;
 use App\ReadModel\CookieProvider\CookieProviderSelectOptionView;
 use App\ReadModel\CookieSuggestion\GetCookieSuggestionByIdQuery;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
@@ -39,6 +39,7 @@ use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 use App\Application\CookieSuggestion\CookieSuggestionsStoreInterface;
+use App\Domain\CookieSuggestion\Command\CreateCookieSuggestionCommand;
 use App\ReadModel\CookieProvider\FindCookieProviderSelectOptionsQuery;
 use App\Application\CookieSuggestion\Suggestion\IgnoredCookieSuggestion;
 use App\Application\CookieSuggestion\Suggestion\MissingCookieSuggestion;
@@ -290,17 +291,21 @@ final class FoundCookiesPresenter extends AdminPresenter
 
 			$inner->setCookieProviderOptions($providerOptions);
 
-			$inner->setOverwrittenDefaults([
+			$defaults = [
 				'name' => $cookieSuggestion->name,
-				'domain' => $cookieSuggestion->domain,
 				'provider' => $defaultProviderId,
-			]);
+			];
+
+			if (!Matcher::matchDomain($this->projectView->domain->value(), $cookieSuggestion->domain)) {
+				$defaults['domain'] = $cookieSuggestion->domain;
+			}
+
+			$inner->setOverwrittenDefaults($defaults);
 		} elseif ('create_new_cookie_with_not_accepted_category' === $solutionType && $cookieView instanceof CookieView) {
 			$isExpiration = !in_array($cookieView->processingTime->value(), [ProcessingTime::PERSISTENT, ProcessingTime::SESSION], TRUE);
 
 			$inner->setOverwrittenDefaults([
 				'name' => $cookieView->name->value(),
-				'domain' => $cookieView->domain->value() ?: $cookieSuggestion->domain,
 				'provider' => $cookieView->cookieProviderId->toString(),
 				'processing_time' => !$isExpiration ? $cookieView->processingTime->value() : 'expiration',
 				'processing_time_mask' => $isExpiration ? $cookieView->processingTime->value() : '',
@@ -308,15 +313,9 @@ final class FoundCookiesPresenter extends AdminPresenter
 				'purposes' => array_map(static fn (Purpose $purpose): string => $purpose->value(), $cookieView->purposes),
 			]);
 		} elseif ('change_cookie_category' === $solutionType) {
-			$defaults = [
+			$inner->setOverwrittenDefaults([
 				'category' => NULL,
-			];
-
-			if (!$cookieView instanceof CookieView || empty($cookieView->domain->value())) {
-				$defaults['domain'] = $cookieSuggestion->domain;
-			}
-
-			$inner->setOverwrittenDefaults($defaults);
+			]);
 		}
 
 		$inner->setFormProcessor(function (Form $form) use ($cookieSuggestion, $solutionType, $cookieView): void {
@@ -345,17 +344,6 @@ final class FoundCookiesPresenter extends AdminPresenter
 
 			$control = $this->cookieFormModalControlFactory->create($this->validLocalesProvider, $cookieView);
 			$inner = $control->getInnerControl();
-			$cookieSuggestionId = $this->getParameter('cookieSuggestionId');
-
-			if (empty($cookieView->domain->value()) && $cookieSuggestionId && CookieSuggestionId::isValid($cookieSuggestionId)) {
-				$cookieSuggestion = $this->queryBus->dispatch(GetCookieSuggestionByIdQuery::create($cookieSuggestionId));
-
-				if ($cookieSuggestion instanceof CookieSuggestion) {
-					$inner->setOverwrittenDefaults([
-						'domain' => $cookieSuggestion->domain,
-					]);
-				}
-			}
 
 			$inner->setFormFactoryOptions([
 				FormFactoryInterface::OPTION_AJAX => TRUE,
@@ -392,7 +380,7 @@ final class FoundCookiesPresenter extends AdminPresenter
 			case 'ignore_until_next_occurrence':
 			case 'ignore_permanently':
 			case 'do_not_ignore':
-				$this->storeSolutionValues($this->solution, []);
+				$this->storeSolutionValues($this->solution, $this->solution['args']);
 				$this->redrawControl();
 				$this->redirectIfNotAjax();
 
@@ -444,9 +432,9 @@ final class FoundCookiesPresenter extends AdminPresenter
 	): bool {
 		switch ($solutionType) {
 			case 'ignore_until_next_occurrence':
-				return $this->resolveIgnore($cookieSuggestionId, $solutionsUniqueId, FALSE, $uiActionsAllowed);
+				return $this->resolveIgnore($cookieSuggestionId, $solutionsUniqueId, FALSE, $uiActionsAllowed, (bool) ($values['virtual_suggestion'] ?? FALSE));
 			case 'ignore_permanently':
-				return $this->resolveIgnore($cookieSuggestionId, $solutionsUniqueId, TRUE, $uiActionsAllowed);
+				return $this->resolveIgnore($cookieSuggestionId, $solutionsUniqueId, TRUE, $uiActionsAllowed, (bool) ($values['virtual_suggestion'] ?? FALSE));
 			case 'do_not_ignore':
 				return $this->resolveDoNotIgnore($cookieSuggestionId, $solutionsUniqueId, $uiActionsAllowed);
 			case 'associate_cookie_provider_with_project':
@@ -480,8 +468,13 @@ final class FoundCookiesPresenter extends AdminPresenter
 		string $cookieSuggestionId,
 		string $solutionsUniqueId,
 		bool $permanently,
-		bool $uiActionsAllowed
+		bool $uiActionsAllowed,
+		bool $virtualSuggestion
 	): bool {
+		if ($virtualSuggestion && !$this->createCookieSuggestionFromVirtualId($cookieSuggestionId, $uiActionsAllowed)) {
+			return FALSE;
+		}
+
 		try {
 			$this->commandBus->dispatch(
 				$permanently
@@ -669,6 +662,50 @@ final class FoundCookiesPresenter extends AdminPresenter
 			throw $e;
 		} catch (Throwable $e) {
 			$this->logger->error((string) $e);
+
+			if ($uiActionsAllowed) {
+				$this->subscribeFlashMessage(FlashMessage::error('unable_to_resolve_solution'));
+				$this->redrawControl();
+				$this->redirectIfNotAjax();
+			}
+
+			return FALSE;
+		}
+	}
+
+	/**
+	 * @throws AbortException
+	 */
+	private function createCookieSuggestionFromVirtualId(
+		string $virtualId,
+		bool $uiActionsAllowed
+	): bool {
+		$cookieView = $this->queryBus->dispatch(GetCookieByIdQuery::create($virtualId));
+
+		if (!$cookieView instanceof CookieView) {
+			if ($uiActionsAllowed) {
+				$this->subscribeFlashMessage(FlashMessage::error('unable_to_resolve_solution'));
+				$this->redrawControl();
+				$this->redirectIfNotAjax();
+			}
+
+			return FALSE;
+		}
+
+		try {
+			$this->commandBus->dispatch(CreateCookieSuggestionCommand::create(
+				$this->projectView->id->toString(),
+				$cookieView->name->value(),
+				$cookieView->domain->value() ?: $this->projectView->domain->value(),
+				[],
+				$virtualId,
+			));
+
+			return TRUE;
+		} catch (Throwable $e) {
+			if (!$e instanceof DomainException) {
+				$this->logger->error((string) $e);
+			}
 
 			if ($uiActionsAllowed) {
 				$this->subscribeFlashMessage(FlashMessage::error('unable_to_resolve_solution'));

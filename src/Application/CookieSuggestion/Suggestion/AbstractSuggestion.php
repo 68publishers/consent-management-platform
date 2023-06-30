@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Application\CookieSuggestion\Suggestion;
 
-use App\Application\CookieSuggestion\Warning\WarningInterface;
-
 abstract class AbstractSuggestion implements SuggestionInterface
 {
 	private string $suggestionId;
+
+	private bool $virtual;
 
 	private string $suggestionName;
 
@@ -17,25 +17,21 @@ abstract class AbstractSuggestion implements SuggestionInterface
 	/** @var non-empty-list<CookieOccurrence> */
 	private array $occurrences;
 
-	/** @var array<int, WarningInterface> */
-	private array $warnings;
-
 	/**
 	 * @param non-empty-list<CookieOccurrence> $occurrences
-	 * @param array<int, WarningInterface>     $warnings
 	 */
 	public function __construct(
 		string $suggestionId,
+		bool $virtual,
 		string $suggestionName,
 		string $suggestionDomain,
-		array $occurrences,
-		array $warnings
+		array $occurrences
 	) {
 		$this->suggestionId = $suggestionId;
+		$this->virtual = $virtual;
 		$this->suggestionName = $suggestionName;
 		$this->suggestionDomain = $suggestionDomain;
 		$this->occurrences = $occurrences;
-		$this->warnings = $warnings;
 	}
 
 	public function getSuggestionId(): string
@@ -58,14 +54,23 @@ abstract class AbstractSuggestion implements SuggestionInterface
 		return $this->occurrences;
 	}
 
-	public function getWarnings(): array
+	public function hasWarnings(): bool
 	{
-		return $this->warnings;
+		return FALSE;
 	}
 
-	public function getLatestOccurrence(): CookieOccurrence
+	public function isVirtual(): bool
+	{
+		return $this->virtual;
+	}
+
+	public function getLatestOccurrence(): ?CookieOccurrence
 	{
 		$occurrences = $this->occurrences;
+
+		if (0 >= count($occurrences)) {
+			return NULL;
+		}
 
 		usort($occurrences, static fn (CookieOccurrence $left, CookieOccurrence $right) => $right->lastFoundAt <=> $left->lastFoundAt);
 

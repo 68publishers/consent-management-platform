@@ -18,6 +18,8 @@ final class ProjectData extends AbstractDescribedObject
 
 	public string $code;
 
+	public string $domain;
+
 	public string $color;
 
 	public string $description;
@@ -37,6 +39,7 @@ final class ProjectData extends AbstractDescribedObject
 			->withProps(new AllowOthers())
 			->withDescriptor('name', Descriptor::string(new Required()))
 			->withDescriptor('code', Descriptor::string(new Required()))
+			->withDescriptor('domain', Descriptor::string(new Required()))
 			->withDescriptor('color', Descriptor::string(new Required()))
 			->withDescriptor('description', Descriptor::string(new Required()))
 			->withDescriptor('active', Descriptor::boolean(new DefaultValue(TRUE)))

@@ -20,4 +20,9 @@ final class IgnorePermanently implements SolutionInterface
 	{
 		return [];
 	}
+
+	public function getTranslatorArgs(): array
+	{
+		return [];
+	}
 }

@@ -8,11 +8,6 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class UpdateProjectTemplatesCommand extends AbstractCommand
 {
-	/**
-	 * @param string $projectId
-	 *
-	 * @return static
-	 */
 	public static function create(string $projectId): self
 	{
 		return self::fromParameters([
@@ -21,12 +16,6 @@ final class UpdateProjectTemplatesCommand extends AbstractCommand
 		]);
 	}
 
-	/**
-	 * @param string $locale
-	 * @param string $template
-	 *
-	 * @return $this
-	 */
 	public function withTemplate(string $locale, string $template): self
 	{
 		$templates = $this->templates();
@@ -35,16 +24,13 @@ final class UpdateProjectTemplatesCommand extends AbstractCommand
 		return $this->withParam('templates', $templates);
 	}
 
-	/**
-	 * @return string
-	 */
 	public function projectId(): string
 	{
 		return $this->getParam('project_id');
 	}
 
 	/**
-	 * @return array
+	 * @return array<string, string>
 	 */
 	public function templates(): array
 	{

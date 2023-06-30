@@ -9,6 +9,7 @@ use App\Domain\Project\ValueObject\Code;
 use App\Domain\Project\ValueObject\Name;
 use App\Domain\Project\ValueObject\Color;
 use App\Domain\Shared\ValueObject\Locale;
+use App\Domain\Project\ValueObject\Domain;
 use App\Domain\Shared\ValueObject\Locales;
 use Doctrine\Common\Collections\Collection;
 use App\Domain\Project\Event\ProjectCreated;
@@ -20,6 +21,7 @@ use App\Domain\Project\Event\ProjectNameChanged;
 use App\Domain\Shared\ValueObject\LocalesConfig;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Project\Event\ProjectColorChanged;
+use App\Domain\Project\Event\ProjectDomainChanged;
 use App\Domain\Project\Event\ProjectLocalesChanged;
 use App\Domain\Project\Command\CreateProjectCommand;
 use App\Domain\Project\Command\UpdateProjectCommand;
@@ -47,6 +49,8 @@ final class Project implements AggregateRootInterface
 
 	private Code $code;
 
+	private Domain $domain;
+
 	private Color $color;
 
 	private Description $description;
@@ -55,18 +59,12 @@ final class Project implements AggregateRootInterface
 
 	private LocalesConfig $locales;
 
-	/** @var \Doctrine\Common\Collections\Collection|\App\Domain\Project\ProjectHasCookieProvider[]  */
+	/** @var Collection<ProjectHasCookieProvider>  */
 	private Collection $cookieProviders;
 
-	/** @var \Doctrine\Common\Collections\Collection|\App\Domain\Project\ProjectTranslation[]  */
+	/** @var Collection<ProjectTranslation>  */
 	private Collection $translations;
 
-	/**
-	 * @param \App\Domain\Project\Command\CreateProjectCommand $command
-	 * @param \App\Domain\Project\CheckCodeUniquenessInterface $checkCodeUniqueness
-	 *
-	 * @return static
-	 */
 	public static function create(CreateProjectCommand $command, CheckCodeUniquenessInterface $checkCodeUniqueness): self
 	{
 		$project = new self();
@@ -75,6 +73,7 @@ final class Project implements AggregateRootInterface
 		$cookieProviderId = NULL !== $command->cookieProviderId() ? CookieProviderId::fromString($command->cookieProviderId()) : CookieProviderId::new();
 		$name = Name::fromValue($command->name());
 		$code = Code::fromValidCode($command->code());
+		$domain = Domain::fromValue($command->domain());
 		$description = Description::fromValue($command->description());
 		$color = Color::fromValidColor($command->color());
 		$locales = Locales::empty();
@@ -86,18 +85,26 @@ final class Project implements AggregateRootInterface
 
 		$checkCodeUniqueness($projectId, $code);
 
-		$project->recordThat(ProjectCreated::create($projectId, $cookieProviderId, $name, $code, $description, $color, $command->active(), LocalesConfig::create($locales, $defaultLocale)));
-		$project->setCookieProviders(array_map(static fn (string $cookieProviderId): CookieProviderId => CookieProviderId::fromString($cookieProviderId), $command->cookieProviderIds()));
+		$project->recordThat(ProjectCreated::create(
+			$projectId,
+			$cookieProviderId,
+			$name,
+			$code,
+			$domain,
+			$description,
+			$color,
+			$command->active(),
+			LocalesConfig::create($locales, $defaultLocale)
+		));
+
+		$project->setCookieProviders(array_map(
+			static fn (string $cookieProviderId): CookieProviderId => CookieProviderId::fromString($cookieProviderId),
+			$command->cookieProviderIds()
+		));
 
 		return $project;
 	}
 
-	/**
-	 * @param \App\Domain\Project\Command\UpdateProjectCommand $command
-	 * @param \App\Domain\Project\CheckCodeUniquenessInterface $checkCodeUniqueness
-	 *
-	 * @return void
-	 */
 	public function update(UpdateProjectCommand $command, CheckCodeUniquenessInterface $checkCodeUniqueness): void
 	{
 		if (NULL !== $command->name()) {
@@ -106,6 +113,10 @@ final class Project implements AggregateRootInterface
 
 		if (NULL !== $command->code()) {
 			$this->changeCode(Code::fromValidCode($command->code()), $checkCodeUniqueness);
+		}
+
+		if (NULL !== $command->domain()) {
+			$this->changeDomain(Domain::fromValue($command->domain()));
 		}
 
 		if (NULL !== $command->color()) {
@@ -136,19 +147,11 @@ final class Project implements AggregateRootInterface
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function aggregateId(): AggregateId
 	{
 		return AggregateId::fromUuid($this->id->id());
 	}
 
-	/**
-	 * @param \App\Domain\Project\ValueObject\Name $name
-	 *
-	 * @return void
-	 */
 	public function changeName(Name $name): void
 	{
 		if (!$this->name->equals($name)) {
@@ -156,12 +159,6 @@ final class Project implements AggregateRootInterface
 		}
 	}
 
-	/**
-	 * @param \App\Domain\Project\ValueObject\Code             $code
-	 * @param \App\Domain\Project\CheckCodeUniquenessInterface $checkCodeUniqueness
-	 *
-	 * @return void
-	 */
 	public function changeCode(Code $code, CheckCodeUniquenessInterface $checkCodeUniqueness): void
 	{
 		$code = Code::fromValidCode($code->value());
@@ -172,11 +169,13 @@ final class Project implements AggregateRootInterface
 		}
 	}
 
-	/**
-	 * @param \App\Domain\Project\ValueObject\Color $color
-	 *
-	 * @return void
-	 */
+	public function changeDomain(Domain $domain): void
+	{
+		if (!$this->domain->equals($domain)) {
+			$this->recordThat(ProjectDomainChanged::create($this->id, $domain));
+		}
+	}
+
 	public function changeColor(Color $color): void
 	{
 		$color = Color::fromValidColor($color->value());
@@ -186,11 +185,6 @@ final class Project implements AggregateRootInterface
 		}
 	}
 
-	/**
-	 * @param \App\Domain\Project\ValueObject\Description $description
-	 *
-	 * @return void
-	 */
 	public function changeDescription(Description $description): void
 	{
 		if (!$this->description->equals($description)) {
@@ -198,11 +192,6 @@ final class Project implements AggregateRootInterface
 		}
 	}
 
-	/**
-	 * @param bool $active
-	 *
-	 * @return void
-	 */
 	public function changeActiveState(bool $active): void
 	{
 		if ($this->active !== $active) {
@@ -210,11 +199,6 @@ final class Project implements AggregateRootInterface
 		}
 	}
 
-	/**
-	 * @param \App\Domain\Shared\ValueObject\LocalesConfig $locales
-	 *
-	 * @return void
-	 */
 	public function changeLocales(LocalesConfig $locales): void
 	{
 		if (!$this->locales->equals($locales)) {
@@ -223,9 +207,7 @@ final class Project implements AggregateRootInterface
 	}
 
 	/**
-	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId[] $cookieProviderIds
-	 *
-	 * @return void
+	 * @param array<CookieProviderId> $cookieProviderIds
 	 */
 	public function setCookieProviders(array $cookieProviderIds): void
 	{
@@ -240,11 +222,6 @@ final class Project implements AggregateRootInterface
 		}
 	}
 
-	/**
-	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId $cookieProviderId
-	 *
-	 * @return void
-	 */
 	public function addCookieProvider(CookieProviderId $cookieProviderId): void
 	{
 		if (!$this->hasCookieProvider($this->cookieProviders, $cookieProviderId)) {
@@ -252,11 +229,6 @@ final class Project implements AggregateRootInterface
 		}
 	}
 
-	/**
-	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId $cookieProviderId
-	 *
-	 * @return void
-	 */
 	public function removeCookieProvider(CookieProviderId $cookieProviderId): void
 	{
 		if ($this->hasCookieProvider($this->cookieProviders, $cookieProviderId)) {
@@ -264,13 +236,6 @@ final class Project implements AggregateRootInterface
 		}
 	}
 
-	/**
-	 * @param \App\Domain\Shared\ValueObject\Locale          $locale
-	 * @param \App\Domain\Project\ValueObject\Template       $template
-	 * @param \App\Domain\Project\TemplateValidatorInterface $templateValidator
-	 *
-	 * @return void
-	 */
 	public function changeTemplate(Locale $locale, Template $template, TemplateValidatorInterface $templateValidator): void
 	{
 		$translation = $this->translations->filter(static fn (ProjectTranslation $translation): bool => $translation->locale()->equals($locale))->first();
@@ -282,11 +247,6 @@ final class Project implements AggregateRootInterface
 		}
 	}
 
-	/**
-	 * @param \App\Domain\Project\Event\ProjectCreated $event
-	 *
-	 * @return void
-	 */
 	protected function whenProjectCreated(ProjectCreated $event): void
 	{
 		$this->id = $event->projectId();
@@ -294,6 +254,7 @@ final class Project implements AggregateRootInterface
 		$this->createdAt = $event->createdAt();
 		$this->name = $event->name();
 		$this->code = $event->code();
+		$this->domain = $event->domain();
 		$this->color = $event->color();
 		$this->description = $event->description();
 		$this->active = $event->active();
@@ -302,81 +263,46 @@ final class Project implements AggregateRootInterface
 		$this->translations = new ArrayCollection();
 	}
 
-	/**
-	 * @param \App\Domain\Project\Event\ProjectNameChanged $event
-	 *
-	 * @return void
-	 */
 	protected function whenProjectNameChanged(ProjectNameChanged $event): void
 	{
 		$this->name = $event->name();
 	}
 
-	/**
-	 * @param \App\Domain\Project\Event\ProjectCodeChanged $event
-	 *
-	 * @return void
-	 */
 	protected function whenProjectCodeChanged(ProjectCodeChanged $event): void
 	{
 		$this->code = $event->code();
 	}
 
-	/**
-	 * @param \App\Domain\Project\Event\ProjectColorChanged $event
-	 *
-	 * @return void
-	 */
+	protected function whenProjectDomainChanged(ProjectDomainChanged $event): void
+	{
+		$this->domain = $event->domain();
+	}
+
 	protected function whenProjectColorChanged(ProjectColorChanged $event): void
 	{
 		$this->color = $event->color();
 	}
 
-	/**
-	 * @param \App\Domain\Project\Event\ProjectDescriptionChanged $event
-	 *
-	 * @return void
-	 */
 	protected function whenProjectDescriptionChanged(ProjectDescriptionChanged $event): void
 	{
 		$this->description = $event->description();
 	}
 
-	/**
-	 * @param \App\Domain\Project\Event\ProjectActiveStateChanged $event
-	 *
-	 * @return void
-	 */
 	protected function whenProjectActiveStateChanged(ProjectActiveStateChanged $event): void
 	{
 		$this->active = $event->active();
 	}
 
-	/**
-	 * @param \App\Domain\Project\Event\ProjectLocalesChanged $event
-	 *
-	 * @return void
-	 */
 	protected function whenProjectLocalesChanged(ProjectLocalesChanged $event): void
 	{
 		$this->locales = $event->locales();
 	}
 
-	/**
-	 * @param \App\Domain\Project\Event\ProjectCookieProviderAdded $event
-	 *
-	 * @return void
-	 */
 	protected function whenProjectCookieProviderAdded(ProjectCookieProviderAdded $event): void
 	{
 		$this->cookieProviders->add(ProjectHasCookieProvider::create($this, $event->cookieProviderId()));
 	}
 
-	/**
-	 * @param \App\Domain\Project\Event\ProjectCookieProviderRemoved $event
-	 *
-	 * @return void
-	 */
 	protected function whenProjectCookieProviderRemoved(ProjectCookieProviderRemoved $event): void
 	{
 		$projectHasCookieProvider = $this->hasCookieProvider($this->cookieProviders, $event->cookieProviderId());
@@ -386,11 +312,6 @@ final class Project implements AggregateRootInterface
 		}
 	}
 
-	/**
-	 * @param \App\Domain\Project\Event\ProjectTemplateChanged $event
-	 *
-	 * @return void
-	 */
 	protected function whenProjectTemplateChanged(ProjectTemplateChanged $event): void
 	{
 		$translation = $this->translations->filter(static fn (ProjectTranslation $translation): bool => $translation->locale()->equals($event->locale()))->first();
@@ -405,10 +326,9 @@ final class Project implements AggregateRootInterface
 	}
 
 	/**
-	 * @param \Doctrine\Common\Collections\Collection|\App\Domain\CookieProvider\ValueObject\CookieProviderId[] $collection
-	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId                                           $cookieProviderId
+	 * @param iterable<CookieProviderId|ProjectHasCookieProvider> $collection
 	 *
-	 * @return object|FALSE
+	 * @return CookieProviderId|ProjectHasCookieProvider|FALSE
 	 */
 	private function hasCookieProvider(iterable $collection, CookieProviderId $cookieProviderId)
 	{

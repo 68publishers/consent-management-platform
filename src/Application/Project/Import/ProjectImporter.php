@@ -51,8 +51,9 @@ final class ProjectImporter extends AbstractImporter
 
 				if ($projectView instanceof ProjectView) {
 					$command = UpdateProjectCommand::create($projectView->id->toString())
-						->withCode($data->code)
 						->withName($data->name)
+						->withCode($data->code)
+						->withDomain($data->domain)
 						->withColor($data->color)
 						->withDescription($data->description)
 						->withActive($data->active)
@@ -61,6 +62,7 @@ final class ProjectImporter extends AbstractImporter
 					$command = CreateProjectCommand::create(
 						$data->name,
 						$data->code,
+						$data->domain,
 						$data->description,
 						$data->color,
 						$data->active,

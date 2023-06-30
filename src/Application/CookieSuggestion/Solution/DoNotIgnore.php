@@ -20,4 +20,9 @@ final class DoNotIgnore implements SolutionInterface
 	{
 		return [];
 	}
+
+	public function getTranslatorArgs(): array
+	{
+		return [];
+	}
 }

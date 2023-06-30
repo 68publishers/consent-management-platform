@@ -14,4 +14,9 @@ interface SolutionInterface
 	 * @return array<string, mixed>
 	 */
 	public function getArguments(): array;
+
+	/**
+	 * @return array<string, string|numeric>
+	 */
+	public function getTranslatorArgs(): array;
 }

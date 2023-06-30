@@ -8,13 +8,6 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class AddCookieProvidersToProjectCommand extends AbstractCommand
 {
-	/**
-	 * @param string $projectId
-	 * @param string $cookieProviderId
-	 * @param string ...$cookieProviderIds
-	 *
-	 * @return static
-	 */
 	public static function create(string $projectId, string $cookieProviderId, string ...$cookieProviderIds): self
 	{
 		return self::fromParameters([
@@ -23,16 +16,13 @@ final class AddCookieProvidersToProjectCommand extends AbstractCommand
 		]);
 	}
 
-	/**
-	 * @return string
-	 */
 	public function projectId(): string
 	{
 		return $this->getParam('project_id');
 	}
 
 	/**
-	 * @return string[]
+	 * @return array<string>
 	 */
 	public function cookieProviderIds(): array
 	{

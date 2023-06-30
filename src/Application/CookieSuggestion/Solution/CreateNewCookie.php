@@ -20,4 +20,9 @@ final class CreateNewCookie implements SolutionInterface
 	{
 		return [];
 	}
+
+	public function getTranslatorArgs(): array
+	{
+		return [];
+	}
 }

@@ -11,6 +11,11 @@ code:
 		duplicated_value: 'Projekt s tímto kódem již existuje.'
 	description: 'Povolená jsou pouze malá písmena, číslice, tečka, podtržítko a pomlčka.'
 
+domain:
+	field: Doména
+	required: Vyplňte prosím doménu.
+	description: 'Použije se jako výchozí doména pro přiřazené cookies.'
+
 color:
 	field: Barva
 	required: Vyplňte prosím barvu.

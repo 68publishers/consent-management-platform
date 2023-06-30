@@ -17,18 +17,19 @@ final class Solutions
 
 	private DataStoreInterface $dataStore;
 
-	/** @var non-empty-list<SolutionInterface> */
+	/** @var non-empty-list<SolutionInterface|SolutionGroup> */
 	private array $solutions;
 
 	/**
-	 * @param non-empty-list<string> $compositeKey
+	 * @param non-empty-list<string>          $compositeKey
+	 * @param SolutionInterface|SolutionGroup ...$solutions
 	 */
 	public function __construct(
 		string $projectId,
 		string $cookieSuggestionId,
 		array $compositeKey,
 		DataStoreInterface $dataStore,
-		SolutionInterface ...$solutions
+		...$solutions
 	) {
 		$this->projectId = $projectId;
 		$this->cookieSuggestionId = $cookieSuggestionId;
@@ -46,7 +47,7 @@ final class Solutions
 	}
 
 	/**
-	 * @return non-empty-list<SolutionInterface>
+	 * @return non-empty-list<SolutionInterface|SolutionGroup>
 	 */
 	public function all(): array
 	{
@@ -65,11 +66,15 @@ final class Solutions
 	{
 		$found = FALSE;
 
-		foreach ($this->all() as $s) {
-			if ($s === $solution) {
-				$found = TRUE;
+		foreach ($this->all() as $group) {
+			$solutions = $group instanceof SolutionGroup ? $group->getSolutions() : [$group];
 
-				break;
+			foreach ($solutions as $s) {
+				if ($s === $solution) {
+					$found = TRUE;
+
+					break 2;
+				}
 			}
 		}
 
@@ -108,15 +113,19 @@ final class Solutions
 		$solutionUniqueId = $data['solutionUniqueId'] ?? '';
 		$solutionType = $data['solutionType'] ?? '';
 
-		foreach ($this->solutions as $solution) {
-			if ($solutionType === $solution->getType() && $solutionUniqueId === $solution->getUniqueId()) {
-				return [
-					'solutionsUniqueId' => $this->uniqueKey,
-					'solutionUniqueId' => $solutionUniqueId,
-					'solutionType' => $solutionType,
-					'cookieSuggestionId' => $data['cookieSuggestionId'],
-					'values' => $data['values'] ?? [],
-				];
+		foreach ($this->solutions as $group) {
+			$solutions = $group instanceof SolutionGroup ? $group->getSolutions() : [$group];
+
+			foreach ($solutions as $solution) {
+				if ($solutionType === $solution->getType() && $solutionUniqueId === $solution->getUniqueId()) {
+					return [
+						'solutionsUniqueId' => $this->uniqueKey,
+						'solutionUniqueId' => $solutionUniqueId,
+						'solutionType' => $solutionType,
+						'cookieSuggestionId' => $data['cookieSuggestionId'],
+						'values' => $data['values'] ?? [],
+					];
+				}
 			}
 		}
 
