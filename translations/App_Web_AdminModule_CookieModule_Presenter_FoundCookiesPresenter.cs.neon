@@ -37,6 +37,7 @@ occurrences_table:
 	last_found_at: Naposledy nalezeno
 	accepted_categories: Povolené kategorie
 	found_on_url: URL prvního nálezu
+	no_occurrences_found: Žádné výskyty nebyly nalezeny.
 
 existing_cookie_table:
 	name: Název
@@ -45,19 +46,36 @@ existing_cookie_table:
 	provider: Poskytovatel
 
 warning:
-	cookie_domain_not_set: 'Nastavte prosím doménu v editaci cookie. Bez ní nelze přesně vyhodnotit, ke kterému poskytovateli je cookie přiřazena, pokud dojde k duplicitám.'
+	cookie_does_not_have_same_domain: 'Cookie má odlišnou doménu, než nález a není tedy jisté, jestli se jedná o stejnou cookie.'
 
 problem:
-	cookie_is_in_category_that_is_not_accepted: 'Scénář <span class="font-semibold">"%scenarioName%"</span> byl spuštěn s kategoriemi <span class="font-semibold">[%acceptedCategories%]</span>, ale cookie se nechází v kategorii <span class="font-semibold">%categoryCode%</span>.'
+	cookie_is_in_category_that_is_not_accepted: 'Scénář <span class="font-semibold">"%scenarioName%"</span> byl spuštěn s kategoriemi <span class="font-semibold">[%acceptedCategories%]</span>, ale cookie se nachází v kategoriích <span class="font-semibold">[%cookieCategories%]</span>.'
+	cookie_long_time_not_found: 'Cookie nebyla nalezena žádným scénářem již <span class="font-semibold">%not_found_for_days%</span> dní.'
+	cookie_was_never_found: 'Cookie nebyla nikdy nalezena žádným scénářem.'
 
 solution:
-	associate_cookie_provider_with_project: Přidat poskytovatele na projekt
+	associate_cookie_provider_with_project: 'Přidat poskytovatele "%provider_name%" na projekt'
 	change_cookie_category: Změnit kategorii cookie
 	create_new_cookie: Vytvořit novou cookie
 	create_new_cookie_with_not_accepted_category: Vytvořit stejnou cookie s jinou kategorii
 	ignore_until_next_occurrence: Ignorovat do dalšího výskytu
 	ignore_permanently: Ignorovat trvale
 	do_not_ignore: Neignorovat
+
+solution_group:
+	associate_cookie_provider_with_project: Přidat poskytovatele na projekt
+	change_cookie_category: Změnit kategorii cookie
+	create_new_cookie_with_not_accepted_category: Vytvořit stejnou cookie s jinou kategorii
+
+solution_group_description:
+	associate_cookie_provider_with_project: Zvolte poskytovatele
+	change_cookie_category: Kterou cookie chcete upravit
+	create_new_cookie_with_not_accepted_category: Která cookie má posloužit jako vzor
+
+solution_in_group:
+	associate_cookie_provider_with_project: 'Poskytovatel <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 ml-2 my-0.5">%provider_name%</span>'
+	change_cookie_category: 'Cookie s kategorií <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 mx-1 my-0.5">%category_code%</span> a poskytovatelem <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 mx-1 my-0.5">%provider_name%</span>'
+	create_new_cookie_with_not_accepted_category: 'Cookie s kategorií <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 mx-1 my-0.5">%category_code%</span> a poskytovatelem <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 mx-1 my-0.5">%provider_name%</span>'
 
 message:
 	project_not_found: Projekt nebyl nalezen.

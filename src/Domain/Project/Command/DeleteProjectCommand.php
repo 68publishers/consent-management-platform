@@ -8,11 +8,6 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class DeleteProjectCommand extends AbstractCommand
 {
-	/**
-	 * @param string $projectId
-	 *
-	 * @return static
-	 */
 	public static function create(string $projectId): self
 	{
 		return self::fromParameters([
@@ -20,9 +15,6 @@ final class DeleteProjectCommand extends AbstractCommand
 		]);
 	}
 
-	/**
-	 * @return string
-	 */
 	public function projectId(): string
 	{
 		return $this->getParam('project_id');

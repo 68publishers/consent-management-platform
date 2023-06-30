@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Application\CookieSuggestion\Suggestion;
 
-use App\Application\CookieSuggestion\Warning\WarningInterface;
-
 interface SuggestionInterface
 {
 	public function getSuggestionId(): string;
@@ -19,10 +17,9 @@ interface SuggestionInterface
 	 */
 	public function getOccurrences(): array;
 
-	/**
-	 * @return array<WarningInterface>
-	 */
-	public function getWarnings(): array;
+	public function hasWarnings(): bool;
 
-	public function getLatestOccurrence(): CookieOccurrence;
+	public function isVirtual(): bool;
+
+	public function getLatestOccurrence(): ?CookieOccurrence;
 }

@@ -187,7 +187,6 @@
         {include #suggestion-header, suggestion: $suggestion, foundInCmp: false, solutions: $solutions ?? $suggestion->getSolutions()}
 
         <div x-bind="collapsePanel" x-cloak>
-            {include #warnings, suggestion: $suggestion}
             {include #occurrences-table, suggestion: $suggestion}
         </div>
     </div>
@@ -198,8 +197,7 @@
         {include #suggestion-header, suggestion: $suggestion, foundInCmp: true, solutions: $solutions ?? $suggestion->getSolutions()}
 
         <div x-bind="collapsePanel" x-cloak>
-            {include #warnings, suggestion: $suggestion}
-            {include #existing-cookie, existingCookie: $suggestion->getExistingCookie(), suggestionId: $suggestion->getSuggestionId()}
+            {include #existing-cookie, existingCookie: $suggestion->getExistingCookies()}
             {include #occurrences-table, suggestion: $suggestion}
         </div>
     </div>
@@ -209,7 +207,7 @@
     <div x-data="collapse" x-bind="collapse" data-storage-name="suggestions-{$collapseStorageName}-{$projectView->id->toString()}" data-storage-key="{$suggestion->getSuggestionId()}" class="bg-white mb-2 text-sm px-2 py-4">
         {include #suggestion-header, suggestion: $suggestion, solutions: $solutions}
 
-        <div class="divide-y divide-red-100  mt-2">
+        <div class="divide-y divide-red-100">
             <div n:foreach="$suggestion->getProblems() as $problem" n:class="'px-2 py-4', !$iterator->isLast() ? 'mb-2' : ''">
                 <div class="text-red-700">
                     {_'problem.' . $problem->getType(), $problem->getTranslatorArgs()|noescape}
@@ -221,8 +219,7 @@
         </div>
 
         <div x-bind="collapsePanel" x-cloak>
-            {include #warnings, suggestion: $suggestion}
-            {include #existing-cookie, existingCookie: $suggestion->getExistingCookie(), suggestionId: $suggestion->getSuggestionId()}
+            {include #existing-cookie, existingCookie: $suggestion->getExistingCookies()}
             {include #occurrences-table, suggestion: $suggestion}
         </div>
     </div>
@@ -233,8 +230,7 @@
         {include #suggestion-header, suggestion: $suggestion}
 
         <div x-bind="collapsePanel" x-cloak>
-            {include #warnings, suggestion: $suggestion}
-            {include #existing-cookie, existingCookie: $suggestion->getExistingCookie(), suggestionId: $suggestion->getSuggestionId()}
+            {include #existing-cookie, existingCookie: $suggestion->getExistingCookies()}
             {include #occurrences-table, suggestion: $suggestion}
         </div>
     </div>
@@ -246,7 +242,7 @@
         <div x-bind="collapseButton" class="flex items-center flex-nowrap justify-between hover:bg-gray-50 rounded p-2 cursor-pointer">
             <div class="flex items-start w-full">
                 <div class="font-semibold mr-6 my-0.5 flex items-center flex-nowrap">
-                    {if 0 < count($suggestion->getWarnings())}
+                    {if $suggestion->hasWarnings()}
                         <span x-data x-tooltip.placement.top.raw="{_tooltip.suggestion_contains_warnings}">
                             {svg 'common/exclamation-triangle.svg', class: 'h-5 w-5 text-yellow-600 mr-3'}
                         </span>
@@ -255,7 +251,7 @@
                 </div>
                 <div class="flex items-center flex-wrap">
                     <div x-data x-tooltip.placement.top.raw="{_tooltip.domain}" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 mr-2 my-0.5">{$suggestion->getSuggestionDomain()}</div>
-                    <div x-data x-tooltip.placement.top.raw="{_tooltip.last_founded_at}" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 mr-2 my-0.5">{$latestOccurrence->lastFoundAt->setTimezone(App\Application\Localization\ApplicationDateTimeZone::get())|date: 'j.n.Y H:i:s'}</div>
+                    <div n:if="null !== $latestOccurrence" x-data x-tooltip.placement.top.raw="{_tooltip.last_founded_at}" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 mr-2 my-0.5">{$latestOccurrence->lastFoundAt->setTimezone(App\Application\Localization\ApplicationDateTimeZone::get())|date: 'j.n.Y H:i:s'}</div>
                     <div n:if="false === $foundInCmp" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800 mr-2 my-0.5">{_not_found_in_cmp}</div>
                     <div n:if="true === $foundInCmp" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 mr-2 my-0.5">{_found_in_cmp}</div>
                 </div>
@@ -275,29 +271,76 @@
     {var $dataForResolving = $solutions->getDataForResolving() ?? []}
 
     <div class="flex items-center flex-wrap w-full">
-        <div class="flex items-center flex-wrap mr-2">
-            <a
-                n:foreach="$solutions->all() as $solution"
-                n:href="solution! (expand) $solutions->getSolutionArguments($solution)"
-                data-spinner-for="self"
-                n:class="
-                    'ajax rounded bg-white px-2 py-1 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 mr-1 mt-1',
-                    $solution->getType() === ($dataForResolving['solutionType'] ?? '') ? 'ring-indigo-500'
-                "
-            >
-                {_'solution.' . $solution->getType()}
-            </a>
-        </div>
-        <div class="flex items-center flex-nowrap">
-            <a n:if="!empty($dataForResolving)" n:href="resolve! (expand) $dataForResolving" data-spinner-for="self" class="ajax flex items-center rounded bg-white px-2 py-1 text-sm text-green-700 shadow-sm ring-1 ring-inset ring-green-700 hover:bg-gray-50 mr-1 mt-1">
-                {svg 'common/check-circle.svg', class: 'h-5 w-5 text-green-700 mr-2'}
-                {_resolve_suggestion}
-            </a>
+        <div class="inline-flex items-center flex-wrap">
+            {foreach $solutions->all() as $solution}
+                {if $solution instanceof App\Application\CookieSuggestion\Solution\SolutionGroup && 1 === count($solution->getSolutions())}
+                    {do $solution = $solution->getSolutions()[0]}
+                {/if}
 
-            <a n:if="!empty($dataForResolving)" n:href="resetSolution! solutionsUniqueId: $dataForResolving['solutionsUniqueId']" data-spinner-for="self" class="ajax flex items-center rounded bg-white px-2 py-1 text-sm text-red-600 shadow-sm ring-1 ring-inset ring-red-600 hover:bg-gray-50 mr-1 mt-1">
-                {svg 'common/x-circle.svg', class: 'h-5 w-5 text-red-600 mr-2'}
+                {if $solution instanceof App\Application\CookieSuggestion\Solution\SolutionGroup}
+                    {default $selectedSolutionInGroup = null}
+
+                    {foreach $solution->getSolutions() as $solutionInGroup}
+                        {if $solutionInGroup->getUniqueId() === ($dataForResolving['solutionUniqueId'] ?? '')}
+                            {var $selectedSolutionInGroup = $solutionInGroup}
+                        {/if}
+                    {/foreach}
+
+                    <div x-data="dropdown" x-bind="dropdown" class="relative inline-block text-left">
+                        <div>
+                            <button x-bind="dropdownButton" type="button" n:class="
+                                'inline-flex items-center flex-nowrap rounded bg-white px-2 py-1 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 mt-1',
+                                null !== $selectedSolutionInGroup ? 'ring-indigo-500',
+                                $iterator->isLast() ? 'mr-3' : 'mr-1'
+                            ">
+                                {_'solution_group.' . $solution->getName()|noescape}
+                                <span class="ml-2">
+                                    {svg 'common/chevron-up.svg', class: 'w-3 h-3', x-show: 'open', x-cloak: true}
+                                    {svg 'common/chevron-down.svg', class: 'w-3 h-3', x-show: '!open', x-cloak: true}
+                                </span>
+                            </button>
+                        </div>
+
+                        <div x-bind="dropdownPanel" x-cloak class="origin-top-left absolute mt-2 w-full w-80 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" tabindex="-1">
+                            <div class="mx-1 px-3 py-2 text-gray-500 border-b border-gray-150 mb-2">{_'solution_group_description.' . $solution->getName()|noescape}:</div>
+                            <a
+                                n:foreach="$solution->getSolutions() as $solutionInGroup"
+                                n:href="solution! (expand) $solutions->getSolutionArguments($solutionInGroup)"
+                                data-spinner-for="self"
+                                n:class="
+                                    'ajax flex items-center flex-wrap mx-1 px-3 py-2 text-sm text-gray-900 rounded ',
+                                    $solutionInGroup === $selectedSolutionInGroup ? 'bg-indigo-50' : 'hover:bg-gray-50 active:bg-gray-50 focus:bg-gray-50',
+                                "
+                            >
+                                {_'solution_in_group.' . $solutionInGroup->getType(), $solutionInGroup->getTranslatorArgs()|noescape}
+                            </a>
+                        </div>
+                    </div>
+                {else}
+                    <a
+                        n:href="solution! (expand) $solutions->getSolutionArguments($solution)"
+                        data-spinner-for="self"
+                        n:class="
+                            'ajax rounded bg-white px-2 py-1 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 mt-1',
+                            $solution->getUniqueId() === ($dataForResolving['solutionUniqueId'] ?? '') ? 'ring-indigo-500',
+                            $iterator->isLast() ? 'mr-3' : 'mr-1'
+                        "
+                    >
+                        {_'solution.' . $solution->getType(), $solution->getTranslatorArgs()|noescape}
+                    </a>
+                {/if}
+            {/foreach}
+            <div class="inline-flex items-center flex-nowrap">
+                <a n:if="!empty($dataForResolving)" n:href="resolve! (expand) $dataForResolving" data-spinner-for="self" class="ajax flex items-center rounded bg-white px-2 py-1 text-sm text-green-700 shadow-sm ring-1 ring-inset ring-green-700 hover:bg-gray-50 mr-1 mt-1">
+                    {svg 'common/check-circle.svg', class: 'h-5 w-5 text-green-700 mr-2'}
+                {_resolve_suggestion}
+                </a>
+
+                <a n:if="!empty($dataForResolving)" n:href="resetSolution! solutionsUniqueId: $dataForResolving['solutionsUniqueId']" data-spinner-for="self" class="ajax flex items-center rounded bg-white px-2 py-1 text-sm text-red-600 shadow-sm ring-1 ring-inset ring-red-600 hover:bg-gray-50 mr-1 mt-1">
+                    {svg 'common/x-circle.svg', class: 'h-5 w-5 text-red-600 mr-2'}
                 {_reset_solution}
-            </a>
+                </a>
+            </div>
         </div>
     </div>
 {/define}
@@ -310,16 +353,19 @@
                 <thead>
                     <tr>
                         <td class="pr-2 py-4 text-sm font-medium text-gray-500 text-left whitespace-nowrap">{_occurrences_table.scanerio_name}</td>
-                        <td class="pr-2 py-4 text-sm font-medium text-gray-500 text-left whitespace-nowrap">{_occurrences_table.cookie_name}</td>
+                        <td class="px-2 py-4 text-sm font-medium text-gray-500 text-left whitespace-nowrap">{_occurrences_table.cookie_name}</td>
                         <td class="px-2 py-4 text-sm font-medium text-gray-500 text-left whitespace-nowrap">{_occurrences_table.last_found_at}</td>
                         <td class="px-2 py-4 text-sm font-medium text-gray-500 text-left whitespace-nowrap">{_occurrences_table.accepted_categories}</td>
                         <td class="pl-2 py-4 text-sm font-medium text-gray-500 text-left whitespace-nowrap">{_occurrences_table.found_on_url}</td>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
+                    <tr n:if="0 >= count($suggestion->getOccurrences())">
+                        <td class="py-2" colspan="5">{_occurrences_table.no_occurrences_found}</td>
+                    </tr>
                     <tr n:foreach="$suggestion->getOccurrences() as $occurrence">
                         <td class="py-2 pr-2 whitespace-nowrap">{$occurrence->scenarioName}</td>
-                        <td class="py-2 pr-2 whitespace-nowrap">{$occurrence->cookieName}</td>
+                        <td class="py-2 px-2 whitespace-nowrap">{$occurrence->cookieName}</td>
                         <td class="py-2 px-2 whitespace-nowrap">{$occurrence->lastFoundAt|date: 'j.n.Y H:i:s'}</td>
                         <td class="py-2 px-2 whitespace-nowrap">
                             <div n:foreach="$occurrence->acceptedCategories as $categoryCode" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 mr-2 my-0.5">{$categoryCode}</div>
@@ -334,32 +380,42 @@
     </div>
 {/define}
 
-{define #existing-cookie, $existingCookie, $suggestionId = null}
+{define #existing-cookie, $existingCookie}
+    {var $items = is_array($existingCookie) ? $existingCookie : [$existingCookie]}
+
     <div class="p-2 mt-5">
         <h4 class="py-2 rounded font-semibold text-gray-600">{_caption.existing_cookie}</h4>
-        <table>
+        <table class="w-full divide-y divide-gray-300">
+            <thead>
+                <tr>
+                    <td class="pr-2 py-4 text-sm font-medium text-gray-500 text-left whitespace-nowrap">{_existing_cookie_table.name}</td>
+                    <td class="px-2 py-4 text-sm font-medium text-gray-500 text-left whitespace-nowrap">{_existing_cookie_table.domain}</td>
+                    <td class="px-2 py-4 text-sm font-medium text-gray-500 text-left whitespace-nowrap">{_existing_cookie_table.category}</td>
+                    <td class="px-2 py-4 text-sm font-medium text-gray-500 text-left whitespace-nowrap">{_existing_cookie_table.provider}</td>
+                    <td class="pl-2 py-4 text-sm font-medium text-gray-500 text-left whitespace-nowrap"></td>
+                </tr>
+            </thead>
             <tbody>
-                <tr>
-                    <td class="py-2 pr-4 whitespace-nowrap">{_existing_cookie_table.name}:</td>
-                    <td class="py-2 pl-4 whitespace-nowrap">{$existingCookie->cookieName}</td>
-                </tr>
-                <tr>
-                    <td class="py-2 pr-4 whitespace-nowrap">{_existing_cookie_table.domain}:</td>
-                    <td class="py-2 pl-4 whitespace-nowrap">{$existingCookie->cookieDomain ?: '-'}</td>
-                </tr>
-                <tr>
-                    <td class="py-2 pr-4 whitespace-nowrap">{_existing_cookie_table.category}:</td>
-                    <td class="py-2 pl-4 whitespace-nowrap">{$existingCookie->categoryCode}</td>
-                </tr>
-                <tr>
-                    <td class="py-2 pr-4 whitespace-nowrap">{_existing_cookie_table.provider}:</td>
-                    <td class="py-2 pl-4 whitespace-nowrap">{$existingCookie->providerName}</td>
-                </tr>
+                {var $last = false}
+                {foreach $items as $item}
+                    <tr n:class="!$iterator->isLast() && empty($item->warnings) ? 'border-b border-gray-200'">
+                        {do $last = $iterator->isLast()}
+                        <td class="py-2 pr-2 whitespace-nowrap">{$item->cookieName}</td>
+                        <td class="py-2 px-2 whitespace-nowrap">{$item->cookieDomain}</td>
+                        <td class="py-2 px-2 whitespace-nowrap">{$item->categoryCode}</td>
+                        <td class="py-2 px-2 whitespace-nowrap">{$item->providerName}</td>
+                        <td class="py-2 pl-2 whitespace-nowrap">
+                            <a n:href="'openModal!', modal: 'editCookieModal-' . Ramsey\Uuid\Uuid::fromString($item->cookieId)->getHex()->toString()" data-spinner-for="self" class="ajax spinner-white inline-flex items-center px-2 py-1 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                {_edit_cookie}
+                            </a>
+                        </td>
+                    </tr>
+                    <tr n:foreach="$item->warnings as $warning" n:class="!$last && $iterator->isLast() ? 'border-b border-gray-200'">
+                        <td colspan="5" class="pb-2 text-yellow-600">{_'warning.' . $warning->getMessage()}</td>
+                    </tr>
+                {/foreach}
             </tbody>
         </table>
-        <a n:href="'openModal!', modal: 'editCookieModal-' . Ramsey\Uuid\Uuid::fromString($existingCookie->cookieId)->getHex()->toString(), cookieSuggestionId: $suggestionId" data-spinner-for="self" class="ajax spinner-white inline-flex items-center px-2 py-1 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mt-2">
-            {_edit_cookie}
-        </a>
     </div>
 {/define}
 

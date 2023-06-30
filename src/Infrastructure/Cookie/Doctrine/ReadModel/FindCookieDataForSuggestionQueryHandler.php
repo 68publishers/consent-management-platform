@@ -33,6 +33,7 @@ final class FindCookieDataForSuggestionQueryHandler implements QueryHandlerInter
 			->addSelect('cat.id AS category_id, cat.code AS category_code')
 			->addSelect('cp.id AS provider_id, cp.code AS provider_code, cp.name AS provider_name')
 			->addSelect('(p_has_cp.id IS NOT NULL OR p.cookie_provider_id = cp.id) AS associated')
+			->addSelect('p.domain AS project_domain')
 			->from('cookie', 'c')
 			->join('c', 'category', 'cat', 'c.category_id = cat.id AND cat.deleted_at IS NULL')
 			->join('c', 'cookie_provider', 'cp', 'c.cookie_provider_id = cp.id AND cp.deleted_at IS NULL')
@@ -50,6 +51,7 @@ final class FindCookieDataForSuggestionQueryHandler implements QueryHandlerInter
 				$row['id'],
 				$row['name'],
 				$row['domain'],
+				$row['project_domain'],
 				$row['category_id'],
 				$row['category_code'],
 				$row['provider_id'],

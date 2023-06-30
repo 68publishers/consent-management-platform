@@ -41,12 +41,17 @@ final class IgnoredCookieSuggestion implements SuggestionInterface
 		return $this->originalSuggestion->getOccurrences();
 	}
 
-	public function getWarnings(): array
+	public function hasWarnings(): bool
 	{
-		return $this->originalSuggestion->getWarnings();
+		return $this->originalSuggestion->hasWarnings();
 	}
 
-	public function getLatestOccurrence(): CookieOccurrence
+	public function isVirtual(): bool
+	{
+		return $this->originalSuggestion->isVirtual();
+	}
+
+	public function getLatestOccurrence(): ?CookieOccurrence
 	{
 		return $this->originalSuggestion->getLatestOccurrence();
 	}

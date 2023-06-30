@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace App\Application\CookieSuggestion\Suggestion;
 
 use App\Application\CookieSuggestion\Problem\ProblemInterface;
-use App\Application\CookieSuggestion\Warning\WarningInterface;
 
 final class ProblematicCookieSuggestion extends AbstractSuggestion
 {
-	private ExistingCookie $existingCookie;
+	/** @var non-empty-list<ExistingCookie> */
+	private array $existingCookies;
 
 	/** @var array<ProblemInterface> */
 	public array $problems;
 
 	/**
 	 * @param non-empty-list<CookieOccurrence> $occurrences
-	 * @param array<int, WarningInterface>     $warnings
+	 * @param non-empty-list<ExistingCookie>   $existingCookies
 	 * @param non-empty-list<ProblemInterface> $problems
 	 */
 	public function __construct(
@@ -24,19 +24,22 @@ final class ProblematicCookieSuggestion extends AbstractSuggestion
 		string $suggestionName,
 		string $suggestionDomain,
 		array $occurrences,
-		array $warnings,
-		ExistingCookie $existingCookie,
-		array $problems
+		array $existingCookies,
+		array $problems,
+		bool $virtual = FALSE
 	) {
-		parent::__construct($suggestionId, $suggestionName, $suggestionDomain, $occurrences, $warnings);
+		parent::__construct($suggestionId, $virtual, $suggestionName, $suggestionDomain, $occurrences);
 
-		$this->existingCookie = $existingCookie;
+		$this->existingCookies = $existingCookies;
 		$this->problems = $problems;
 	}
 
-	public function getExistingCookie(): ExistingCookie
+	/**
+	 * @return non-empty-list<ExistingCookie>
+	 */
+	public function getExistingCookies(): array
 	{
-		return $this->existingCookie;
+		return $this->existingCookies;
 	}
 
 	/**
@@ -45,5 +48,16 @@ final class ProblematicCookieSuggestion extends AbstractSuggestion
 	public function getProblems(): array
 	{
 		return $this->problems;
+	}
+
+	public function hasWarnings(): bool
+	{
+		foreach ($this->existingCookies as $existingCookie) {
+			if (0 < count($existingCookie->warnings)) {
+				return TRUE;
+			}
+		}
+
+		return FALSE;
 	}
 }

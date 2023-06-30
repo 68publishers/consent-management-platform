@@ -79,9 +79,9 @@ final class CookieImporter extends AbstractImporter
 						->withProcessingTime($data->processingTime)
 						->withPurposes($data->purpose);
 
-                    if (!empty($data->domain)) {
-                        $command = $command->withDomain($data->domain);
-                    }
+					if (!empty($data->domain)) {
+						$command = $command->withDomain($data->domain);
+					}
 				} else {
 					$command = CreateCookieCommand::create(
 						$categoryView->id->toString(),

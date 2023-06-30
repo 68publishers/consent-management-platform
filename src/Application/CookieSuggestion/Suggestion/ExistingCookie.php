@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Application\CookieSuggestion\Suggestion;
 
 use App\ReadModel\Cookie\CookieDataForSuggestion;
+use App\Application\CookieSuggestion\Warning\WarningInterface;
+use App\Application\CookieSuggestion\Warning\CookieDoesNotHaveSameDomain;
 
 final class ExistingCookie
 {
@@ -24,6 +26,12 @@ final class ExistingCookie
 
 	public string $providerName;
 
+	/** @var array<int, WarningInterface> */
+	public array $warnings = [];
+
+	/**
+	 * @param array<int, WarningInterface> $warnings
+	 */
 	public function __construct(
 		string $cookieId,
 		string $cookieName,
@@ -32,7 +40,8 @@ final class ExistingCookie
 		string $categoryCode,
 		string $providerId,
 		string $providerCode,
-		string $providerName
+		string $providerName,
+		array $warnings
 	) {
 		$this->cookieId = $cookieId;
 		$this->cookieName = $cookieName;
@@ -42,19 +51,30 @@ final class ExistingCookie
 		$this->providerId = $providerId;
 		$this->providerCode = $providerCode;
 		$this->providerName = $providerName;
+		$this->warnings = $warnings;
 	}
 
-	public static function fromCookieDataForSuggestion(CookieDataForSuggestion $cookieDataForSuggestion): self
+	/**
+	 * @param array<int, WarningInterface> $additionalWarnings
+	 */
+	public static function fromCookieDataForSuggestion(CookieDataForSuggestion $cookieDataForSuggestion, array $additionalWarnings = []): self
 	{
+		$warnings = [];
+
+		if (!($cookieDataForSuggestion->getMetadataField($cookieDataForSuggestion::METADATA_FIELD_SAME_DOMAIN) ?? FALSE)) {
+			$warnings[] = new CookieDoesNotHaveSameDomain();
+		}
+
 		return new self(
 			$cookieDataForSuggestion->id,
 			$cookieDataForSuggestion->name,
-			$cookieDataForSuggestion->domain,
+			$cookieDataForSuggestion->domain ?: $cookieDataForSuggestion->projectDomain,
 			$cookieDataForSuggestion->categoryId,
 			$cookieDataForSuggestion->categoryCode,
 			$cookieDataForSuggestion->providerId,
 			$cookieDataForSuggestion->providerCode,
 			$cookieDataForSuggestion->providerName,
+			array_merge($warnings, $additionalWarnings),
 		);
 	}
 }

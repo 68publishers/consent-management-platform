@@ -36,12 +36,6 @@ final class ProjectFormControl extends Control
 
 	private ?ProjectView $default;
 
-	/**
-	 * @param \App\Web\Ui\Form\FormFactoryInterface                            $formFactory
-	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface $commandBus
-	 * @param \App\Application\GlobalSettings\GlobalSettingsInterface          $globalSettings
-	 * @param \App\ReadModel\Project\ProjectView|NULL                          $default
-	 */
 	public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, GlobalSettingsInterface $globalSettings, ?ProjectView $default = NULL)
 	{
 		$this->formFactory = $formFactory;
@@ -50,9 +44,6 @@ final class ProjectFormControl extends Control
 		$this->default = $default;
 	}
 
-	/**
-	 * @return \Nette\Application\UI\Form
-	 */
 	protected function createComponentForm(): Form
 	{
 		$form = $this->formFactory->create($this->getFormFactoryOptions());
@@ -74,6 +65,10 @@ final class ProjectFormControl extends Control
 			->addRule($form::PATTERN, 'code.rule_pattern', '[a-z0-9_\-\.]+')
 			->addRule($form::MAX_LENGTH, 'code.rule_max_length', Code::MAX_LENGTH)
 			->setOption('description', 'code.description');
+
+		$form->addText('domain', 'domain.field')
+			->setRequired('domain.field')
+			->setOption('description', 'domain.description');
 
 		$form->addText('color', 'color.field')
 			->setRequired('color.required')
@@ -127,6 +122,7 @@ final class ProjectFormControl extends Control
 			$form->setDefaults([
 				'name' => $this->default->name->value(),
 				'code' => $this->default->code->value(),
+				'domain' => $this->default->domain->value(),
 				'color' => $this->default->color->value(),
 				'active' => $this->default->active,
 				'locales' => $this->default->locales->locales()->toArray(),
@@ -142,11 +138,6 @@ final class ProjectFormControl extends Control
 		return $form;
 	}
 
-	/**
-	 * @param \Nette\Application\UI\Form $form
-	 *
-	 * @return void
-	 */
 	private function saveProject(Form $form): void
 	{
 		$values = $form->values;
@@ -156,6 +147,7 @@ final class ProjectFormControl extends Control
 			$command = CreateProjectCommand::create(
 				$values->name,
 				$values->code,
+				$values->domain,
 				$values->description,
 				$values->color,
 				$values->active,
@@ -168,6 +160,7 @@ final class ProjectFormControl extends Control
 			$command = UpdateProjectCommand::create($projectId->toString())
 				->withName($values->name)
 				->withCode($values->code)
+				->withDomain($values->domain)
 				->withDescription($values->description)
 				->withColor($values->color)
 				->withActive($values->active)

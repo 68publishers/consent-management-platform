@@ -29,6 +29,8 @@
 
         <field name="code" column="code" type="App\Domain\Project\ValueObject\Code" length="70" />
 
+        <field name="domain" column="domain" type="App\Domain\Project\ValueObject\Domain" />
+
         <field name="color" column="color" type="App\Domain\Project\ValueObject\Color" />
 
         <field name="description" column="description" type="App\Domain\Project\ValueObject\Description" />

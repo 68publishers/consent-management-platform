@@ -11,7 +11,7 @@ final class CookieIsInCategoryThatIsNotAcceptedByScenario implements ProblemInte
 {
 	public const TYPE = 'cookie_is_in_category_that_is_not_accepted';
 
-	public string $categoryCode;
+	public array $cookieCategories;
 
 	public array $acceptedCategories;
 
@@ -20,15 +20,16 @@ final class CookieIsInCategoryThatIsNotAcceptedByScenario implements ProblemInte
 	private Solutions $solutions;
 
 	/**
+	 * @param array<int, string> $cookieCategories
 	 * @param array<int, string> $acceptedCategories
 	 */
 	public function __construct(
-		string $categoryCode,
+		array $cookieCategories,
 		array $acceptedCategories,
 		CookieOccurrence $occurrence,
 		Solutions $solutions
 	) {
-		$this->categoryCode = $categoryCode;
+		$this->cookieCategories = $cookieCategories;
 		$this->acceptedCategories = $acceptedCategories;
 		$this->occurrence = $occurrence;
 		$this->solutions = $solutions;
@@ -42,7 +43,7 @@ final class CookieIsInCategoryThatIsNotAcceptedByScenario implements ProblemInte
 	public function getTranslatorArgs(): array
 	{
 		return [
-			'categoryCode' => $this->categoryCode,
+			'cookieCategories' => implode(', ', $this->cookieCategories),
 			'acceptedCategories' => implode(', ', $this->acceptedCategories),
 			'scenarioName' => $this->occurrence->scenarioName,
 		];

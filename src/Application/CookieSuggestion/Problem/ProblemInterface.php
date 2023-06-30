@@ -10,6 +10,9 @@ interface ProblemInterface
 {
 	public function getType(): string;
 
+	/**
+	 * @return array<string, string|numeric>
+	 */
 	public function getTranslatorArgs(): array;
 
 	public function getSolutions(): Solutions;
