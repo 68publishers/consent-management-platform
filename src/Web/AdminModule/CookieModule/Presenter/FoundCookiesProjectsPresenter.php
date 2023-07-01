@@ -7,23 +7,23 @@ namespace App\Web\AdminModule\CookieModule\Presenter;
 use Nette\Application\BadRequestException;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use App\Application\Acl\FoundCookiesProjectsResource;
-use App\ReadModel\Project\FoundCookiesProjectsListingQuery;
-use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use SixtyEightPublishers\UserBundle\Application\Exception\IdentityException;
+use App\Web\AdminModule\CookieModule\Control\ProjectCookieSuggestionList\ProjectCookieSuggestionListControl;
+use App\Web\AdminModule\CookieModule\Control\ProjectCookieSuggestionList\ProjectCookieSuggestionListControlFactoryInterface;
 
 /**
  * @IsAllowed(resource=FoundCookiesProjectsResource::class, privilege=FoundCookiesProjectsResource::READ)
  */
 final class FoundCookiesProjectsPresenter extends AdminPresenter
 {
-	private QueryBusInterface $queryBus;
+	private ProjectCookieSuggestionListControlFactoryInterface $projectCookieSuggestionListControlFactory;
 
-	public function __construct(QueryBusInterface $queryBus)
+	public function __construct(ProjectCookieSuggestionListControlFactoryInterface $projectCookieSuggestionListControlFactory)
 	{
 		parent::__construct();
 
-		$this->queryBus = $queryBus;
+		$this->projectCookieSuggestionListControlFactory = $projectCookieSuggestionListControlFactory;
 	}
 
 	/**
@@ -39,13 +39,8 @@ final class FoundCookiesProjectsPresenter extends AdminPresenter
 		}
 	}
 
-	protected function beforeRender(): void
+	protected function createComponentList(): ProjectCookieSuggestionListControl
 	{
-		parent::beforeRender();
-
-		$template = $this->getTemplate();
-		assert($template instanceof FoundCookiesProjectsTemplate);
-
-		$template->projects = $this->queryBus->dispatch(FoundCookiesProjectsListingQuery::create());
+		return $this->projectCookieSuggestionListControlFactory->create();
 	}
 }

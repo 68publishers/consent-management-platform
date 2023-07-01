@@ -8,27 +8,25 @@ use DateTimeImmutable;
 use App\ReadModel\Consent\ConsentStatisticsView;
 use App\ReadModel\Project\ProjectCookieTotalsView;
 use App\ReadModel\Consent\CalculateLastConsentDateQuery;
+use App\Application\GlobalSettings\GlobalSettingsInterface;
 use App\ReadModel\Project\CalculateProjectCookieTotalsQuery;
+use App\ReadModel\Project\ProjectCookieSuggestionsStatistics;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use App\ReadModel\Consent\CalculateConsentStatisticsPerPeriodQuery;
+use App\ReadModel\Project\GetProjectCookieSuggestionStatisticsQuery;
 
 final class ProjectStatisticsCalculator implements ProjectStatisticsCalculatorInterface
 {
 	private QueryBusInterface $queryBus;
 
-	/**
-	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface $queryBus
-	 */
-	public function __construct(QueryBusInterface $queryBus)
+	private GlobalSettingsInterface $globalSettings;
+
+	public function __construct(QueryBusInterface $queryBus, GlobalSettingsInterface $globalSettings)
 	{
 		$this->queryBus = $queryBus;
+		$this->globalSettings = $globalSettings;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @throws \Exception
-	 */
 	public function calculateConsentStatistics(string $projectId, Period $currentPeriod, ?Period $previousPeriod = NULL): ConsentStatistics
 	{
 		$previousPeriod = $previousPeriod ?? $currentPeriod->createPreviousPeriod();
@@ -58,9 +56,6 @@ final class ProjectStatisticsCalculator implements ProjectStatisticsCalculatorIn
 		);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function calculateCookieStatistics(string $projectId, DateTimeImmutable $endDate): CookieStatistics
 	{
 		$totals = $this->queryBus->dispatch(CalculateProjectCookieTotalsQuery::create($projectId, $endDate));
@@ -73,11 +68,23 @@ final class ProjectStatisticsCalculator implements ProjectStatisticsCalculatorIn
 		);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function calculateLastConsentDate(string $projectId, DateTimeImmutable $endDate): ?DateTimeImmutable
 	{
 		return $this->queryBus->dispatch(CalculateLastConsentDateQuery::create($projectId, $endDate));
+	}
+
+	public function calculateCookieSuggestionStatistics(string $projectId): ?ProjectCookieSuggestionsStatistics
+	{
+		if (!$this->globalSettings->crawlerSettings()->enabled()) {
+			return NULL;
+		}
+
+		$statistics = $this->queryBus->dispatch(GetProjectCookieSuggestionStatisticsQuery::create($projectId));
+
+		if (!$statistics instanceof ProjectCookieSuggestionsStatistics) {
+			return NULL;
+		}
+
+		return 0 < $statistics->totalWithoutVirtual ? $statistics : NULL;
 	}
 }

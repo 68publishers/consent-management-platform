@@ -9,4 +9,5 @@ includes:
 	- import.neon
 	- localization.neon
 	- mail.neon
+	- project.neon
 	- statistics.neon

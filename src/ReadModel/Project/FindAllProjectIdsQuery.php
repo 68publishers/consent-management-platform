@@ -7,13 +7,10 @@ namespace App\ReadModel\Project;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 /**
- * Returns `array<FoundCookiesProjectsListingItem>`
+ * Returns `array<string>`
  */
-final class FoundCookiesProjectsListingQuery extends AbstractQuery
+final class FindAllProjectIdsQuery extends AbstractQuery
 {
-	/**
-	 * @return static
-	 */
 	public static function create(): self
 	{
 		return self::fromParameters([]);

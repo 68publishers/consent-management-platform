@@ -22,3 +22,4 @@ providers: Poskytovatelé
 cookies: Cookies
 
 cookies_tooltip_message: '%common% cookies služeb, %private% projektových'
+cookie_suggestions_tooltip_message: Návrhy cookies

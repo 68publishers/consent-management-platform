@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\CookieSuggestion;
 
 use App\Application\CookieSuggestion\Problem\ProblemInterface;
+use App\Application\CookieSuggestion\Suggestion\CookieOccurrence;
 use App\Application\CookieSuggestion\Suggestion\SuggestionInterface;
 use App\Application\CookieSuggestion\Suggestion\IgnoredCookieSuggestion;
 use App\Application\CookieSuggestion\Suggestion\MissingCookieSuggestion;
@@ -13,7 +14,7 @@ use App\Application\CookieSuggestion\Suggestion\UnassociatedCookieSuggestion;
 
 final class SuggestionsResult
 {
-	/** @var array<SuggestionInterface> */
+	/** @var array<int, SuggestionInterface> */
 	private array $suggestions = [];
 
 	public function withSuggestion(SuggestionInterface $suggestion): self
@@ -29,9 +30,9 @@ final class SuggestionsResult
 	 *
 	 * @param class-string<T> $classname
 	 *
-	 * @return array<T>
+	 * @return array<int, T>
 	 */
-	public function getSuggestions(string $classname): array
+	public function getSuggestionsByType(string $classname): array
 	{
 		return array_values(
 			array_filter(
@@ -39,6 +40,29 @@ final class SuggestionsResult
 				static fn (SuggestionInterface $suggestion): bool => is_a($suggestion, $classname)
 			)
 		);
+	}
+
+	/**
+	 * @return array<int, SuggestionInterface>
+	 */
+	public function getSuggestions(): array
+	{
+		return $this->suggestions;
+	}
+
+	public function getLatestOccurrence(): ?CookieOccurrence
+	{
+		$latestOccurrence = NULL;
+
+		foreach ($this->suggestions as $suggestion) {
+			$latest = $suggestion->getLatestOccurrence();
+
+			if (NULL !== $latest && (NULL === $latestOccurrence || $latestOccurrence->lastFoundAt < $latest->lastFoundAt)) {
+				$latestOccurrence = $latest;
+			}
+		}
+
+		return $latestOccurrence;
 	}
 
 	public function getTotalNumberOfResolvableSuggestions(): int

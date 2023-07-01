@@ -157,6 +157,19 @@
                                     x-tooltip.interactive.placement.bottom="$el.getAttribute('data-tooltip-message').replace('%common%', formatNumber(project.data.cookies.commonValue)).replace('%private%', formatNumber(project.data.cookies.privateValue))"
                             ></span>
                         </div>
+
+                        <a
+                            x-show="true === project.data.cookieSuggestions.enabled"
+                            x-tooltip.interactive.placement.bottom="$el.getAttribute('data-tooltip-message')"
+                            :href="project.links.cookieSuggestions"
+                            data-tooltip-message="{{_cookie_suggestions_tooltip_message}}"
+                            class="mt-4 inline-flex items-center"
+                        >
+                            <span x-text="formatNumber(project.data.cookieSuggestions.missing + project.data.cookieSuggestions.unassociated)" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 mr-1"></span>
+                            <span x-text="formatNumber(project.data.cookieSuggestions.problematic)" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 mr-1"></span>
+                            <span x-text="formatNumber(project.data.cookieSuggestions.unproblematic)" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 mr-1"></span>
+                            <span x-text="formatNumber(project.data.cookieSuggestions.ignored)" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 mr-1"></span>
+                        </a>
                     </div>
 
                     <div :class="{'spinner': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">

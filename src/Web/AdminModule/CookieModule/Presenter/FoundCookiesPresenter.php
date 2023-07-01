@@ -218,11 +218,11 @@ final class FoundCookiesPresenter extends AdminPresenter
 
 		$template->projectView = $this->projectView;
 		$template->allProjects = $this->queryBus->dispatch(FindAllProjectsQuery::create());
-		$template->missingCookieSuggestions = $suggestionsResult->getSuggestions(MissingCookieSuggestion::class);
-		$template->unassociatedCookieSuggestions = $suggestionsResult->getSuggestions(UnassociatedCookieSuggestion::class);
-		$template->problematicCookieSuggestions = $suggestionsResult->getSuggestions(ProblematicCookieSuggestion::class);
-		$template->unproblematicCookieSuggestions = $suggestionsResult->getSuggestions(UnproblematicCookieSuggestion::class);
-		$template->ignoredCookieSuggestions = $suggestionsResult->getSuggestions(IgnoredCookieSuggestion::class);
+		$template->missingCookieSuggestions = $suggestionsResult->getSuggestionsByType(MissingCookieSuggestion::class);
+		$template->unassociatedCookieSuggestions = $suggestionsResult->getSuggestionsByType(UnassociatedCookieSuggestion::class);
+		$template->problematicCookieSuggestions = $suggestionsResult->getSuggestionsByType(ProblematicCookieSuggestion::class);
+		$template->unproblematicCookieSuggestions = $suggestionsResult->getSuggestionsByType(UnproblematicCookieSuggestion::class);
+		$template->ignoredCookieSuggestions = $suggestionsResult->getSuggestionsByType(IgnoredCookieSuggestion::class);
 
 		$template->totalNumberOfResolvableSuggestions = $suggestionsResult->getTotalNumberOfResolvableSuggestions();
 		$template->totalNumberOfReadyToResolveSuggestions = count($this->cookieSuggestionsStore->getDataStore()->getAll($this->projectView->id->toString()));

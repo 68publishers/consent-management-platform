@@ -47,6 +47,9 @@ services:
 	-
 		autowired: no
 		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\GetCookieByNameAndCookieProviderAndCategoryQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\GetCookieProviderIdByCookieIdQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:

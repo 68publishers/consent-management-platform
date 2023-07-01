@@ -8,10 +8,15 @@ use DateTimeZone;
 use RuntimeException;
 use DateTimeImmutable;
 use DateTimeInterface;
+use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Query\Expr\Orx;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\EntityManagerInterface;
 use App\ReadModel\DataGridQueryInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\DBAL\Query\QueryBuilder as DbalQueryBuilder;
 use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\ReadModel\PaginatedResultFactory;
 
 trait DataGridQueryHandlerTrait
@@ -22,10 +27,6 @@ trait DataGridQueryHandlerTrait
 
 	private int $paramsCount = 0;
 
-	/**
-	 * @param \Doctrine\ORM\EntityManagerInterface                                                              $em
-	 * @param \SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\ReadModel\PaginatedResultFactory $paginatedResultFactory
-	 */
 	public function __construct(EntityManagerInterface $em, PaginatedResultFactory $paginatedResultFactory)
 	{
 		$this->em = $em;
@@ -33,49 +34,59 @@ trait DataGridQueryHandlerTrait
 	}
 
 	/**
-	 * @param \App\ReadModel\DataGridQueryInterface $query
-	 * @param callable                              $countQueryBuilderFactory
-	 * @param callable                              $dataQueryBuilderFactory
-	 * @param string                                $viewClassname
-	 * @param array                                 $filterDefinitions
-	 * @param array                                 $sortingDefinitions
+	 * @param string|callable $viewClassnameOrCallback
 	 *
-	 * @return int|array
-	 * @throws \Doctrine\ORM\NoResultException
-	 * @throws \Doctrine\ORM\NonUniqueResultException
+	 * @throws NonUniqueResultException
+	 * @throws NoResultException
+	 * @throws Exception
 	 */
-	protected function processQuery(DataGridQueryInterface $query, callable $countQueryBuilderFactory, callable $dataQueryBuilderFactory, string $viewClassname, array $filterDefinitions, array $sortingDefinitions)
+	protected function processQuery(DataGridQueryInterface $query, callable $countQueryBuilderFactory, callable $dataQueryBuilderFactory, $viewClassnameOrCallback, array $filterDefinitions, array $sortingDefinitions)
 	{
 		if ($query::MODE_COUNT === $query->mode()) {
 			$qb = $countQueryBuilderFactory($query);
-			assert($qb instanceof QueryBuilder);
+			assert($qb instanceof QueryBuilder || $qb instanceof DbalQueryBuilder);
 
 			$this->applyFilters($query, $qb, $filterDefinitions);
 
 			$this->paramsCount = 0;
 
-			return (int) $qb->getQuery()->getSingleScalarResult();
+			return (int) ($qb instanceof QueryBuilder ? $qb->getQuery()->getSingleScalarResult() : $qb->fetchOne());
 		}
 
 		$qb = $dataQueryBuilderFactory($query);
-		assert($qb instanceof QueryBuilder);
+		assert($qb instanceof QueryBuilder || $qb instanceof DbalQueryBuilder);
 
 		$this->applyFilters($query, $qb, $filterDefinitions);
 		$this->applySorting($query, $qb, $sortingDefinitions);
 
 		$this->paramsCount = 0;
 
-		return $this->paginatedResultFactory->create($query, $qb->getQuery(), $viewClassname)->results();
+		if ($qb instanceof DbalQueryBuilder) {
+			$qb->setMaxResults($query->limit());
+
+			if (NULL !== $query->offset()) {
+				$qb->setFirstResult($query->offset());
+			}
+
+			$results = [];
+			assert(is_callable($viewClassnameOrCallback));
+
+			foreach ($qb->fetchAllAssociative() as $row) {
+				$results[] = $viewClassnameOrCallback($row);
+			}
+
+			return $results;
+		}
+
+		assert(is_string($viewClassnameOrCallback));
+
+		return $this->paginatedResultFactory->create($query, $qb->getQuery(), $viewClassnameOrCallback)->results();
 	}
 
 	/**
-	 * @param \App\ReadModel\DataGridQueryInterface $query
-	 * @param \Doctrine\ORM\QueryBuilder            $qb
-	 * @param array                                 $definitions
-	 *
-	 * @return void
+	 * @param QueryBuilder|DbalQueryBuilder $qb
 	 */
-	protected function applyFilters(DataGridQueryInterface $query, QueryBuilder $qb, array $definitions): void
+	protected function applyFilters(DataGridQueryInterface $query, $qb, array $definitions): void
 	{
 		foreach ($query->filters() as $filterName => $value) {
 			if (!isset($definitions[$filterName])) {
@@ -110,13 +121,9 @@ trait DataGridQueryHandlerTrait
 	}
 
 	/**
-	 * @param \App\ReadModel\DataGridQueryInterface $query
-	 * @param \Doctrine\ORM\QueryBuilder            $qb
-	 * @param array                                 $definitions
-	 *
-	 * @return void
+	 * @param QueryBuilder|DbalQueryBuilder $qb
 	 */
-	protected function applySorting(DataGridQueryInterface $query, QueryBuilder $qb, array $definitions): void
+	protected function applySorting(DataGridQueryInterface $query, $qb, array $definitions): void
 	{
 		foreach ($query->sorting() as $name => $direction) {
 			if (!isset($definitions[$name])) {
@@ -134,13 +141,9 @@ trait DataGridQueryHandlerTrait
 	}
 
 	/**
-	 * @param \Doctrine\ORM\QueryBuilder $qb
-	 * @param string                     $column
-	 * @param mixed                      $value
-	 *
-	 * @return void
+	 * @param QueryBuilder|DbalQueryBuilder $qb
 	 */
-	protected function applyEquals(QueryBuilder $qb, string $column, $value): void
+	protected function applyEquals($qb, string $column, $value): void
 	{
 		$p = $this->newParameterName();
 
@@ -149,26 +152,19 @@ trait DataGridQueryHandlerTrait
 	}
 
 	/**
-	 * @param \Doctrine\ORM\QueryBuilder $qb
-	 * @param string                     $column
-	 * @param string                     $value
-	 *
-	 * @return void
+	 * @param QueryBuilder|DbalQueryBuilder $qb
 	 */
-	protected function applyLike(QueryBuilder $qb, string $column, string $value): void
+	protected function applyLike($qb, string $column, string $value): void
 	{
 		$qb->andWhere($qb->expr()->like('LOWER(' . $column . ')', 'LOWER(' . $qb->expr()->literal("%$value%") . ')'));
 	}
 
 	/**
-	 * @param \Doctrine\ORM\QueryBuilder $qb
-	 * @param string                     $column
-	 * @param mixed                      $value
+	 * @param QueryBuilder|DbalQueryBuilder $qb
 	 *
-	 * @return void
 	 * @throws \Exception
 	 */
-	protected function applyDate(QueryBuilder $qb, string $column, $value): void
+	protected function applyDate($qb, string $column, $value): void
 	{
 		if (!$value instanceof DateTimeInterface) {
 			$value = new DateTimeImmutable($value, new DateTimeZone('UTC'));
@@ -186,37 +182,36 @@ trait DataGridQueryHandlerTrait
 	}
 
 	/**
-	 * @param \Doctrine\ORM\QueryBuilder $qb
-	 * @param string                     $column
-	 * @param array                      $value
-	 *
-	 * @return void
+	 * @param QueryBuilder|DbalQueryBuilder $qb
 	 */
-	protected function applyIn(QueryBuilder $qb, string $column, array $value): void
+	protected function applyIn($qb, string $column, array $value): void
 	{
 		$p = $this->newParameterName();
+		$type = NULL;
+
+		if ($qb instanceof DbalQueryBuilder) {
+			$firstValue = reset($value);
+			$type = is_numeric($firstValue) ? Connection::PARAM_INT_ARRAY : Connection::PARAM_STR_ARRAY;
+		}
 
 		$qb->andWhere(sprintf('%s IN (:%s)', $column, $p))
-			->setParameter($p, $value);
+			->setParameter($p, $value, $type);
 	}
 
 	/**
-	 * @param \Doctrine\ORM\QueryBuilder $qb
-	 * @param string                     $column
-	 * @param $value
-	 *
-	 * @return void
-	 * @throws \JsonException
+	 * @param QueryBuilder|DbalQueryBuilder $qb
 	 */
-	protected function applyJsonbContains(QueryBuilder $qb, string $column, $value): void
+	protected function applyJsonbContains($qb, string $column, $value): void
 	{
 		$condition = [];
 
 		foreach ((array) $value as $val) {
 			$p = $this->newParameterName();
-			$condition[] = sprintf('JSONB_CONTAINS(%s, :%s) = true', $column, $p);
+			$condition[] = $qb instanceof DbalQueryBuilder
+				? sprintf('%s @> :%s', $column, $p)
+				: sprintf('JSONB_CONTAINS(%s, :%s) = true', $column, $p);
 
-			$qb->setParameter($p, json_encode($val, JSON_THROW_ON_ERROR));
+			$qb->setParameter($p, $val, Types::JSON);
 		}
 
 		if (0 >= count($condition)) {
@@ -226,15 +221,12 @@ trait DataGridQueryHandlerTrait
 		if (1 === count($condition)) {
 			$condition = array_shift($condition);
 		} else {
-			$condition = new Orx($condition);
+			$condition = $qb instanceof DbalQueryBuilder ? $qb->expr()->or(...$condition) : $qb->expr()->orX(...$condition);
 		}
 
 		$qb->andWhere($condition);
 	}
 
-	/**
-	 * @return string
-	 */
 	protected function newParameterName(): string
 	{
 		$return = 'param_' . ($this->paramsCount + 1);
