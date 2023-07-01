@@ -240,6 +240,14 @@ module.exports = () => ({
                 commonValue: null,
                 privateValue: null,
             },
+            cookieSuggestions: {
+                enabled: false,
+                missing: 0,
+                unassociated: 0,
+                problematic: 0,
+                unproblematic: 0,
+                ignored: 0,
+            }
         };
     },
 

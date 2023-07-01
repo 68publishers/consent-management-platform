@@ -86,6 +86,7 @@ services:
 	- App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControlFactoryInterface
 	- App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormControlFactoryInterface
 	- App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControlFactoryInterface
+	- App\Web\AdminModule\CookieModule\Control\ProjectCookieSuggestionList\ProjectCookieSuggestionListControlFactoryInterface
 
 	# Web\AdminModule\ImportModule
 	- App\Web\AdminModule\ImportModule\Control\ImportDetail\ImportDetailControlFactoryInterface

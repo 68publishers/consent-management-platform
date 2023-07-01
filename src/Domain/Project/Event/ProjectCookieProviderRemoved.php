@@ -35,7 +35,7 @@ final class ProjectCookieProviderRemoved extends AbstractDomainEvent
 	/**
 	 * @return \App\Domain\Project\ValueObject\ProjectId
 	 */
-	public function getProjectId(): ProjectId
+	public function projectId(): ProjectId
 	{
 		return $this->projectId;
 	}

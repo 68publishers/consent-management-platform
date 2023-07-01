@@ -24,6 +24,12 @@ services:
 		factory: App\Infrastructure\Project\Doctrine\ReadModel\CalculateProjectCookieTotalsQueryHandler
 	-
 		autowired: no
+		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindAllProjectIdsByCookieProviderIdQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindAllProjectIdsQueryHandler
+	-
+		autowired: no
 		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindAllProjectsQueryHandler
 	-
 		autowired: no
@@ -45,9 +51,6 @@ services:
 		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindUserProjectsQueryHandler
 	-
 		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\FoundCookiesProjectsListingQueryHandler
-	-
-		autowired: no
 		factory: App\Infrastructure\Project\Doctrine\ReadModel\GetProjectByCodeQueryHandler
 	-
 		autowired: no
@@ -57,7 +60,13 @@ services:
 		factory: App\Infrastructure\Project\Doctrine\ReadModel\GetProjectByIdQueryHandler
 	-
 		autowired: no
+		factory: App\Infrastructure\Project\Doctrine\ReadModel\GetProjectCookieSuggestionStatisticsQueryHandler
+	-
+		autowired: no
 		factory: App\Infrastructure\Project\Doctrine\ReadModel\GetUsersProjectByCodeQueryHandler
+	-
+		autowired: no
+		factory: App\Infrastructure\Project\Doctrine\ReadModel\ProjectCookieSuggestionsDataGridQueryHandler
 	-
 		autowired: no
 		factory: App\Infrastructure\Project\Doctrine\ReadModel\GetProjectTemplateByCodeAndLocaleWithFallbackQueryHandler
@@ -67,6 +76,11 @@ services:
 	-
 		autowired: no
 		factory: App\Infrastructure\Project\Doctrine\ReadModel\ProjectExportQueryHandler
+
+	# infra: doctrine event subscribers
+	-
+		autowired: no
+		type: App\Infrastructure\Project\Doctrine\EventSubscriber\CreateProjectCookieSuggestionStatisticsReadModelSubscriber
 
 # infra: doctrine mapping
 nettrine.orm.xml:

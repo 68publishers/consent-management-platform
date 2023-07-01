@@ -2,3 +2,6 @@ services:
 	-
 		autowired: no
 		factory: App\Subscribers\Shared\ClearEtagStoreWhenAnythingRelatedToCookiesChanged
+	-
+		autowired: no
+		factory: App\Subscribers\Shared\RecalculateCookieSuggestionsStatisticsWhenAnythingRelatedChanged

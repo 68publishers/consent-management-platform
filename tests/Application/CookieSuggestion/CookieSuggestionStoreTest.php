@@ -256,11 +256,11 @@ final class CookieSuggestionStoreTest extends TestCase
 		}, NULL, $store));
 
 		$suggestions = $store->resolveCookieSuggestions($projectId);
-		$ignoredCookieSuggestions = $suggestions->getSuggestions(IgnoredCookieSuggestion::class);
-		$missingCookieSuggestions = $suggestions->getSuggestions(MissingCookieSuggestion::class);
-		$problematicCookieSuggestions = $suggestions->getSuggestions(ProblematicCookieSuggestion::class);
-		$unassociatedCookieSuggestions = $suggestions->getSuggestions(UnassociatedCookieSuggestion::class);
-		$unproblematicCookieSuggestions = $suggestions->getSuggestions(UnproblematicCookieSuggestion::class);
+		$ignoredCookieSuggestions = $suggestions->getSuggestionsByType(IgnoredCookieSuggestion::class);
+		$missingCookieSuggestions = $suggestions->getSuggestionsByType(MissingCookieSuggestion::class);
+		$problematicCookieSuggestions = $suggestions->getSuggestionsByType(ProblematicCookieSuggestion::class);
+		$unassociatedCookieSuggestions = $suggestions->getSuggestionsByType(UnassociatedCookieSuggestion::class);
+		$unproblematicCookieSuggestions = $suggestions->getSuggestionsByType(UnproblematicCookieSuggestion::class);
 
 		# ===== Ignored =====
 		Assert::equal([

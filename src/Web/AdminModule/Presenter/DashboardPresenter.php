@@ -6,6 +6,7 @@ namespace App\Web\AdminModule\Presenter;
 
 use App\ReadModel\User\UserView;
 use App\ReadModel\Project\ProjectView;
+use App\Application\Acl\FoundCookiesResource;
 use App\Application\Acl\ProjectCookieResource;
 use App\Application\Acl\ProjectConsentResource;
 use App\ReadModel\Project\FindUserProjectsQuery;
@@ -51,6 +52,9 @@ final class DashboardPresenter extends AdminPresenter
 					: NULL,
 				'cookies' => $this->getUser()->isAllowed(ProjectCookieResource::class, ProjectCookieResource::READ)
 					? $this->link(':Admin:Project:Cookies:', ['project' => $project->code->value()])
+					: NULL,
+				'cookieSuggestions' => $this->getUser()->isAllowed(FoundCookiesResource::class, FoundCookiesResource::READ)
+					? $this->link(':Admin:Cookie:FoundCookies:', ['id' => $project->id->toString()])
 					: NULL,
 			],
 		], $projects);

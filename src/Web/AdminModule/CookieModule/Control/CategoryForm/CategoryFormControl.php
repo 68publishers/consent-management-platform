@@ -133,6 +133,7 @@ final class CategoryFormControl extends Control
 
 			return;
 		} catch (Throwable $e) {
+			bdump($e);
 			$this->logger->error((string) $e);
 			$this->dispatchEvent(new CategoryFormProcessingFailedEvent($e));
 

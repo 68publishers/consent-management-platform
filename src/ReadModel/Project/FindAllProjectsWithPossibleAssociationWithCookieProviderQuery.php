@@ -7,7 +7,7 @@ namespace App\ReadModel\Project;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 /**
- * Returns array of ProjectAccessibilityView
+ * Returns array of ProjectPermissionView
  */
 final class FindAllProjectsWithPossibleAssociationWithCookieProviderQuery extends AbstractQuery
 {
