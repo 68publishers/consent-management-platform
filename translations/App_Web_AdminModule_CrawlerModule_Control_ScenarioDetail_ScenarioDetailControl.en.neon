@@ -1,0 +1,30 @@
+name: Name
+project: Project
+username: Username
+duration: Duration
+status: Status
+categories: Agreed categories
+
+scenario_config: Scenario configuration
+found_cookies: 'Found cookies (%count%)'
+visited_urls: 'Visited URLs (%count%)'
+screenshots: 'Screenshots (%count%)'
+
+search:
+	cookies: Search in cookie name...
+	visited_urls: Search URL...
+	screenshots: Search in screenshot title...
+
+cookie:
+	name: Name
+	domain: Domain
+	found_on_url: The first find
+
+visited_url:
+	url: URL
+	status_code: Status
+	found_on_url: Found on URL
+
+screenshot:
+	image: Screenshot
+	found_on_url: Found on URL

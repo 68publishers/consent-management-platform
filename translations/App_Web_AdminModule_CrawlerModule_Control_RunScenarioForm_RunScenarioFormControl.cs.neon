@@ -1,7 +1,7 @@
 name:
 	field: Název
 	required: Vyplňte prosím název
-	rule_max_length: Maximální povolená délka je 255 znaků.
+	rule_max_length: Maximální povolená délka je %d znaků.
 
 project:
 	field: Projekt

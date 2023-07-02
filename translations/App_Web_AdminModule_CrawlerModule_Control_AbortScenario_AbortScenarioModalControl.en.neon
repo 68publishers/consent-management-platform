@@ -1,0 +1,8 @@
+question: 'Are you sure you want to abort the scenario <strong>"%name%"</strong>?'
+calcel: Cancel
+delete: Abort
+close: Close
+
+error:
+	crawler_api_respond_with_error_status_code: 'The API returned a response with the code <strong>%code%</strong>'
+	generic_message: The scenario data could not be obtained.

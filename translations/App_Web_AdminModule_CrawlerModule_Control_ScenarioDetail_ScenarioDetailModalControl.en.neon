@@ -1,0 +1,15 @@
+title: '''
+<span class="mr-2">%name%</span>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800">%id%</span>
+'''
+title_error: '''
+<span class="mr-2">Error</span>
+<span class="inline-flex items-center px-2.5 py-0.5 ml-2 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800">%id%</span>
+'''
+
+manage_suggestions: Manage suggestions
+close_button_text: Close
+
+error:
+	crawler_api_respond_with_error_status_code: 'The API returned a response with the code <strong>%code%</strong>'
+	generic_message: The scenario data could not be obtained.

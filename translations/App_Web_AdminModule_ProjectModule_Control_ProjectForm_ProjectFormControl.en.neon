@@ -11,6 +11,11 @@ code:
 		duplicated_value: 'A project with this code already exists.'
 	description: 'Only lowercase letters, numbers, dots, underscores, and dashes are allowed.'
 
+domain:
+	field: Domain
+	required: Please enter a domain.
+	description: 'The value will be used as the default domain for the associated cookies.'
+
 color:
 	field: Color
 	required: Please enter a color.
