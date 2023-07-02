@@ -1,0 +1,30 @@
+name:
+	field: Name
+	required: Please enter a name.
+	rule_max_length: The maximum length allowed is %d characters.
+
+expression:
+	field: Crontab expression
+	required: Please enter an expression.
+
+project:
+	field: Project
+	required: Please select a project.
+
+categories:
+	field: 'Categories that the scenario triggers'
+
+config:
+	field: Scenario configuration
+	required: Please configure the scenario.
+	error:
+		invalid_json: The configuration contains non-valid JSON.
+
+save:
+	field: Schedule
+
+update:
+	field: Save
+
+error:
+	crawler_api_respond_with_error_status_code: 'The API returned a response with the code <strong>%code%</strong>'

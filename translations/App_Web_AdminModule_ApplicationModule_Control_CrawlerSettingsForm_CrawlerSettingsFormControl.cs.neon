@@ -13,7 +13,6 @@ username:
 
 password:
 	field: Heslo
-	required: Vyplňte prosím heslo.
 
 callback_uri_token:
 	field: Callback URI Token

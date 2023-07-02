@@ -1,0 +1,6 @@
+page_title: Scenario scheduling
+create_scenario_scheduler: Schedule a scenario
+
+message:
+	scenario_scheduler_created: The scenario was successfully scheduled.
+	failed_to_create_scenario_scheduler: The scenario could not be scheduled.

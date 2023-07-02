@@ -6,6 +6,7 @@ name:
 
 domain:
 	field: Domain
+	description: 'Leave blank if the cookie is always set for the domain of the project.'
 
 provider:
 	field: Provider

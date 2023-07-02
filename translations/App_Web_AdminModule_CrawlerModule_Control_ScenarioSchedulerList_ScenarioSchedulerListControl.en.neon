@@ -1,0 +1,15 @@
+name: Name
+project: Project
+expression: Expression
+createdAt: Created
+updatedAt: Updated
+
+crawler_not_configured_error: 'Crawler is not set up correctly. You can configure it <a class="link" href="%link%">here</a>.'
+crawler_api_respond_with_error_status_code: 'The API returned a response with the code <strong>%code%</strong>'
+crawler_api_respond_with_unexpected_error: 'The API call raised an unexpected error: %error%'
+
+message:
+	scenario_scheduler_updated: Scenario scheduling has been successfully edited.
+	failed_to_update_scenario_scheduler: Scenario scheduling could not be edited.
+	scenario_scheduler_deleted: Scenario scheduling has been successfully deleted.
+	failed_to_delete_scenario_scheduler: Scenario scheduling could not be deleted.

@@ -8,10 +8,14 @@ sidebar:
 	users_users: Users
 	users_password_requests: New password requests
 	application_settings: Settings
+	crawler: Crawler
+	crawler_scenario_schedulers: Scenario scheduling
+	crawler_scenarios: Running scenarios
 	cookies: Cookies
 	cookies_categories: Categories
 	cookies_providers: Providers
 	cookies_cookies: List of cookies
+	cookies_found_cookies: Cookie suggestions
 	imports: Imports
 	projects: Projects
 
