@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bd1c09bd31a06673929a98b1d9c6f8c3",
+    "content-hash": "b37625628eeb5a330b502f512ad1591c",
     "packages": [
         {
             "name": "68publishers/asset",
@@ -63,16 +63,16 @@
         },
         {
             "name": "68publishers/crawler-client-php",
-            "version": "v1.1.1",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/68publishers/crawler-client-php.git",
-                "reference": "c5afa25e71a0936eca64265c2999f94ccec86af8"
+                "reference": "bcb06a8a712d670d9f582a4b938e63c8c9848881"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/68publishers/crawler-client-php/zipball/c5afa25e71a0936eca64265c2999f94ccec86af8",
-                "reference": "c5afa25e71a0936eca64265c2999f94ccec86af8",
+                "url": "https://api.github.com/repos/68publishers/crawler-client-php/zipball/bcb06a8a712d670d9f582a4b938e63c8c9848881",
+                "reference": "bcb06a8a712d670d9f582a4b938e63c8c9848881",
                 "shasum": ""
             },
             "require": {
@@ -119,9 +119,9 @@
             ],
             "support": {
                 "issues": "https://github.com/68publishers/crawler-client-php/issues",
-                "source": "https://github.com/68publishers/crawler-client-php/tree/v1.1.1"
+                "source": "https://github.com/68publishers/crawler-client-php/tree/v1.2.0"
             },
-            "time": "2023-06-21T02:25:38+00:00"
+            "time": "2023-07-10T23:51:21+00:00"
         },
         {
             "name": "68publishers/doctrine-bridge",

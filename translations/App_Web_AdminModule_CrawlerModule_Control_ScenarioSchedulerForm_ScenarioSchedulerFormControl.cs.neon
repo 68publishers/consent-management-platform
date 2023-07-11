@@ -11,6 +11,9 @@ project:
 	field: Projekt
 	required: Zvolte prosím projekt.
 
+active:
+	field: Aktivní
+
 categories:
 	field: 'Kategorie, které scénář spouští'
 

@@ -1,8 +1,13 @@
 name: Name
 project: Project
 expression: Expression
+active: Active
 createdAt: Created
 updatedAt: Updated
+
+active_state:
+	active: active
+	inactive: inactive
 
 crawler_not_configured_error: 'Crawler is not set up correctly. You can configure it <a class="link" href="%link%">here</a>.'
 crawler_api_respond_with_error_status_code: 'The API returned a response with the code <strong>%code%</strong>'
@@ -13,3 +18,11 @@ message:
 	failed_to_update_scenario_scheduler: Scenario scheduling could not be edited.
 	scenario_scheduler_deleted: Scenario scheduling has been successfully deleted.
 	failed_to_delete_scenario_scheduler: Scenario scheduling could not be deleted.
+	scenario_scheduler_activated: Scenario scheduling has been successfully activated.
+	scenario_scheduler_deactivated: Scenario scheduling has been successfully deactivated.
+	failed_to_activate_scenario_scheduler:
+		not_found: Scenario scheduling not found.
+		generic: Scenario scheduling could not be activated.
+	failed_to_deactivate_scenario_scheduler:
+		not_found: Scenario scheduling not found.
+		generic: Scenario scheduling could not be deactivated.

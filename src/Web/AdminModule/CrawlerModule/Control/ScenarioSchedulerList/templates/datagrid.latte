@@ -36,3 +36,7 @@
 {define col-project}
     {$item->flags['projectName'] ?? '-'}
 {/define}
+
+{define col-active}
+    <span n:class="'inline-flex items-center px-2 py-0.5 rounded text-xs font-medium', $item->active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">{_'active_state.' . ($item->active ? 'active' : 'inactive')}</span>
+{/define}

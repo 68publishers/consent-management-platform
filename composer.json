@@ -17,7 +17,7 @@
 		"ext-libxml": "*",
 		"ext-mbstring": "*",
 		"68publishers/asset": "^2.1",
-		"68publishers/crawler-client-php": "^1.1.1",
+		"68publishers/crawler-client-php": "^1.2.0",
 		"68publishers/doctrine-bridge": "^0.2.1",
 		"68publishers/environment": "^0.5",
 		"68publishers/event-dispatcher-extra": "^1.0",

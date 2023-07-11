@@ -96,6 +96,9 @@ final class ScenarioSchedulerFormControl extends Control
 			->setTranslator(NULL)
 			->setOption('searchbar', TRUE);
 
+		$form->addCheckbox('active', 'active.field')
+			->setDefaultValue(TRUE);
+
 		$categoryOptions = $this->getCategoryOptions();
 
 		$form->addCheckboxList('categories', 'categories.field', $categoryOptions)
@@ -125,6 +128,7 @@ final class ScenarioSchedulerFormControl extends Control
 				'name' => $responseBody->name,
 				'expression' => $responseBody->expression,
 				'project' => $responseBody->flags['projectId'] ?? NULL,
+				'active' => $responseBody->active,
 				'categories' => $enabledCategories,
 				'config' => $this->crawlerClientProvider->get()->getSerializer()->serialize($responseBody->config),
 				'etag' => $this->scenarioSchedulerResponse->getEtag(),
@@ -171,6 +175,7 @@ final class ScenarioSchedulerFormControl extends Control
 		$requestBody = new ScenarioSchedulerRequestBody(
 			$values->name,
 			$flags,
+			$values->active,
 			$values->expression,
 			$config,
 		);

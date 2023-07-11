@@ -11,6 +11,9 @@ project:
 	field: Project
 	required: Please select a project.
 
+active:
+	field: Active
+
 categories:
 	field: 'Categories that the scenario triggers'
 
