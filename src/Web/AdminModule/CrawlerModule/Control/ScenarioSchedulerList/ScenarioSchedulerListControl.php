@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerList;
 
+use Throwable;
 use Ramsey\Uuid\Uuid;
 use App\Web\Ui\Control;
 use Nette\InvalidStateException;
@@ -20,6 +21,8 @@ use App\ReadModel\Project\FindProjectSelectOptionsQuery;
 use App\Application\Acl\CrawlerScenarioSchedulersResource;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
+use SixtyEightPublishers\CrawlerClient\Exception\NotFoundException;
+use SixtyEightPublishers\CrawlerClient\Controller\ScenarioScheduler\ScenarioSchedulersController;
 use App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerForm\ScenarioSchedulerFormModalControl;
 use App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerForm\Event\ScenarioSchedulerUpdatedEvent;
 use App\Web\AdminModule\CrawlerModule\Control\DeleteScenarioScheduler\DeleteScenarioSchedulerModalControl;
@@ -55,6 +58,28 @@ final class ScenarioSchedulerListControl extends Control
 		$this->deleteScenarioSchedulerModalControlFactory = $deleteScenarioSchedulerModalControlFactory;
 	}
 
+	public function handleChangeActiveState(string $scenarioSchedulerId, bool $active): void
+	{
+		try {
+			$controller = $this->crawlerClientProvider->get()->getController(ScenarioSchedulersController::class);
+
+			if ($active) {
+				$controller->activateScenarioScheduler($scenarioSchedulerId);
+			} else {
+				$controller->deactivateScenarioScheduler($scenarioSchedulerId);
+			}
+
+			$this->subscribeFlashMessage(FlashMessage::success('scenario_scheduler_' . ($active ? 'activated' : 'deactivated')));
+		} catch (NotFoundException $e) {
+			$this->subscribeFlashMessage(FlashMessage::error('failed_to_' . ($active ? 'activate' : 'deactivate') . '_scenario_scheduler.not_found'));
+		} catch (Throwable $e) {
+			$this->logger->error((string) $e);
+			$this->subscribeFlashMessage(FlashMessage::error('failed_to_' . ($active ? 'activate' : 'deactivate') . '_scenario_scheduler.generic'));
+		}
+
+		$this['grid']->reload();
+	}
+
 	/**
 	 * @throws DataGridException
 	 */
@@ -72,11 +97,19 @@ final class ScenarioSchedulerListControl extends Control
 
 		$grid->setTranslator($this->getPrefixedTranslator());
 
+		$translator = $grid->getTranslator();
+
 		$grid->addColumnText('name', 'name', 'name')
 			->setFilterText();
 
 		$grid->addColumnText('project', 'project')
 			->setFilterSelect($this->getProjectOptions($grid->getTranslator()), 'flags->projectId');
+
+		$grid->addColumnText('active', 'active')
+			->setFilterSelect(FilterHelper::all($translator) + [
+				1 => $translator->translate('active_state.active'),
+				0 => $translator->translate('active_state.inactive'),
+			]);
 
 		$grid->addColumnText('expression', 'expression', 'expression');
 
@@ -91,6 +124,9 @@ final class ScenarioSchedulerListControl extends Control
 
 		$grid->addAction('edit', '')
 			->setTemplate(__DIR__ . '/templates/action.edit.latte');
+
+		$grid->addAction('changeActiveState', '')
+			->setTemplate(__DIR__ . '/templates/action.changeActiveState.latte');
 
 		$grid->addAction('delete', '')
 			->setTemplate(__DIR__ . '/templates/action.delete.latte');
