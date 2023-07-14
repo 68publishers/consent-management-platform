@@ -4,8 +4,9 @@ name:
 	rule_max_length: The maximum length allowed is %d characters.
 
 expression:
-	field: Crontab expression
+	field: Schedule
 	required: Please enter an expression.
+	description: Crontab expression
 
 project:
 	field: Project

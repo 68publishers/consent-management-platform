@@ -1,6 +1,12 @@
 {varType App\ReadModel\ConsentSettings\ConsentSettingsView $item}
 {varType callable $createLink}
 
-<a href="{$createLink($item)}" data-spinner-for="self" class="ajax spinner-white inline-flex items-center px-1.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+<a
+    href="{$createLink($item)}"
+    x-data
+    x-tooltip.placement.bottom.raw="{_tooltip.detail_action}"
+    data-spinner-for="self"
+    class="ajax spinner-white inline-flex items-center px-1.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+>
     {svg common/eye.svg, class: 'w-4 h-4'}
 </a>

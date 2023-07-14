@@ -11,3 +11,6 @@ status_value:
 	failed: neúspěšný
 
 unknown_author: Neznámý autor
+
+tooltip:
+	detail_action: Detail

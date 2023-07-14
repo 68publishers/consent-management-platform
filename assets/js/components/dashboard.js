@@ -194,6 +194,7 @@ module.exports = () => ({
     addProject(data) {
         const def = {
             code: null,
+            domain: null,
             name: null,
             color: null,
             status: this.STATUS_LOADING(),

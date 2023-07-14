@@ -4,3 +4,6 @@ created_at: Vytvořeno
 last_update_at: Aktualizováno
 
 settingsShortIdentifierValue: verze %shortIdentifier%
+
+tooltip:
+	detail_action: Detail

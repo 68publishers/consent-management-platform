@@ -2,3 +2,6 @@ checksum: Identifikátor
 short_identifier: Verze
 created_at: Vytvořeno
 last_update_at: Aktualizováno
+
+tooltip:
+	detail_action: Detail

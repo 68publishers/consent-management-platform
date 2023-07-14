@@ -15,6 +15,10 @@ persistent: Persistent
 
 and_more_projects: "and %count% more"
 
+tooltip:
+	edit_action: Edit
+	delete_action: Delete
+
 delete_confirm:
 	question: 'Are you sure you want to delete the cookie <strong>"%name%"</strong>?'
 

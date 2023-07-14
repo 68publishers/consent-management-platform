@@ -2,3 +2,6 @@ checksum: Identifier
 short_identifier: Version
 created_at: Created
 last_update_at: Updated
+
+tooltip:
+	detail_action: Detail
