@@ -15,6 +15,10 @@ persistent: Persistent
 
 and_more_projects: "[1,4] a %count% další|[5,Inf[ a %count% dalších"
 
+tooltip:
+	edit_action: Upravit
+	delete_action: Odstranit
+
 delete_confirm:
 	question: 'Opravdu si přejete odstranit cookie <strong>"%name%"</strong>?'
 

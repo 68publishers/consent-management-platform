@@ -1,6 +1,6 @@
 name: Name
 project: Project
-expression: Expression
+expression: Scheduled
 active: Active
 createdAt: Created
 updatedAt: Updated
@@ -8,6 +8,12 @@ updatedAt: Updated
 active_state:
 	active: active
 	inactive: inactive
+
+tooltip:
+	edit_action: Edit
+	delete_action: Delete
+	activate_action: Activate
+	deactivate_action: Deactivate
 
 crawler_not_configured_error: 'Crawler is not set up correctly. You can configure it <a class="link" href="%link%">here</a>.'
 crawler_api_respond_with_error_status_code: 'The API returned a response with the code <strong>%code%</strong>'

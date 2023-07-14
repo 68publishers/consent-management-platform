@@ -41,6 +41,7 @@ final class DashboardPresenter extends AdminPresenter
 
 		$this->template->projectsData = array_map(fn (ProjectView $project) => [
 			'code' => $project->code->value(),
+			'domain' => filter_var('http://' . $project->domain->value(), FILTER_VALIDATE_URL) ?: NULL,
 			'name' => $project->name->value(),
 			'color' => $project->color->value(),
 			'links' => [

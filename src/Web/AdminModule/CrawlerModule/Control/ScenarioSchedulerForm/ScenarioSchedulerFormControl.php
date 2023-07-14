@@ -87,7 +87,8 @@ final class ScenarioSchedulerFormControl extends Control
 			->addRule($form::MAX_LENGTH, 'name.rule_max_length', 255);
 
 		$form->addText('expression', 'expression.field')
-			->setRequired('expression.required');
+			->setRequired('expression.required')
+			->setOption('description', 'expression.description');
 
 		$form->addSelect('project', 'project.field', $this->getProjectOptions())
 			->checkDefaultValue(FALSE)

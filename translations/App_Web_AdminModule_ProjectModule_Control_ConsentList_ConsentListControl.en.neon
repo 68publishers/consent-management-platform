@@ -4,3 +4,6 @@ created_at: Created
 last_update_at: Updated
 
 settingsShortIdentifierValue: version %shortIdentifier%
+
+tooltip:
+	detail_action: Detail

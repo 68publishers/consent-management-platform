@@ -9,6 +9,12 @@ active_state:
 	active: aktivní
 	inactive: neaktivní
 
+tooltip:
+	edit_action: Upravit
+	delete_action: Odstranit
+	activate_action: Aktivovat
+	deactivate_action: Deaktivovat
+
 crawler_not_configured_error: 'Crawler není správně nastaven. Můžete ho nakonfigurovat <a class="link" href="%link%">zde</a>.'
 crawler_api_respond_with_error_status_code: 'API vrátilo odpověď s kódem <strong>%code%</strong>'
 crawler_api_respond_with_unexpected_error: 'Volání API vyvovalo neočekávánou chybu: %error%'

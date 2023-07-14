@@ -1,5 +1,12 @@
 {varType App\ReadModel\CookieProvider\CookieProviderDaraGridItemView $item}
 
-<a n:if="$user->isAllowed(App\Application\Acl\CookieProviderResource::class, App\Application\Acl\CookieProviderResource::UPDATE)"  href="{plink :Admin:Cookie:EditProvider: id => $item->id->toString()}" data-spinner-for="self" class="spinner-white inline-flex items-center px-1.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+<a
+    n:if="$user->isAllowed(App\Application\Acl\CookieProviderResource::class, App\Application\Acl\CookieProviderResource::UPDATE)"
+    href="{plink :Admin:Cookie:EditProvider: id => $item->id->toString()}"
+    x-data
+    x-tooltip.placement.bottom.raw="{_tooltip.edit_action}"
+    data-spinner-for="self"
+    class="spinner-white inline-flex items-center px-1.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+>
     {svg common/pencil.svg, class: 'w-4 h-4'}
 </a>

@@ -570,6 +570,7 @@ final class CookieSuggestionsStore implements CookieSuggestionsStoreInterface
 					],
 					$this->dataStore,
 					new IgnoreUntilNexOccurrence(),
+					new IgnorePermanently(),
 				)
 			);
 		} elseif ($lastFoundAt < $comparisonDateTime) {
@@ -588,6 +589,7 @@ final class CookieSuggestionsStore implements CookieSuggestionsStoreInterface
 					],
 					$this->dataStore,
 					new IgnoreUntilNexOccurrence(),
+					new IgnorePermanently(),
 				)
 			);
 		}
@@ -664,6 +666,7 @@ final class CookieSuggestionsStore implements CookieSuggestionsStoreInterface
 						],
 						$this->dataStore,
 						new IgnoreUntilNexOccurrence($virtual),
+						new IgnorePermanently($virtual),
 					)
 				),
 			],

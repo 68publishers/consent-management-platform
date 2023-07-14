@@ -11,3 +11,6 @@ status_value:
 	failed: failed
 
 unknown_author: Unknown author
+
+tooltip:
+	detail_action: Detail

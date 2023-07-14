@@ -4,8 +4,9 @@ name:
 	rule_max_length: Maximální povolená délka je %d znaků.
 
 expression:
-	field: Crontab výraz
+	field: Naplánovat
 	required: Vyplňte prosím výraz.
+	description: Crontab výraz
 
 project:
 	field: Projekt

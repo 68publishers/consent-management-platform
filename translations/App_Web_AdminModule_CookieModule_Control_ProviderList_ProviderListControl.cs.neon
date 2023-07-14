@@ -11,5 +11,9 @@ created_at: Vytvořeno
 active_value: aktivní
 inactive_value: neaktivní
 
+tooltip:
+	edit_action: Upravit
+	delete_action: Odstranit
+
 delete_confirm:
 	question: 'Opravdu si přejete odstranit poskytovatele <strong>"%name%"</strong>?'

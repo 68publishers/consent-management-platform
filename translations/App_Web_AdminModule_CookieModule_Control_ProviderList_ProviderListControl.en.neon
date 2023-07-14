@@ -11,5 +11,9 @@ created_at: Created
 active_value: active
 inactive_value: inactive
 
+tooltip:
+	edit_action: Edit
+	delete_action: Delete
+
 delete_confirm:
 	question: 'Are you sure you want to delete the provider <strong>"%name%"</strong>?'

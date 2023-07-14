@@ -377,6 +377,7 @@ final class CookieSuggestionStoreTest extends TestCase
 								],
 								$store->getDataStore(),
 								new IgnoreUntilNexOccurrence(),
+								new IgnorePermanently(),
 							)
 						),
 					],
@@ -493,6 +494,7 @@ final class CookieSuggestionStoreTest extends TestCase
 							],
 							$store->getDataStore(),
 							new IgnoreUntilNexOccurrence(),
+							new IgnorePermanently(),
 						)
 					),
 				]
@@ -579,6 +581,7 @@ final class CookieSuggestionStoreTest extends TestCase
 							],
 							$store->getDataStore(),
 							new IgnoreUntilNexOccurrence(),
+							new IgnorePermanently(),
 						)
 					),
 				],
@@ -600,6 +603,7 @@ final class CookieSuggestionStoreTest extends TestCase
 							],
 							$store->getDataStore(),
 							new IgnoreUntilNexOccurrence(TRUE),
+							new IgnorePermanently(TRUE),
 						)
 					),
 				],

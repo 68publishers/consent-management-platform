@@ -4,5 +4,9 @@ name: Jméno
 created_at: Vytvořen
 roles: Role
 
+tooltip:
+	edit_action: Upravit
+	delete_action: Odstranit
+
 delete_confirm:
 	question: 'Opravdu si přejete odstranit uživatele <strong>"%name%"</strong>?'
