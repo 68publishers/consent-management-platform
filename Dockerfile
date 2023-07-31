@@ -1,16 +1,13 @@
-FROM 68publishers/docker-images:php-nginx-unit-7.4 AS app
+FROM 68publishers/php:8.1-cli-dev-1.0.0 AS worker
 
-MAINTAINER support@68publishers.io
+USER root
 
-########################################################################################################################
-FROM postgres:13.6-alpine AS db
-
-########################################################################################################################
-FROM 68publishers/docker-images:php-nginx-unit-7.4 AS worker
-
-RUN apk add --update --no-cache --allow-untrusted supervisor
-RUN mkdir -p "/etc/supervisor/logs"
+RUN apk add --update --no-cache supervisor \
+    && mkdir -p /etc/supervisor/logs \
+    && chown www-data:www-data /etc/supervisor/logs
 
 COPY docker/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 
 CMD ["/usr/bin/supervisord", "-n", "-c",  "/etc/supervisor/supervisord.conf"]
+
+USER www-data

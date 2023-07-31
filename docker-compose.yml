@@ -2,16 +2,12 @@ version: "3.7"
 
 services:
     app:
-        build:
-            context: .
-            dockerfile: Dockerfile
-            target: app
+        image: 68publishers/php:8.1-unit-dev-2.0.0
         container_name: cmp-app
         profiles:
             - web
-        command: ["run-nginx-unit"]
         ports:
-            - 8888:8080
+            - "8888:8080"
         networks:
             - backend
         volumes:
@@ -21,6 +17,7 @@ services:
                 condition: service_started
             db:
                 condition: service_healthy
+
     worker:
         build:
             context: .
@@ -38,17 +35,15 @@ services:
                 condition: service_started
             db:
                 condition: service_healthy
+
     db:
-        build:
-            context: .
-            dockerfile: Dockerfile
-            target: db
+        image: postgres:13.6-alpine
         container_name: cmp-db
         profiles:
             - web
         shm_size: 256m
         ports:
-            - 5432:5432
+            - "5432:5432"
         networks:
             - backend
         volumes:
@@ -68,6 +63,7 @@ services:
             interval: 10s
             timeout: 5s
             retries: 5
+
     redis:
         image: redis:7.0.10-alpine
         container_name: cmp-redis
@@ -75,7 +71,7 @@ services:
             - web
         command: redis-server --requirepass redis_pass
         ports:
-            - 6379:6379
+            - "6379:6379"
         networks:
             - backend
 networks:
