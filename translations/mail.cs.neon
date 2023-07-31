@@ -41,3 +41,15 @@ consent_decrease:
 	col_consents: Souhlasy
 	col_difference: Změna
 	go_to_dashboard: Přejít na Dashboard
+
+cookie_suggestions:
+	subject: Nové návrhy cookies
+	header_title: Nové návrhy cookies
+	col_name: Název
+	col_type: Typ
+	col_domain: Doména
+	col_last_founded_at: Naposledy nalezeno
+	suggestion_type:
+		new: nová cookie
+		problematic: problematická cookie
+	go_to_suggestions: Přejít na návrhy projektu "%name%"

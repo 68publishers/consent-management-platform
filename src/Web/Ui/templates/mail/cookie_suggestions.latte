@@ -1,0 +1,98 @@
+{layout $_config->layout}
+
+{varType array $_translatorArgs}
+
+{block #title|trim}
+    {_subject, $_translatorArgs}
+{/block}
+
+{block #header_icon}
+    <img src="{asset 'exclamation.png', 'mail'}" alt="logo">
+{/block}
+
+{block #header_title|trim}
+    {_header_title, $_translatorArgs|noescape}
+{/block}
+
+{block #styles}
+    {include parent}
+
+    <style n:syntax="off">
+        .badge-indigo { padding: 0.125rem 0.5rem;margin-right: 0.5rem;align-items: center;border-radius: 0.25rem;font-size: 0.75rem;line-height: 1rem;font-weight: 500;color: #3730A3;background-color: #E0E7FF; }
+        .badge-red { padding: 0.125rem 0.5rem;margin-right: 0.5rem;align-items: center;border-radius: 0.25rem;font-size: 0.75rem;line-height: 1rem;font-weight: 500;color: #991B1B;background-color: #FEE2E2; }
+    </style>
+{/block}
+
+{block #content}
+    {foreach $projects as $project}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        <span>
+                            <a n:href="Admin:Cookie:FoundCookies: $project['id']" style="text-decoration: none">{$project['name']}</a>
+                        </span>
+                        <span class="badge-indigo" style="margin: 0 2px 0 4px">{count($project['missingCookieSuggestions'] + $project['unassociatedCookieSuggestions'])}</span>
+                        <span class="badge-red">{count($project['problematicCookieSuggestions'])}</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <table class="table" style="margin: 0">
+                            <thead>
+                                <tr>
+                                    <th scope="col">{_col_name}</th>
+                                    <th scope="col" class="text-center">{_col_type}</th>
+                                    <th scope="col" class="text-center">{_col_domain}</th>
+                                    <th scope="col" class="text-center">{_col_last_founded_at}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr n:foreach="array_merge($project['missingCookieSuggestions'], $project['unassociatedCookieSuggestions']) as $suggestion">
+                                    <td style="font-weight:600">
+                                        {$suggestion['name']}
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge-indigo">{_suggestion_type.new}</span>
+                                    </td>
+                                    <td class="text-center">
+                                        {$suggestion['domain']}
+                                    </td>
+                                    <td class="text-center">
+                                        {$suggestion['lastFoundedAt'] ?? '-'}
+                                    </td>
+                                </tr>
+                                <tr n:foreach="$project['problematicCookieSuggestions'] as $suggestion">
+                                    <td style="font-weight:600">
+                                        {$suggestion['name']}
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge-red">{_suggestion_type.problematic}</span>
+                                    </td>
+                                    <td class="text-center">
+                                        {$suggestion['domain']}
+                                    </td>
+                                    <td class="text-center">
+                                        {$suggestion['lastFoundedAt'] ?? '-'}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p class="text-center" style="margin-bottom: 50px">
+            <a n:href="Admin:Cookie:FoundCookies: $project['id']" class="btn btn-primary">{_go_to_suggestions, [name => $project['name']]}</a>
+        </p>
+    {/foreach}
+{/block}
+
+{block #footer}
+    <a href="{$_projectUrl}">{_//mail.visit_cmp}</a>
+    <span style="margin: 0 4px 0 4px">&middot;</span>
+    <a n:href="Admin:Profile:Settings:#profile-settings-notification-preferences">{_//mail.manage_notifications}</a>
+{/block}
