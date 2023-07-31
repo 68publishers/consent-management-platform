@@ -41,3 +41,15 @@ consent_decrease:
 	col_consents: Consents
 	col_difference: Change
 	go_to_dashboard: Go to Dashboard
+
+cookie_suggestions:
+	subject: New cookie suggestions
+	header_title: New cookie suggestions
+	col_name: Name
+	col_type: Type
+	col_domain: Domain
+	col_last_founded_at: Last found
+	suggestion_type:
+		new: new cookie
+		problematic: problematic cookie
+	go_to_suggestions: Go to suggestions for the project "%name%"
