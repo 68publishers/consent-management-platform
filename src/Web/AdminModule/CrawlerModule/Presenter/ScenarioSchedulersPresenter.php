@@ -8,8 +8,8 @@ use Nette\InvalidStateException;
 use Nette\Application\BadRequestException;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use App\Application\Acl\CrawlerScenarioSchedulersResource;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use SixtyEightPublishers\UserBundle\Application\Exception\IdentityException;
 use App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerForm\ScenarioSchedulerFormControl;
 use App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerList\ScenarioSchedulerListControl;
@@ -19,9 +19,7 @@ use App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerForm\Event\Failed
 use App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerList\ScenarioSchedulerListControlFactoryInterface;
 use App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerForm\ScenarioSchedulerFormModalControlFactoryInterface;
 
-/**
- * @IsAllowed(resource=CrawlerScenarioSchedulersResource::class, privilege=CrawlerScenarioSchedulersResource::READ)
- */
+#[Allowed(resource: CrawlerScenarioSchedulersResource::class, privilege: CrawlerScenarioSchedulersResource::READ)]
 final class ScenarioSchedulersPresenter extends AdminPresenter
 {
 	private ScenarioSchedulerListControlFactoryInterface $scenarioSchedulerListControlFactory;

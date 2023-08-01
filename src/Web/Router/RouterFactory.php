@@ -7,17 +7,15 @@ namespace App\Web\Router;
 use Nette\Routing\Route;
 use Nette\Application\Routers\RouteList;
 use App\Application\Localization\Profiles;
+use App\Web\AdminModule\Presenter\SignOutPresenter;
+use SixtyEightPublishers\UserBundle\Application\Csrf\CsrfTokenFactoryInterface;
 
 final class RouterFactory
 {
-	private Profiles $profiles;
-
-	/**
-	 * @param \App\Application\Localization\Profiles $profiles
-	 */
-	public function __construct(Profiles $profiles)
-	{
-		$this->profiles = $profiles;
+	public function __construct(
+		private readonly Profiles $profiles,
+		private readonly CsrfTokenFactoryInterface $csrfTokenFactory,
+	) {
 	}
 
 	/**
@@ -59,6 +57,15 @@ final class RouterFactory
 			->addRoute('[[<module>/]<presenter>[/<id>]]', [
 				'presenter' => 'Dashboard',
 				'action' => 'default',
+				NULL => [
+					Route::FilterOut => function (array $parameters) {
+						if ('SignOut' === ($parameters['presenter'] ?? NULL)) {
+							$parameters['_sec'] = $this->csrfTokenFactory->create(SignOutPresenter::class);
+						}
+
+						return $parameters;
+					},
+				],
 			]);
 
 		return $router;

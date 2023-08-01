@@ -7,7 +7,7 @@ namespace App\Bridge\Latte;
 use RuntimeException;
 use Nette\Utils\Validators;
 use Psr\Log\LoggerInterface;
-use SixtyEightPublishers\WebpackEncoreBundle\EntryPoint\IEntryPointLookupProvider;
+use SixtyEightPublishers\WebpackEncoreBundle\Asset\EntryPointLookupCollectionInterface;
 
 final class InternalCssRenderer
 {
@@ -15,21 +15,15 @@ final class InternalCssRenderer
 
 	private bool $debugMode;
 
-	private IEntryPointLookupProvider $entryPointLookupProvider;
+	private EntryPointLookupCollectionInterface $entryPointLookupCollection;
 
 	private LoggerInterface $logger;
 
-	/**
-	 * @param string                                                                         $publicDir
-	 * @param bool                                                                           $debugMode
-	 * @param \SixtyEightPublishers\WebpackEncoreBundle\EntryPoint\IEntryPointLookupProvider $entryPointLookupProvider
-	 * @param \Psr\Log\LoggerInterface                                                       $logger
-	 */
-	public function __construct(string $publicDir, bool $debugMode, IEntryPointLookupProvider $entryPointLookupProvider, LoggerInterface $logger)
+	public function __construct(string $publicDir, bool $debugMode, EntryPointLookupCollectionInterface $entryPointLookupCollection, LoggerInterface $logger)
 	{
 		$this->publicDir = rtrim($publicDir, DIRECTORY_SEPARATOR);
 		$this->debugMode = $debugMode;
-		$this->entryPointLookupProvider = $entryPointLookupProvider;
+		$this->entryPointLookupCollection = $entryPointLookupCollection;
 		$this->logger = $logger;
 	}
 
@@ -41,7 +35,7 @@ final class InternalCssRenderer
 	 */
 	public function render(string $entryName, ?string $buildName = NULL): string
 	{
-		$entryPointLookup = $this->entryPointLookupProvider->getEntryPointLookup($buildName);
+		$entryPointLookup = $this->entryPointLookupCollection->getEntryPointLookup($buildName);
 		$styles = [];
 
 		foreach ($entryPointLookup->getCssFiles($entryName) as $file) {

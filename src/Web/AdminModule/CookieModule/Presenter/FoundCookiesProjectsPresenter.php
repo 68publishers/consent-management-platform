@@ -7,14 +7,12 @@ namespace App\Web\AdminModule\CookieModule\Presenter;
 use Nette\Application\BadRequestException;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use App\Application\Acl\FoundCookiesProjectsResource;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use SixtyEightPublishers\UserBundle\Application\Exception\IdentityException;
 use App\Web\AdminModule\CookieModule\Control\ProjectCookieSuggestionList\ProjectCookieSuggestionListControl;
 use App\Web\AdminModule\CookieModule\Control\ProjectCookieSuggestionList\ProjectCookieSuggestionListControlFactoryInterface;
 
-/**
- * @IsAllowed(resource=FoundCookiesProjectsResource::class, privilege=FoundCookiesProjectsResource::READ)
- */
+#[Allowed(resource: FoundCookiesProjectsResource::class, privilege: FoundCookiesProjectsResource::READ)]
 final class FoundCookiesProjectsPresenter extends AdminPresenter
 {
 	private ProjectCookieSuggestionListControlFactoryInterface $projectCookieSuggestionListControlFactory;

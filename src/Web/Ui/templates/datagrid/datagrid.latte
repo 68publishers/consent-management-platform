@@ -39,7 +39,7 @@
                     {control paginator}
                 </div>
                 <div class="col-per-page">
-                    <a n:if="$filter_active" n:href="resetFilter!" class="ajax btn btn-danger btn-sm reset-filter mr-2">{='ublaboo_datagrid.reset_filter'|translate}</a>
+                    <a n:if="$filter_active" n:href="resetFilter!" class="ajax btn btn-danger btn-sm reset-filter mr-2">{_'ublaboo_datagrid.reset_filter'}</a>
                     {if $control->isPaginated()}
                         {input $filter['perPage'], data-autosubmit-per-page => TRUE, class => 'form-control input-sm form-control-sm', x-data => TRUE, x-select => TRUE}
                         {input $filter['perPage_submit'], class => 'datagrid-per-page-submit'}
@@ -54,14 +54,13 @@
     <tr n:if="!$rows">
         <td colspan="{$control->getColumnsCount()}">
             {if $filter_active}
-                {='ublaboo_datagrid.no_item_found_reset', ['link' => $control->link('resetFilter!')]|translate|noescape}
+                {_'ublaboo_datagrid.no_item_found_reset', ['link' => $control->link('resetFilter!')]|noescape}
             {else}
-                {='ublaboo_datagrid.no_item_found'|translate}
+                {_'ublaboo_datagrid.no_item_found'}
             {/if}
         </td>
     </tr>
 {/block}
-
 
 {define #filtertype-select, $input, $outer}
     {var $searchbar = 8 < count($input->getItems())}

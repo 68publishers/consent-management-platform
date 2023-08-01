@@ -6,16 +6,14 @@ namespace App\Web\AdminModule\CookieModule\Presenter;
 
 use App\Application\Acl\CategoryResource;
 use App\Web\AdminModule\Presenter\AdminPresenter;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\CookieModule\Control\CategoryForm\CategoryFormControl;
 use App\Web\AdminModule\CookieModule\Control\CategoryForm\Event\CategoryCreatedEvent;
 use App\Web\AdminModule\CookieModule\Control\CategoryForm\CategoryFormControlFactoryInterface;
 use App\Web\AdminModule\CookieModule\Control\CategoryForm\Event\CategoryFormProcessingFailedEvent;
 
-/**
- * @IsAllowed(resource=CategoryResource::class, privilege=CategoryResource::CREATE)
- */
+#[Allowed(resource: CategoryResource::class, privilege: CategoryResource::CREATE)]
 final class AddCategoryPresenter extends AdminPresenter
 {
 	private CategoryFormControlFactoryInterface $categoryFormControlFactory;

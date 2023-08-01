@@ -6,13 +6,11 @@ namespace App\Web\AdminModule\UserModule\Presenter;
 
 use App\Application\Acl\UserResource;
 use App\Web\AdminModule\Presenter\AdminPresenter;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use App\Web\AdminModule\UserModule\Control\UserList\UserListControl;
 use App\Web\AdminModule\UserModule\Control\UserList\UserListControlFactoryInterface;
 
-/**
- * @IsAllowed(resource=UserResource::class, privilege=UserResource::READ)
- */
+#[Allowed(resource: UserResource::class, privilege: UserResource::READ)]
 final class UsersPresenter extends AdminPresenter
 {
 	private UserListControlFactoryInterface $userListControlFactory;

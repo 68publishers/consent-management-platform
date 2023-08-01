@@ -29,8 +29,15 @@ http:
 	proxy: ::array_filter(::explode(',', ::env(TRUSTED_PROXIES, '')))
 
 decorator:
-	SixtyEightPublishers\SmartNetteComponent\UI\Control:
+	Nette\Application\UI\Control:
 		inject: yes
 	Psr\Log\LoggerAwareInterface:
 		setup:
 			- setLogger(@Psr\Log\LoggerInterface)
+
+latte:
+	extensions:
+		- App\Bridge\Latte\LatteExtension(
+			@bridge.latte.internal_css_renderer
+			@bridge.latte.number_formatter_filter
+		)

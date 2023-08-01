@@ -8,8 +8,8 @@ use Nette\InvalidStateException;
 use App\Application\Acl\CookieProviderResource;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use App\Application\CookieProvider\Import\CookieProviderData;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use App\Web\AdminModule\Control\ExportForm\ExportDropdownControl;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControl;
 use App\Web\AdminModule\CookieModule\Control\ProviderList\ProviderListControl;
 use App\Web\AdminModule\Control\ExportForm\ExportDropdownControlFactoryInterface;
@@ -18,9 +18,7 @@ use App\Web\AdminModule\ImportModule\Control\ImportModal\Event\ShowingImportDeta
 use App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControlFactoryInterface;
 use App\Web\AdminModule\CookieModule\Control\ProviderList\ProviderListControlFactoryInterface;
 
-/**
- * @IsAllowed(resource=CookieProviderResource::class, privilege=CookieProviderResource::READ)
- */
+#[Allowed(resource: CookieProviderResource::class, privilege: CookieProviderResource::READ)]
 final class ProvidersPresenter extends AdminPresenter
 {
 	private ProviderListControlFactoryInterface $providerListControlFactory;

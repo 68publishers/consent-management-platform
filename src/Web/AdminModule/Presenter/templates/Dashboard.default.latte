@@ -4,192 +4,194 @@
 
 {block #content}
 
-<div n:syntax="double" x-data="dashboard" data-request="{{Nette\Utils\Json::encode($requestData)}}" data-projects="{{Nette\Utils\Json::encode($projectsData)}}" class="w-full px-4 sm:px-0">
+{syntax double}
+    <div x-data="dashboard" data-request="{{Nette\Utils\Json::encode($requestData)}}" data-projects="{{Nette\Utils\Json::encode($projectsData)}}" class="w-full px-4 sm:px-0">
 
-    <div x-data="dropdown" x-bind="dropdown" class="relative inline-block">
-        <span class="relative z-0 inline-flex shadow-sm rounded-md">
-            <button x-on:click="moveToPreviousRange()" type="button" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
-                <span class="sr-only">{{_previous_period}}</span>
-                {{svg common/chevron-left.svg, class: 'h-5 w-5'}}
-            </button>
+        <div x-data="dropdown" x-bind="dropdown" class="relative inline-block">
+            <span class="relative z-0 inline-flex shadow-sm rounded-md">
+                <button x-on:click="moveToPreviousRange()" type="button" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+                    <span class="sr-only">{{_previous_period}}</span>
+                    {{svg common/chevron-left.svg, class: 'h-5 w-5'}}
+                </button>
 
-            <button x-bind="dropdownButton" type="button" class="min-w-[14rem] -ml-px relative inline-flex items-center justify-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500" id="dashboard-range-button" aria-expanded="false" aria-haspopup="true">
-                <span x-text="rangeText">&nbsp;</span>
-            </button>
+                <button x-bind="dropdownButton" type="button" class="min-w-[14rem] -ml-px relative inline-flex items-center justify-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500" id="dashboard-range-button" aria-expanded="false" aria-haspopup="true">
+                    <span x-text="rangeText">&nbsp;</span>
+                </button>
 
-            <button x-on:click="moveToNextRange()" type="button" class="-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
-                <span class="sr-only">{{_next_period}}</span>
-                {{svg common/chevron-right.svg, class: 'h-5 w-5'}}
-            </button>
-        </span>
+                <button x-on:click="moveToNextRange()" type="button" class="-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+                    <span class="sr-only">{{_next_period}}</span>
+                    {{svg common/chevron-right.svg, class: 'h-5 w-5'}}
+                </button>
+            </span>
 
-        <div x-bind="dropdownPanel" x-cloak class="absolute origin-top-left left-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none p-2 sm:p-4 z-10" role="menu" aria-orientation="vertical" aria-labelledby="dashboard-range-button" tabindex="-1">
-            <div class="flex w-full flex-col md:flex-row md:flex-nowrap items-start space-y-4 md:space-y-0 md:space-x-4">
-                <div class="w-full md:w-auto space-y-2 flex flex-col">
-                    <a x-bind="rangeButton" data-day-diff-start="-1" data-day-diff-end="-1" class="whitespace-nowrap w-full inline-flex justify-start px-4 py-2 border border-transparent rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
-                        {{_yesterday}}
-                    </a>
-                    <a x-bind="rangeButton" data-day-diff-start="0" data-day-diff-end="0" class="whitespace-nowrap w-full inline-flex justify-start px-4 py-2 border border-transparent rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
-                        {{_today}}
-                    </a>
-                    <a x-bind="rangeButton" data-day-diff-start="-6" data-day-diff-end="0" class="whitespace-nowrap w-full inline-flex justify-start px-4 py-2 border border-transparent rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
-                        {{_last_7_days}}
-                    </a>
-                    <a x-bind="rangeButton" data-day-diff-start="-13" data-day-diff-end="0" class="whitespace-nowrap w-full inline-flex justify-start px-4 py-2 border border-transparent rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
-                        {{_last_14_days}}
-                    </a>
-                    <a x-bind="rangeButton" data-day-diff-start="-29" data-day-diff-end="0" class="whitespace-nowrap w-full inline-flex justify-start px-4 py-2 border border-transparent rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
-                        {{_last_30_days}}
-                    </a>
-                </div>
-                <div class="w-full md:w-auto flex">
-                    <input x-bind="datepicker" type="text" readonly class="hidden">
+            <div x-bind="dropdownPanel" x-cloak class="absolute origin-top-left left-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none p-2 sm:p-4 z-10" role="menu" aria-orientation="vertical" aria-labelledby="dashboard-range-button" tabindex="-1">
+                <div class="flex w-full flex-col md:flex-row md:flex-nowrap items-start space-y-4 md:space-y-0 md:space-x-4">
+                    <div class="w-full md:w-auto space-y-2 flex flex-col">
+                        <a x-bind="rangeButton" data-day-diff-start="-1" data-day-diff-end="-1" class="whitespace-nowrap w-full inline-flex justify-start px-4 py-2 border border-transparent rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                            {{_yesterday}}
+                        </a>
+                        <a x-bind="rangeButton" data-day-diff-start="0" data-day-diff-end="0" class="whitespace-nowrap w-full inline-flex justify-start px-4 py-2 border border-transparent rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                            {{_today}}
+                        </a>
+                        <a x-bind="rangeButton" data-day-diff-start="-6" data-day-diff-end="0" class="whitespace-nowrap w-full inline-flex justify-start px-4 py-2 border border-transparent rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                            {{_last_7_days}}
+                        </a>
+                        <a x-bind="rangeButton" data-day-diff-start="-13" data-day-diff-end="0" class="whitespace-nowrap w-full inline-flex justify-start px-4 py-2 border border-transparent rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                            {{_last_14_days}}
+                        </a>
+                        <a x-bind="rangeButton" data-day-diff-start="-29" data-day-diff-end="0" class="whitespace-nowrap w-full inline-flex justify-start px-4 py-2 border border-transparent rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                            {{_last_30_days}}
+                        </a>
+                    </div>
+                    <div class="w-full md:w-auto flex">
+                        <input x-bind="datepicker" type="text" readonly class="hidden">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="mt-8 md:mt-8">
-        <template x-for="project in projects" :key="project.code">
-            <div x-data="collapse" x-bind="collapse" x-intersect:enter="toggleProjectVisibility(project.code, true)" x-intersect:leave="toggleProjectVisibility(project.code, false)" class="mb-2">
-                <div class="flex items-center justify-between mb-2">
-                    <div class="flex items-center flex-nowrap">
-                        <div x-bind="collapseButton" class="flex items-center flex-nowrap cursor-pointer p-2 pl-0">
-                            <span :style="{'background-color': project.color}" x-text="project.name.slice(0,1).toUpperCase()" class="inline-flex items-center justify-center h-6 w-6 rounded-full mr-2 text-white text-sm"></span>
-                            <h3 x-text="project.name" class="text-lg leading-6 font-medium text-gray-900"></h3>
+        <div class="mt-8 md:mt-8">
+            <template x-for="project in projects" :key="project.code">
+                <div x-data="collapse" x-bind="collapse" x-intersect:enter="toggleProjectVisibility(project.code, true)" x-intersect:leave="toggleProjectVisibility(project.code, false)" class="mb-2">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center flex-nowrap">
+                            <div x-bind="collapseButton" class="flex items-center flex-nowrap cursor-pointer p-2 pl-0">
+                                <span :style="{'background-color': project.color}" x-text="project.name.slice(0,1).toUpperCase()" class="inline-flex items-center justify-center h-6 w-6 rounded-full mr-2 text-white text-sm"></span>
+                                <h3 x-text="project.name" class="text-lg leading-6 font-medium text-gray-900"></h3>
+                            </div>
+
+                            <span x-show="null !== project.domain" class="flex items-center text-sm text-gray-400">
+                                <span class="ml-1 mr-2">&middot;</span>
+                                <a :href="project.domain" target="_blank">{{_visit_website}}</a>
+                            </span>
+
+                            <div class="p-2">
+                                <span x-show="STATUS_ERROR() === project.status" x-data x-tooltip.placement.right.raw="{{_response_error}}">
+                                    {{svg common/exclamation-circle-solid.svg, class: 'h-6 w-6 text-red-500'}}
+                                </span>
+                                <span x-show="STATUS_MISSING() === project.status" x-data x-tooltip.placement.right.raw="{{_project_missing_in_response}}">
+                                    {{svg common/exclamation-circle-solid.svg, class: 'h-6 w-6 text-yellow-500'}}
+                                </span>
+                            </div>
                         </div>
 
-                        <span x-show="null !== project.domain" class="flex items-center text-sm text-gray-400">
-                            <span class="ml-1 mr-2">&middot;</span>
-                            <a :href="project.domain" target="_blank">{{_visit_website}}</a>
-                        </span>
+                        <button x-data x-tooltip.placement.left.raw="{{_reload_project_data}}" x-on:click="reloadProjectData(project.code)" class="cursor-pointer p-2">
+                            {{svg common/arrow-path.svg, 'class' => 'h-5 w-5 text-indigo-700', ':class' => "{'animate-spin': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}", 'stroke-width' => 2}}
+                        </button>
+                    </div>
+                    <div x-bind="collapsePanel">
+                        <div class="pb-8 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-7 gap-2">
+                            <div :class="{'spinner': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
+                                <div class="text-sm font-medium text-gray-500 truncate">
+                                    <span x-show="!project.links.consents">{{_unique_consents}}</span>
+                                    <a x-show="project.links.consents" :href="project.links.consents" class="text-indigo-700">{{_unique_consents}}</a>
+                                </div>
 
-                        <div class="p-2">
-                            <span x-show="STATUS_ERROR() === project.status" x-data x-tooltip.placement.right.raw="{{_response_error}}">
-                                {{svg common/exclamation-circle-solid.svg, class: 'h-6 w-6 text-red-500'}}
-                            </span>
-                            <span x-show="STATUS_MISSING() === project.status" x-data x-tooltip.placement.right.raw="{{_project_missing_in_response}}">
-                                {{svg common/exclamation-circle-solid.svg, class: 'h-6 w-6 text-yellow-500'}}
-                            </span>
+                                <div x-show="null !== project.data.uniqueConsents.value">
+                                    <div x-text="formatNumber(project.data.uniqueConsents.value)" class="mt-2 text-xl font-semibold text-gray-900"></div>
+
+                                    <p x-show="null !== project.data.uniqueConsents.percentageDiff" :class="{'text-green-600': 0 <= project.data.uniqueConsents.percentageDiff, 'text-red-600': 0 > project.data.uniqueConsents.percentageDiff}" class="mt-4 flex items-baseline text-sm font-semibold">
+                                        {{svg common/arrow-sm-up.svg, 'class' => 'self-center flex-shrink-0 h-5 w-5 text-green-500 -ml-1', 'x-show' => "0 <= project.data.uniqueConsents.percentageDiff"}}
+                                        {{svg common/arrow-sm-down.svg, 'class' => 'self-center flex-shrink-0 h-5 w-5 text-red-500 -ml-1', 'x-show' => "0 > project.data.uniqueConsents.percentageDiff"}}
+
+                                        <span x-text="Math.abs(project.data.uniqueConsents.percentageDiff) + '%'"></span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div :class="{'spinner': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
+                                <div class="text-sm font-medium text-gray-500 truncate">{{_unique_positive}}</div>
+
+                                <div x-show="null !== project.data.uniquePositive.value">
+                                    <div x-text="project.data.uniquePositive.value + '%'" class="mt-2 text-xl font-semibold text-gray-900"></div>
+
+                                    <p x-show="null !== project.data.uniquePositive.percentageDiff" :class="{'text-green-600': 0 <= project.data.uniquePositive.percentageDiff, 'text-red-600': 0 > project.data.uniquePositive.percentageDiff}" class="mt-4 flex items-baseline text-sm font-semibold">
+                                        {{svg common/arrow-sm-up.svg, 'class' => 'self-center flex-shrink-0 h-5 w-5 text-green-500 -ml-1', 'x-show' => "0 <= project.data.uniquePositive.percentageDiff"}}
+                                        {{svg common/arrow-sm-down.svg, 'class' => 'self-center flex-shrink-0 h-5 w-5 text-red-500 -ml-1', 'x-show' => "0 > project.data.uniquePositive.percentageDiff"}}
+
+                                        <span x-text="Math.abs(project.data.uniquePositive.percentageDiff) + '%'"></span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div :class="{'spinner': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
+                                <div class="text-sm font-medium text-gray-500 truncate">{{_all_consents}}</div>
+
+                                <div x-show="null !== project.data.allConsents.value">
+                                    <div x-text="formatNumber(project.data.allConsents.value)" class="mt-2 text-xl font-semibold text-gray-900"></div>
+
+                                    <p x-show="null !== project.data.allConsents.percentageDiff" :class="{'text-green-600': 0 <= project.data.allConsents.percentageDiff, 'text-red-600': 0 > project.data.allConsents.percentageDiff}" class="mt-4 flex items-baseline text-sm font-semibold">
+                                        {{svg common/arrow-sm-up.svg, 'class' => 'self-center flex-shrink-0 h-5 w-5 text-green-500 -ml-1', 'x-show' => "0 <= project.data.allConsents.percentageDiff"}}
+                                        {{svg common/arrow-sm-down.svg, 'class' => 'self-center flex-shrink-0 h-5 w-5 text-red-500 -ml-1', 'x-show' => "0 > project.data.allConsents.percentageDiff"}}
+
+                                        <span x-text="Math.abs(project.data.allConsents.percentageDiff) + '%'"></span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div :class="{'spinner': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
+                                <div class="text-sm font-medium text-gray-500 truncate">{{_all_positive}}</div>
+
+                                <div x-show="null !== project.data.allPositive.value">
+                                    <div x-text="project.data.allPositive.value + '%'" class="mt-2 text-xl font-semibold text-gray-900"></div>
+
+                                    <p x-show="null !== project.data.allPositive.percentageDiff" :class="{'text-green-600': 0 <= project.data.allPositive.percentageDiff, 'text-red-600': 0 > project.data.allPositive.percentageDiff}" class="mt-4 flex items-baseline text-sm font-semibold">
+                                        {{svg common/arrow-sm-up.svg, 'class' => 'self-center flex-shrink-0 h-5 w-5 text-green-500 -ml-1', 'x-show' => "0 <= project.data.allPositive.percentageDiff"}}
+                                        {{svg common/arrow-sm-down.svg, 'class' => 'self-center flex-shrink-0 h-5 w-5 text-red-500 -ml-1', 'x-show' => "0 > project.data.allPositive.percentageDiff"}}
+
+                                        <span x-text="Math.abs(project.data.allPositive.percentageDiff) + '%'"></span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div :class="{'spinner': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
+                                <span x-show="!project.links.providers" class="text-sm font-medium text-gray-500 truncate">{{_providers}}</span>
+                                <a x-show="project.links.providers" :href="project.links.providers" class="text-sm font-medium text-indigo-700 truncate">{{_providers}}</a>
+
+                                <div x-show="null !== project.data.providers.value" x-text="formatNumber(project.data.providers.value)" class="mt-2 text-xl font-semibold text-gray-900"></div>
+                            </div>
+
+                            <div :class="{'spinner': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
+                                <span x-show="!project.links.cookies" class="text-sm font-medium text-gray-500 truncate">{{_cookies}}</span>
+                                <a x-show="project.links.cookies" :href="project.links.cookies" class="text-sm font-medium text-indigo-700 truncate">{{_cookies}}</a>
+
+                                <div x-show="null !== project.data.cookies.commonValue" class="mt-2 text-xl font-semibold text-gray-900">
+                                    <span
+                                            data-tooltip-message="{{_cookies_tooltip_message}}"
+                                            x-data
+                                            x-text="(0 >= (project.data.cookies.commonValue + project.data.cookies.privateValue)) ? '0' : (0 >= project.data.cookies.privateValue ? formatNumber(project.data.cookies.commonValue) : (formatNumber(project.data.cookies.commonValue) + ' + ' + formatNumber(project.data.cookies.privateValue)))"
+                                            x-tooltip.placement.bottom="$el.getAttribute('data-tooltip-message').replace('%common%', formatNumber(project.data.cookies.commonValue)).replace('%private%', formatNumber(project.data.cookies.privateValue))"
+                                    ></span>
+                                </div>
+
+                                <a
+                                    x-show="true === project.data.cookieSuggestions.enabled"
+                                    x-tooltip.placement.bottom="$el.getAttribute('data-tooltip-message')"
+                                    :href="project.links.cookieSuggestions"
+                                    data-tooltip-message="{{_cookie_suggestions_tooltip_message}}"
+                                    class="mt-4 inline-flex items-center"
+                                >
+                                    <span x-text="formatNumber(project.data.cookieSuggestions.missing + project.data.cookieSuggestions.unassociated)" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 mr-1"></span>
+                                    <span x-text="formatNumber(project.data.cookieSuggestions.problematic)" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 mr-1"></span>
+                                    <span x-text="formatNumber(project.data.cookieSuggestions.unproblematic)" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 mr-1"></span>
+                                    <span x-text="formatNumber(project.data.cookieSuggestions.ignored)" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 mr-1"></span>
+                                </a>
+                            </div>
+
+                            <div :class="{'spinner': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
+                                <div class="text-sm font-medium text-gray-500 truncate">{{_last_consent}}</div>
+
+                                <div x-show="null !== project.data.lastConsent.value" class="mt-2 text-lg font-semibold text-gray-900">
+                                    <span x-data x-tooltip.placement.bottom="project.data.lastConsent.formattedValue" x-text="project.data.lastConsent.text"></span>
+                                </div>
+                                <div x-show="null === project.data.lastConsent.value" class="mt-2 text-lg font-semibold text-gray-900">
+                                    <span>-</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <button x-data x-tooltip.placement.left.raw="{{_reload_project_data}}" x-on:click="reloadProjectData(project.code)" class="cursor-pointer p-2">
-                        {{svg common/arrow-path.svg, 'class' => 'h-5 w-5 text-indigo-700', ':class' => "{'animate-spin': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}", 'stroke-width' => 2}}
-                    </button>
                 </div>
-                <div x-bind="collapsePanel">
-                    <div class="pb-8 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-7 gap-2">
-                        <div :class="{'spinner': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
-                            <div class="text-sm font-medium text-gray-500 truncate">
-                                <span x-show="!project.links.consents">{{_unique_consents}}</span>
-                                <a x-show="project.links.consents" :href="project.links.consents" class="text-indigo-700">{{_unique_consents}}</a>
-                            </div>
-
-                            <div x-show="null !== project.data.uniqueConsents.value">
-                                <div x-text="formatNumber(project.data.uniqueConsents.value)" class="mt-2 text-xl font-semibold text-gray-900"></div>
-
-                                <p x-show="null !== project.data.uniqueConsents.percentageDiff" :class="{'text-green-600': 0 <= project.data.uniqueConsents.percentageDiff, 'text-red-600': 0 > project.data.uniqueConsents.percentageDiff}" class="mt-4 flex items-baseline text-sm font-semibold">
-                                    {{svg common/arrow-sm-up.svg, 'class' => 'self-center flex-shrink-0 h-5 w-5 text-green-500 -ml-1', 'x-show' => "0 <= project.data.uniqueConsents.percentageDiff"}}
-                                    {{svg common/arrow-sm-down.svg, 'class' => 'self-center flex-shrink-0 h-5 w-5 text-red-500 -ml-1', 'x-show' => "0 > project.data.uniqueConsents.percentageDiff"}}
-
-                                    <span x-text="Math.abs(project.data.uniqueConsents.percentageDiff) + '%'"></span>
-                                </p>
-                            </div>
-                        </div>
-
-                        <div :class="{'spinner': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
-                            <div class="text-sm font-medium text-gray-500 truncate">{{_unique_positive}}</div>
-
-                            <div x-show="null !== project.data.uniquePositive.value">
-                                <div x-text="project.data.uniquePositive.value + '%'" class="mt-2 text-xl font-semibold text-gray-900"></div>
-
-                                <p x-show="null !== project.data.uniquePositive.percentageDiff" :class="{'text-green-600': 0 <= project.data.uniquePositive.percentageDiff, 'text-red-600': 0 > project.data.uniquePositive.percentageDiff}" class="mt-4 flex items-baseline text-sm font-semibold">
-                                    {{svg common/arrow-sm-up.svg, 'class' => 'self-center flex-shrink-0 h-5 w-5 text-green-500 -ml-1', 'x-show' => "0 <= project.data.uniquePositive.percentageDiff"}}
-                                    {{svg common/arrow-sm-down.svg, 'class' => 'self-center flex-shrink-0 h-5 w-5 text-red-500 -ml-1', 'x-show' => "0 > project.data.uniquePositive.percentageDiff"}}
-
-                                    <span x-text="Math.abs(project.data.uniquePositive.percentageDiff) + '%'"></span>
-                                </p>
-                            </div>
-                        </div>
-
-                        <div :class="{'spinner': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
-                            <div class="text-sm font-medium text-gray-500 truncate">{{_all_consents}}</div>
-
-                            <div x-show="null !== project.data.allConsents.value">
-                                <div x-text="formatNumber(project.data.allConsents.value)" class="mt-2 text-xl font-semibold text-gray-900"></div>
-
-                                <p x-show="null !== project.data.allConsents.percentageDiff" :class="{'text-green-600': 0 <= project.data.allConsents.percentageDiff, 'text-red-600': 0 > project.data.allConsents.percentageDiff}" class="mt-4 flex items-baseline text-sm font-semibold">
-                                    {{svg common/arrow-sm-up.svg, 'class' => 'self-center flex-shrink-0 h-5 w-5 text-green-500 -ml-1', 'x-show' => "0 <= project.data.allConsents.percentageDiff"}}
-                                    {{svg common/arrow-sm-down.svg, 'class' => 'self-center flex-shrink-0 h-5 w-5 text-red-500 -ml-1', 'x-show' => "0 > project.data.allConsents.percentageDiff"}}
-
-                                    <span x-text="Math.abs(project.data.allConsents.percentageDiff) + '%'"></span>
-                                </p>
-                            </div>
-                        </div>
-
-                        <div :class="{'spinner': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
-                            <div class="text-sm font-medium text-gray-500 truncate">{{_all_positive}}</div>
-
-                            <div x-show="null !== project.data.allPositive.value">
-                                <div x-text="project.data.allPositive.value + '%'" class="mt-2 text-xl font-semibold text-gray-900"></div>
-
-                                <p x-show="null !== project.data.allPositive.percentageDiff" :class="{'text-green-600': 0 <= project.data.allPositive.percentageDiff, 'text-red-600': 0 > project.data.allPositive.percentageDiff}" class="mt-4 flex items-baseline text-sm font-semibold">
-                                    {{svg common/arrow-sm-up.svg, 'class' => 'self-center flex-shrink-0 h-5 w-5 text-green-500 -ml-1', 'x-show' => "0 <= project.data.allPositive.percentageDiff"}}
-                                    {{svg common/arrow-sm-down.svg, 'class' => 'self-center flex-shrink-0 h-5 w-5 text-red-500 -ml-1', 'x-show' => "0 > project.data.allPositive.percentageDiff"}}
-
-                                    <span x-text="Math.abs(project.data.allPositive.percentageDiff) + '%'"></span>
-                                </p>
-                            </div>
-                        </div>
-
-                        <div :class="{'spinner': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
-                            <span x-show="!project.links.providers" class="text-sm font-medium text-gray-500 truncate">{{_providers}}</span>
-                            <a x-show="project.links.providers" :href="project.links.providers" class="text-sm font-medium text-indigo-700 truncate">{{_providers}}</a>
-
-                            <div x-show="null !== project.data.providers.value" x-text="formatNumber(project.data.providers.value)" class="mt-2 text-xl font-semibold text-gray-900"></div>
-                        </div>
-
-                        <div :class="{'spinner': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
-                            <span x-show="!project.links.cookies" class="text-sm font-medium text-gray-500 truncate">{{_cookies}}</span>
-                            <a x-show="project.links.cookies" :href="project.links.cookies" class="text-sm font-medium text-indigo-700 truncate">{{_cookies}}</a>
-
-                            <div x-show="null !== project.data.cookies.commonValue" class="mt-2 text-xl font-semibold text-gray-900">
-                                <span
-                                        data-tooltip-message="{{_cookies_tooltip_message}}"
-                                        x-data
-                                        x-text="(0 >= (project.data.cookies.commonValue + project.data.cookies.privateValue)) ? '0' : (0 >= project.data.cookies.privateValue ? formatNumber(project.data.cookies.commonValue) : (formatNumber(project.data.cookies.commonValue) + ' + ' + formatNumber(project.data.cookies.privateValue)))"
-                                        x-tooltip.placement.bottom="$el.getAttribute('data-tooltip-message').replace('%common%', formatNumber(project.data.cookies.commonValue)).replace('%private%', formatNumber(project.data.cookies.privateValue))"
-                                ></span>
-                            </div>
-
-                            <a
-                                x-show="true === project.data.cookieSuggestions.enabled"
-                                x-tooltip.placement.bottom="$el.getAttribute('data-tooltip-message')"
-                                :href="project.links.cookieSuggestions"
-                                data-tooltip-message="{{_cookie_suggestions_tooltip_message}}"
-                                class="mt-4 inline-flex items-center"
-                            >
-                                <span x-text="formatNumber(project.data.cookieSuggestions.missing + project.data.cookieSuggestions.unassociated)" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 mr-1"></span>
-                                <span x-text="formatNumber(project.data.cookieSuggestions.problematic)" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 mr-1"></span>
-                                <span x-text="formatNumber(project.data.cookieSuggestions.unproblematic)" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 mr-1"></span>
-                                <span x-text="formatNumber(project.data.cookieSuggestions.ignored)" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 mr-1"></span>
-                            </a>
-                        </div>
-
-                        <div :class="{'spinner': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}" class="px-3 py-5 bg-white shadow rounded-lg overflow-hidden min-h-[140px]">
-                            <div class="text-sm font-medium text-gray-500 truncate">{{_last_consent}}</div>
-
-                            <div x-show="null !== project.data.lastConsent.value" class="mt-2 text-lg font-semibold text-gray-900">
-                                <span x-data x-tooltip.placement.bottom="project.data.lastConsent.formattedValue" x-text="project.data.lastConsent.text"></span>
-                            </div>
-                            <div x-show="null === project.data.lastConsent.value" class="mt-2 text-lg font-semibold text-gray-900">
-                                <span>-</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </template>
+            </template>
+        </div>
     </div>
-</div>
+{/syntax}

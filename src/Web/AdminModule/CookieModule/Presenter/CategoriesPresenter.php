@@ -6,13 +6,11 @@ namespace App\Web\AdminModule\CookieModule\Presenter;
 
 use App\Application\Acl\CategoryResource;
 use App\Web\AdminModule\Presenter\AdminPresenter;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use App\Web\AdminModule\CookieModule\Control\CategoryList\CategoryListControl;
 use App\Web\AdminModule\CookieModule\Control\CategoryList\CategoryListControlFactoryInterface;
 
-/**
- * @IsAllowed(resource=CategoryResource::class, privilege=CategoryResource::READ)
- */
+#[Allowed(resource: CategoryResource::class, privilege: CategoryResource::READ)]
 final class CategoriesPresenter extends AdminPresenter
 {
 	private CategoryListControlFactoryInterface $categoryListControlFactory;

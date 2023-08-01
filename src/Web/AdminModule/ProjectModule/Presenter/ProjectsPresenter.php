@@ -10,18 +10,16 @@ use App\Application\Project\Import\ProjectData;
 use App\ReadModel\Project\FindAllProjectsQuery;
 use App\ReadModel\Project\FindUserProjectsQuery;
 use App\Web\AdminModule\Presenter\AdminPresenter;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use App\Web\AdminModule\Control\ExportForm\ExportDropdownControl;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\Control\ExportForm\Callback\ProjectsExportCallback;
 use App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControl;
 use App\Web\AdminModule\Control\ExportForm\ExportDropdownControlFactoryInterface;
 use App\Web\AdminModule\ImportModule\Control\ImportModal\Event\ShowingImportDetailEvent;
 use App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControlFactoryInterface;
 
-/**
- * @IsAllowed(resource=ProjectResource::class, privilege=ProjectResource::READ)
- */
+#[Allowed(resource: ProjectResource::class, privilege: ProjectResource::READ)]
 final class ProjectsPresenter extends AdminPresenter
 {
 	private QueryBusInterface $queryBus;

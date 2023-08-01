@@ -1,13 +1,11 @@
 services:
 	# Latte
-	- App\Bridge\Latte\InternalCssRenderer(%wwwDir%, %debugMode%)
-	number_formatter_filter: App\Bridge\Latte\NumberFormatterFilter
+	bridge.latte.internal_css_renderer: App\Bridge\Latte\InternalCssRenderer(
+		publicDir: %wwwDir%
+		debugMode: %debugMode%
+	)
 
-	nette.latteFactory:
-		setup:
-			- App\Bridge\Latte\AppMacroSet::installOnEngine($service, @App\Bridge\Latte\InternalCssRenderer)
-			- App\Bridge\Latte\SvgMacroSet::installOnEngine($service, %assetsDir%/images/icon)
-			- addFilter(formatNumber, [@number_formatter_filter, format])
+	bridge.latte.number_formatter_filter: App\Bridge\Latte\NumberFormatterFilter
 
 	# Routing
 	routing.router: App\Web\Router\RouterFactory()::create()

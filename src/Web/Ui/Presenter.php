@@ -9,19 +9,22 @@ use App\Web\Control\Gtm\GtmControl;
 use App\Web\Ui\Form\RecaptchaResolver;
 use Nette\Application\Responses\ForwardResponse;
 use App\Web\Control\Gtm\GtmControlFactoryInterface;
+use Nette\Application\UI\Presenter as NettePresenter;
 use App\Web\Ui\Modal\PresenterTrait as ModalPresenterTrait;
 use SixtyEightPublishers\TranslationBridge\TranslatorAwareTrait;
 use SixtyEightPublishers\TranslationBridge\TranslatorAwareInterface;
-use SixtyEightPublishers\SmartNetteComponent\UI\Presenter as SmartPresenter;
 use SixtyEightPublishers\TranslationBridge\Localization\TranslatorLocalizerInterface;
+use SixtyEightPublishers\SmartNetteComponent\Bridge\Nette\Application\AuthorizationTrait;
+use SixtyEightPublishers\SmartNetteComponent\Authorization\ComponentAuthorizatorAwareInterface;
 use SixtyEightPublishers\FlashMessageBundle\Bridge\Nette\Ui\PresenterTrait as FlashMessagePresenterTrait;
 
-abstract class Presenter extends SmartPresenter implements TranslatorAwareInterface
+abstract class Presenter extends NettePresenter implements TranslatorAwareInterface, ComponentAuthorizatorAwareInterface
 {
 	use TranslatorAwareTrait;
 	use RedrawControlTrait;
 	use FlashMessagePresenterTrait;
 	use ModalPresenterTrait;
+	use AuthorizationTrait;
 
 	private TranslatorLocalizerInterface $translatorLocalizer;
 

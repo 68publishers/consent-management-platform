@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\ProjectModule\Presenter;
 
-use Nette\Application\UI\Component;
 use App\ReadModel\Project\ProjectView;
+use Contributte\MenuControl\IMenuItem;
 use App\Application\Acl\ProjectResource;
 use Contributte\MenuControl\MenuContainer;
 use Contributte\MenuControl\UI\MenuComponent;
@@ -14,6 +14,7 @@ use App\ReadModel\Project\FindUserProjectsQuery;
 use App\ReadModel\Project\GetProjectByCodeQuery;
 use Nette\Application\ForbiddenRequestException;
 use App\Web\AdminModule\Presenter\AdminPresenter;
+use Contributte\MenuControl\Config\MenuItemAction;
 use App\ReadModel\Project\GetUsersProjectByCodeQuery;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 
@@ -119,25 +120,31 @@ abstract class SelectedProjectPresenter extends AdminPresenter
 	 */
 	protected function createComponentSidebarProjectMenu(): MenuComponent
 	{
-		$items = $this->menuContainer->getMenu(self::MENU_NAME_SIDEBAR_PROJECT)->getItems();
+		$menu = $this->menuContainer->getMenu(self::MENU_NAME_SIDEBAR_PROJECT);
+		$items = $menu->getItems();
 
-		$setupItems = function (array $items) use (&$setupItems) {
+		($setupItems = function (array $items) use (&$setupItems) {
 			foreach ($items as $item) {
-				if (NULL !== $item->getAction()) {
-					$item->setAction($item->getAction(), [
-						'project' => $this->project,
-					]);
+				assert($item instanceof IMenuItem);
+
+				$target = $item->getActionTarget();
+
+				if (NULL !== $target) {
+					$item->setAction(MenuItemAction::fromArray([
+						'target' => $target,
+						'parameters' => array_merge($item->getActionParameters(), [
+							'project' => $this->project,
+						]),
+					]));
 				}
 
 				$setupItems($item->getItems());
 			}
-		};
+		})($items);
 
-		$setupItems($items);
+		$control = new MenuComponent($menu);
 
-		$control = new MenuComponent($this->menuContainer, self::MENU_NAME_SIDEBAR_PROJECT);
-
-		$control->onAnchor[] = function (Component $component) {
+		$control->onAnchor[] = function (MenuComponent $component) {
 			$component->template->customBreadcrumbItems = $this->customBreadcrumbItems;
 		};
 

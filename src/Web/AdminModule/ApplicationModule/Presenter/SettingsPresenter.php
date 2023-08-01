@@ -7,8 +7,8 @@ namespace App\Web\AdminModule\ApplicationModule\Presenter;
 use App\Web\Ui\Form\FormFactoryInterface;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use App\Application\Acl\ApplicationSettingsResource;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\ApplicationModule\Control\CrawlerSettingsForm\CrawlerSettingsFormControl;
 use App\Web\AdminModule\ApplicationModule\Control\ApiCacheSettingsForm\ApiCacheSettingsFormControl;
 use App\Web\AdminModule\ApplicationModule\Control\CrawlerSettingsForm\Event\CrawlerSettingsUpdatedEvent;
@@ -22,9 +22,7 @@ use App\Web\AdminModule\ApplicationModule\Control\ApiCacheSettingsForm\ApiCacheS
 use App\Web\AdminModule\ApplicationModule\Control\LocalizationSettingsForm\Event\LocalizationSettingsUpdateFailedEvent;
 use App\Web\AdminModule\ApplicationModule\Control\LocalizationSettingsForm\LocalizationSettingsFormControlFactoryInterface;
 
-/**
- * @IsAllowed(resource=ApplicationSettingsResource::class, privilege=ApplicationSettingsResource::UPDATE)
- */
+#[Allowed(resource: ApplicationSettingsResource::class, privilege: ApplicationSettingsResource::UPDATE)]
 final class SettingsPresenter extends AdminPresenter
 {
 	private LocalizationSettingsFormControlFactoryInterface $localizationSettingsFormControlFactory;

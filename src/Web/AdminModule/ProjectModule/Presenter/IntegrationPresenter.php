@@ -7,16 +7,14 @@ namespace App\Web\AdminModule\ProjectModule\Presenter;
 use Nette\InvalidStateException;
 use App\Web\Ui\Form\FormFactoryInterface;
 use App\Application\Acl\ProjectIntegrationResource;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\ProjectModule\Control\TemplatesForm\TemplatesFormControl;
 use App\Web\AdminModule\ProjectModule\Control\TemplatesForm\Event\TemplatesUpdatedEvent;
 use App\Web\AdminModule\ProjectModule\Control\TemplatesForm\TemplatesFormControlFactoryInterface;
 use App\Web\AdminModule\ProjectModule\Control\TemplatesForm\Event\TemplatesFormProcessingFailedEvent;
 
-/**
- * @IsAllowed(resource=ProjectIntegrationResource::class, privilege=ProjectIntegrationResource::READ)
- */
+#[Allowed(resource: ProjectIntegrationResource::class, privilege: ProjectIntegrationResource::READ)]
 final class IntegrationPresenter extends SelectedProjectPresenter
 {
 	private TemplatesFormControlFactoryInterface $templatesFormControlFactory;

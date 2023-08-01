@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace App\Web\AdminModule\ProjectModule\Presenter;
 
 use App\Application\Acl\ProjectCookieResource;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControl;
 use App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControlFactoryInterface;
 
-/**
- * @IsAllowed(resource=ProjectCookieResource::class, privilege=ProjectCookieResource::READ)
- */
+#[Allowed(resource: ProjectCookieResource::class, privilege: ProjectCookieResource::READ)]
 final class ServiceCookiesPresenter extends SelectedProjectPresenter
 {
 	private CookieListControlFactoryInterface $cookieListControlFactory;

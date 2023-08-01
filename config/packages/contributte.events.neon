@@ -1,3 +1,6 @@
 extensions:
 	contributte.events: Contributte\EventDispatcher\DI\EventDispatcherExtension
 	contributte.events.extra: Contributte\Events\Extra\DI\EventBridgesExtension
+
+contributte.events.extra:
+    latte: no # see https://github.com/contributte/event-dispatcher-extra/issues/40

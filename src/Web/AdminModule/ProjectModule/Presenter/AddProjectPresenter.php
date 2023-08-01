@@ -6,16 +6,14 @@ namespace App\Web\AdminModule\ProjectModule\Presenter;
 
 use App\Application\Acl\ProjectResource;
 use App\Web\AdminModule\Presenter\AdminPresenter;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\ProjectModule\Control\ProjectForm\ProjectFormControl;
 use App\Web\AdminModule\ProjectModule\Control\ProjectForm\Event\ProjectCreatedEvent;
 use App\Web\AdminModule\ProjectModule\Control\ProjectForm\ProjectFormControlFactoryInterface;
 use App\Web\AdminModule\ProjectModule\Control\ProjectForm\Event\ProjectFormProcessingFailedEvent;
 
-/**
- * @IsAllowed(resource=ProjectResource::class, privilege=ProjectResource::CREATE)
- */
+#[Allowed(resource: ProjectResource::class, privilege: ProjectResource::CREATE)]
 final class AddProjectPresenter extends AdminPresenter
 {
 	private ProjectFormControlFactoryInterface $projectFormControlFactory;

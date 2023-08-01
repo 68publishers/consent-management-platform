@@ -31,12 +31,12 @@ use App\Domain\Cookie\Command\UpdateCookieCommand;
 use App\ReadModel\CookieSuggestion\CookieSuggestion;
 use App\Domain\Cookie\Exception\NameUniquenessException;
 use SixtyEightPublishers\FlashMessageBundle\Domain\Phrase;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use App\ReadModel\CookieProvider\CookieProviderSelectOptionView;
 use App\ReadModel\CookieSuggestion\GetCookieSuggestionByIdQuery;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use App\Domain\Project\Command\AddCookieProvidersToProjectCommand;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 use App\Application\CookieSuggestion\CookieSuggestionsStoreInterface;
 use App\Domain\CookieSuggestion\Command\CreateCookieSuggestionCommand;
@@ -55,9 +55,7 @@ use App\Domain\CookieSuggestion\Command\IgnoreCookieSuggestionUntilNextOccurrenc
 use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieFormProcessingFailedEvent;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControlFactoryInterface;
 
-/**
- * @IsAllowed(resource=FoundCookiesResource::class, privilege=FoundCookiesResource::READ)
- */
+#[Allowed(resource: FoundCookiesResource::class, privilege: FoundCookiesResource::READ)]
 final class FoundCookiesPresenter extends AdminPresenter
 {
 	/** @persistent  */

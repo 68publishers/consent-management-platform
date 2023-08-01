@@ -6,7 +6,7 @@ extensions:
 		- SixtyEightPublishers\HealthCheck\ServiceChecker\RedisServiceChecker(
 			::env('REDIS_HOST'),
 			::env('REDIS_PORT|int'),
-			::env('REDIS_AUTH', '')
+			::env('REDIS_AUTH|nullable', '')
 		)
 		- SixtyEightPublishers\HealthCheck\ServiceChecker\PDOServiceChecker::fromParams([
 			driver: pgsql

@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace App\Web\AdminModule\ProjectModule\Presenter;
 
 use App\Application\Acl\ProjectConsentSettingsResource;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use App\Web\AdminModule\ProjectModule\Control\ConsentSettingsList\ConsentSettingsListControl;
 use App\Web\AdminModule\ProjectModule\Control\ConsentSettingsList\ConsentSettingsListControlFactoryInterface;
 
-/**
- * @IsAllowed(resource=ProjectConsentSettingsResource::class, privilege=ProjectConsentSettingsResource::READ)
- */
+#[Allowed(resource: ProjectConsentSettingsResource::class, privilege: ProjectConsentSettingsResource::READ)]
 final class ConsentSettingsPresenter extends SelectedProjectPresenter
 {
 	private ConsentSettingsListControlFactoryInterface $consentSettingsListControlFactory;

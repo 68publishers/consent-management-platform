@@ -1,0 +1,6 @@
+extensions:
+    milo.embedded_svg: Milo\EmbeddedSvg\Extension
+
+milo.embedded_svg:
+    macroName: svg
+    baseDir: %assetsDir%/images/icon
