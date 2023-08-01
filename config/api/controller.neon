@@ -1,6 +1,6 @@
 services:
 	# /api/health-check
-	- App\Api\Controller\HealthCheckController(%debugMode%)
+	- App\Api\Controller\HealthCheckController
 
 	# /api/docs
 	# /api/docs/schema/{version}
