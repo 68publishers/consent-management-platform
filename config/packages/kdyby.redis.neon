@@ -1,12 +1,12 @@
 extensions:
-	kdyby.redis: Kdyby\Redis\DI\RedisExtension
+    kdyby.redis: Kdyby\Redis\DI\RedisExtension
 
 kdyby.redis:
-	session:
-		database: 0
-		native: no
+    session:
+        database: 0
+        native: no
 
 services:
-	redis:
-		type: Kdyby\Redis\RedisStorage
-		autowired: self
+    redis:
+        type: Kdyby\Redis\RedisStorage
+        autowired: self

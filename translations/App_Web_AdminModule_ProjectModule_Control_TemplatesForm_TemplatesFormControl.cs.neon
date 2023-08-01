@@ -1,7 +1,7 @@
 locale_tab: '%name%'
 
 update:
-	field: Uložit
+    field: Uložit
 
 open_template: Zobrazit šablonu
 more_about_syntax: Více info o syntaxi na

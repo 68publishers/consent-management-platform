@@ -1,7 +1,7 @@
 locale_tab: '%name%'
 
 update:
-	field: Save
+    field: Save
 
 open_template: View template
 more_about_syntax: More info about the syntax at

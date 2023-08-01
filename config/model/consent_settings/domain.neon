@@ -1,4 +1,4 @@
 services:
-	-
-		autowired: no
-		factory: App\Domain\ConsentSettings\CommandHandler\StoreConsentSettingsCommandHandler
+    -
+        autowired: no
+        factory: App\Domain\ConsentSettings\CommandHandler\StoreConsentSettingsCommandHandler

@@ -30,7 +30,7 @@ showing_all_items: Všechny položky
 showing_items: 'Zobrazeno <span class="font-medium">%from%</span> - <span class="font-medium">%to%</span> z <span class="font-medium">%total%</span> položek'
 
 boolean_filter:
-	yes: ano
-	no: ne
+    yes: ano
+    no: ne
 
 invalid_uuid: UUID není validní

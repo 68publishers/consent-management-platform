@@ -1,8 +1,8 @@
 App_Domain_Consent_Event_ConsentUpdated:
-	title: Consent has been updated
+    title: Consent has been updated
 
 App_Domain_Consent_Event_ConsentCreated:
-	title: The user "%user_identifier%" submitted the consent
+    title: The user "%user_identifier%" submitted the consent
 
 consents: Consents
 attributes: Attributes

@@ -1,120 +1,120 @@
 services:
-	# infra
-	-
-		type: App\Domain\Project\ProjectRepositoryInterface
-		factory: App\Infrastructure\Project\ProjectRepository
-	-
-		type: App\Domain\Project\CheckCodeUniquenessInterface
-		factory: App\Infrastructure\Project\CheckCodeUniqueness
-	-
-		type: App\Domain\Project\TemplateValidatorInterface
-		factory: App\Infrastructure\Project\TemplateValidator
+    # infra
+    -
+        type: App\Domain\Project\ProjectRepositoryInterface
+        factory: App\Infrastructure\Project\ProjectRepository
+    -
+        type: App\Domain\Project\CheckCodeUniquenessInterface
+        factory: App\Infrastructure\Project\CheckCodeUniqueness
+    -
+        type: App\Domain\Project\TemplateValidatorInterface
+        factory: App\Infrastructure\Project\TemplateValidator
 
-	# infra: doctrine
-	-
-		autowired: self
-		type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\ProjectViewDataTransformer
-	-
-		autowired: self
-		type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\ProjectTemplateViewDataTransformer
-	-
-		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\CalculateProjectCookieTotalsQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindAllProjectIdsByCookieProviderIdQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindAllProjectIdsQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindAllProjectsQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindAllProjectsWithPossibleAssociationWithCookieProviderQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindProjectsAccessibilityByCodeQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindProjectsByCodesQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindProjectSelectOptionsQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindProjectTemplatesQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\FindUserProjectsQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\GetProjectByCodeQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\GetProjectByCookieProviderQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\GetProjectByIdQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\GetProjectCookieSuggestionStatisticsQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\GetUsersProjectByCodeQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\ProjectCookieSuggestionsDataGridQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\GetProjectTemplateByCodeAndLocaleWithFallbackQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\ProjectExistsQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Project\Doctrine\ReadModel\ProjectExportQueryHandler
+    # infra: doctrine
+    -
+        autowired: self
+        type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
+        factory: App\Infrastructure\Project\Doctrine\ReadModel\ProjectViewDataTransformer
+    -
+        autowired: self
+        type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
+        factory: App\Infrastructure\Project\Doctrine\ReadModel\ProjectTemplateViewDataTransformer
+    -
+        autowired: no
+        factory: App\Infrastructure\Project\Doctrine\ReadModel\CalculateProjectCookieTotalsQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Project\Doctrine\ReadModel\FindAllProjectIdsByCookieProviderIdQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Project\Doctrine\ReadModel\FindAllProjectIdsQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Project\Doctrine\ReadModel\FindAllProjectsQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Project\Doctrine\ReadModel\FindAllProjectsWithPossibleAssociationWithCookieProviderQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Project\Doctrine\ReadModel\FindProjectsAccessibilityByCodeQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Project\Doctrine\ReadModel\FindProjectsByCodesQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Project\Doctrine\ReadModel\FindProjectSelectOptionsQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Project\Doctrine\ReadModel\FindProjectTemplatesQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Project\Doctrine\ReadModel\FindUserProjectsQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Project\Doctrine\ReadModel\GetProjectByCodeQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Project\Doctrine\ReadModel\GetProjectByCookieProviderQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Project\Doctrine\ReadModel\GetProjectByIdQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Project\Doctrine\ReadModel\GetProjectCookieSuggestionStatisticsQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Project\Doctrine\ReadModel\GetUsersProjectByCodeQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Project\Doctrine\ReadModel\ProjectCookieSuggestionsDataGridQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Project\Doctrine\ReadModel\GetProjectTemplateByCodeAndLocaleWithFallbackQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Project\Doctrine\ReadModel\ProjectExistsQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Project\Doctrine\ReadModel\ProjectExportQueryHandler
 
-	# infra: doctrine event subscribers
-	-
-		autowired: no
-		type: App\Infrastructure\Project\Doctrine\EventSubscriber\CreateProjectCookieSuggestionStatisticsReadModelSubscriber
+    # infra: doctrine event subscribers
+    -
+        autowired: no
+        type: App\Infrastructure\Project\Doctrine\EventSubscriber\CreateProjectCookieSuggestionStatisticsReadModelSubscriber
 
 # infra: doctrine mapping
 nettrine.orm.xml:
-	mapping:
-		App\Domain\Project: %appDir%/Infrastructure/Project/Doctrine/Mapping
+    mapping:
+        App\Domain\Project: %appDir%/Infrastructure/Project/Doctrine/Mapping
 
 # infra: dbal types
 nettrine.dbal:
-	connection:
-		types:
-			App\Domain\Project\ValueObject\Code:
-				class: App\Infrastructure\Project\Doctrine\DbalType\CodeType
-				commented: yes
+    connection:
+        types:
+            App\Domain\Project\ValueObject\Code:
+                class: App\Infrastructure\Project\Doctrine\DbalType\CodeType
+                commented: yes
 
-			App\Domain\Project\ValueObject\Color:
-				class: App\Infrastructure\Project\Doctrine\DbalType\ColorType
-				commented: yes
+            App\Domain\Project\ValueObject\Color:
+                class: App\Infrastructure\Project\Doctrine\DbalType\ColorType
+                commented: yes
 
-			App\Domain\Project\ValueObject\Description:
-				class: App\Infrastructure\Project\Doctrine\DbalType\DescriptionType
-				commented: yes
+            App\Domain\Project\ValueObject\Description:
+                class: App\Infrastructure\Project\Doctrine\DbalType\DescriptionType
+                commented: yes
 
-			App\Domain\Project\ValueObject\Domain:
-				class: App\Infrastructure\Project\Doctrine\DbalType\DomainType
-				commented: yes
+            App\Domain\Project\ValueObject\Domain:
+                class: App\Infrastructure\Project\Doctrine\DbalType\DomainType
+                commented: yes
 
-			App\Domain\Project\ValueObject\Name:
-				class: App\Infrastructure\Project\Doctrine\DbalType\NameType
-				commented: yes
+            App\Domain\Project\ValueObject\Name:
+                class: App\Infrastructure\Project\Doctrine\DbalType\NameType
+                commented: yes
 
-			App\Domain\Project\ValueObject\ProjectId:
-				class: App\Infrastructure\Project\Doctrine\DbalType\ProjectIdType
-				commented: yes
+            App\Domain\Project\ValueObject\ProjectId:
+                class: App\Infrastructure\Project\Doctrine\DbalType\ProjectIdType
+                commented: yes
 
-			App\Domain\Project\ValueObject\Template:
-				class: App\Infrastructure\Project\Doctrine\DbalType\TemplateType
-				commented: yes
+            App\Domain\Project\ValueObject\Template:
+                class: App\Infrastructure\Project\Doctrine\DbalType\TemplateType
+                commented: yes

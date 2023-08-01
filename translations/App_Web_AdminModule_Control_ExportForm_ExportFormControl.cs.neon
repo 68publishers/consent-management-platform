@@ -1,22 +1,22 @@
 error:
-	processing_fail: Při exportování dat došlo k chybě.
+    processing_fail: Při exportování dat došlo k chybě.
 
 format:
-	field: Formát
-	required: Zvolte prosím formát.
-	item:
-		csv: CSV
-		json: JSON
+    field: Formát
+    required: Zvolte prosím formát.
+    item:
+        csv: CSV
+        json: JSON
 
 separator:
-	field: Separátor
-	required: Zvolte prosím separátor.
-	item:
-		comma: 'Čárka (,)'
-		semicolon: 'Středník (;)'
-		tabulator: 'Tabulátor (\t)'
-		space: 'Mezera ( )'
-		pipe: 'Svislá čára (|)'
+    field: Separátor
+    required: Zvolte prosím separátor.
+    item:
+        comma: 'Čárka (,)'
+        semicolon: 'Středník (;)'
+        tabulator: 'Tabulátor (\t)'
+        space: 'Mezera ( )'
+        pipe: 'Svislá čára (|)'
 
 export:
-	field: Exportovat
+    field: Exportovat

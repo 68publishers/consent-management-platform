@@ -7,9 +7,9 @@ active_value: active
 inactive_value: inactive
 
 tooltip:
-	edit_action: Edit
-	delete_action: Delete
+    edit_action: Edit
+    delete_action: Delete
 
 delete_confirm:
-	title: Delete category
-	question: 'Are you sure you want to delete the category <strong>"%name%"</strong> (%code%)?'
+    title: Delete category
+    question: 'Are you sure you want to delete the category <strong>"%name%"</strong> (%code%)?'

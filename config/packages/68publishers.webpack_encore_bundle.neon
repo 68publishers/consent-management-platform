@@ -1,9 +1,9 @@
 extensions:
-	68publishers.webpack_encore_bundle: SixtyEightPublishers\WebpackEncoreBundle\Bridge\Nette\DI\WebpackEncoreBundleExtension
+    68publishers.webpack_encore_bundle: SixtyEightPublishers\WebpackEncoreBundle\Bridge\Nette\DI\WebpackEncoreBundleExtension
 
 68publishers.webpack_encore_bundle:
-	preload: yes
-	cache: %productionMode%
-	builds:
-		app: %wwwDir%/dist/app
-		mail: %wwwDir%/dist/mail
+    preload: yes
+    cache: %productionMode%
+    builds:
+        app: %wwwDir%/dist/app
+        mail: %wwwDir%/dist/mail

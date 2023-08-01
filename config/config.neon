@@ -1,43 +1,43 @@
 includes:
-	- php/@php.neon
-	- acl/@acl.neon
-	- packages/@packages.neon
-	- application/@application.neon
-	- model/@model.neon
-	- api/@api.neon
-	- services.neon
+    - php/@php.neon
+    - acl/@acl.neon
+    - packages/@packages.neon
+    - application/@application.neon
+    - model/@model.neon
+    - api/@api.neon
+    - services.neon
 
 parameters:
-	assetsDir: %appDir%/../assets
+    assetsDir: %appDir%/../assets
 
 php:
     date.timezone: UTC
 
 application:
-	errorPresenter: Front:Error
-	mapping:
-		*: App\Web\*Module\Presenter\*Presenter
+    errorPresenter: Front:Error
+    mapping:
+        *: App\Web\*Module\Presenter\*Presenter
 
 session:
-	expiration: 14 days
-	name: ps
+    expiration: 14 days
+    name: ps
 
 tracy:
-	maxDepth: 6
+    maxDepth: 6
 
 http:
-	proxy: ::array_filter(::explode(',', ::env(TRUSTED_PROXIES, '')))
+    proxy: ::array_filter(::explode(',', ::env(TRUSTED_PROXIES, '')))
 
 decorator:
-	Nette\Application\UI\Control:
-		inject: yes
-	Psr\Log\LoggerAwareInterface:
-		setup:
-			- setLogger(@Psr\Log\LoggerInterface)
+    Nette\Application\UI\Control:
+        inject: yes
+    Psr\Log\LoggerAwareInterface:
+        setup:
+            - setLogger(@Psr\Log\LoggerInterface)
 
 latte:
-	extensions:
-		- App\Bridge\Latte\LatteExtension(
-			@bridge.latte.internal_css_renderer
-			@bridge.latte.number_formatter_filter
-		)
+    extensions:
+        - App\Bridge\Latte\LatteExtension(
+            @bridge.latte.internal_css_renderer
+            @bridge.latte.number_formatter_filter
+        )

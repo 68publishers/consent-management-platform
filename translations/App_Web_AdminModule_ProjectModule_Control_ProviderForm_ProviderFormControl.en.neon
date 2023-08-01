@@ -1,20 +1,20 @@
 code:
-	field: Code
-	required: Please enter a code.
-	rule_max_length: The maximum length allowed is %d characters.
-	error:
-		duplicated_value: 'A provider with this code already exists.'
+    field: Code
+    required: Please enter a code.
+    rule_max_length: The maximum length allowed is %d characters.
+    error:
+        duplicated_value: 'A provider with this code already exists.'
 
 name:
-	field: Name
-	required: Please enter a name.
+    field: Name
+    required: Please enter a name.
 
 link:
-	field: Link
-	rule_url: The link is not a valid URL.
+    field: Link
+    rule_url: The link is not a valid URL.
 
 purpose:
-	field: 'Purpose - %name%'
+    field: 'Purpose - %name%'
 
 update:
-	field: Save
+    field: Save

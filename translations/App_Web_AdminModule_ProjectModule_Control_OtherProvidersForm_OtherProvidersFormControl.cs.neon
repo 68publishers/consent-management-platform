@@ -1,5 +1,5 @@
 cookie_providers:
-	field: Vyberte poskytovatele
+    field: Vyberte poskytovatele
 
 update:
-	field: Uložit
+    field: Uložit

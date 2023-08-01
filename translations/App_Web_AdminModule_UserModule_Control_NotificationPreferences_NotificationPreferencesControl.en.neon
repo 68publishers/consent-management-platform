@@ -1,8 +1,8 @@
 notifications:
-	field: 'Choose the notifications you want to receive'
+    field: 'Choose the notifications you want to receive'
 
 update:
-	field: Save
+    field: Save
 
 consent_decreased: Consent decrease
 weekly_overview: Weekly overview

@@ -1,13 +1,13 @@
 services:
-	global_settings.factory:
-		autowired: no
-		factory: App\Application\GlobalSettings\GlobalSettingsFactory
+    global_settings.factory:
+        autowired: no
+        factory: App\Application\GlobalSettings\GlobalSettingsFactory
 
-	-
-		type: App\Application\GlobalSettings\GlobalSettingsInterface
-		factory: App\Application\GlobalSettings\CachedGlobalSettings
-		arguments:
-			globalSettingsFactory: @global_settings.factory
-			storage: @redis
+    -
+        type: App\Application\GlobalSettings\GlobalSettingsInterface
+        factory: App\Application\GlobalSettings\CachedGlobalSettings
+        arguments:
+            globalSettingsFactory: @global_settings.factory
+            storage: @redis
 
-	- App\Application\GlobalSettings\ValidLocalesProvider
+    - App\Application\GlobalSettings\ValidLocalesProvider

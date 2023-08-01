@@ -3,5 +3,5 @@ heading_basic: Základní informace
 back_to_list: Zpět na výpis kategorií
 
 message:
-	category_created: Kategorie byla vytvořena.
-	category_creation_failed: Při vytváření kategorie došlo k chybě.
+    category_created: Kategorie byla vytvořena.
+    category_creation_failed: Při vytváření kategorie došlo k chybě.

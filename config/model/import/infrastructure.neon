@@ -1,46 +1,46 @@
 services:
-	# infra
-	-
-		type: App\Domain\Import\ImportRepositoryInterface
-		factory: App\Infrastructure\Import\ImportRepository
+    # infra
+    -
+        type: App\Domain\Import\ImportRepositoryInterface
+        factory: App\Infrastructure\Import\ImportRepository
 
-	# infra: doctrine
-	-
-		autowired: self
-		type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
-		factory: App\Infrastructure\Import\Doctrine\ReadModel\ImportListViewDataTransformer
-	-
-		autowired: no
-		factory: App\Infrastructure\Import\Doctrine\ReadModel\GetImportByIdQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Import\Doctrine\ReadModel\ImportDataGridQueryHandler
+    # infra: doctrine
+    -
+        autowired: self
+        type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
+        factory: App\Infrastructure\Import\Doctrine\ReadModel\ImportListViewDataTransformer
+    -
+        autowired: no
+        factory: App\Infrastructure\Import\Doctrine\ReadModel\GetImportByIdQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Import\Doctrine\ReadModel\ImportDataGridQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:
-	mapping:
-		App\Domain\Import: %appDir%/Infrastructure/Import/Doctrine/Mapping
+    mapping:
+        App\Domain\Import: %appDir%/Infrastructure/Import/Doctrine/Mapping
 
 # infra: dbal types
 nettrine.dbal:
-	connection:
-		types:
-			App\Domain\Import\ValueObject\ImportId:
-				class: App\Infrastructure\Import\Doctrine\DbalType\ImportIdType
-				commented: yes
+    connection:
+        types:
+            App\Domain\Import\ValueObject\ImportId:
+                class: App\Infrastructure\Import\Doctrine\DbalType\ImportIdType
+                commented: yes
 
-			App\Domain\Import\ValueObject\Name:
-				class: App\Infrastructure\Import\Doctrine\DbalType\NameType
-				commented: yes
+            App\Domain\Import\ValueObject\Name:
+                class: App\Infrastructure\Import\Doctrine\DbalType\NameType
+                commented: yes
 
-			App\Domain\Import\ValueObject\Output:
-				class: App\Infrastructure\Import\Doctrine\DbalType\OutputType
-				commented: yes
+            App\Domain\Import\ValueObject\Output:
+                class: App\Infrastructure\Import\Doctrine\DbalType\OutputType
+                commented: yes
 
-			App\Domain\Import\ValueObject\Status:
-				class: App\Infrastructure\Import\Doctrine\DbalType\StatusType
-				commented: yes
+            App\Domain\Import\ValueObject\Status:
+                class: App\Infrastructure\Import\Doctrine\DbalType\StatusType
+                commented: yes
 
-			App\Domain\Import\ValueObject\Total:
-				class: App\Infrastructure\Import\Doctrine\DbalType\TotalType
-				commented: yes
+            App\Domain\Import\ValueObject\Total:
+                class: App\Infrastructure\Import\Doctrine\DbalType\TotalType
+                commented: yes

@@ -6,11 +6,11 @@ created_at: Launched
 ended_at: Finished
 
 status_value:
-	running: running
-	completed: completed
-	failed: failed
+    running: running
+    completed: completed
+    failed: failed
 
 unknown_author: Unknown author
 
 tooltip:
-	detail_action: Detail
+    detail_action: Detail

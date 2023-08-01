@@ -1,2 +1,2 @@
 extensions:
-	68publishers.flash_message_bundle: SixtyEightPublishers\FlashMessageBundle\Bridge\Nette\DI\FlashMessageBundleExtension
+    68publishers.flash_message_bundle: SixtyEightPublishers\FlashMessageBundle\Bridge\Nette\DI\FlashMessageBundleExtension

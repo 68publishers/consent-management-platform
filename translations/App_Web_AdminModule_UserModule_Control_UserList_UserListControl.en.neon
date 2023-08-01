@@ -5,8 +5,8 @@ created_at: Created
 roles: Roles
 
 tooltip:
-	edit_action: Edit
-	delete_action: Delete
+    edit_action: Edit
+    delete_action: Delete
 
 delete_confirm:
-	question: 'Are you sure you want to delete the user <strong>"%name%"</strong>?'
+    question: 'Are you sure you want to delete the user <strong>"%name%"</strong>?'

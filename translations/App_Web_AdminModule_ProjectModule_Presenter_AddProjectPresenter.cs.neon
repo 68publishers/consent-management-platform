@@ -3,5 +3,5 @@ back_to_list: Zpět na výpis projektů
 heading_basic: Základní informace
 
 message:
-	project_created: Projekt byl vytvořen.
-	project_creation_failed: Při vytváření projektu došlo k chybě.
+    project_created: Projekt byl vytvořen.
+    project_creation_failed: Při vytváření projektu došlo k chybě.

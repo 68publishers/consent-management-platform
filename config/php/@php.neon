@@ -1,6 +1,6 @@
 includes:
-	- contributte.console.php
-	- contributte.recaptcha.php
-	- http.cookie_secure.php
-	- kdyby.redis.php
-	- mail.php
+    - contributte.console.php
+    - contributte.recaptcha.php
+    - http.cookie_secure.php
+    - kdyby.redis.php
+    - mail.php

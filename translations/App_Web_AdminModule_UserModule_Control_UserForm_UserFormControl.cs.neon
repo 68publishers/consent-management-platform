@@ -1,43 +1,43 @@
 email_address:
-	field: Email
-	required: Vyplňte prosím email.
-	rule: Vyplňený email není validní.
-	error:
-		duplicated_value: Uživatel s tímto emailem již existuje.
+    field: Email
+    required: Vyplňte prosím email.
+    rule: Vyplňený email není validní.
+    error:
+        duplicated_value: Uživatel s tímto emailem již existuje.
 
 firstname:
-	field: Jméno
-	required: Vyplňte prosím jméno.
+    field: Jméno
+    required: Vyplňte prosím jméno.
 
 surname:
-	field: Příjmení
-	required: Vyplňte prosím příjmení.
+    field: Příjmení
+    required: Vyplňte prosím příjmení.
 
 profile:
-	field: Jazyk
-	required: Zvolte prosím jazyk.
+    field: Jazyk
+    required: Zvolte prosím jazyk.
 
 timezone:
-	field: Časové pásmo
-	required: Zvolte prosím časové pásmo.
+    field: Časové pásmo
+    required: Zvolte prosím časové pásmo.
 
 roles:
-	field: Role
-	required: Uživatel musí mít alespoň jednu roli.
+    field: Role
+    required: Uživatel musí mít alespoň jednu roli.
 
 password:
-	field: Heslo
-	description:
-		create_user: 'Nepovinné, uživatel si může později nastavit vlastní heslo přes "zapomenuté heslo".'
-		update_user:
-			create_password: 'Uživatel nemá nastavené heslo, vyplňte pole pokud jej chcete nastavit.'
-			change_password: 'Uživatel má nastavené heslo, vyplňte pole pouze pokud jej chcete změnit.'
+    field: Heslo
+    description:
+        create_user: 'Nepovinné, uživatel si může později nastavit vlastní heslo přes "zapomenuté heslo".'
+        update_user:
+            create_password: 'Uživatel nemá nastavené heslo, vyplňte pole pokud jej chcete nastavit.'
+            change_password: 'Uživatel má nastavené heslo, vyplňte pole pouze pokud jej chcete změnit.'
 
 projects:
-	field: Projekty
+    field: Projekty
 
 save:
-	field: Vytvořit uživatele
+    field: Vytvořit uživatele
 
 update:
-	field: Uložit
+    field: Uložit

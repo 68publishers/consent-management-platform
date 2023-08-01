@@ -1,22 +1,22 @@
 code:
-	field: Kód
-	required: Vyplňte prosím kód.
-	rule_max_length: Maximální povolená délka je %d znaků.
-	error:
-		duplicated_value: 'Kategorie s tímto kódem již existuje.'
+    field: Kód
+    required: Vyplňte prosím kód.
+    rule_max_length: Maximální povolená délka je %d znaků.
+    error:
+        duplicated_value: 'Kategorie s tímto kódem již existuje.'
 
 active:
-	field: Aktivní
+    field: Aktivní
 
 necessary:
-	field: Povinná kategorie
+    field: Povinná kategorie
 
 name:
-	field: 'Název - %name%'
-	required: Vyplňte prosím název.
+    field: 'Název - %name%'
+    required: Vyplňte prosím název.
 
 save:
-	field: Vytvořit kategorii
+    field: Vytvořit kategorii
 
 update:
-	field: Uložit
+    field: Uložit

@@ -1,4 +1,4 @@
 name:
-	App\Application\CookieProvider\Import\CookieProviderData: Providers
-	App\Application\Cookie\Import\CookieData: Cookies
-	App\Application\Project\Import\ProjectData: Projects
+    App\Application\CookieProvider\Import\CookieProviderData: Providers
+    App\Application\Cookie\Import\CookieData: Cookies
+    App\Application\Project\Import\ProjectData: Projects

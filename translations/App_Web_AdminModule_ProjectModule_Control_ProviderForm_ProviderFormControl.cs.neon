@@ -1,20 +1,20 @@
 code:
-	field: Kód
-	required: Vyplňte prosím kód.
-	rule_max_length: Maximální povolená délka je %d znaků.
-	error:
-		duplicated_value: 'Poskytovatel s tímto kódem již existuje.'
+    field: Kód
+    required: Vyplňte prosím kód.
+    rule_max_length: Maximální povolená délka je %d znaků.
+    error:
+        duplicated_value: 'Poskytovatel s tímto kódem již existuje.'
 
 name:
-	field: Název
-	required: Vyplňte prosím název.
+    field: Název
+    required: Vyplňte prosím název.
 
 link:
-	field: Odkaz
-	rule_url: Odkaz není validní URL.
+    field: Odkaz
+    rule_url: Odkaz není validní URL.
 
 purpose:
-	field: 'Účel - %name%'
+    field: 'Účel - %name%'
 
 update:
-	field: Uložit
+    field: Uložit

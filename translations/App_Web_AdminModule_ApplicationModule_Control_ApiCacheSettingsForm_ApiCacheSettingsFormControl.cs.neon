@@ -1,26 +1,26 @@
 use_entity_tag:
-	field: HTTP Header ETag
-	description: '''
-	<span class="block mb-2">Po zapnutí bude server odesílat v odpovědi HTTP hlavičku ETag, která obsahuje uníkátní kontrolní hodnotu odpovědi.</span>
-	<span class="block mb-2">Prohlížeč se následně doptává serveru jestli je cachovaná odpověď stále aktuální. Pokud se ETag neshoduje, tak jsou vráceny aktualizovaná data.</span>
-	<span class="block">Současně je nutné posílat HTTP hlavičku Cache-Control, ta prohlížeči řekne po jaké době se má doptávat (pokud bude "max-age" nastaveno na 0, tak se bude doptávat vždy).</span>
-	'''
+    field: HTTP Header ETag
+    description: '''
+    <span class="block mb-2">Po zapnutí bude server odesílat v odpovědi HTTP hlavičku ETag, která obsahuje uníkátní kontrolní hodnotu odpovědi.</span>
+    <span class="block mb-2">Prohlížeč se následně doptává serveru jestli je cachovaná odpověď stále aktuální. Pokud se ETag neshoduje, tak jsou vráceny aktualizovaná data.</span>
+    <span class="block">Současně je nutné posílat HTTP hlavičku Cache-Control, ta prohlížeči řekne po jaké době se má doptávat (pokud bude "max-age" nastaveno na 0, tak se bude doptávat vždy).</span>
+    '''
 
 cache_control_enabled:
-	field: HTTP Header Cache-Control
-	required: Hlavička musí být použita.
+    field: HTTP Header Cache-Control
+    required: Hlavička musí být použita.
 
 max_age:
-	field: 'HTTP Header Cache-Control: max-age'
-	description: '''
-	<span class="block mb-2">Hodnota "max-age" je ve vteřinách a určuje jak dlouho má prohlížeč používat data ze serveru než se ho znova dotáže.</span>
-	<span class="block mb-2">Pozor na příliš vysoké hodnoty, data pak nemusí být dlouhou dobu aktuální.</span>
-	<span class="block">Pokud nastavíme hodnotu na 0 tak prohlížeč nebude data cachovat vůbec.</span>
-	'''
-	required: Vyplňte prosím hodnotu.
-	rule:
-		integer: Hodnota musí být celé číslo.
-		min: Hodnota musí být celé číslo větší nebo rovno nule.
+    field: 'HTTP Header Cache-Control: max-age'
+    description: '''
+    <span class="block mb-2">Hodnota "max-age" je ve vteřinách a určuje jak dlouho má prohlížeč používat data ze serveru než se ho znova dotáže.</span>
+    <span class="block mb-2">Pozor na příliš vysoké hodnoty, data pak nemusí být dlouhou dobu aktuální.</span>
+    <span class="block">Pokud nastavíme hodnotu na 0 tak prohlížeč nebude data cachovat vůbec.</span>
+    '''
+    required: Vyplňte prosím hodnotu.
+    rule:
+        integer: Hodnota musí být celé číslo.
+        min: Hodnota musí být celé číslo větší nebo rovno nule.
 
 save:
-	field: Uložit
+    field: Uložit

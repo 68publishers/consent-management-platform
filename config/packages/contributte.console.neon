@@ -1,5 +1,5 @@
 extensions:
-	contributte.console: Contributte\Console\DI\ConsoleExtension(%consoleMode%)
+    contributte.console: Contributte\Console\DI\ConsoleExtension(%consoleMode%)
 
 contributte.console:
     name: AMP

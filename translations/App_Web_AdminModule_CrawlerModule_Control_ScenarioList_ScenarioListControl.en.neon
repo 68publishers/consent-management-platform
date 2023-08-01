@@ -10,10 +10,10 @@ crawler_api_respond_with_error_status_code: 'The API returned a response with th
 crawler_api_respond_with_unexpected_error: 'The API call raised an unexpected error: %error%'
 
 tooltip:
-	abort_action: Abort scenario
-	detail_action: Detail
-	suggestions_action: Manage suggestions
+    abort_action: Abort scenario
+    detail_action: Detail
+    suggestions_action: Manage suggestions
 
 message:
-	scenario_aborted: The scenario was successfully aborted.
-	failed_to_abort_scenario: The scenario could not be aborted.
+    scenario_aborted: The scenario was successfully aborted.
+    failed_to_abort_scenario: The scenario could not be aborted.

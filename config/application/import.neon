@@ -1,35 +1,35 @@
 services:
-	import.runner:
-		autowired: App\Application\Import\RunnerInterface
-		type: App\Application\Import\RunnerInterface
-		factory: @import.runner.default
+    import.runner:
+        autowired: App\Application\Import\RunnerInterface
+        type: App\Application\Import\RunnerInterface
+        factory: @import.runner.default
 
-	import.runner.default:
-		autowired: no
-		factory: App\Application\Import\Runner
+    import.runner.default:
+        autowired: no
+        factory: App\Application\Import\Runner
 
-	import.importer:
-		autowired: App\Application\Import\ImporterInterface
-		type: App\Application\Import\ImporterInterface
-		factory: @import.importer.registry
+    import.importer:
+        autowired: App\Application\Import\ImporterInterface
+        type: App\Application\Import\ImporterInterface
+        factory: @import.importer.registry
 
-	import.importer.registry:
-		autowired: no
-		factory: App\Application\Import\ImporterRegistry
-		arguments:
-			importers:
-				- @import.importer.cookie_provider
-				- @import.importer.cookie
-				- @import.importer.project
+    import.importer.registry:
+        autowired: no
+        factory: App\Application\Import\ImporterRegistry
+        arguments:
+            importers:
+                - @import.importer.cookie_provider
+                - @import.importer.cookie
+                - @import.importer.project
 
-	import.importer.cookie_provider:
-		autowired: no
-		factory: App\Application\CookieProvider\Import\CookieProviderImporter
+    import.importer.cookie_provider:
+        autowired: no
+        factory: App\Application\CookieProvider\Import\CookieProviderImporter
 
-	import.importer.cookie:
-		autowired: no
-		factory: App\Application\Cookie\Import\CookieImporter
+    import.importer.cookie:
+        autowired: no
+        factory: App\Application\Cookie\Import\CookieImporter
 
-	import.importer.project:
-		autowired: no
-		factory: App\Application\Project\Import\ProjectImporter
+    import.importer.project:
+        autowired: no
+        factory: App\Application\Project\Import\ProjectImporter

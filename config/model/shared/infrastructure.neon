@@ -1,24 +1,24 @@
 # infra: doctrine mapping
 nettrine.orm.xml:
-	mapping:
-		App\Domain\Shared: %appDir%/Infrastructure/Shared/Doctrine/Mapping
+    mapping:
+        App\Domain\Shared: %appDir%/Infrastructure/Shared/Doctrine/Mapping
 
 # infra: dbal types
 nettrine.dbal:
-	connection:
-		types:
-			App\Domain\Shared\ValueObject\Checksum:
-				class: App\Infrastructure\Shared\Doctrine\DbalType\ChecksumType
-				commented: yes
+    connection:
+        types:
+            App\Domain\Shared\ValueObject\Checksum:
+                class: App\Infrastructure\Shared\Doctrine\DbalType\ChecksumType
+                commented: yes
 
-			datetime_zone:
-				class: App\Infrastructure\Shared\Doctrine\DbalType\DateTimeZoneType
-				commented: yes
+            datetime_zone:
+                class: App\Infrastructure\Shared\Doctrine\DbalType\DateTimeZoneType
+                commented: yes
 
-			App\Domain\Shared\ValueObject\Locale:
-				class: App\Infrastructure\Shared\Doctrine\DbalType\LocaleType
-				commented: yes
+            App\Domain\Shared\ValueObject\Locale:
+                class: App\Infrastructure\Shared\Doctrine\DbalType\LocaleType
+                commented: yes
 
-			App\Domain\Shared\ValueObject\Locales:
-				class: App\Infrastructure\Shared\Doctrine\DbalType\LocalesType
-				commented: yes
+            App\Domain\Shared\ValueObject\Locales:
+                class: App\Infrastructure\Shared\Doctrine\DbalType\LocalesType
+                commented: yes

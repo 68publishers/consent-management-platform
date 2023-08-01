@@ -1,18 +1,18 @@
 extensions:
-	contributte.apitte: Apitte\Core\DI\ApiExtension
+    contributte.apitte: Apitte\Core\DI\ApiExtension
 
 contributte.apitte:
-	plugins:
-		Apitte\Debug\DI\DebugPlugin:
-			debug:
-				panel: %debugMode%
-				negotiation: %debugMode%
-		Apitte\Core\DI\Plugin\CoreDecoratorPlugin:
-		Apitte\Core\DI\Plugin\CoreMappingPlugin:
-			request:
-				validator: Apitte\Core\Mapping\Validator\SymfonyValidator(@Doctrine\Common\Annotations\Reader)
-		Apitte\Middlewares\DI\MiddlewaresPlugin:
-			tracy: yes
-			autobasepath: no
-		Apitte\Negotiation\DI\NegotiationPlugin:
-			unification: yes
+    plugins:
+        Apitte\Debug\DI\DebugPlugin:
+            debug:
+                panel: %debugMode%
+                negotiation: %debugMode%
+        Apitte\Core\DI\Plugin\CoreDecoratorPlugin:
+        Apitte\Core\DI\Plugin\CoreMappingPlugin:
+            request:
+                validator: Apitte\Core\Mapping\Validator\SymfonyValidator(@Doctrine\Common\Annotations\Reader)
+        Apitte\Middlewares\DI\MiddlewaresPlugin:
+            tracy: yes
+            autobasepath: no
+        Apitte\Negotiation\DI\NegotiationPlugin:
+            unification: yes

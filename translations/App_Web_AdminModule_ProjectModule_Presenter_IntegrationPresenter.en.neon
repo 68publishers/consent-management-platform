@@ -4,5 +4,5 @@ heading_including: Embedding a table on a website
 text_including: 'To insert a table on your page, copy the following script and paste it exactly where you want to display the cookies.'
 
 message:
-	templates_updated: The templates have been saved.
-	templates_updated_failed: An error occurred while saving templates.
+    templates_updated: The templates have been saved.
+    templates_updated_failed: An error occurred while saving templates.

@@ -1,22 +1,22 @@
 services:
-	-
-		autowired: no
-		factory: App\Domain\Project\CommandHandler\CreateProjectCommandHandler
-	-
-		autowired: no
-		factory: App\Domain\Project\CommandHandler\UpdateProjectCommandHandler
-	-
-		autowired: no
-		factory: App\Domain\Project\CommandHandler\DeleteProjectCommandHandler
-	-
-		autowired: no
-		factory: App\Domain\Project\CommandHandler\AddCookieProvidersToProjectCommandHandler
-	-
-		autowired: no
-		factory: App\Domain\Project\CommandHandler\RemoveCookieProvidersFromProjectCommandHandler
-	-
-		autowired: no
-		factory: App\Domain\Project\CommandHandler\UpdateProjectTemplatesCommandHandler
-	-
-		autowired: no
-		factory: App\Domain\User\CommandHandler\ChangeNotificationPreferencesCommandHandler
+    -
+        autowired: no
+        factory: App\Domain\Project\CommandHandler\CreateProjectCommandHandler
+    -
+        autowired: no
+        factory: App\Domain\Project\CommandHandler\UpdateProjectCommandHandler
+    -
+        autowired: no
+        factory: App\Domain\Project\CommandHandler\DeleteProjectCommandHandler
+    -
+        autowired: no
+        factory: App\Domain\Project\CommandHandler\AddCookieProvidersToProjectCommandHandler
+    -
+        autowired: no
+        factory: App\Domain\Project\CommandHandler\RemoveCookieProvidersFromProjectCommandHandler
+    -
+        autowired: no
+        factory: App\Domain\Project\CommandHandler\UpdateProjectTemplatesCommandHandler
+    -
+        autowired: no
+        factory: App\Domain\User\CommandHandler\ChangeNotificationPreferencesCommandHandler

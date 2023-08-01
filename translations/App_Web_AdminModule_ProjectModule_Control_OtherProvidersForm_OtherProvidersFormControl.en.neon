@@ -1,5 +1,5 @@
 cookie_providers:
-	field: Select providers
+    field: Select providers
 
 update:
-	field: Save
+    field: Save

@@ -6,11 +6,11 @@ created_at: Spuštěno
 ended_at: Dokončeno
 
 status_value:
-	running: probíhá
-	completed: hotovo
-	failed: neúspěšný
+    running: probíhá
+    completed: hotovo
+    failed: neúspěšný
 
 unknown_author: Neznámý autor
 
 tooltip:
-	detail_action: Detail
+    detail_action: Detail

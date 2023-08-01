@@ -1,23 +1,23 @@
 name:
-	field: Název
-	required: Vyplňte prosím název
-	rule_max_length: Maximální povolená délka je %d znaků.
+    field: Název
+    required: Vyplňte prosím název
+    rule_max_length: Maximální povolená délka je %d znaků.
 
 project:
-	field: Projekt
-	required: Zvolte prosím projekt.
+    field: Projekt
+    required: Zvolte prosím projekt.
 
 categories:
-	field: 'Kategorie, které scénář spouští'
+    field: 'Kategorie, které scénář spouští'
 
 config:
-	field: Konfigurace scénaře
-	required: Nakonfigurujte prosím scénař.
-	error:
-		invalid_json: Konfigurace obsahuje nevalidní JSON.
+    field: Konfigurace scénaře
+    required: Nakonfigurujte prosím scénař.
+    error:
+        invalid_json: Konfigurace obsahuje nevalidní JSON.
 
 run:
-	field: Spustit
+    field: Spustit
 
 error:
-	crawler_api_respond_with_error_status_code: 'API vrátilo odpověď s kódem <strong>%code%</strong>'
+    crawler_api_respond_with_error_status_code: 'API vrátilo odpověď s kódem <strong>%code%</strong>'

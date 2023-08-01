@@ -1,22 +1,22 @@
 enabled:
-	field: Zapnuto
+    field: Zapnuto
 
 host_url:
-	field: URL
-	required: Vyplňte prosím URL.
-	rule:
-		url: Hodnota není validní URL.
+    field: URL
+    required: Vyplňte prosím URL.
+    rule:
+        url: Hodnota není validní URL.
 
 username:
-	field: Uživatel
-	required: Vyplňte prosím uživatele.
+    field: Uživatel
+    required: Vyplňte prosím uživatele.
 
 password:
-	field: Heslo
+    field: Heslo
 
 callback_uri_token:
-	field: Callback URI Token
-	required: Vyplňte prosím Callback URI Token.
+    field: Callback URI Token
+    required: Vyplňte prosím Callback URI Token.
 
 save:
-	field: Uložit
+    field: Uložit

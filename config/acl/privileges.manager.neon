@@ -1,18 +1,18 @@
 services:
-	acl:
-		setup:
-			- allow(App\Domain\User\RolesEnum::MANAGER, App\Application\Acl\ProjectResource, [
-				App\Application\Acl\ProjectResource::READ
-			])
+    acl:
+        setup:
+            - allow(App\Domain\User\RolesEnum::MANAGER, App\Application\Acl\ProjectResource, [
+                App\Application\Acl\ProjectResource::READ
+            ])
 
-			- allow(App\Domain\User\RolesEnum::MANAGER, App\Application\Acl\ProjectConsentResource, App\Application\Acl\ProjectConsentResource::privileges())
+            - allow(App\Domain\User\RolesEnum::MANAGER, App\Application\Acl\ProjectConsentResource, App\Application\Acl\ProjectConsentResource::privileges())
 
-			- allow(App\Domain\User\RolesEnum::MANAGER, App\Application\Acl\ProjectConsentSettingsResource, App\Application\Acl\ProjectConsentSettingsResource::privileges())
+            - allow(App\Domain\User\RolesEnum::MANAGER, App\Application\Acl\ProjectConsentSettingsResource, App\Application\Acl\ProjectConsentSettingsResource::privileges())
 
-			- allow(App\Domain\User\RolesEnum::MANAGER, App\Application\Acl\ProjectCookieProviderResource, App\Application\Acl\ProjectCookieProviderResource::privileges())
+            - allow(App\Domain\User\RolesEnum::MANAGER, App\Application\Acl\ProjectCookieProviderResource, App\Application\Acl\ProjectCookieProviderResource::privileges())
 
-			- allow(App\Domain\User\RolesEnum::MANAGER, App\Application\Acl\ProjectCookieResource, App\Application\Acl\ProjectCookieResource::privileges())
+            - allow(App\Domain\User\RolesEnum::MANAGER, App\Application\Acl\ProjectCookieResource, App\Application\Acl\ProjectCookieResource::privileges())
 
-			- allow(App\Domain\User\RolesEnum::MANAGER, App\Application\Acl\ProjectIntegrationResource, [
-				App\Application\Acl\ProjectIntegrationResource::READ
-			])
+            - allow(App\Domain\User\RolesEnum::MANAGER, App\Application\Acl\ProjectIntegrationResource, [
+                App\Application\Acl\ProjectIntegrationResource::READ
+            ])

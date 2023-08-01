@@ -1,10 +1,10 @@
 services:
-	-
-		autowired: no
-		factory: App\Domain\GlobalSettings\CommandHandler\PutLocalizationSettingsCommandHandler
-	-
-		autowired: no
-		factory: App\Domain\GlobalSettings\CommandHandler\PutApiCacheSettingsCommandHandler
-	-
-		autowired: no
-		factory: App\Domain\GlobalSettings\CommandHandler\PutCrawlerSettingsCommandHandler
+    -
+        autowired: no
+        factory: App\Domain\GlobalSettings\CommandHandler\PutLocalizationSettingsCommandHandler
+    -
+        autowired: no
+        factory: App\Domain\GlobalSettings\CommandHandler\PutApiCacheSettingsCommandHandler
+    -
+        autowired: no
+        factory: App\Domain\GlobalSettings\CommandHandler\PutCrawlerSettingsCommandHandler

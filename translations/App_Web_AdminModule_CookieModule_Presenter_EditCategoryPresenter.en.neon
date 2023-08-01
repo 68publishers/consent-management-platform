@@ -3,6 +3,6 @@ heading_basic: Basic information
 back_to_list: Back to the category list
 
 message:
-	category_not_found: Category not found.
-	category_updated: The category has been edited.
-	category_update_failed: An error occurred while editing the category.
+    category_not_found: Category not found.
+    category_updated: The category has been edited.
+    category_update_failed: An error occurred while editing the category.

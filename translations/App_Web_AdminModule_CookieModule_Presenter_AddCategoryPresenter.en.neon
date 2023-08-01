@@ -3,5 +3,5 @@ heading_basic: Basic information
 back_to_list: Back to the category list
 
 message:
-	category_created: The category has been created.
-	category_creation_failed: An error occurred while creating the category.
+    category_created: The category has been created.
+    category_creation_failed: An error occurred while creating the category.

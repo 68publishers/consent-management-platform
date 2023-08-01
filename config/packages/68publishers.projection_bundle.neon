@@ -1,6 +1,6 @@
 extensions:
-	68publishers.projection_bundle: SixtyEightPublishers\ProjectionBundle\Bridge\Nette\DI\ProjectionBundleExtension
-	68publishers.projection_bundle.doctrine: SixtyEightPublishers\ProjectionBundle\Bridge\Nette\DI\DoctrineInfrastructureExtension
+    68publishers.projection_bundle: SixtyEightPublishers\ProjectionBundle\Bridge\Nette\DI\ProjectionBundleExtension
+    68publishers.projection_bundle.doctrine: SixtyEightPublishers\ProjectionBundle\Bridge\Nette\DI\DoctrineInfrastructureExtension
 
 68publishers.projection_bundle:
-	- App\Projection\Consent\ConsentStatisticsProjection
+    - App\Projection\Consent\ConsentStatisticsProjection

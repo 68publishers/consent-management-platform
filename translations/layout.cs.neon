@@ -3,51 +3,51 @@ open_sidebar: Otevřít hlavní menu
 close_sidebar: Zavřít hlavní menu
 
 sidebar:
-	dashboard: Dashboard
-	users: Uživatelé
-	users_users: Uživatelé
-	users_password_requests: Žádosti o nové heslo
-	application_settings: Nastavení
-	crawler: Crawler
-	crawler_scenario_schedulers: Plánování scénařů
-	crawler_scenarios: Spuštěné scénaře
-	cookies: Cookies
-	cookies_categories: Kategorie
-	cookies_providers: Poskytovatelé
-	cookies_cookies: Seznam cookies
-	cookies_found_cookies: Návrhy cookies
-	imports: Importy
-	projects: Projekty
+    dashboard: Dashboard
+    users: Uživatelé
+    users_users: Uživatelé
+    users_password_requests: Žádosti o nové heslo
+    application_settings: Nastavení
+    crawler: Crawler
+    crawler_scenario_schedulers: Plánování scénařů
+    crawler_scenarios: Spuštěné scénaře
+    cookies: Cookies
+    cookies_categories: Kategorie
+    cookies_providers: Poskytovatelé
+    cookies_cookies: Seznam cookies
+    cookies_found_cookies: Návrhy cookies
+    imports: Importy
+    projects: Projekty
 
 sidebar_project:
-	consents: Evidence souhlasů
-	consent_settings: Cookie lišty
-	cookies: Cookies
-	cookies_providers: Poskytovatelé
-	cookies_cookies: Cookies projektu
-	cookies_service_cookies: Cookies služeb
-	integration: Integrace
-	edit_project: Upravit projekt
+    consents: Evidence souhlasů
+    consent_settings: Cookie lišty
+    cookies: Cookies
+    cookies_providers: Poskytovatelé
+    cookies_cookies: Cookies projektu
+    cookies_service_cookies: Cookies služeb
+    integration: Integrace
+    edit_project: Upravit projekt
 
 profile:
-	settings: Uživatelský účet
-	sign_out: Odhlásit se
+    settings: Uživatelský účet
+    sign_out: Odhlásit se
 
 role_name:
-	admin: Admin
-	manager: Manager
+    admin: Admin
+    manager: Manager
 
 cookie_provider_type:
-	1st_party: 1st party
-	3rd_party: 3rd party
+    1st_party: 1st party
+    3rd_party: 3rd party
 
 alert:
-	missing_default_locale:
-		text: Výchozí jazyk pro aplikaci není nastaven.
-		link_text: Nastavte jej prosím v nastavení aplikace.
-	missing_default_project_locale:
-		text: Výchozí jazyk pro tento projekt není nastaven.
-		link_text: Nastavte jej prosím v editaci projektu.
+    missing_default_locale:
+        text: Výchozí jazyk pro aplikaci není nastaven.
+        link_text: Nastavte jej prosím v nastavení aplikace.
+    missing_default_project_locale:
+        text: Výchozí jazyk pro tento projekt není nastaven.
+        link_text: Nastavte jej prosím v editaci projektu.
 
 message:
-	locale_change_failed: Jazyk se nepovedlo změnit.
+    locale_change_failed: Jazyk se nepovedlo změnit.

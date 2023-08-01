@@ -30,7 +30,7 @@ showing_all_items: All items
 showing_items: 'Showing <span class="font-medium">%from%</span> - <span class="font-medium">%to%</span> from <span class="font-medium">%total%</span> items'
 
 boolean_filter:
-	yes: 'yes'
-	no: 'no'
+    yes: 'yes'
+    no: 'no'
 
 invalid_uuid: UUID is not valid

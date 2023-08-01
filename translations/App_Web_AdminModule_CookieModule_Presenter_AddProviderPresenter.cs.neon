@@ -3,5 +3,5 @@ heading_basic: Základní informace
 back_to_list: Zpět na výpis poskytovatelů
 
 message:
-	provider_created: Poskytovatel byl vytvořen.
-	provider_creation_failed: Při vytváření poskytovatele došlo k chybě.
+    provider_created: Poskytovatel byl vytvořen.
+    provider_creation_failed: Při vytváření poskytovatele došlo k chybě.

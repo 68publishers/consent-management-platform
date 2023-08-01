@@ -2,5 +2,5 @@ page_title: Running scenarios
 run_scenario: Run a scenario
 
 message:
-	scenario_running: The scenario has been run.
-	failed_to_run_scenario: The scenario could not be run.
+    scenario_running: The scenario has been run.
+    failed_to_run_scenario: The scenario could not be run.

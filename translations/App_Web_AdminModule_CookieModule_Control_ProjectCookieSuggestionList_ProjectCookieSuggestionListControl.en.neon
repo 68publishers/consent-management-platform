@@ -4,4 +4,4 @@ statistics: Number of suggestions
 latest_found_at: Last found
 
 tooltip:
-	detail_action: Manage suggestions
+    detail_action: Manage suggestions

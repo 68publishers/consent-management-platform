@@ -2,4 +2,4 @@ page_title: Přihlášení
 forgot_your_password: Zapomenuté heslo?
 
 message:
-	user_authentication_failed: Nesprávné přihlašovací údaje.
+    user_authentication_failed: Nesprávné přihlašovací údaje.

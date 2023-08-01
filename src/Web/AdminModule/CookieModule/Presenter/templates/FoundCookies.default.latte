@@ -17,16 +17,16 @@
     <div class="flex place-items-center mb-1">
         <div id="project-select">
             <div x-data>
-				<span x-init="$el.style.display = 'none'" class="inline-block w-auto px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2" style="background-color: {$projectView->color->value()|noescape} !important;">
-					{$projectView->name->value()}
-				</span>
+                <span x-init="$el.style.display = 'none'" class="inline-block w-auto px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2" style="background-color: {$projectView->color->value()|noescape} !important;">
+                    {$projectView->name->value()}
+                </span>
             </div>
             <select x-data x-select.searchbar x-cloak x-on:change="window.location.href = $el.options[$el.selectedIndex].getAttribute('data-link')">
                 {foreach $allProjects as $projectOption}
                     {capture $itemHtml}
                         <span class="inline-block w-auto px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2" style="background-color: {$projectOption->color->value()|noescape} !important;">
-							{$projectOption->name->value()}
-						</span>
+                            {$projectOption->name->value()}
+                        </span>
                     {/capture}
 
                     <option value="{$projectOption->code->value()}" data-link="{link FoundCookies:, id: $projectOption->id->toString()}" data-selected-html="{$itemHtml}" n:attr="selected => $projectOption->id->equals($projectView->id)">{$projectOption->name->value()}</option>

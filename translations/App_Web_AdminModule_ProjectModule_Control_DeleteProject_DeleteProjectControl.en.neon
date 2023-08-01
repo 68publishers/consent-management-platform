@@ -2,7 +2,7 @@ title: Delete project
 description: 'Once you delete the project, there is no going back. Please be sure if you want to do this.'
 
 delete:
-	field: Delete project
+    field: Delete project
 
 delete_confirm:
-	question: 'Are you sure you want to delete the project <strong>"%name%"</strong>?'
+    question: 'Are you sure you want to delete the project <strong>"%name%"</strong>?'

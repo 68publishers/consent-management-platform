@@ -7,9 +7,9 @@ active_value: aktivní
 inactive_value: neaktivní
 
 tooltip:
-	edit_action: Upravit
-	delete_action: Odstranit
+    edit_action: Upravit
+    delete_action: Odstranit
 
 delete_confirm:
-	title: Odstranit kategorii
-	question: 'Opravdu si přejete odstranit kategorii <strong>"%name%"</strong> (%code%)?'
+    title: Odstranit kategorii
+    question: 'Opravdu si přejete odstranit kategorii <strong>"%name%"</strong> (%code%)?'

@@ -62,7 +62,7 @@
                                 <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 break-all">{$project->code->value()}</span>
                             </span>
                         {/if}
-                        <div n:if="$user->isAllowed(App\Application\Acl\ProjectResource::class, App\Application\Acl\ProjectResource::UPDATE)" class="flex justify-end bg-white px-4 py-2 w-full border-t border-gray-200 rounded-br-md max-h-12	self-end">
+                        <div n:if="$user->isAllowed(App\Application\Acl\ProjectResource::class, App\Application\Acl\ProjectResource::UPDATE)" class="flex justify-end bg-white px-4 py-2 w-full border-t border-gray-200 rounded-br-md max-h-12 self-end">
                             <a
                                 n:href="EditProject: project => $project->code->value()"
                                 x-data

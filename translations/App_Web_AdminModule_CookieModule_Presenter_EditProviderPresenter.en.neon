@@ -5,8 +5,8 @@ back_to_list: Back to the provider list
 add_new_cookie: Add cookie
 
 message:
-	provider_not_found: Provider not found.
-	provider_updated: The provider has been edited.
-	provider_update_failed: An error occurred while editing the provider.
-	cookie_created: The cookie has been created.
-	cookie_creation_failed: An error occurred while creating the cookie.
+    provider_not_found: Provider not found.
+    provider_updated: The provider has been edited.
+    provider_update_failed: An error occurred while editing the provider.
+    cookie_created: The cookie has been created.
+    cookie_creation_failed: An error occurred while creating the cookie.

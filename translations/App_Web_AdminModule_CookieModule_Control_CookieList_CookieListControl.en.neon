@@ -16,12 +16,12 @@ persistent: Persistent
 and_more_projects: "and %count% more"
 
 tooltip:
-	edit_action: Edit
-	delete_action: Delete
+    edit_action: Edit
+    delete_action: Delete
 
 delete_confirm:
-	question: 'Are you sure you want to delete the cookie <strong>"%name%"</strong>?'
+    question: 'Are you sure you want to delete the cookie <strong>"%name%"</strong>?'
 
 message:
-	cookie_updated: The cookie has been edited.
-	cookie_update_failed: An error occurred while editing the cookie.
+    cookie_updated: The cookie has been edited.
+    cookie_update_failed: An error occurred while editing the cookie.

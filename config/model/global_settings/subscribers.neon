@@ -1,4 +1,4 @@
 services:
-	-
-		autowired: no
-		factory: App\Subscribers\GlobalSettings\RefreshGlobalSettingsWhenChanged
+    -
+        autowired: no
+        factory: App\Subscribers\GlobalSettings\RefreshGlobalSettingsWhenChanged

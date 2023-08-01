@@ -4,9 +4,9 @@ password_change: Změna hesla
 notification_preferences: Nastavení notifikací
 
 message:
-	basic_information_edited: Základní informace byly uloženy.
-	basic_information_edit_failed: Při ukládaní základních informací došlo k chybě.
-	password_changed: Heslo bylo změněno.
-	password_change_failed: Při změně hesla došlo k chybě.
-	notification_preferences_updated: Nastavení notifikací bylo uloženo.
-	notification_preferences_update_failed: Při ukládaní nastavení došlo k chybě.
+    basic_information_edited: Základní informace byly uloženy.
+    basic_information_edit_failed: Při ukládaní základních informací došlo k chybě.
+    password_changed: Heslo bylo změněno.
+    password_change_failed: Při změně hesla došlo k chybě.
+    notification_preferences_updated: Nastavení notifikací bylo uloženo.
+    notification_preferences_update_failed: Při ukládaní nastavení došlo k chybě.

@@ -1,56 +1,56 @@
 services:
-	# infra
-	-
-		type: App\Domain\CookieSuggestion\CookieSuggestionRepositoryInterface
-		factory: App\Infrastructure\CookieSuggestion\CookieSuggestionRepository
-	-
-		type: App\Domain\CookieSuggestion\CheckSuggestionNameAndDomainUniquenessInterface
-		factory: App\Infrastructure\CookieSuggestion\CheckSuggestionNameAndDomainUniqueness
+    # infra
+    -
+        type: App\Domain\CookieSuggestion\CookieSuggestionRepositoryInterface
+        factory: App\Infrastructure\CookieSuggestion\CookieSuggestionRepository
+    -
+        type: App\Domain\CookieSuggestion\CheckSuggestionNameAndDomainUniquenessInterface
+        factory: App\Infrastructure\CookieSuggestion\CheckSuggestionNameAndDomainUniqueness
 
-	# infra: doctrine
-	-
-		autowired: no
-		factory: App\Infrastructure\CookieSuggestion\Doctrine\ReadModel\FindCookieSuggestionsForResolvingQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\CookieSuggestion\Doctrine\ReadModel\GetCookieSuggestionByIdQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\CookieSuggestion\Doctrine\ReadModel\GetCookieSuggestionByProjectIdAndNameAndDomainQueryHandler
+    # infra: doctrine
+    -
+        autowired: no
+        factory: App\Infrastructure\CookieSuggestion\Doctrine\ReadModel\FindCookieSuggestionsForResolvingQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\CookieSuggestion\Doctrine\ReadModel\GetCookieSuggestionByIdQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\CookieSuggestion\Doctrine\ReadModel\GetCookieSuggestionByProjectIdAndNameAndDomainQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:
-	mapping:
-		App\Domain\CookieSuggestion\: %appDir%/Infrastructure/CookieSuggestion/Doctrine/Mapping
+    mapping:
+        App\Domain\CookieSuggestion\: %appDir%/Infrastructure/CookieSuggestion/Doctrine/Mapping
 
 # infra: dbal types
 nettrine.dbal:
-	connection:
-		types:
-			App\Domain\CookieSuggestion\ValueObject\AcceptedCategories:
-				class: App\Infrastructure\CookieSuggestion\Doctrine\DbalType\AcceptedCategoriesType
-				commented: yes
+    connection:
+        types:
+            App\Domain\CookieSuggestion\ValueObject\AcceptedCategories:
+                class: App\Infrastructure\CookieSuggestion\Doctrine\DbalType\AcceptedCategoriesType
+                commented: yes
 
-			App\Domain\CookieSuggestion\ValueObject\CookieOccurrenceId:
-				class: App\Infrastructure\CookieSuggestion\Doctrine\DbalType\CookieOccurrenceIdType
-				commented: yes
+            App\Domain\CookieSuggestion\ValueObject\CookieOccurrenceId:
+                class: App\Infrastructure\CookieSuggestion\Doctrine\DbalType\CookieOccurrenceIdType
+                commented: yes
 
-			App\Domain\CookieSuggestion\ValueObject\CookieSuggestionId:
-				class: App\Infrastructure\CookieSuggestion\Doctrine\DbalType\CookieSuggestionIdType
-				commented: yes
+            App\Domain\CookieSuggestion\ValueObject\CookieSuggestionId:
+                class: App\Infrastructure\CookieSuggestion\Doctrine\DbalType\CookieSuggestionIdType
+                commented: yes
 
-			App\Domain\CookieSuggestion\ValueObject\Domain:
-				class: App\Infrastructure\CookieSuggestion\Doctrine\DbalType\DomainType
-				commented: yes
+            App\Domain\CookieSuggestion\ValueObject\Domain:
+                class: App\Infrastructure\CookieSuggestion\Doctrine\DbalType\DomainType
+                commented: yes
 
-			App\Domain\CookieSuggestion\ValueObject\FoundOnUrl:
-				class: App\Infrastructure\CookieSuggestion\Doctrine\DbalType\FoundOnUrlType
-				commented: yes
+            App\Domain\CookieSuggestion\ValueObject\FoundOnUrl:
+                class: App\Infrastructure\CookieSuggestion\Doctrine\DbalType\FoundOnUrlType
+                commented: yes
 
-			App\Domain\CookieSuggestion\ValueObject\Name:
-				class: App\Infrastructure\CookieSuggestion\Doctrine\DbalType\NameType
-				commented: yes
+            App\Domain\CookieSuggestion\ValueObject\Name:
+                class: App\Infrastructure\CookieSuggestion\Doctrine\DbalType\NameType
+                commented: yes
 
-			App\Domain\CookieSuggestion\ValueObject\ScenarioName:
-				class: App\Infrastructure\CookieSuggestion\Doctrine\DbalType\ScenarioNameType
-				commented: yes
+            App\Domain\CookieSuggestion\ValueObject\ScenarioName:
+                class: App\Infrastructure\CookieSuggestion\Doctrine\DbalType\ScenarioNameType
+                commented: yes

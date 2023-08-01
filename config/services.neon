@@ -1,107 +1,107 @@
 services:
-	# Latte
-	bridge.latte.internal_css_renderer: App\Bridge\Latte\InternalCssRenderer(
-		publicDir: %wwwDir%
-		debugMode: %debugMode%
-	)
+    # Latte
+    bridge.latte.internal_css_renderer: App\Bridge\Latte\InternalCssRenderer(
+        publicDir: %wwwDir%
+        debugMode: %debugMode%
+    )
 
-	bridge.latte.number_formatter_filter: App\Bridge\Latte\NumberFormatterFilter
+    bridge.latte.number_formatter_filter: App\Bridge\Latte\NumberFormatterFilter
 
-	# Routing
-	routing.router: App\Web\Router\RouterFactory()::create()
+    # Routing
+    routing.router: App\Web\Router\RouterFactory()::create()
 
-	# Web\Ui
-	- App\Web\Ui\Form\RecaptchaResolver(::env(RECAPTCHA_ENABLED|bool, no))
-	-
-		type: App\Web\Ui\Form\FormFactoryInterface
-		factory: App\Web\Ui\Form\FormFactory
-	-
-		type: App\Web\Ui\DataGrid\DataGridFactoryInterface
-		factory: App\Web\Ui\DataGrid\DataGridFactory
+    # Web\Ui
+    - App\Web\Ui\Form\RecaptchaResolver(::env(RECAPTCHA_ENABLED|bool, no))
+    -
+        type: App\Web\Ui\Form\FormFactoryInterface
+        factory: App\Web\Ui\Form\FormFactory
+    -
+        type: App\Web\Ui\DataGrid\DataGridFactoryInterface
+        factory: App\Web\Ui\DataGrid\DataGridFactory
 
-	-
-		type: App\Web\Ui\Modal\Dispatcher\ModalDispatcherInterface
-		factory: App\Web\Ui\Modal\Dispatcher\ModalDispatcher
+    -
+        type: App\Web\Ui\Modal\Dispatcher\ModalDispatcherInterface
+        factory: App\Web\Ui\Modal\Dispatcher\ModalDispatcher
 
-	- App\Web\Ui\Modal\ModalsControlFactoryInterface
-	- App\Web\Ui\Modal\Confirm\ConfirmModalControlFactoryInterface
+    - App\Web\Ui\Modal\ModalsControlFactoryInterface
+    - App\Web\Ui\Modal\Confirm\ConfirmModalControlFactoryInterface
 
-	# Web\Control
-	-
-		implement: App\Web\Control\Gtm\GtmControlFactoryInterface
-		factory: App\Web\Control\Gtm\GtmControl(::env(GTM_CONTAINER_ID, ''))
+    # Web\Control
+    -
+        implement: App\Web\Control\Gtm\GtmControlFactoryInterface
+        factory: App\Web\Control\Gtm\GtmControl(::env(GTM_CONTAINER_ID, ''))
 
-	- App\Web\Control\Footer\FooterControlFactoryInterface
-	- App\Web\Control\Localization\LocalizationControlFactoryInterface
+    - App\Web\Control\Footer\FooterControlFactoryInterface
+    - App\Web\Control\Localization\LocalizationControlFactoryInterface
 
-	# Web\FrontModule
-	- App\Web\FrontModule\Control\SignIn\SignInControlFactoryInterface
-	- App\Web\FrontModule\Control\ForgotPassword\ForgotPasswordControlFactoryInterface
-	- App\Web\FrontModule\Control\ResetPassword\ResetPasswordControlFactoryInterface
+    # Web\FrontModule
+    - App\Web\FrontModule\Control\SignIn\SignInControlFactoryInterface
+    - App\Web\FrontModule\Control\ForgotPassword\ForgotPasswordControlFactoryInterface
+    - App\Web\FrontModule\Control\ResetPassword\ResetPasswordControlFactoryInterface
 
-	# Web\AdminModule
-	- App\Web\AdminModule\Control\ExportForm\ExportFormControlFactoryInterface
-	- App\Web\AdminModule\Control\ExportForm\ExportDropdownControlFactoryInterface
+    # Web\AdminModule
+    - App\Web\AdminModule\Control\ExportForm\ExportFormControlFactoryInterface
+    - App\Web\AdminModule\Control\ExportForm\ExportDropdownControlFactoryInterface
 
-	# Web\AdminModule\ApplicationModule
-	- App\Web\AdminModule\ApplicationModule\Control\LocalizationSettingsForm\LocalizationSettingsFormControlFactoryInterface
-	- App\Web\AdminModule\ApplicationModule\Control\ApiCacheSettingsForm\ApiCacheSettingsFormControlFactoryInterface
-	- App\Web\AdminModule\ApplicationModule\Control\CrawlerSettingsForm\CrawlerSettingsFormControlFactoryInterface
+    # Web\AdminModule\ApplicationModule
+    - App\Web\AdminModule\ApplicationModule\Control\LocalizationSettingsForm\LocalizationSettingsFormControlFactoryInterface
+    - App\Web\AdminModule\ApplicationModule\Control\ApiCacheSettingsForm\ApiCacheSettingsFormControlFactoryInterface
+    - App\Web\AdminModule\ApplicationModule\Control\CrawlerSettingsForm\CrawlerSettingsFormControlFactoryInterface
 
-	# Web\AdminModule\CrawlerModule
-	- App\Web\AdminModule\CrawlerModule\Control\ScenarioList\ScenarioListControlFactoryInterface
-	- App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerList\ScenarioSchedulerListControlFactoryInterface
-	- App\Web\AdminModule\CrawlerModule\Control\ScenarioDetail\ScenarioDetailControlFactoryInterface
-	- App\Web\AdminModule\CrawlerModule\Control\ScenarioDetail\ScenarioDetailModalControlFactoryInterface
-	-
-		implement: App\Web\AdminModule\CrawlerModule\Control\RunScenarioForm\RunScenarioFormControlFactoryInterface
-		arguments:
-			projectUrl: ::env(PROJECT_URL)
-	- App\Web\AdminModule\CrawlerModule\Control\RunScenarioForm\RunScenarioFormModalControlFactoryInterface
-	-
-		implement: App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerForm\ScenarioSchedulerFormControlFactoryInterface
-		arguments:
-			projectUrl: ::env(PROJECT_URL)
-	- App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerForm\ScenarioSchedulerFormModalControlFactoryInterface
-	- App\Web\AdminModule\CrawlerModule\Control\DeleteScenarioScheduler\DeleteScenarioSchedulerModalControlFactoryInterface
-	- App\Web\AdminModule\CrawlerModule\Control\AbortScenario\AbortScenarioModalControlFactoryInterface
+    # Web\AdminModule\CrawlerModule
+    - App\Web\AdminModule\CrawlerModule\Control\ScenarioList\ScenarioListControlFactoryInterface
+    - App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerList\ScenarioSchedulerListControlFactoryInterface
+    - App\Web\AdminModule\CrawlerModule\Control\ScenarioDetail\ScenarioDetailControlFactoryInterface
+    - App\Web\AdminModule\CrawlerModule\Control\ScenarioDetail\ScenarioDetailModalControlFactoryInterface
+    -
+        implement: App\Web\AdminModule\CrawlerModule\Control\RunScenarioForm\RunScenarioFormControlFactoryInterface
+        arguments:
+            projectUrl: ::env(PROJECT_URL)
+    - App\Web\AdminModule\CrawlerModule\Control\RunScenarioForm\RunScenarioFormModalControlFactoryInterface
+    -
+        implement: App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerForm\ScenarioSchedulerFormControlFactoryInterface
+        arguments:
+            projectUrl: ::env(PROJECT_URL)
+    - App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerForm\ScenarioSchedulerFormModalControlFactoryInterface
+    - App\Web\AdminModule\CrawlerModule\Control\DeleteScenarioScheduler\DeleteScenarioSchedulerModalControlFactoryInterface
+    - App\Web\AdminModule\CrawlerModule\Control\AbortScenario\AbortScenarioModalControlFactoryInterface
 
-	# Web\AdminModule\AccountModule
-	- App\Web\AdminModule\ProfileModule\Control\BasicInformation\BasicInformationControlFactoryInterface
+    # Web\AdminModule\AccountModule
+    - App\Web\AdminModule\ProfileModule\Control\BasicInformation\BasicInformationControlFactoryInterface
 
-	# Web\AdminModule\UserModule
-	- App\Web\AdminModule\UserModule\Control\UserList\UserListControlFactoryInterface
-	- App\Web\AdminModule\UserModule\Control\PasswordRequestList\PasswordRequestListControlFactoryInterface
-	- App\Web\AdminModule\UserModule\Control\UserForm\UserFormControlFactoryInterface
-	- App\Web\AdminModule\ProfileModule\Control\PasswordChange\PasswordChangeControlFactoryInterface
-	- App\Web\AdminModule\UserModule\Control\NotificationPreferences\NotificationPreferencesControlFactoryInterface
+    # Web\AdminModule\UserModule
+    - App\Web\AdminModule\UserModule\Control\UserList\UserListControlFactoryInterface
+    - App\Web\AdminModule\UserModule\Control\PasswordRequestList\PasswordRequestListControlFactoryInterface
+    - App\Web\AdminModule\UserModule\Control\UserForm\UserFormControlFactoryInterface
+    - App\Web\AdminModule\ProfileModule\Control\PasswordChange\PasswordChangeControlFactoryInterface
+    - App\Web\AdminModule\UserModule\Control\NotificationPreferences\NotificationPreferencesControlFactoryInterface
 
-	# Web\AdminModule\CookieModule
-	- App\Web\AdminModule\CookieModule\Control\CategoryList\CategoryListControlFactoryInterface
-	- App\Web\AdminModule\CookieModule\Control\CategoryForm\CategoryFormControlFactoryInterface
-	- App\Web\AdminModule\CookieModule\Control\ProviderList\ProviderListControlFactoryInterface
-	- App\Web\AdminModule\CookieModule\Control\ProviderForm\ProviderFormControlFactoryInterface
-	- App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControlFactoryInterface
-	- App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormControlFactoryInterface
-	- App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControlFactoryInterface
-	- App\Web\AdminModule\CookieModule\Control\ProjectCookieSuggestionList\ProjectCookieSuggestionListControlFactoryInterface
+    # Web\AdminModule\CookieModule
+    - App\Web\AdminModule\CookieModule\Control\CategoryList\CategoryListControlFactoryInterface
+    - App\Web\AdminModule\CookieModule\Control\CategoryForm\CategoryFormControlFactoryInterface
+    - App\Web\AdminModule\CookieModule\Control\ProviderList\ProviderListControlFactoryInterface
+    - App\Web\AdminModule\CookieModule\Control\ProviderForm\ProviderFormControlFactoryInterface
+    - App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControlFactoryInterface
+    - App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormControlFactoryInterface
+    - App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControlFactoryInterface
+    - App\Web\AdminModule\CookieModule\Control\ProjectCookieSuggestionList\ProjectCookieSuggestionListControlFactoryInterface
 
-	# Web\AdminModule\ImportModule
-	- App\Web\AdminModule\ImportModule\Control\ImportDetail\ImportDetailControlFactoryInterface
-	- App\Web\AdminModule\ImportModule\Control\ImportDetail\ImportDetailModalControlFactoryInterface
-	- App\Web\AdminModule\ImportModule\Control\ImportForm\ImportFormControlFactoryInterface
-	- App\Web\AdminModule\ImportModule\Control\ImportList\ImportListControlFactoryInterface
-	- App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControlFactoryInterface
+    # Web\AdminModule\ImportModule
+    - App\Web\AdminModule\ImportModule\Control\ImportDetail\ImportDetailControlFactoryInterface
+    - App\Web\AdminModule\ImportModule\Control\ImportDetail\ImportDetailModalControlFactoryInterface
+    - App\Web\AdminModule\ImportModule\Control\ImportForm\ImportFormControlFactoryInterface
+    - App\Web\AdminModule\ImportModule\Control\ImportList\ImportListControlFactoryInterface
+    - App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControlFactoryInterface
 
-	# Web\AdminModule\ProjectModule
-	- App\Web\AdminModule\ProjectModule\Control\ConsentList\ConsentListControlFactoryInterface
-	- App\Web\AdminModule\ProjectModule\Control\ConsentSettingsList\ConsentSettingsListControlFactoryInterface
-	- App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryControlFactoryInterface
-	- App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryModalControlFactoryInterface
-	- App\Web\AdminModule\ProjectModule\Control\ConsentSettingsDetail\ConsentSettingsDetailControlFactoryInterface
-	- App\Web\AdminModule\ProjectModule\Control\ConsentSettingsDetail\ConsentSettingsDetailModalControlFactoryInterface
-	- App\Web\AdminModule\ProjectModule\Control\ProjectForm\ProjectFormControlFactoryInterface
-	- App\Web\AdminModule\ProjectModule\Control\DeleteProject\DeleteProjectControlFactoryInterface
-	- App\Web\AdminModule\ProjectModule\Control\ProviderForm\ProviderFormControlFactoryInterface
-	- App\Web\AdminModule\ProjectModule\Control\OtherProvidersForm\OtherProvidersFormControlFactoryInterface
-	- App\Web\AdminModule\ProjectModule\Control\TemplatesForm\TemplatesFormControlFactoryInterface
+    # Web\AdminModule\ProjectModule
+    - App\Web\AdminModule\ProjectModule\Control\ConsentList\ConsentListControlFactoryInterface
+    - App\Web\AdminModule\ProjectModule\Control\ConsentSettingsList\ConsentSettingsListControlFactoryInterface
+    - App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryControlFactoryInterface
+    - App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryModalControlFactoryInterface
+    - App\Web\AdminModule\ProjectModule\Control\ConsentSettingsDetail\ConsentSettingsDetailControlFactoryInterface
+    - App\Web\AdminModule\ProjectModule\Control\ConsentSettingsDetail\ConsentSettingsDetailModalControlFactoryInterface
+    - App\Web\AdminModule\ProjectModule\Control\ProjectForm\ProjectFormControlFactoryInterface
+    - App\Web\AdminModule\ProjectModule\Control\DeleteProject\DeleteProjectControlFactoryInterface
+    - App\Web\AdminModule\ProjectModule\Control\ProviderForm\ProviderFormControlFactoryInterface
+    - App\Web\AdminModule\ProjectModule\Control\OtherProvidersForm\OtherProvidersFormControlFactoryInterface
+    - App\Web\AdminModule\ProjectModule\Control\TemplatesForm\TemplatesFormControlFactoryInterface

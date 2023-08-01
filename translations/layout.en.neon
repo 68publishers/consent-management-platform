@@ -3,51 +3,51 @@ open_sidebar: Open the main menu
 close_sidebar: Close the main menu
 
 sidebar:
-	dashboard: Dashboard
-	users: Users
-	users_users: Users
-	users_password_requests: New password requests
-	application_settings: Settings
-	crawler: Crawler
-	crawler_scenario_schedulers: Scenario scheduling
-	crawler_scenarios: Running scenarios
-	cookies: Cookies
-	cookies_categories: Categories
-	cookies_providers: Providers
-	cookies_cookies: List of cookies
-	cookies_found_cookies: Cookie suggestions
-	imports: Imports
-	projects: Projects
+    dashboard: Dashboard
+    users: Users
+    users_users: Users
+    users_password_requests: New password requests
+    application_settings: Settings
+    crawler: Crawler
+    crawler_scenario_schedulers: Scenario scheduling
+    crawler_scenarios: Running scenarios
+    cookies: Cookies
+    cookies_categories: Categories
+    cookies_providers: Providers
+    cookies_cookies: List of cookies
+    cookies_found_cookies: Cookie suggestions
+    imports: Imports
+    projects: Projects
 
 sidebar_project:
-	consents: Consents
-	consent_settings: Cookie widgets
-	cookies: Cookies
-	cookies_providers: Providers
-	cookies_cookies: Project cookies
-	cookies_service_cookies: Service cookies
-	integration: Integration
-	edit_project: Edit project
+    consents: Consents
+    consent_settings: Cookie widgets
+    cookies: Cookies
+    cookies_providers: Providers
+    cookies_cookies: Project cookies
+    cookies_service_cookies: Service cookies
+    integration: Integration
+    edit_project: Edit project
 
 profile:
-	settings: User account
-	sign_out: Sign out
+    settings: User account
+    sign_out: Sign out
 
 role_name:
-	admin: Admin
-	manager: Manager
+    admin: Admin
+    manager: Manager
 
 cookie_provider_type:
-	1st_party: 1st party
-	3rd_party: 3rd party
+    1st_party: 1st party
+    3rd_party: 3rd party
 
 alert:
-	missing_default_locale:
-		text: The default locale for the application is not set.
-		link_text: Please set it in the app settings.
-	missing_default_project_locale:
-		text: The default locale for this project is not set.
-		link_text: Please set it in the app settings.
+    missing_default_locale:
+        text: The default locale for the application is not set.
+        link_text: Please set it in the app settings.
+    missing_default_project_locale:
+        text: The default locale for this project is not set.
+        link_text: Please set it in the app settings.
 
 message:
-	locale_change_failed: The language could not be changed.
+    locale_change_failed: The language could not be changed.

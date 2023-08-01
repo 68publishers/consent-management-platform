@@ -2,54 +2,54 @@ visit_cmp: Navštívit CMP
 manage_notifications: Nastavení notifikací
 
 password_change_requested:
-	subject: Žádost o změnu hesla
-	header_title: Žádost o změnu hesla
-	content: '''
-	<p>Zažádali jste o změnu hesla. Pokud jste tak opravdu učinili vy, klikněte pro nastavení nového:</p>
-	<p class="text-center">
-		<a href="%resetLink%" class="btn btn-primary">Nastavit nové heslo</a>
-	</p>
-	<p>Pokud jste nechtěli obnovit heslo, můžete tento e-mail jednoduše ignorovat, vaše heslo se nezmění.</p>
-	<p>Požadavek pro změnu hesla je platný do <strong>%expireAt%</strong></p>
-	<hr>
-	<p class="text-light text-sm">Tlačíko “Nastavit nové heslo” nefugnuje?</p>
-	<p class="text-light text-sm">Jednoduše zkopírujte následujcí odkaz do webového prohlížeče:<br><strong>%resetLink%</strong></p>
-	'''
+    subject: Žádost o změnu hesla
+    header_title: Žádost o změnu hesla
+    content: '''
+    <p>Zažádali jste o změnu hesla. Pokud jste tak opravdu učinili vy, klikněte pro nastavení nového:</p>
+    <p class="text-center">
+        <a href="%resetLink%" class="btn btn-primary">Nastavit nové heslo</a>
+    </p>
+    <p>Pokud jste nechtěli obnovit heslo, můžete tento e-mail jednoduše ignorovat, vaše heslo se nezmění.</p>
+    <p>Požadavek pro změnu hesla je platný do <strong>%expireAt%</strong></p>
+    <hr>
+    <p class="text-light text-sm">Tlačíko “Nastavit nové heslo” nefugnuje?</p>
+    <p class="text-light text-sm">Jednoduše zkopírujte následujcí odkaz do webového prohlížeče:<br><strong>%resetLink%</strong></p>
+    '''
 
 password_has_been_reset:
-	subject: Heslo bylo změněno
-	header_title: Heslo bylo změněno
-	content: '''
-	<p class="text-center">Heslo pro váš účet <strong>%emailAddress%</strong> bylo úspěšně změněno.</p>
-	'''
+    subject: Heslo bylo změněno
+    header_title: Heslo bylo změněno
+    content: '''
+    <p class="text-center">Heslo pro váš účet <strong>%emailAddress%</strong> bylo úspěšně změněno.</p>
+    '''
 
 weekly_overview:
-	subject: 'Týdenní přehled %formattedStartDate% - %formattedEndDate%'
-	header_title: 'Týdenní přehled<br>%formattedStartDate% - %formattedEndDate%'
-	col_name: Projekt
-	col_consents: Souhlasy
-	col_positivity: Pozitivita
-	col_providers: Poskytovatelé
-	col_cookies: Cookies
-	col_last_consent_date: Poslední souhlas
-	go_to_dashboard: Přejít na Dashboard
+    subject: 'Týdenní přehled %formattedStartDate% - %formattedEndDate%'
+    header_title: 'Týdenní přehled<br>%formattedStartDate% - %formattedEndDate%'
+    col_name: Projekt
+    col_consents: Souhlasy
+    col_positivity: Pozitivita
+    col_providers: Poskytovatelé
+    col_cookies: Cookies
+    col_last_consent_date: Poslední souhlas
+    go_to_dashboard: Přejít na Dashboard
 
 consent_decrease:
-	subject: Byl zaznamenán pokles souhlasů
-	header_title: Byl zaznamenán pokles souhlasů
-	col_name: Projekt
-	col_consents: Souhlasy
-	col_difference: Změna
-	go_to_dashboard: Přejít na Dashboard
+    subject: Byl zaznamenán pokles souhlasů
+    header_title: Byl zaznamenán pokles souhlasů
+    col_name: Projekt
+    col_consents: Souhlasy
+    col_difference: Změna
+    go_to_dashboard: Přejít na Dashboard
 
 cookie_suggestions:
-	subject: Nové návrhy cookies
-	header_title: Nové návrhy cookies
-	col_name: Název
-	col_type: Typ
-	col_domain: Doména
-	col_last_founded_at: Naposledy nalezeno
-	suggestion_type:
-		new: nová cookie
-		problematic: problematická cookie
-	go_to_suggestions: Přejít na návrhy projektu "%name%"
+    subject: Nové návrhy cookies
+    header_title: Nové návrhy cookies
+    col_name: Název
+    col_type: Typ
+    col_domain: Doména
+    col_last_founded_at: Naposledy nalezeno
+    suggestion_type:
+        new: nová cookie
+        problematic: problematická cookie
+    go_to_suggestions: Přejít na návrhy projektu "%name%"

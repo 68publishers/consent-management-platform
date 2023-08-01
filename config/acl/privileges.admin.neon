@@ -1,5 +1,5 @@
 services:
-	acl:
-		setup:
-			# everything
-			- allow(App\Domain\User\RolesEnum::ADMIN)
+    acl:
+        setup:
+            # everything
+            - allow(App\Domain\User\RolesEnum::ADMIN)
