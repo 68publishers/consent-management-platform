@@ -26,21 +26,14 @@ use SixtyEightPublishers\UserBundle\ReadModel\Query\GetUserByIdQuery;
 #[Allowed(resource: UserResource::class, privilege: UserResource::UPDATE)]
 final class EditUserPresenter extends AdminPresenter
 {
-    private UserFormControlFactoryInterface $userFormControlFactory;
-
-    private NotificationPreferencesControlFactoryInterface $notificationPreferencesControlFactory;
-
-    private QueryBusInterface $queryBus;
-
     private UserView $userView;
 
-    public function __construct(UserFormControlFactoryInterface $userFormControlFactory, NotificationPreferencesControlFactoryInterface $notificationPreferencesControlFactory, QueryBusInterface $queryBus)
-    {
+    public function __construct(
+        private readonly UserFormControlFactoryInterface $userFormControlFactory,
+        private readonly NotificationPreferencesControlFactoryInterface $notificationPreferencesControlFactory,
+        private readonly QueryBusInterface $queryBus,
+    ) {
         parent::__construct();
-
-        $this->userFormControlFactory = $userFormControlFactory;
-        $this->notificationPreferencesControlFactory = $notificationPreferencesControlFactory;
-        $this->queryBus = $queryBus;
     }
 
     /**

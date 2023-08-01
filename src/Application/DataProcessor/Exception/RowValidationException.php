@@ -8,12 +8,10 @@ use RuntimeException;
 
 final class RowValidationException extends RuntimeException implements DataReaderExceptionInterface
 {
-    private string $rowIndex;
-
-    private function __construct(string $rowIndex, string $message)
-    {
-        $this->rowIndex = $rowIndex;
-
+    private function __construct(
+        private readonly string $rowIndex,
+        string $message,
+    ) {
         parent::__construct($message);
     }
 

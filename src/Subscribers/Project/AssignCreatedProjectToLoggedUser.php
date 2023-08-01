@@ -13,15 +13,10 @@ use SixtyEightPublishers\UserBundle\Application\Authentication\Identity;
 
 final class AssignCreatedProjectToLoggedUser implements EventHandlerInterface
 {
-    private CommandBusInterface $commandBus;
-
-    private NetteUser $user;
-
-    public function __construct(CommandBusInterface $commandBus, NetteUser $user)
-    {
-        $this->commandBus = $commandBus;
-        $this->user = $user;
-    }
+    public function __construct(
+        private readonly CommandBusInterface $commandBus,
+        private readonly NetteUser $user,
+    ) {}
 
     public function __invoke(ProjectCreated $event): void
     {

@@ -28,26 +28,15 @@ final class ProviderFormControl extends Control
 {
     use FormFactoryOptionsTrait;
 
-    private ProjectView $projectView;
-
-    private FormFactoryInterface $formFactory;
-
-    private CommandBusInterface $commandBus;
-
-    private QueryBusInterface $queryBus;
-
-    private ValidLocalesProvider $validLocalesProvider;
-
     private ?CookieProviderView $default = null;
 
-    public function __construct(ProjectView $projectView, FormFactoryInterface $formFactory, CommandBusInterface $commandBus, QueryBusInterface $queryBus, ValidLocalesProvider $validLocalesProvider)
-    {
-        $this->projectView = $projectView;
-        $this->formFactory = $formFactory;
-        $this->commandBus = $commandBus;
-        $this->queryBus = $queryBus;
-        $this->validLocalesProvider = $validLocalesProvider;
-    }
+    public function __construct(
+        private readonly ProjectView $projectView,
+        private readonly FormFactoryInterface $formFactory,
+        private readonly CommandBusInterface $commandBus,
+        private readonly QueryBusInterface $queryBus,
+        private readonly ValidLocalesProvider $validLocalesProvider,
+    ) {}
 
     protected function createComponentForm(): Form
     {

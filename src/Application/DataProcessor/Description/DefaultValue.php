@@ -9,12 +9,9 @@ use Nette\Schema\Elements\Type;
 
 final class DefaultValue implements TypeDescriptorPropertyInterface
 {
-    private mixed $value;
-
-    public function __construct(mixed $value)
-    {
-        $this->value = $value;
-    }
+    public function __construct(
+        private readonly mixed $value,
+    ) {}
 
     public function applyToType(Type $type, ContextInterface $context): Type
     {

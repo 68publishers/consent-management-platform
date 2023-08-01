@@ -9,12 +9,9 @@ use Throwable;
 
 final class ExportFormProcessingFailedEvent extends Event
 {
-    private Throwable $error;
-
-    public function __construct(Throwable $error)
-    {
-        $this->error = $error;
-    }
+    public function __construct(
+        private readonly Throwable $error,
+    ) {}
 
     public function getError(): Throwable
     {

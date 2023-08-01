@@ -6,17 +6,16 @@ namespace App\Application\CookieSuggestion\Solution;
 
 final class SolutionGroup
 {
-    private string $name;
-
     /** @var non-empty-list<SolutionInterface> */
     private array $solutions;
 
     /**
      * @param non-empty-list<SolutionInterface> $solutions
      */
-    public function __construct(string $name, SolutionInterface ...$solutions)
-    {
-        $this->name = $name;
+    public function __construct(
+        private readonly string $name,
+        SolutionInterface ...$solutions,
+    ) {
         $this->solutions = $solutions;
     }
 

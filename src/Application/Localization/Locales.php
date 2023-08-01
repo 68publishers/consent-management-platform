@@ -9,17 +9,12 @@ use SixtyEightPublishers\TranslationBridge\Localization\TranslatorLocalizerInter
 
 final class Locales
 {
-    private string $vendorDir;
-
-    private TranslatorLocalizerInterface $translatorLocalizer;
-
     private array $cache = [];
 
-    public function __construct(string $vendorDir, TranslatorLocalizerInterface $translatorLocalizer)
-    {
-        $this->vendorDir = $vendorDir;
-        $this->translatorLocalizer = $translatorLocalizer;
-    }
+    public function __construct(
+        private readonly string $vendorDir,
+        private readonly TranslatorLocalizerInterface $translatorLocalizer,
+    ) {}
 
     public function get(?string $locale = null): array
     {

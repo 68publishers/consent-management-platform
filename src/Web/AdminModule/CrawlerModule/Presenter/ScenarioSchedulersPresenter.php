@@ -22,18 +22,11 @@ use SixtyEightPublishers\UserBundle\Application\Exception\IdentityException;
 #[Allowed(resource: CrawlerScenarioSchedulersResource::class, privilege: CrawlerScenarioSchedulersResource::READ)]
 final class ScenarioSchedulersPresenter extends AdminPresenter
 {
-    private ScenarioSchedulerListControlFactoryInterface $scenarioSchedulerListControlFactory;
-
-    private ScenarioSchedulerFormModalControlFactoryInterface $scenarioSchedulerFormModalControlFactory;
-
     public function __construct(
-        ScenarioSchedulerListControlFactoryInterface $scenarioSchedulerListControlFactory,
-        ScenarioSchedulerFormModalControlFactoryInterface $scenarioSchedulerFormModalControlFactory,
+        private readonly ScenarioSchedulerListControlFactoryInterface $scenarioSchedulerListControlFactory,
+        private readonly ScenarioSchedulerFormModalControlFactoryInterface $scenarioSchedulerFormModalControlFactory,
     ) {
         parent::__construct();
-
-        $this->scenarioSchedulerListControlFactory = $scenarioSchedulerListControlFactory;
-        $this->scenarioSchedulerFormModalControlFactory = $scenarioSchedulerFormModalControlFactory;
     }
 
     /**

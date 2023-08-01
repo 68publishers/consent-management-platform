@@ -9,12 +9,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class AuthenticationFailedEvent extends Event
 {
-    private AuthenticationException $exception;
-
-    public function __construct(AuthenticationException $exception)
-    {
-        $this->exception = $exception;
-    }
+    public function __construct(
+        private readonly AuthenticationException $exception,
+    ) {}
 
     public function exception(): AuthenticationException
     {

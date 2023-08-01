@@ -12,13 +12,10 @@ use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 #[Allowed(resource: ProjectConsentSettingsResource::class, privilege: ProjectConsentSettingsResource::READ)]
 final class ConsentSettingsPresenter extends SelectedProjectPresenter
 {
-    private ConsentSettingsListControlFactoryInterface $consentSettingsListControlFactory;
-
-    public function __construct(ConsentSettingsListControlFactoryInterface $consentSettingsListControlFactory)
-    {
+    public function __construct(
+        private readonly ConsentSettingsListControlFactoryInterface $consentSettingsListControlFactory,
+    ) {
         parent::__construct();
-
-        $this->consentSettingsListControlFactory = $consentSettingsListControlFactory;
     }
 
     protected function createComponentList(): ConsentSettingsListControl

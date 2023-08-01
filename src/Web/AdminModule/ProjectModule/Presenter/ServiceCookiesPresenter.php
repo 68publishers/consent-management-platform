@@ -12,13 +12,10 @@ use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 #[Allowed(resource: ProjectCookieResource::class, privilege: ProjectCookieResource::READ)]
 final class ServiceCookiesPresenter extends SelectedProjectPresenter
 {
-    private CookieListControlFactoryInterface $cookieListControlFactory;
-
-    public function __construct(CookieListControlFactoryInterface $cookieListControlFactory)
-    {
+    public function __construct(
+        private readonly CookieListControlFactoryInterface $cookieListControlFactory,
+    ) {
         parent::__construct();
-
-        $this->cookieListControlFactory = $cookieListControlFactory;
     }
 
     protected function startup(): void

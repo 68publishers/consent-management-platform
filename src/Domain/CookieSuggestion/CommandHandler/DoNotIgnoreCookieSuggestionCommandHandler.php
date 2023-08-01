@@ -11,13 +11,9 @@ use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
 
 final class DoNotIgnoreCookieSuggestionCommandHandler implements CommandHandlerInterface
 {
-    private CookieSuggestionRepositoryInterface $cookieSuggestionRepository;
-
     public function __construct(
-        CookieSuggestionRepositoryInterface $cookieSuggestionRepository,
-    ) {
-        $this->cookieSuggestionRepository = $cookieSuggestionRepository;
-    }
+        private readonly CookieSuggestionRepositoryInterface $cookieSuggestionRepository,
+    ) {}
 
     public function __invoke(DoNotIgnoreCookieSuggestionCommand $command): void
     {

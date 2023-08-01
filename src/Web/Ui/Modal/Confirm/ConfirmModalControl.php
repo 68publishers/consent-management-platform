@@ -16,18 +16,19 @@ final class ConfirmModalControl extends AbstractModalControl
     /** @var callable  */
     private $callback;
 
-    private array $args;
-
     private ?string $yesButtonText = null;
 
     private ?string $noButtonText = null;
 
-    public function __construct(Html|string $title, Html|string $question, callable $callback, array $args = [])
-    {
+    public function __construct(
+        Html|string $title,
+        Html|string $question,
+        callable $callback,
+        private readonly array $args = [],
+    ) {
         $this->title = $title instanceof Html ? $title : Html::el()->setHtml($title);
         $this->question = $question instanceof Html ? $question : Html::el()->setHtml($question);
         $this->callback = $callback;
-        $this->args = $args;
     }
 
     public function handleConfirm(array $args): void

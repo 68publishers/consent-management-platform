@@ -10,16 +10,12 @@ use DomainException;
 
 final class UserIdentifierExistsException extends DomainException
 {
-    private ConsentId $consentId;
-
-    private UserIdentifier $userIdentifier;
-
-    private function __construct(ConsentId $consentId, UserIdentifier $userIdentifier, string $message)
-    {
+    private function __construct(
+        private readonly ConsentId $consentId,
+        private readonly UserIdentifier $userIdentifier,
+        string $message,
+    ) {
         parent::__construct($message);
-
-        $this->consentId = $consentId;
-        $this->userIdentifier = $userIdentifier;
     }
 
     public static function create(ConsentId $consentId, UserIdentifier $userIdentifier): self

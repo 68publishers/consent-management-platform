@@ -6,17 +6,10 @@ namespace App\Application\CookieSuggestion\Solution;
 
 final class AssociateCookieProviderWithProject implements SolutionInterface
 {
-    private string $providerId;
-
-    private string $providerName;
-
     public function __construct(
-        string $providerId,
-        string $providerName,
-    ) {
-        $this->providerId = $providerId;
-        $this->providerName = $providerName;
-    }
+        private readonly string $providerId,
+        private readonly string $providerName,
+    ) {}
 
     public function getType(): string
     {

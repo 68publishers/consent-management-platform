@@ -16,13 +16,10 @@ use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 #[Allowed(resource: ProjectResource::class, privilege: ProjectResource::CREATE)]
 final class AddProjectPresenter extends AdminPresenter
 {
-    private ProjectFormControlFactoryInterface $projectFormControlFactory;
-
-    public function __construct(ProjectFormControlFactoryInterface $projectFormControlFactory)
-    {
+    public function __construct(
+        private readonly ProjectFormControlFactoryInterface $projectFormControlFactory,
+    ) {
         parent::__construct();
-
-        $this->projectFormControlFactory = $projectFormControlFactory;
     }
 
     public function actionDefault(): void

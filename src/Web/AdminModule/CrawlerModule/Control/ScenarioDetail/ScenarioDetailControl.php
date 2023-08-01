@@ -9,15 +9,10 @@ use SixtyEightPublishers\CrawlerClient\Controller\Scenario\ResponseBody\Scenario
 
 final class ScenarioDetailControl extends Control
 {
-    private ScenarioResponseBody $scenarioResponseBody;
-
-    private string $serializedScenarioConfig;
-
-    public function __construct(ScenarioResponseBody $scenarioResponseBody, string $serializedScenarioConfig)
-    {
-        $this->scenarioResponseBody = $scenarioResponseBody;
-        $this->serializedScenarioConfig = $serializedScenarioConfig;
-    }
+    public function __construct(
+        private readonly ScenarioResponseBody $scenarioResponseBody,
+        private readonly string $serializedScenarioConfig,
+    ) {}
 
     protected function beforeRender(): void
     {

@@ -9,15 +9,10 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class ProviderCreatedEvent extends Event
 {
-    private CookieProviderId $cookieProviderId;
-
-    private string $code;
-
-    public function __construct(CookieProviderId $cookieProviderId, string $code)
-    {
-        $this->cookieProviderId = $cookieProviderId;
-        $this->code = $code;
-    }
+    public function __construct(
+        private readonly CookieProviderId $cookieProviderId,
+        private readonly string $code,
+    ) {}
 
     public function cookieProviderId(): CookieProviderId
     {

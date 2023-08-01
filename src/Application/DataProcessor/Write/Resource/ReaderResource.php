@@ -9,16 +9,13 @@ use App\Application\DataProcessor\Read\Reader\ReaderInterface;
 
 final class ReaderResource implements ResourceInterface
 {
-    private ReaderInterface $reader;
-
-    private ?DescriptorInterface $descriptor;
-
     private $onError;
 
-    public function __construct(ReaderInterface $reader, ?DescriptorInterface $descriptor = null, ?callable $onError = null)
-    {
-        $this->reader = $reader;
-        $this->descriptor = $descriptor;
+    public function __construct(
+        private readonly ReaderInterface $reader,
+        private readonly ?DescriptorInterface $descriptor = null,
+        ?callable $onError = null,
+    ) {
         $this->onError = $onError;
     }
 

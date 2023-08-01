@@ -35,29 +35,13 @@ use Ublaboo\DataGrid\Exception\DataGridException;
 
 final class ScenarioSchedulerListControl extends Control
 {
-    private DataGridFactoryInterface $dataGridFactory;
-
-    private CrawlerClientProvider $crawlerClientProvider;
-
-    private QueryBusInterface $queryBus;
-
-    private ScenarioSchedulerFormModalControlFactoryInterface $scenarioSchedulerFormModalControlFactory;
-
-    private DeleteScenarioSchedulerModalControlFactoryInterface $deleteScenarioSchedulerModalControlFactory;
-
     public function __construct(
-        DataGridFactoryInterface $dataGridFactory,
-        CrawlerClientProvider $crawlerClientProvider,
-        QueryBusInterface $queryBus,
-        ScenarioSchedulerFormModalControlFactoryInterface $scenarioSchedulerFormModalControlFactory,
-        DeleteScenarioSchedulerModalControlFactoryInterface $deleteScenarioSchedulerModalControlFactory,
-    ) {
-        $this->dataGridFactory = $dataGridFactory;
-        $this->crawlerClientProvider = $crawlerClientProvider;
-        $this->queryBus = $queryBus;
-        $this->scenarioSchedulerFormModalControlFactory = $scenarioSchedulerFormModalControlFactory;
-        $this->deleteScenarioSchedulerModalControlFactory = $deleteScenarioSchedulerModalControlFactory;
-    }
+        private readonly DataGridFactoryInterface $dataGridFactory,
+        private readonly CrawlerClientProvider $crawlerClientProvider,
+        private readonly QueryBusInterface $queryBus,
+        private readonly ScenarioSchedulerFormModalControlFactoryInterface $scenarioSchedulerFormModalControlFactory,
+        private readonly DeleteScenarioSchedulerModalControlFactoryInterface $deleteScenarioSchedulerModalControlFactory,
+    ) {}
 
     public function handleChangeActiveState(string $scenarioSchedulerId, bool $active): void
     {

@@ -15,21 +15,14 @@ use Throwable;
 
 final class AbortScenarioModalControl extends AbstractModalControl
 {
-    private string $scenarioId;
-
-    private CrawlerClientProvider $crawlerClientProvider;
-
     private ?ScenarioResponse $scenarioResponse = null;
 
     private ?Throwable $responseError = null;
 
     public function __construct(
-        string $scenarioId,
-        CrawlerClientProvider $crawlerClientProvider,
-    ) {
-        $this->scenarioId = $scenarioId;
-        $this->crawlerClientProvider = $crawlerClientProvider;
-    }
+        private readonly string $scenarioId,
+        private readonly CrawlerClientProvider $crawlerClientProvider,
+    ) {}
 
     public function handleAbort(): void
     {

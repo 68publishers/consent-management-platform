@@ -17,13 +17,10 @@ use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 #[Allowed(resource: ProjectIntegrationResource::class, privilege: ProjectIntegrationResource::READ)]
 final class IntegrationPresenter extends SelectedProjectPresenter
 {
-    private TemplatesFormControlFactoryInterface $templatesFormControlFactory;
-
-    public function __construct(TemplatesFormControlFactoryInterface $templatesFormControlFactory)
-    {
+    public function __construct(
+        private readonly TemplatesFormControlFactoryInterface $templatesFormControlFactory,
+    ) {
         parent::__construct();
-
-        $this->templatesFormControlFactory = $templatesFormControlFactory;
     }
 
     protected function beforeRender(): void

@@ -10,13 +10,9 @@ final class CookieWasNeverFound implements ProblemInterface
 {
     public const TYPE = 'cookie_was_never_found';
 
-    private Solutions $solutions;
-
     public function __construct(
-        Solutions $solutions,
-    ) {
-        $this->solutions = $solutions;
-    }
+        private readonly Solutions $solutions,
+    ) {}
 
     public function getType(): string
     {

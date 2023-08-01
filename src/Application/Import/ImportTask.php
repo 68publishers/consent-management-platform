@@ -13,15 +13,14 @@ final class ImportTask extends Task
     /** @var array<RowInterface> */
     private array $rows;
 
-    private ?ImporterInterface $importer;
-
     /**
      * @param array<RowInterface> $rows
      */
-    public function __construct(array $rows, ImporterInterface $importer)
-    {
+    public function __construct(
+        array $rows,
+        private ?ImporterInterface $importer,
+    ) {
         $this->rows = (static fn (RowInterface ...$rows): array => $rows)(...$rows);
-        $this->importer = $importer;
     }
 
     public function configure(): void

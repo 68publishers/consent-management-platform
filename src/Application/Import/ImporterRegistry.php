@@ -14,15 +14,14 @@ final class ImporterRegistry implements ImporterInterface
     /** @var array<ImporterInterface> */
     private array $importers;
 
-    private LoggerInterface $logger;
-
     /**
      * @param array<ImporterInterface> $importers
      */
-    public function __construct(array $importers, LoggerInterface $logger)
-    {
+    public function __construct(
+        array $importers,
+        private readonly LoggerInterface $logger,
+    ) {
         $this->importers = (static fn (ImporterInterface ...$importers): array => $importers)(...$importers);
-        $this->logger = $logger;
     }
 
     public function accepts(RowInterface $row): bool

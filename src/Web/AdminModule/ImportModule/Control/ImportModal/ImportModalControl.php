@@ -23,23 +23,14 @@ final class ImportModalControl extends AbstractModalControl
     /** @persistent */
     public string $importId  = '';
 
-    private ImportFormControlFactoryInterface $importFormControlFactory;
-
-    private ImportDetailControlFactoryInterface $importDetailControlFactory;
-
-    private QueryBusInterface $queryBus;
-
-    private ?string $strictImportType;
-
     private ?ImportView $importView = null;
 
-    public function __construct(ImportFormControlFactoryInterface $importFormControlFactory, ImportDetailControlFactoryInterface $importDetailControlFactory, QueryBusInterface $queryBus, ?string $strictImportType = null)
-    {
-        $this->importFormControlFactory = $importFormControlFactory;
-        $this->importDetailControlFactory = $importDetailControlFactory;
-        $this->queryBus = $queryBus;
-        $this->strictImportType = $strictImportType;
-    }
+    public function __construct(
+        private readonly ImportFormControlFactoryInterface $importFormControlFactory,
+        private readonly ImportDetailControlFactoryInterface $importDetailControlFactory,
+        private readonly QueryBusInterface $queryBus,
+        private readonly ?string $strictImportType = null,
+    ) {}
 
     protected function beforeRender(): void
     {

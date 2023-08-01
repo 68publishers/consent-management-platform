@@ -22,12 +22,9 @@ use Nette\Schema\ValidationException;
 
 abstract class AbstractReader implements ReaderInterface
 {
-    protected ResourceInterface $resource;
-
-    protected function __construct(ResourceInterface $resource)
-    {
-        $this->resource = $resource;
-    }
+    protected function __construct(
+        protected ResourceInterface $resource,
+    ) {}
 
     /**
      * @throws DataReaderExceptionInterface

@@ -9,18 +9,11 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class CategoryUpdatedEvent extends Event
 {
-    private CategoryId $categoryId;
-
-    private string $oldCode;
-
-    private string $newCode;
-
-    public function __construct(CategoryId $categoryId, string $oldCode, string $newCode)
-    {
-        $this->categoryId = $categoryId;
-        $this->oldCode = $oldCode;
-        $this->newCode = $newCode;
-    }
+    public function __construct(
+        private readonly CategoryId $categoryId,
+        private readonly string $oldCode,
+        private readonly string $newCode,
+    ) {}
 
     public function categoryId(): CategoryId
     {

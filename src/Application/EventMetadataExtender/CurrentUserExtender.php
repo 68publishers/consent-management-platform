@@ -12,12 +12,9 @@ final class CurrentUserExtender implements EventMetadataExtenderInterface
 {
     public const KEY_USER_ID = 'user_id';
 
-    private NetteUser $user;
-
-    public function __construct(NetteUser $user)
-    {
-        $this->user = $user;
-    }
+    public function __construct(
+        private readonly NetteUser $user,
+    ) {}
 
     public function extendMetadata(AbstractDomainEvent $event): AbstractDomainEvent
     {

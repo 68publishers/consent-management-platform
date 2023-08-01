@@ -9,12 +9,9 @@ use Nette\Schema\Elements\Type;
 
 final class Pattern implements TypeDescriptorPropertyInterface
 {
-    private string $pattern;
-
-    public function __construct(string $pattern)
-    {
-        $this->pattern = $pattern;
-    }
+    public function __construct(
+        private readonly string $pattern,
+    ) {}
 
     public function applyToType(Type $type, ContextInterface $context): Type
     {

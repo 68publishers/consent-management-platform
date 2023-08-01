@@ -13,15 +13,10 @@ use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
 
 final class StoreConsentCommandHandler implements CommandHandlerInterface
 {
-    private ConsentRepositoryInterface $consentRepository;
-
-    private CheckUserIdentifierNotExistsInterface $checkUserIdentifierNotExists;
-
-    public function __construct(ConsentRepositoryInterface $consentRepository, CheckUserIdentifierNotExistsInterface $checkUserIdentifierNotExists)
-    {
-        $this->consentRepository = $consentRepository;
-        $this->checkUserIdentifierNotExists = $checkUserIdentifierNotExists;
-    }
+    public function __construct(
+        private readonly ConsentRepositoryInterface $consentRepository,
+        private readonly CheckUserIdentifierNotExistsInterface $checkUserIdentifierNotExists,
+    ) {}
 
     public function __invoke(StoreConsentCommand $command): void
     {

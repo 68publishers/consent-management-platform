@@ -9,12 +9,9 @@ use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
 
 final class FooterControl extends Control
 {
-    private GitRepositoryInterface $gitRepository;
-
-    public function __construct(GitRepositoryInterface $gitRepository)
-    {
-        $this->gitRepository = $gitRepository;
-    }
+    public function __construct(
+        private readonly GitRepositoryInterface $gitRepository,
+    ) {}
 
     protected function beforeRender(): void
     {

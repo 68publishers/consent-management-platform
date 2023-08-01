@@ -9,12 +9,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class ProjectDeletedEvent extends Event
 {
-    private ProjectId $projectId;
-
-    public function __construct(ProjectId $projectId)
-    {
-        $this->projectId = $projectId;
-    }
+    public function __construct(
+        private readonly ProjectId $projectId,
+    ) {}
 
     public function projectId(): ProjectId
     {

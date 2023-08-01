@@ -20,16 +20,11 @@ use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 #[Allowed(resource: ProjectCookieProviderResource::class, privilege: ProjectCookieProviderResource::UPDATE)]
 final class ProvidersPresenter extends SelectedProjectPresenter
 {
-    private ProviderFormControlFactoryInterface $providerFormControlFactory;
-
-    private OtherProvidersFormControlFactoryInterface $otherProvidersFormControlFactory;
-
-    public function __construct(ProviderFormControlFactoryInterface $providerFormControlFactory, OtherProvidersFormControlFactoryInterface $otherProvidersFormControlFactory)
-    {
+    public function __construct(
+        private readonly ProviderFormControlFactoryInterface $providerFormControlFactory,
+        private readonly OtherProvidersFormControlFactoryInterface $otherProvidersFormControlFactory,
+    ) {
         parent::__construct();
-
-        $this->providerFormControlFactory = $providerFormControlFactory;
-        $this->otherProvidersFormControlFactory = $otherProvidersFormControlFactory;
     }
 
     protected function createComponentProviderForm(): ProviderFormControl

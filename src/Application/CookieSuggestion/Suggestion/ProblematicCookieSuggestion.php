@@ -8,12 +8,6 @@ use App\Application\CookieSuggestion\Problem\ProblemInterface;
 
 final class ProblematicCookieSuggestion extends AbstractSuggestion
 {
-    /** @var non-empty-list<ExistingCookie> */
-    private array $existingCookies;
-
-    /** @var array<ProblemInterface> */
-    public array $problems;
-
     /**
      * @param non-empty-list<CookieOccurrence> $occurrences
      * @param non-empty-list<ExistingCookie>   $existingCookies
@@ -24,14 +18,11 @@ final class ProblematicCookieSuggestion extends AbstractSuggestion
         string $suggestionName,
         string $suggestionDomain,
         array $occurrences,
-        array $existingCookies,
-        array $problems,
+        private readonly array $existingCookies,
+        public array $problems,
         bool $virtual = false,
     ) {
         parent::__construct($suggestionId, $virtual, $suggestionName, $suggestionDomain, $occurrences);
-
-        $this->existingCookies = $existingCookies;
-        $this->problems = $problems;
     }
 
     /**

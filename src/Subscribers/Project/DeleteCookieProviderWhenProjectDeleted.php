@@ -16,15 +16,10 @@ use SixtyEightPublishers\ArchitectureBundle\Event\EventHandlerInterface;
 
 final class DeleteCookieProviderWhenProjectDeleted implements EventHandlerInterface
 {
-    private CommandBusInterface $commandBus;
-
-    private QueryBusInterface $queryBus;
-
-    public function __construct(CommandBusInterface $commandBus, QueryBusInterface $queryBus)
-    {
-        $this->commandBus = $commandBus;
-        $this->queryBus = $queryBus;
-    }
+    public function __construct(
+        private readonly CommandBusInterface $commandBus,
+        private readonly QueryBusInterface $queryBus,
+    ) {}
 
     public function __invoke(AggregateDeleted $event): void
     {

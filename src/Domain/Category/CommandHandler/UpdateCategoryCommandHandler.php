@@ -12,15 +12,10 @@ use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
 
 final class UpdateCategoryCommandHandler implements CommandHandlerInterface
 {
-    private CategoryRepositoryInterface $categoryRepository;
-
-    private CheckCodeUniquenessInterface $checkCodeUniqueness;
-
-    public function __construct(CategoryRepositoryInterface $categoryRepository, CheckCodeUniquenessInterface $checkCodeUniqueness)
-    {
-        $this->categoryRepository = $categoryRepository;
-        $this->checkCodeUniqueness = $checkCodeUniqueness;
-    }
+    public function __construct(
+        private readonly CategoryRepositoryInterface $categoryRepository,
+        private readonly CheckCodeUniquenessInterface $checkCodeUniqueness,
+    ) {}
 
     public function __invoke(UpdateCategoryCommand $command): void
     {

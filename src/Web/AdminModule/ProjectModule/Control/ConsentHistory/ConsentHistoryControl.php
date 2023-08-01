@@ -20,21 +20,12 @@ use SixtyEightPublishers\ArchitectureBundle\EventStore\EventStoreInterface;
 
 final class ConsentHistoryControl extends Control
 {
-    private ConsentId $consentId;
-
-    private ProjectId $projectId;
-
-    private EventStoreInterface $eventStore;
-
-    private QueryBusInterface $queryBus;
-
-    public function __construct(ConsentId $consentId, ProjectId $projectId, EventStoreInterface $eventStore, QueryBusInterface $queryBus)
-    {
-        $this->consentId = $consentId;
-        $this->projectId = $projectId;
-        $this->eventStore = $eventStore;
-        $this->queryBus = $queryBus;
-    }
+    public function __construct(
+        private readonly ConsentId $consentId,
+        private readonly ProjectId $projectId,
+        private readonly EventStoreInterface $eventStore,
+        private readonly QueryBusInterface $queryBus,
+    ) {}
 
     /**
      * @throws EventStoreException

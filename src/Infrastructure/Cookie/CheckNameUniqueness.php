@@ -16,12 +16,9 @@ use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 
 final class CheckNameUniqueness implements CheckNameUniquenessInterface
 {
-    private QueryBusInterface $queryBus;
-
-    public function __construct(QueryBusInterface $queryBus)
-    {
-        $this->queryBus = $queryBus;
-    }
+    public function __construct(
+        private readonly QueryBusInterface $queryBus,
+    ) {}
 
     public function __invoke(CookieId $cookieId, Name $name, CookieProviderId $cookieProviderId, CategoryId $categoryId): void
     {

@@ -10,16 +10,12 @@ use DomainException;
 
 final class ChecksumExistsException extends DomainException
 {
-    private ConsentSettingsId $consentSettingsId;
-
-    private Checksum $checksum;
-
-    private function __construct(ConsentSettingsId $consentSettingsId, Checksum $checksum, string $message)
-    {
+    private function __construct(
+        private readonly ConsentSettingsId $consentSettingsId,
+        private readonly Checksum $checksum,
+        string $message,
+    ) {
         parent::__construct($message);
-
-        $this->consentSettingsId = $consentSettingsId;
-        $this->checksum = $checksum;
     }
 
     public static function create(ConsentSettingsId $consentSettingsId, Checksum $checksum): self

@@ -15,12 +15,9 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\QueryHandlerInterfac
 
 final class GetLatestShortIdentifierQueryHandler implements QueryHandlerInterface
 {
-    private EntityManagerInterface $em;
-
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
-    }
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+    ) {}
 
     /**
      * @throws NonUniqueResultException

@@ -13,18 +13,11 @@ use Throwable;
 
 abstract class AbstractImporter implements ImporterInterface
 {
-    protected CommandBusInterface $commandBus;
-
-    protected QueryBusInterface $queryBus;
-
-    protected LoggerInterface $logger;
-
-    public function __construct(CommandBusInterface $commandBus, QueryBusInterface $queryBus, LoggerInterface $logger)
-    {
-        $this->commandBus = $commandBus;
-        $this->queryBus = $queryBus;
-        $this->logger = $logger;
-    }
+    public function __construct(
+        protected CommandBusInterface $commandBus,
+        protected QueryBusInterface $queryBus,
+        protected LoggerInterface $logger,
+    ) {}
 
     protected function wrapRowImport(RowInterface $row, callable $importProcess): RowResult
     {

@@ -14,12 +14,9 @@ use Ublaboo\DataGrid\Exception\DataGridException;
 
 final class PasswordRequestListControl extends Control
 {
-    private DataGridFactoryInterface $dataGridFactory;
-
-    public function __construct(DataGridFactoryInterface $dataGridFactory)
-    {
-        $this->dataGridFactory = $dataGridFactory;
-    }
+    public function __construct(
+        private readonly DataGridFactoryInterface $dataGridFactory,
+    ) {}
 
     /**
      * @throws DataGridException

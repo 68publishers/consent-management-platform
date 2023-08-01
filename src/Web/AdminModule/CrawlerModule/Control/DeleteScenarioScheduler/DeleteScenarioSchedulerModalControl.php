@@ -17,17 +17,10 @@ final class DeleteScenarioSchedulerModalControl extends AbstractModalControl
 {
     use GetScenarioSchedulerResponseTrait;
 
-    private string $scenarioSchedulerId;
-
-    private CrawlerClientProvider $crawlerClientProvider;
-
     public function __construct(
-        string $scenarioSchedulerId,
-        CrawlerClientProvider $crawlerClientProvider,
-    ) {
-        $this->scenarioSchedulerId = $scenarioSchedulerId;
-        $this->crawlerClientProvider = $crawlerClientProvider;
-    }
+        private readonly string $scenarioSchedulerId,
+        private readonly CrawlerClientProvider $crawlerClientProvider,
+    ) {}
 
     public function handleDelete(): void
     {

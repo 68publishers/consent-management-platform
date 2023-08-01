@@ -22,21 +22,12 @@ final class OtherProvidersFormControl extends Control
 {
     use FormFactoryOptionsTrait;
 
-    private ProjectView $projectView;
-
-    private FormFactoryInterface $formFactory;
-
-    private CommandBusInterface $commandBus;
-
-    private QueryBusInterface $queryBus;
-
-    public function __construct(ProjectView $projectView, FormFactoryInterface $formFactory, CommandBusInterface $commandBus, QueryBusInterface $queryBus)
-    {
-        $this->projectView = $projectView;
-        $this->formFactory = $formFactory;
-        $this->commandBus = $commandBus;
-        $this->queryBus = $queryBus;
-    }
+    public function __construct(
+        private readonly ProjectView $projectView,
+        private readonly FormFactoryInterface $formFactory,
+        private readonly CommandBusInterface $commandBus,
+        private readonly QueryBusInterface $queryBus,
+    ) {}
 
     protected function createComponentForm(): Form
     {

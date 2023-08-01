@@ -22,19 +22,12 @@ use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 #[Allowed(resource: ProjectResource::class, privilege: ProjectResource::READ)]
 final class ProjectsPresenter extends AdminPresenter
 {
-    private QueryBusInterface $queryBus;
-
-    private ExportDropdownControlFactoryInterface $exportDropdownControlFactory;
-
-    private ImportModalControlFactoryInterface $importModalControlFactory;
-
-    public function __construct(QueryBusInterface $queryBus, ExportDropdownControlFactoryInterface $exportDropdownControlFactory, ImportModalControlFactoryInterface $importModalControlFactory)
-    {
+    public function __construct(
+        private readonly QueryBusInterface $queryBus,
+        private readonly ExportDropdownControlFactoryInterface $exportDropdownControlFactory,
+        private readonly ImportModalControlFactoryInterface $importModalControlFactory,
+    ) {
         parent::__construct();
-
-        $this->queryBus = $queryBus;
-        $this->exportDropdownControlFactory = $exportDropdownControlFactory;
-        $this->importModalControlFactory = $importModalControlFactory;
     }
 
     public function actionDefault(): void

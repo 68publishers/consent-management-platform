@@ -61,32 +61,16 @@ final class FoundCookiesPresenter extends AdminPresenter
     /** @persistent  */
     public ?array $solution = null;
 
-    private QueryBusInterface $queryBus;
-
-    private CommandBusInterface $commandBus;
-
-    private CookieSuggestionsStoreInterface $cookieSuggestionsStore;
-
-    private LoggerInterface $logger;
-
-    private CookieFormModalControlFactoryInterface $cookieFormModalControlFactory;
-
     private ProjectView $projectView;
 
     public function __construct(
-        QueryBusInterface $queryBus,
-        CommandBusInterface $commandBus,
-        CookieSuggestionsStoreInterface $cookieSuggestionsStore,
-        LoggerInterface $logger,
-        CookieFormModalControlFactoryInterface $cookieFormModalControlFactory,
+        private readonly QueryBusInterface $queryBus,
+        private readonly CommandBusInterface $commandBus,
+        private readonly CookieSuggestionsStoreInterface $cookieSuggestionsStore,
+        private readonly LoggerInterface $logger,
+        private readonly CookieFormModalControlFactoryInterface $cookieFormModalControlFactory,
     ) {
         parent::__construct();
-
-        $this->queryBus = $queryBus;
-        $this->commandBus = $commandBus;
-        $this->cookieSuggestionsStore = $cookieSuggestionsStore;
-        $this->logger = $logger;
-        $this->cookieFormModalControlFactory = $cookieFormModalControlFactory;
     }
 
     /**

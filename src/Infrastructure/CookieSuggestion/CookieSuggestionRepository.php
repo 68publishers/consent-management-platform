@@ -13,12 +13,9 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Common\Repository\Agg
 
 final class CookieSuggestionRepository implements CookieSuggestionRepositoryInterface
 {
-    private AggregateRootRepositoryInterface $aggregateRootRepository;
-
-    public function __construct(AggregateRootRepositoryInterface $aggregateRootRepository)
-    {
-        $this->aggregateRootRepository = $aggregateRootRepository;
-    }
+    public function __construct(
+        private readonly AggregateRootRepositoryInterface $aggregateRootRepository,
+    ) {}
 
     public function save(CookieSuggestion $cookieSuggestion): void
     {

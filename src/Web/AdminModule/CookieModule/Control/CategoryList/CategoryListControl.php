@@ -26,24 +26,13 @@ use Ublaboo\DataGrid\Exception\DataGridException;
 
 final class CategoryListControl extends Control
 {
-    private CommandBusInterface $commandBus;
-
-    private QueryBusInterface $queryBus;
-
-    private DataGridFactoryInterface $dataGridFactory;
-
-    private ConfirmModalControlFactoryInterface $confirmModalControlFactory;
-
-    private ?Locale $locale;
-
-    public function __construct(CommandBusInterface $commandBus, QueryBusInterface $queryBus, DataGridFactoryInterface $dataGridFactory, ConfirmModalControlFactoryInterface $confirmModalControlFactory, ?Locale $locale)
-    {
-        $this->commandBus = $commandBus;
-        $this->queryBus = $queryBus;
-        $this->dataGridFactory = $dataGridFactory;
-        $this->confirmModalControlFactory = $confirmModalControlFactory;
-        $this->locale = $locale;
-    }
+    public function __construct(
+        private readonly CommandBusInterface $commandBus,
+        private readonly QueryBusInterface $queryBus,
+        private readonly DataGridFactoryInterface $dataGridFactory,
+        private readonly ConfirmModalControlFactoryInterface $confirmModalControlFactory,
+        private readonly ?Locale $locale,
+    ) {}
 
     /**
      * @throws DataGridException

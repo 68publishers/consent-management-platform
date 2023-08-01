@@ -13,19 +13,14 @@ use App\Application\DataProcessor\Write\Resource\ResourceInterface;
 
 final class WriteProcess
 {
-    private DataWriterFactoryInterface $dataWriterFactory;
-
-    private ReaderInterface $reader;
-
-    private ?DescriptorInterface $descriptor;
-
     private $onReaderError;
 
-    public function __construct(DataWriterFactoryInterface $dataWriterFactory, ReaderInterface $reader, ?DescriptorInterface $descriptor = null, ?callable $onReaderError = null)
-    {
-        $this->dataWriterFactory = $dataWriterFactory;
-        $this->reader = $reader;
-        $this->descriptor = $descriptor;
+    public function __construct(
+        private readonly DataWriterFactoryInterface $dataWriterFactory,
+        private readonly ReaderInterface $reader,
+        private readonly ?DescriptorInterface $descriptor = null,
+        ?callable $onReaderError = null,
+    ) {
         $this->onReaderError = $onReaderError;
     }
 

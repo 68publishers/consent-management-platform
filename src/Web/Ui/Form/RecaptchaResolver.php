@@ -6,12 +6,9 @@ namespace App\Web\Ui\Form;
 
 final class RecaptchaResolver
 {
-    private bool $isEnabled;
-
-    public function __construct(bool $isEnabled)
-    {
-        $this->isEnabled = $isEnabled;
-    }
+    public function __construct(
+        private readonly bool $isEnabled,
+    ) {}
 
     public function isEnabled(): bool
     {

@@ -21,18 +21,11 @@ final class ForgotPasswordControl extends Control
 {
     use FormFactoryOptionsTrait;
 
-    private CommandBusInterface $commandBus;
-
-    private FormFactoryInterface $formFactory;
-
-    private RecaptchaResolver $recaptchaResolver;
-
-    public function __construct(CommandBusInterface $commandBus, FormFactoryInterface $formFactory, RecaptchaResolver $recaptchaResolver)
-    {
-        $this->commandBus = $commandBus;
-        $this->formFactory = $formFactory;
-        $this->recaptchaResolver = $recaptchaResolver;
-    }
+    public function __construct(
+        private readonly CommandBusInterface $commandBus,
+        private readonly FormFactoryInterface $formFactory,
+        private readonly RecaptchaResolver $recaptchaResolver,
+    ) {}
 
     protected function createComponentForm(): Form
     {

@@ -25,22 +25,12 @@ use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 #[Allowed(resource: ApplicationSettingsResource::class, privilege: ApplicationSettingsResource::UPDATE)]
 final class SettingsPresenter extends AdminPresenter
 {
-    private LocalizationSettingsFormControlFactoryInterface $localizationSettingsFormControlFactory;
-
-    private ApiCacheSettingsFormControlFactoryInterface $apiCacheSettingsFormControlFactory;
-
-    private CrawlerSettingsFormControlFactoryInterface $crawlerSettingsFormControlFactory;
-
     public function __construct(
-        LocalizationSettingsFormControlFactoryInterface $localizationSettingsFormControlFactory,
-        ApiCacheSettingsFormControlFactoryInterface $apiCacheSettingsFormControlFactory,
-        CrawlerSettingsFormControlFactoryInterface $crawlerSettingsFormControlFactory,
+        private readonly LocalizationSettingsFormControlFactoryInterface $localizationSettingsFormControlFactory,
+        private readonly ApiCacheSettingsFormControlFactoryInterface $apiCacheSettingsFormControlFactory,
+        private readonly CrawlerSettingsFormControlFactoryInterface $crawlerSettingsFormControlFactory,
     ) {
         parent::__construct();
-
-        $this->localizationSettingsFormControlFactory = $localizationSettingsFormControlFactory;
-        $this->apiCacheSettingsFormControlFactory = $apiCacheSettingsFormControlFactory;
-        $this->crawlerSettingsFormControlFactory = $crawlerSettingsFormControlFactory;
     }
 
     protected function createComponentLocalizationForm(): LocalizationSettingsFormControl

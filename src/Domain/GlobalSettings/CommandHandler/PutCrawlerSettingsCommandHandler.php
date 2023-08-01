@@ -12,12 +12,9 @@ use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
 
 final class PutCrawlerSettingsCommandHandler implements CommandHandlerInterface
 {
-    private GlobalSettingsRepositoryInterface $globalSettingsRepository;
-
-    public function __construct(GlobalSettingsRepositoryInterface $globalSettingsRepository)
-    {
-        $this->globalSettingsRepository = $globalSettingsRepository;
-    }
+    public function __construct(
+        private readonly GlobalSettingsRepositoryInterface $globalSettingsRepository,
+    ) {}
 
     public function __invoke(PutCrawlerSettingsCommand $command): void
     {

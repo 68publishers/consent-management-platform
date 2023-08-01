@@ -15,19 +15,16 @@ final class CachedGlobalSettings implements GlobalSettingsInterface
 {
     private const CACHE_KEY = 'global_settings';
 
-    private GlobalSettingsFactoryInterface $globalSettingsFactory;
-
     private Cache $cache;
-
-    private TranslatorLocalizerInterface $translatorLocalizer;
 
     private ?GlobalSettingsInterface $inner = null;
 
-    public function __construct(GlobalSettingsFactoryInterface $globalSettingsFactory, Storage $storage, TranslatorLocalizerInterface $translatorLocalizer)
-    {
-        $this->globalSettingsFactory = $globalSettingsFactory;
+    public function __construct(
+        private readonly GlobalSettingsFactoryInterface $globalSettingsFactory,
+        Storage $storage,
+        private readonly TranslatorLocalizerInterface $translatorLocalizer,
+    ) {
         $this->cache = new Cache($storage, self::class);
-        $this->translatorLocalizer = $translatorLocalizer;
     }
 
     /**

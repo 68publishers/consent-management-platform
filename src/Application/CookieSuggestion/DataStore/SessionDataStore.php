@@ -11,12 +11,11 @@ final class SessionDataStore implements DataStoreInterface
 {
     private SessionSection $sessionSection;
 
-    private string $expiration;
-
-    public function __construct(Session $session, string $expiration = '+1 hour')
-    {
+    public function __construct(
+        Session $session,
+        private readonly string $expiration = '+1 hour',
+    ) {
         $this->sessionSection = $session->getSection(self::class);
-        $this->expiration = $expiration;
     }
 
     public function store(string $projectId, string $solutionsUniqueId, string $solutionUniqueId, string $solutionType, string $cookieSuggestionId, array $values): void

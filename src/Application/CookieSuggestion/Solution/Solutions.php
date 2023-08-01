@@ -9,13 +9,7 @@ use InvalidArgumentException;
 
 final class Solutions
 {
-    private string $projectId;
-
-    private string $cookieSuggestionId;
-
     private string $uniqueKey;
-
-    private DataStoreInterface $dataStore;
 
     /** @var non-empty-list<SolutionInterface|SolutionGroup> */
     private array $solutions;
@@ -25,15 +19,12 @@ final class Solutions
      * @param SolutionInterface|SolutionGroup ...$solutions
      */
     public function __construct(
-        string $projectId,
-        string $cookieSuggestionId,
+        private readonly string $projectId,
+        private readonly string $cookieSuggestionId,
         array $compositeKey,
-        DataStoreInterface $dataStore,
+        private readonly DataStoreInterface $dataStore,
         ...$solutions,
     ) {
-        $this->projectId = $projectId;
-        $this->cookieSuggestionId = $cookieSuggestionId;
-        $this->dataStore = $dataStore;
         $this->solutions = $solutions;
         $this->uniqueKey = md5(
             implode(

@@ -30,19 +30,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class ConsentDecreaseNotifierCommand extends Command
 {
-    private QueryBusInterface $queryBus;
-
-    private CommandBusInterface $commandBus;
-
-    private ProjectStatisticsCalculatorInterface $projectStatisticsCalculator;
-
-    public function __construct(QueryBusInterface $queryBus, CommandBusInterface $commandBus, ProjectStatisticsCalculatorInterface $projectStatisticsCalculator)
-    {
+    public function __construct(
+        private readonly QueryBusInterface $queryBus,
+        private readonly CommandBusInterface $commandBus,
+        private readonly ProjectStatisticsCalculatorInterface $projectStatisticsCalculator,
+    ) {
         parent::__construct();
-
-        $this->queryBus = $queryBus;
-        $this->commandBus = $commandBus;
-        $this->projectStatisticsCalculator = $projectStatisticsCalculator;
     }
 
     protected function configure(): void

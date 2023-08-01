@@ -11,12 +11,9 @@ use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
 
 final class DeleteCategoryCommandHandler implements CommandHandlerInterface
 {
-    private CategoryRepositoryInterface $categoryRepository;
-
-    public function __construct(CategoryRepositoryInterface $categoryRepository)
-    {
-        $this->categoryRepository = $categoryRepository;
-    }
+    public function __construct(
+        private readonly CategoryRepositoryInterface $categoryRepository,
+    ) {}
 
     public function __invoke(DeleteCategoryCommand $command): void
     {

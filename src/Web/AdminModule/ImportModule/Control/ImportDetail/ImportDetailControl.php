@@ -11,15 +11,10 @@ use SixtyEightPublishers\UserBundle\ReadModel\Query\GetUserByIdQuery;
 
 final class ImportDetailControl extends Control
 {
-    private ImportView $importView;
-
-    private QueryBusInterface $queryBus;
-
-    public function __construct(ImportView $importView, QueryBusInterface $queryBus)
-    {
-        $this->importView = $importView;
-        $this->queryBus = $queryBus;
-    }
+    public function __construct(
+        private readonly ImportView $importView,
+        private readonly QueryBusInterface $queryBus,
+    ) {}
 
     protected function beforeRender(): void
     {

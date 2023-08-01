@@ -24,15 +24,10 @@ final class RecalculateCookieSuggestionStatisticsCommandHandler implements Comma
 {
     use BatchHandlerTrait;
 
-    private EntityManagerInterface $em;
-
-    private CookieSuggestionsStoreInterface $cookieSuggestionsStore;
-
-    public function __construct(EntityManagerInterface $em, CookieSuggestionsStoreInterface $cookieSuggestionsStore)
-    {
-        $this->em = $em;
-        $this->cookieSuggestionsStore = $cookieSuggestionsStore;
-    }
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly CookieSuggestionsStoreInterface $cookieSuggestionsStore,
+    ) {}
 
     public function __invoke(RecalculateCookieSuggestionStatisticsCommand $command, ?Acknowledger $ack = null): void
     {

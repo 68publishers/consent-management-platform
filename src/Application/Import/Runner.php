@@ -24,18 +24,11 @@ use Throwable;
 
 final class Runner implements RunnerInterface
 {
-    private CommandBusInterface $commandBus;
-
-    private ImporterInterface $importer;
-
-    private LoggerInterface $logger;
-
-    public function __construct(CommandBusInterface $commandBus, ImporterInterface $importer, LoggerInterface $logger)
-    {
-        $this->commandBus = $commandBus;
-        $this->importer = $importer;
-        $this->logger = $logger;
-    }
+    public function __construct(
+        private readonly CommandBusInterface $commandBus,
+        private readonly ImporterInterface $importer,
+        private readonly LoggerInterface $logger,
+    ) {}
 
     public function run(ReaderInterface $reader, ImportOptions $options): ImportState
     {

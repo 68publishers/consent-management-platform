@@ -9,18 +9,11 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class BasicInformationUpdatedEvent extends Event
 {
-    private UserId $userId;
-
-    private string $oldProfile;
-
-    private string $newProfile;
-
-    public function __construct(UserId $userId, string $oldProfile, string $newProfile)
-    {
-        $this->userId = $userId;
-        $this->oldProfile = $oldProfile;
-        $this->newProfile = $newProfile;
-    }
+    public function __construct(
+        private readonly UserId $userId,
+        private readonly string $oldProfile,
+        private readonly string $newProfile,
+    ) {}
 
     public function userId(): UserId
     {

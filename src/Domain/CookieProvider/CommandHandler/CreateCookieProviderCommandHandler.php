@@ -12,15 +12,10 @@ use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
 
 final class CreateCookieProviderCommandHandler implements CommandHandlerInterface
 {
-    private CookieProviderRepositoryInterface $cookieProviderRepository;
-
-    private CheckCodeUniquenessInterface $checkCodeUniqueness;
-
-    public function __construct(CookieProviderRepositoryInterface $cookieProviderRepository, CheckCodeUniquenessInterface $checkCodeUniqueness)
-    {
-        $this->cookieProviderRepository = $cookieProviderRepository;
-        $this->checkCodeUniqueness = $checkCodeUniqueness;
-    }
+    public function __construct(
+        private readonly CookieProviderRepositoryInterface $cookieProviderRepository,
+        private readonly CheckCodeUniquenessInterface $checkCodeUniqueness,
+    ) {}
 
     public function __invoke(CreateCookieProviderCommand $command): void
     {

@@ -12,15 +12,14 @@ final class Profiles
 {
     private array $profiles;
 
-    private TranslatorLocalizerInterface $translatorLocalizer;
-
     /**
      * @param array<Profile> $profiles
      */
-    public function __construct(array $profiles, TranslatorLocalizerInterface $translatorLocalizer)
-    {
+    public function __construct(
+        array $profiles,
+        private readonly TranslatorLocalizerInterface $translatorLocalizer,
+    ) {
         $this->profiles = (static fn (Profile ...$profiles): array => $profiles)(...$profiles);
-        $this->translatorLocalizer = $translatorLocalizer;
     }
 
     public function active(): Profile

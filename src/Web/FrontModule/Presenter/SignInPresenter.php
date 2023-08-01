@@ -15,13 +15,10 @@ final class SignInPresenter extends FrontPresenter
     /** @persistent */
     public string $backLink = '';
 
-    private SignInControlFactoryInterface $signInControlFactory;
-
-    public function __construct(SignInControlFactoryInterface $signInControlFactory)
-    {
+    public function __construct(
+        private readonly SignInControlFactoryInterface $signInControlFactory,
+    ) {
         parent::__construct();
-
-        $this->signInControlFactory = $signInControlFactory;
     }
 
     protected function createComponentSignIn(): SignInControl

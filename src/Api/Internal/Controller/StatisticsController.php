@@ -27,15 +27,10 @@ final class StatisticsController extends AbstractInternalController
 {
     public const ENDPOINT_PROJECTS = '/api/internal/statistics/projects';
 
-    private QueryBusInterface $queryBus;
-
-    private ProjectStatisticsCalculatorInterface $projectStatisticsCalculator;
-
-    public function __construct(QueryBusInterface $queryBus, ProjectStatisticsCalculatorInterface $projectStatisticsCalculator)
-    {
-        $this->queryBus = $queryBus;
-        $this->projectStatisticsCalculator = $projectStatisticsCalculator;
-    }
+    public function __construct(
+        private readonly QueryBusInterface $queryBus,
+        private readonly ProjectStatisticsCalculatorInterface $projectStatisticsCalculator,
+    ) {}
 
     /**
      * @Api\Path("/projects")

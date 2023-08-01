@@ -23,25 +23,12 @@ use Throwable;
  */
 final class ReceiveResultController extends AbstractCrawlerController
 {
-    private GlobalSettingsInterface $globalSettings;
-
-    private CrawlerClientProvider $crawlerClientProvider;
-
-    private CookieSuggestionsStoreInterface $cookieSuggestionsStore;
-
-    private LoggerInterface $logger;
-
     public function __construct(
-        GlobalSettingsInterface $globalSettings,
-        CrawlerClientProvider $crawlerClientProvider,
-        CookieSuggestionsStoreInterface $cookieSuggestionsStore,
-        LoggerInterface $logger,
-    ) {
-        $this->globalSettings = $globalSettings;
-        $this->crawlerClientProvider = $crawlerClientProvider;
-        $this->cookieSuggestionsStore = $cookieSuggestionsStore;
-        $this->logger = $logger;
-    }
+        private readonly GlobalSettingsInterface $globalSettings,
+        private readonly CrawlerClientProvider $crawlerClientProvider,
+        private readonly CookieSuggestionsStoreInterface $cookieSuggestionsStore,
+        private readonly LoggerInterface $logger,
+    ) {}
 
     /**
      * @Api\Path("/")

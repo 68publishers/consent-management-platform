@@ -10,8 +10,6 @@ final class ImportState
     public const STATUS_COMPLETED = 'completed';
     public const STATUS_FAILED = 'failed';
 
-    public string $id;
-
     public array $importedIndexes = [];
 
     public array $failedIndexes = [];
@@ -22,10 +20,9 @@ final class ImportState
 
     public string $status = self::STATUS_RUNNING;
 
-    public function __construct(string $id)
-    {
-        $this->id = $id;
-    }
+    public function __construct(
+        public string $id,
+    ) {}
 
     public function importedTotal(): int
     {

@@ -19,12 +19,9 @@ final class SignInControl extends Control
 {
     use FormFactoryOptionsTrait;
 
-    private FormFactoryInterface $formFactory;
-
-    public function __construct(FormFactoryInterface $formFactory)
-    {
-        $this->formFactory = $formFactory;
-    }
+    public function __construct(
+        private readonly FormFactoryInterface $formFactory,
+    ) {}
 
     protected function createComponentForm(): Form
     {

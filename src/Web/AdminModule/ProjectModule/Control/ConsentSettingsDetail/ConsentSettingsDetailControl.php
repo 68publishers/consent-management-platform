@@ -9,12 +9,9 @@ use App\Web\Ui\Control;
 
 final class ConsentSettingsDetailControl extends Control
 {
-    private ConsentSettingsView $consentSettingsView;
-
-    public function __construct(ConsentSettingsView $consentSettingsView)
-    {
-        $this->consentSettingsView = $consentSettingsView;
-    }
+    public function __construct(
+        private readonly ConsentSettingsView $consentSettingsView,
+    ) {}
 
     protected function beforeRender(): void
     {

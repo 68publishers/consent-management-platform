@@ -16,13 +16,10 @@ use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 #[Allowed(resource: UserResource::class, privilege: UserResource::CREATE)]
 final class AddUserPresenter extends AdminPresenter
 {
-    private UserFormControlFactoryInterface $userFormControlFactory;
-
-    public function __construct(UserFormControlFactoryInterface $userFormControlFactory)
-    {
+    public function __construct(
+        private readonly UserFormControlFactoryInterface $userFormControlFactory,
+    ) {
         parent::__construct();
-
-        $this->userFormControlFactory = $userFormControlFactory;
     }
 
     public function actionDefault(): void

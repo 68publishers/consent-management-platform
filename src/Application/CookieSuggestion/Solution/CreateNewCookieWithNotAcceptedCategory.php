@@ -6,21 +6,11 @@ namespace App\Application\CookieSuggestion\Solution;
 
 final class CreateNewCookieWithNotAcceptedCategory implements SolutionInterface
 {
-    private string $existingCookieId;
-
-    private string $categoryCode;
-
-    private string $providerName;
-
     public function __construct(
-        string $existingCookieId,
-        string $categoryCode,
-        string $providerName,
-    ) {
-        $this->existingCookieId = $existingCookieId;
-        $this->categoryCode = $categoryCode;
-        $this->providerName = $providerName;
-    }
+        private readonly string $existingCookieId,
+        private readonly string $categoryCode,
+        private readonly string $providerName,
+    ) {}
 
     public function getType(): string
     {

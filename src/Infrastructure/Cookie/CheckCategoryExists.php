@@ -13,12 +13,9 @@ use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 
 final class CheckCategoryExists implements CheckCategoryExistsInterface
 {
-    private QueryBusInterface $queryBus;
-
-    public function __construct(QueryBusInterface $queryBus)
-    {
-        $this->queryBus = $queryBus;
-    }
+    public function __construct(
+        private readonly QueryBusInterface $queryBus,
+    ) {}
 
     public function __invoke(CategoryId $categoryId): void
     {

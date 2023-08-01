@@ -9,24 +9,15 @@ use App\Domain\GlobalSettings\ValueObject\CrawlerSettings;
 
 final class GlobalSettings implements GlobalSettingsInterface
 {
-    private array $locales;
-
-    private Locale $defaultLocale;
-
-    private ApiCache $apiCache;
-
-    private CrawlerSettings $crawlerSettings;
-
     /**
      * @param array<Locale> $locales
      */
-    public function __construct(array $locales, Locale $defaultLocale, ApiCache $apiCache, CrawlerSettings $crawlerSettings)
-    {
-        $this->locales = $locales;
-        $this->defaultLocale = $defaultLocale;
-        $this->apiCache = $apiCache;
-        $this->crawlerSettings = $crawlerSettings;
-    }
+    public function __construct(
+        private readonly array $locales,
+        private readonly Locale $defaultLocale,
+        private readonly ApiCache $apiCache,
+        private readonly CrawlerSettings $crawlerSettings,
+    ) {}
 
     public static function default(): self
     {

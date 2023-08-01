@@ -13,13 +13,10 @@ use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 #[Allowed(resource: CategoryResource::class, privilege: CategoryResource::READ)]
 final class CategoriesPresenter extends AdminPresenter
 {
-    private CategoryListControlFactoryInterface $categoryListControlFactory;
-
-    public function __construct(CategoryListControlFactoryInterface $categoryListControlFactory)
-    {
+    public function __construct(
+        private readonly CategoryListControlFactoryInterface $categoryListControlFactory,
+    ) {
         parent::__construct();
-
-        $this->categoryListControlFactory = $categoryListControlFactory;
     }
 
     protected function startup(): void

@@ -47,30 +47,15 @@ use Throwable;
 
 final class CookieSuggestionsStore implements CookieSuggestionsStoreInterface
 {
-    private CommandBusInterface $commandBus;
-
-    private QueryBusInterface $queryBus;
-
-    private DataStoreInterface $dataStore;
-
-    private ?LoggerInterface $logger;
-
-    private int $longTimeNotFoundInDays;
-
     private Closure $getNowFunction;
 
     public function __construct(
-        CommandBusInterface $commandBus,
-        QueryBusInterface $queryBus,
-        DataStoreInterface $dataStore,
-        ?LoggerInterface $logger = null,
-        int $longTimeNotFoundInDays = 14,
+        private readonly CommandBusInterface $commandBus,
+        private readonly QueryBusInterface $queryBus,
+        private readonly DataStoreInterface $dataStore,
+        private readonly ?LoggerInterface $logger = null,
+        private readonly int $longTimeNotFoundInDays = 14,
     ) {
-        $this->commandBus = $commandBus;
-        $this->queryBus = $queryBus;
-        $this->dataStore = $dataStore;
-        $this->logger = $logger;
-        $this->longTimeNotFoundInDays = $longTimeNotFoundInDays;
         $this->getNowFunction = static fn (): DateTimeImmutable => new DateTimeImmutable('now', new DateTimeZone('UTC'));
     }
 

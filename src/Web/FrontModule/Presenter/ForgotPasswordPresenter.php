@@ -13,13 +13,10 @@ use SixtyEightPublishers\FlashMessageBundle\Domain\Phrase;
 
 final class ForgotPasswordPresenter extends FrontPresenter
 {
-    private ForgotPasswordControlFactoryInterface $forgotPasswordControlFactory;
-
-    public function __construct(ForgotPasswordControlFactoryInterface $forgotPasswordControlFactory)
-    {
+    public function __construct(
+        private readonly ForgotPasswordControlFactoryInterface $forgotPasswordControlFactory,
+    ) {
         parent::__construct();
-
-        $this->forgotPasswordControlFactory = $forgotPasswordControlFactory;
     }
 
     protected function createComponentForgotPassword(): ForgotPasswordControl

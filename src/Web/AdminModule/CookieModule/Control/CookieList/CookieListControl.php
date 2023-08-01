@@ -40,20 +40,6 @@ use Ublaboo\DataGrid\Exception\DataGridException;
 
 final class CookieListControl extends Control
 {
-    private ValidLocalesProvider $validLocalesProvider;
-
-    private CommandBusInterface $commandBus;
-
-    private QueryBusInterface $queryBus;
-
-    private DataGridFactoryInterface $dataGridFactory;
-
-    private ConfirmModalControlFactoryInterface $confirmModalControlFactory;
-
-    private CookieFormModalControlFactoryInterface $cookieFormModalControlFactory;
-
-    private ?CookieProviderId $cookieProviderId;
-
     private ?ProjectId $projectId = null;
 
     private bool $projectServiceOnly = false;
@@ -72,22 +58,14 @@ final class CookieListControl extends Control
     ];
 
     public function __construct(
-        ValidLocalesProvider $validLocalesProvider,
-        CommandBusInterface $commandBus,
-        QueryBusInterface $queryBus,
-        DataGridFactoryInterface $dataGridFactory,
-        ConfirmModalControlFactoryInterface $confirmModalControlFactory,
-        CookieFormModalControlFactoryInterface $cookieFormModalControlFactory,
-        ?CookieProviderId $cookieProviderId = null,
-    ) {
-        $this->validLocalesProvider = $validLocalesProvider;
-        $this->commandBus = $commandBus;
-        $this->queryBus = $queryBus;
-        $this->dataGridFactory = $dataGridFactory;
-        $this->confirmModalControlFactory = $confirmModalControlFactory;
-        $this->cookieFormModalControlFactory = $cookieFormModalControlFactory;
-        $this->cookieProviderId = $cookieProviderId;
-    }
+        private readonly ValidLocalesProvider $validLocalesProvider,
+        private readonly CommandBusInterface $commandBus,
+        private readonly QueryBusInterface $queryBus,
+        private readonly DataGridFactoryInterface $dataGridFactory,
+        private readonly ConfirmModalControlFactoryInterface $confirmModalControlFactory,
+        private readonly CookieFormModalControlFactoryInterface $cookieFormModalControlFactory,
+        private readonly ?CookieProviderId $cookieProviderId = null,
+    ) {}
 
     public function configureActions(bool $update, bool $delete): self
     {

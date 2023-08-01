@@ -11,15 +11,10 @@ use Ublaboo\DataGrid\Utils\Sorting;
 
 final class ReadModelDataSource implements IDataSource
 {
-    private DataGridQueryInterface $query;
-
-    private QueryBusInterface $queryBus;
-
-    public function __construct(DataGridQueryInterface $query, QueryBusInterface $queryBus)
-    {
-        $this->query = $query;
-        $this->queryBus = $queryBus;
-    }
+    public function __construct(
+        private DataGridQueryInterface $query,
+        private readonly QueryBusInterface $queryBus,
+    ) {}
 
     public function getCount(): int
     {

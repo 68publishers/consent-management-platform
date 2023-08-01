@@ -17,15 +17,10 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\QueryHandlerInterfac
 
 final class FindNotificationReceiversByTypeAndProjectIdsQueryHandler implements QueryHandlerInterface
 {
-    private EntityManagerInterface $em;
-
-    private BatchGeneratorFactory $batchGeneratorFactory;
-
-    public function __construct(EntityManagerInterface $em, BatchGeneratorFactory $batchGeneratorFactory)
-    {
-        $this->em = $em;
-        $this->batchGeneratorFactory = $batchGeneratorFactory;
-    }
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly BatchGeneratorFactory $batchGeneratorFactory,
+    ) {}
 
     /**
      * @return iterable<Batch>

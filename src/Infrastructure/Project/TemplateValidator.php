@@ -16,12 +16,9 @@ use App\Domain\Shared\ValueObject\Locale;
 
 final class TemplateValidator implements TemplateValidatorInterface
 {
-    private TemplateRendererInterface $cookieTemplateRenderer;
-
-    public function __construct(TemplateRendererInterface $cookieTemplateRenderer)
-    {
-        $this->cookieTemplateRenderer = $cookieTemplateRenderer;
-    }
+    public function __construct(
+        private readonly TemplateRendererInterface $cookieTemplateRenderer,
+    ) {}
 
     public function __invoke(ProjectId $projectId, Template $template, Locale $locale): void
     {

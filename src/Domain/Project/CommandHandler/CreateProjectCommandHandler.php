@@ -12,15 +12,10 @@ use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
 
 final class CreateProjectCommandHandler implements CommandHandlerInterface
 {
-    private ProjectRepositoryInterface $projectRepository;
-
-    private CheckCodeUniquenessInterface $checkCodeUniqueness;
-
-    public function __construct(ProjectRepositoryInterface $projectRepository, CheckCodeUniquenessInterface $checkCodeUniqueness)
-    {
-        $this->projectRepository = $projectRepository;
-        $this->checkCodeUniqueness = $checkCodeUniqueness;
-    }
+    public function __construct(
+        private readonly ProjectRepositoryInterface $projectRepository,
+        private readonly CheckCodeUniquenessInterface $checkCodeUniqueness,
+    ) {}
 
     public function __invoke(CreateProjectCommand $command): void
     {

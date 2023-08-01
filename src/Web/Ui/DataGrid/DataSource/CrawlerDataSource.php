@@ -22,12 +22,6 @@ use Ublaboo\DataGrid\Utils\Sorting;
 
 final class CrawlerDataSource implements IDataSource
 {
-    private CrawlerClientProvider $crawlerClientProvider;
-
-    private Closure $getTotalCountCallback;
-
-    private Closure $getDataCallback;
-
     private array $parameters = [
         'page' => 1,
         'limit' => 1,
@@ -36,12 +30,11 @@ final class CrawlerDataSource implements IDataSource
 
     private ?Throwable $error = null;
 
-    private function __construct(CrawlerClientProvider $crawlerClientProvider, Closure $getTotalCountCallback, Closure $getDataCallback)
-    {
-        $this->crawlerClientProvider = $crawlerClientProvider;
-        $this->getTotalCountCallback = $getTotalCountCallback;
-        $this->getDataCallback = $getDataCallback;
-    }
+    private function __construct(
+        private readonly CrawlerClientProvider $crawlerClientProvider,
+        private readonly Closure $getTotalCountCallback,
+        private readonly Closure $getDataCallback,
+    ) {}
 
     public static function scenarios(CrawlerClientProvider $crawlerClientProvider): self
     {

@@ -19,13 +19,11 @@ use SixtyEightPublishers\ProjectionBundle\ProjectionModel\ProjectionModelLocator
 
 final class ConsentStatisticsProjection extends AbstractProjection
 {
-    private QueryBusInterface $queryBus;
-
-    public function __construct(ProjectionModelLocatorInterface $projectionModelLocator, QueryBusInterface $queryBus)
-    {
+    public function __construct(
+        ProjectionModelLocatorInterface $projectionModelLocator,
+        private readonly QueryBusInterface $queryBus,
+    ) {
         parent::__construct($projectionModelLocator);
-
-        $this->queryBus = $queryBus;
     }
 
     public static function projectionName(): string

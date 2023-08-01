@@ -27,22 +27,13 @@ use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 #[Allowed(resource: CookieResource::class, privilege: CookieResource::READ)]
 final class CookiesPresenter extends AdminPresenter
 {
-    private CookieListControlFactoryInterface $cookieListControlFactory;
-
-    private CookieFormModalControlFactoryInterface $cookieFormModalControlFactory;
-
-    private ExportDropdownControlFactoryInterface $exportDropdownControlFactory;
-
-    private ImportModalControlFactoryInterface $importModalControlFactory;
-
-    public function __construct(CookieListControlFactoryInterface $cookieListControlFactory, CookieFormModalControlFactoryInterface $cookieFormModalControlFactory, ExportDropdownControlFactoryInterface $exportDropdownControlFactory, ImportModalControlFactoryInterface $importModalControlFactory)
-    {
+    public function __construct(
+        private readonly CookieListControlFactoryInterface $cookieListControlFactory,
+        private readonly CookieFormModalControlFactoryInterface $cookieFormModalControlFactory,
+        private readonly ExportDropdownControlFactoryInterface $exportDropdownControlFactory,
+        private readonly ImportModalControlFactoryInterface $importModalControlFactory,
+    ) {
         parent::__construct();
-
-        $this->cookieListControlFactory = $cookieListControlFactory;
-        $this->cookieFormModalControlFactory = $cookieFormModalControlFactory;
-        $this->exportDropdownControlFactory = $exportDropdownControlFactory;
-        $this->importModalControlFactory = $importModalControlFactory;
     }
 
     protected function startup(): void

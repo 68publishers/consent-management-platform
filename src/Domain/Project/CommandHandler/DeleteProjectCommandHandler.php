@@ -11,12 +11,9 @@ use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
 
 final class DeleteProjectCommandHandler implements CommandHandlerInterface
 {
-    private ProjectRepositoryInterface $projectRepository;
-
-    public function __construct(ProjectRepositoryInterface $projectRepository)
-    {
-        $this->projectRepository = $projectRepository;
-    }
+    public function __construct(
+        private readonly ProjectRepositoryInterface $projectRepository,
+    ) {}
 
     public function __invoke(DeleteProjectCommand $command): void
     {

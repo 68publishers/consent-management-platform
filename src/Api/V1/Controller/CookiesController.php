@@ -31,21 +31,12 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\Batch;
  */
 final class CookiesController extends AbstractV1Controller
 {
-    private QueryBusInterface $queryBus;
-
-    private TemplateRendererInterface $templateRenderer;
-
-    private GlobalSettingsInterface $globalSettings;
-
-    private EtagStoreInterface $etagStore;
-
-    public function __construct(QueryBusInterface $queryBus, TemplateRendererInterface $templateRenderer, GlobalSettingsInterface $globalSettings, EtagStoreInterface $etagStore)
-    {
-        $this->queryBus = $queryBus;
-        $this->templateRenderer = $templateRenderer;
-        $this->globalSettings = $globalSettings;
-        $this->etagStore = $etagStore;
-    }
+    public function __construct(
+        private readonly QueryBusInterface $queryBus,
+        private readonly TemplateRendererInterface $templateRenderer,
+        private readonly GlobalSettingsInterface $globalSettings,
+        private readonly EtagStoreInterface $etagStore,
+    ) {}
 
     public static function getTemplateUrl(string $projectCode, ?string $locale = null): string
     {

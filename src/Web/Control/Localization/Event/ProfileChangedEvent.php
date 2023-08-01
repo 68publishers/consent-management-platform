@@ -9,12 +9,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class ProfileChangedEvent extends Event
 {
-    private Profile $profile;
-
-    public function __construct(Profile $profile)
-    {
-        $this->profile = $profile;
-    }
+    public function __construct(
+        private readonly Profile $profile,
+    ) {}
 
     public function profile(): Profile
     {

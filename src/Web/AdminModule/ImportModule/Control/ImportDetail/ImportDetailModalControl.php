@@ -9,15 +9,10 @@ use App\Web\Ui\Modal\AbstractModalControl;
 
 final class ImportDetailModalControl extends AbstractModalControl
 {
-    private ImportView $importView;
-
-    private ImportDetailControlFactoryInterface $importDetailControlFactory;
-
-    public function __construct(ImportView $importView, ImportDetailControlFactoryInterface $importDetailControlFactory)
-    {
-        $this->importView = $importView;
-        $this->importDetailControlFactory = $importDetailControlFactory;
-    }
+    public function __construct(
+        private readonly ImportView $importView,
+        private readonly ImportDetailControlFactoryInterface $importDetailControlFactory,
+    ) {}
 
     protected function beforeRender(): void
     {

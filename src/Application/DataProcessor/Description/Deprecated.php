@@ -9,12 +9,9 @@ use Nette\Schema\Elements\Type;
 
 final class Deprecated implements TypeDescriptorPropertyInterface
 {
-    private string $message;
-
-    public function __construct(string $message)
-    {
-        $this->message = $message;
-    }
+    public function __construct(
+        private readonly string $message,
+    ) {}
 
     public function applyToType(Type $type, ContextInterface $context): Type
     {

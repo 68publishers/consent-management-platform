@@ -20,21 +20,12 @@ use Ublaboo\DataGrid\Exception\DataGridException;
 
 final class ConsentSettingsListControl extends Control
 {
-    private ProjectId $projectId;
-
-    private DataGridFactoryInterface $dataGridFactory;
-
-    private QueryBusInterface $queryBus;
-
-    private ConsentSettingsDetailModalControlFactoryInterface $consentSettingsDetailModalControlFactory;
-
-    public function __construct(ProjectId $projectId, DataGridFactoryInterface $dataGridFactory, QueryBusInterface $queryBus, ConsentSettingsDetailModalControlFactoryInterface $consentSettingsDetailModalControlFactory)
-    {
-        $this->projectId = $projectId;
-        $this->dataGridFactory = $dataGridFactory;
-        $this->queryBus = $queryBus;
-        $this->consentSettingsDetailModalControlFactory = $consentSettingsDetailModalControlFactory;
-    }
+    public function __construct(
+        private readonly ProjectId $projectId,
+        private readonly DataGridFactoryInterface $dataGridFactory,
+        private readonly QueryBusInterface $queryBus,
+        private readonly ConsentSettingsDetailModalControlFactoryInterface $consentSettingsDetailModalControlFactory,
+    ) {}
 
     /**
      * @throws DataGridException

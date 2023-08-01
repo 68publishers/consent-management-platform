@@ -28,21 +28,12 @@ final class CategoryFormControl extends Control
 {
     use FormFactoryOptionsTrait;
 
-    private FormFactoryInterface $formFactory;
-
-    private CommandBusInterface $commandBus;
-
-    private ValidLocalesProvider $validLocalesProvider;
-
-    private ?CategoryView $default;
-
-    public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, ValidLocalesProvider $validLocalesProvider, ?CategoryView $default = null)
-    {
-        $this->formFactory = $formFactory;
-        $this->commandBus = $commandBus;
-        $this->validLocalesProvider = $validLocalesProvider;
-        $this->default = $default;
-    }
+    public function __construct(
+        private readonly FormFactoryInterface $formFactory,
+        private readonly CommandBusInterface $commandBus,
+        private readonly ValidLocalesProvider $validLocalesProvider,
+        private readonly ?CategoryView $default = null,
+    ) {}
 
     protected function createComponentForm(): Form
     {

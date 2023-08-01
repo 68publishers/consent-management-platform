@@ -20,18 +20,11 @@ use SplFileInfo;
  */
 final class DocsController extends AbstractController
 {
-    private bool $enabled;
-
-    private string $schemaDir;
-
-    private TemplateFactory $templateFactory;
-
-    public function __construct(bool $enabled, string $schemaDir, TemplateFactory $templateFactory)
-    {
-        $this->enabled = $enabled;
-        $this->schemaDir = $schemaDir;
-        $this->templateFactory = $templateFactory;
-    }
+    public function __construct(
+        private readonly bool $enabled,
+        private readonly string $schemaDir,
+        private readonly TemplateFactory $templateFactory,
+    ) {}
 
     /**
      * @Api\Path("/")

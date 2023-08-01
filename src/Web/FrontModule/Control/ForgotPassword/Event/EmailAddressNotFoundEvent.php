@@ -8,12 +8,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class EmailAddressNotFoundEvent extends Event
 {
-    private string $emailAddress;
-
-    public function __construct(string $emailAddress)
-    {
-        $this->emailAddress = $emailAddress;
-    }
+    public function __construct(
+        private readonly string $emailAddress,
+    ) {}
 
     public function emailAddress(): string
     {

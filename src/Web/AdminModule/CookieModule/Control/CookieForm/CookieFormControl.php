@@ -36,17 +36,7 @@ final class CookieFormControl extends Control
 {
     use FormFactoryOptionsTrait;
 
-    private FormFactoryInterface $formFactory;
-
-    private CommandBusInterface $commandBus;
-
-    private QueryBusInterface $queryBus;
-
-    private ValidLocalesProvider $validLocalesProvider;
-
     private ?CookieProviderId $cookieProviderId = null;
-
-    private ?CookieView $default;
 
     private ?array $providerOptions = null;
 
@@ -54,14 +44,13 @@ final class CookieFormControl extends Control
 
     private ?array $overwrittenDefaults = null;
 
-    public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, QueryBusInterface $queryBus, ValidLocalesProvider $validLocalesProvider, ?CookieView $default = null)
-    {
-        $this->formFactory = $formFactory;
-        $this->commandBus = $commandBus;
-        $this->queryBus = $queryBus;
-        $this->validLocalesProvider = $validLocalesProvider;
-        $this->default = $default;
-    }
+    public function __construct(
+        private readonly FormFactoryInterface $formFactory,
+        private readonly CommandBusInterface $commandBus,
+        private readonly QueryBusInterface $queryBus,
+        private readonly ValidLocalesProvider $validLocalesProvider,
+        private readonly ?CookieView $default = null,
+    ) {}
 
     public function setCookieProviderId(CookieProviderId $cookieProviderId): self
     {

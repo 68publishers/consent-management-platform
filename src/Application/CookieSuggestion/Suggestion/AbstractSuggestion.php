@@ -6,33 +6,16 @@ namespace App\Application\CookieSuggestion\Suggestion;
 
 abstract class AbstractSuggestion implements SuggestionInterface
 {
-    private string $suggestionId;
-
-    private bool $virtual;
-
-    private string $suggestionName;
-
-    private string $suggestionDomain;
-
-    /** @var non-empty-list<CookieOccurrence> */
-    private array $occurrences;
-
     /**
      * @param non-empty-list<CookieOccurrence> $occurrences
      */
     public function __construct(
-        string $suggestionId,
-        bool $virtual,
-        string $suggestionName,
-        string $suggestionDomain,
-        array $occurrences,
-    ) {
-        $this->suggestionId = $suggestionId;
-        $this->virtual = $virtual;
-        $this->suggestionName = $suggestionName;
-        $this->suggestionDomain = $suggestionDomain;
-        $this->occurrences = $occurrences;
-    }
+        private readonly string $suggestionId,
+        private readonly bool $virtual,
+        private readonly string $suggestionName,
+        private readonly string $suggestionDomain,
+        private readonly array $occurrences,
+    ) {}
 
     public function getSuggestionId(): string
     {

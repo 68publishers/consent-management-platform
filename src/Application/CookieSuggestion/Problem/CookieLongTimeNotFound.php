@@ -10,17 +10,10 @@ final class CookieLongTimeNotFound implements ProblemInterface
 {
     public const TYPE = 'cookie_long_time_not_found';
 
-    private int $notFoundForDays;
-
-    private Solutions $solutions;
-
     public function __construct(
-        int $notFoundForDays,
-        Solutions $solutions,
-    ) {
-        $this->notFoundForDays = $notFoundForDays;
-        $this->solutions = $solutions;
-    }
+        private readonly int $notFoundForDays,
+        private readonly Solutions $solutions,
+    ) {}
 
     public function getType(): string
     {
