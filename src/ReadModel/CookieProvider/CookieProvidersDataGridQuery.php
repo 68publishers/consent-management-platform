@@ -7,13 +7,10 @@ namespace App\ReadModel\CookieProvider;
 use App\ReadModel\AbstractDataGridQuery;
 
 /**
- * Returns CookieProviderView[]
+ * Returns `array<CookieProviderView>`
  */
 final class CookieProvidersDataGridQuery extends AbstractDataGridQuery
 {
-    /**
-     * @return static
-     */
     public static function create(): self
     {
         return self::fromParameters([]);

@@ -14,9 +14,6 @@ final class CookieCategoryChanged extends AbstractDomainEvent
 
     private CategoryId $categoryId;
 
-    /**
-     * @return static
-     */
     public static function create(CookieId $cookieId, CategoryId $categoryId): self
     {
         $event = self::occur($cookieId->toString(), [

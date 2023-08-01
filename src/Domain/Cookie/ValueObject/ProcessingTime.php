@@ -14,7 +14,6 @@ final class ProcessingTime extends AbstractStringValueObject
     public const SESSION = 'session';
 
     /**
-     * @return static
      * @throws InvalidProcessingTimeException
      */
     public static function withValidation(string $value): self

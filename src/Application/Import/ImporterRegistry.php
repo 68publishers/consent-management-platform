@@ -11,13 +11,13 @@ use Throwable;
 
 final class ImporterRegistry implements ImporterInterface
 {
-    /** @var ImporterInterface[] */
+    /** @var array<ImporterInterface> */
     private array $importers;
 
     private LoggerInterface $logger;
 
     /**
-     * @param ImporterInterface[] $importers
+     * @param array<ImporterInterface> $importers
      */
     public function __construct(array $importers, LoggerInterface $logger)
     {
@@ -85,7 +85,7 @@ final class ImporterRegistry implements ImporterInterface
     }
 
     /**
-     * @param RowInterface[] $rows
+     * @param array<RowInterface> $rows
      */
     private function logError(string $importerClassname, string $message, array $rows): void
     {
@@ -98,7 +98,7 @@ final class ImporterRegistry implements ImporterInterface
     }
 
     /**
-     * @param RowInterface[] $rows
+     * @param array<RowInterface> $rows
      */
     private function createFailedResult(array $rows, string $message): ImporterResult
     {

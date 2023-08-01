@@ -211,7 +211,7 @@ final class ProjectBulkFixture extends AbstractFixture
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     private function getCategoryIds(EntityManagerInterface $em): array
     {
@@ -226,7 +226,7 @@ final class ProjectBulkFixture extends AbstractFixture
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     private function getUserIds(EntityManagerInterface $em): array
     {

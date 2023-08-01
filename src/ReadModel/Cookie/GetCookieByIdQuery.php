@@ -7,13 +7,10 @@ namespace App\ReadModel\Cookie;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 /**
- * Returns CookieView or NULL
+ * Returns `?CookieView`
  */
 final class GetCookieByIdQuery extends AbstractQuery
 {
-    /**
-     * @return static
-     */
     public static function create(string $id): self
     {
         return self::fromParameters([

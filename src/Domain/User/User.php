@@ -92,7 +92,7 @@ final class User extends BaseUser
     }
 
     /**
-     * @param ProjectId[] $projectIds
+     * @param array<ProjectId> $projectIds
      */
     public function changeProjects(array $projectIds): void
     {
@@ -102,11 +102,11 @@ final class User extends BaseUser
     }
 
     /**
-     * @param ProjectId[] $projectIds
+     * @param array<ProjectId> $projectIds
      */
     public function addProjects(array $projectIds): void
     {
-        /** @var ProjectId[] $currentProjectIds */
+        /** @var array<ProjectId> $currentProjectIds */
         $currentProjectIds = $this->projects->map(static fn (UserHasProject $userHasProject): ProjectId => $userHasProject->projectId())->getValues();
         $newProjectIds = $currentProjectIds;
 
@@ -178,8 +178,8 @@ final class User extends BaseUser
     }
 
     /**
-     * @param ProjectId[] $current
-     * @param ProjectId[] $new
+     * @param array<ProjectId> $current
+     * @param array<ProjectId> $new
      */
     private function areProjectsEqual(array $current, array $new): bool
     {

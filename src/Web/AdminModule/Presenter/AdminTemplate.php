@@ -12,7 +12,7 @@ abstract class AdminTemplate extends DefaultPresenterTemplate
 {
     public UserView $identity;
 
-    /** @var Locale[] */
+    /** @var array<Locale> */
     public array $locales;
 
     public ?Locale $defaultLocale = null;

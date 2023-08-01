@@ -13,9 +13,6 @@ final class CookieActiveStateChanged extends AbstractDomainEvent
 
     private bool $active;
 
-    /**
-     * @return static
-     */
     public static function create(CookieId $cookieId, bool $active): self
     {
         $event = self::occur($cookieId->toString(), [

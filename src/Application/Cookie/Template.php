@@ -18,9 +18,6 @@ final class Template
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(string $projectId, string $template, TemplateArguments $arguments): self
     {
         $cookieTemplate = new self();
@@ -51,17 +48,11 @@ final class Template
         return $this->options;
     }
 
-    /**
-     * @return mixed|NULL
-     */
     public function option(string $key, mixed $default = null): mixed
     {
         return $this->options()[$key] ?? $default;
     }
 
-    /**
-     * @return $this
-     */
     public function withOption(string $key, mixed $value): self
     {
         $cookieTemplate = clone $this;

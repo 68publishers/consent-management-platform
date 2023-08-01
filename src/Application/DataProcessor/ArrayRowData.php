@@ -10,9 +10,6 @@ final class ArrayRowData implements RowDataInterface
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(array $array): self
     {
         $data = new self();

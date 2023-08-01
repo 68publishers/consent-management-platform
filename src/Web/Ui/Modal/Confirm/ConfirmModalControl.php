@@ -35,9 +35,6 @@ final class ConfirmModalControl extends AbstractModalControl
         ($this->callback)(...array_values($args));
     }
 
-    /**
-     * @return $this
-     */
     public function setYesButtonText(string $yesButtonText): self
     {
         $this->yesButtonText = $yesButtonText;
@@ -45,9 +42,6 @@ final class ConfirmModalControl extends AbstractModalControl
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function setNoButtonText(string $noButtonText): self
     {
         $this->noButtonText = $noButtonText;

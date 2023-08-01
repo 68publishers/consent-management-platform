@@ -18,7 +18,7 @@ final class NotificationReceiverView extends AbstractView
 
     public Locale $profileLocale;
 
-    /** @var ProjectId[] */
+    /** @var array<ProjectId> */
     public array $projectIds;
 
     public function jsonSerialize(): array

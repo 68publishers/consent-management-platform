@@ -10,9 +10,6 @@ use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AbstractStringVal
 
 final class Link extends AbstractStringValueObject
 {
-    /**
-     * @return static
-     */
     public static function withValidation(string $value): self
     {
         if (!empty($value) && !Validators::isUrl($value)) {

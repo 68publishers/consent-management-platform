@@ -26,7 +26,7 @@ final class FindCookieProvidersByCodesQueryHandler implements QueryHandlerInterf
     }
 
     /**
-     * @return CookieProviderView[]
+     * @return array<CookieProviderView>
      */
     public function __invoke(FindCookieProvidersByCodesQuery $query): array
     {

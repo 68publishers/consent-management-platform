@@ -15,9 +15,6 @@ final class ErrorCallback
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function wrap(?callable $callback = null): self
     {
         $errorCallback = new self();

@@ -21,25 +21,16 @@ final class Status extends AbstractEnumValueObject
         ];
     }
 
-    /**
-     * @return static
-     */
     public static function running(): self
     {
         return self::fromValue(self::RUNNING);
     }
 
-    /**
-     * @return static
-     */
     public static function failed(): self
     {
         return self::fromValue(self::FAILED);
     }
 
-    /**
-     * @return static
-     */
     public static function completed(): self
     {
         return self::fromValue(self::COMPLETED);

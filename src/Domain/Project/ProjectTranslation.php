@@ -20,9 +20,6 @@ final class ProjectTranslation
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(Project $project, Locale $locale, Template $template): self
     {
         $projectTranslation = new self();

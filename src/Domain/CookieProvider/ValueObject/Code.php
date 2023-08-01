@@ -11,9 +11,6 @@ final class Code extends AbstractStringValueObject
 {
     public const MAX_LENGTH = 70;
 
-    /**
-     * @return static
-     */
     public static function withValidation(string $code): self
     {
         if (self::MAX_LENGTH < mb_strlen($code)) {

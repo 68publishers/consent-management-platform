@@ -49,9 +49,6 @@ final class CookieProvider implements AggregateRootInterface
 
     private Collection $translations;
 
-    /**
-     * @return static
-     */
     public static function create(CreateCookieProviderCommand $command, CheckCodeUniquenessInterface $checkCodeUniqueness): self
     {
         $cookieProvider = new self();

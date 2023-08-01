@@ -8,13 +8,10 @@ use DateTimeImmutable;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 /**
- * Returns ProjectCookieTotalsView
+ * Returns `ProjectCookieTotalsView`
  */
 final class CalculateProjectCookieTotalsQuery extends AbstractQuery
 {
-    /**
-     * @return static
-     */
     public static function create(string $projectId, DateTimeImmutable $maxDate): self
     {
         return self::fromParameters([

@@ -9,9 +9,6 @@ use DomainException;
 
 final class CategoryNotFoundException extends DomainException
 {
-    /**
-     * @return static
-     */
     public static function withId(CategoryId $id): self
     {
         return new self(sprintf(

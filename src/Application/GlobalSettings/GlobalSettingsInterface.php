@@ -10,7 +10,7 @@ use App\Domain\GlobalSettings\ValueObject\CrawlerSettings;
 interface GlobalSettingsInterface
 {
     /**
-     * @return Locale[]
+     * @return array<Locale>
      */
     public function locales(): array;
 

@@ -9,9 +9,6 @@ use DomainException;
 
 final class ConsentNotFoundException extends DomainException
 {
-    /**
-     * @return static
-     */
     public static function withId(ConsentId $id): self
     {
         return new self(sprintf(

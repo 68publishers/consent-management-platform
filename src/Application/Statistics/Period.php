@@ -14,9 +14,6 @@ final class Period
 
     private function __construct() {}
 
-    /**
-     * @return $this
-     */
     public static function create(DateTimeImmutable $startDate, DateTimeImmutable $endDate): self
     {
         $period = new self();
@@ -26,9 +23,6 @@ final class Period
         return $period;
     }
 
-    /**
-     * @return $this
-     */
     public function createPreviousPeriod(): self
     {
         $diff = $this->startDate()->diff($this->endDate());

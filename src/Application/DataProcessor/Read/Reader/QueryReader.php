@@ -29,9 +29,6 @@ final class QueryReader extends AbstractReader
         $this->queryBus = $queryBus;
     }
 
-    /**
-     * @return static
-     */
     public static function create(QueryBusInterface $queryBus, QueryResource $resource): self
     {
         return new self($queryBus, $resource);

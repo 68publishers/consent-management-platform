@@ -8,9 +8,6 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class DeleteCookieProviderCommand extends AbstractCommand
 {
-    /**
-     * @return static
-     */
     public static function create(string $cookieProviderId): self
     {
         return self::fromParameters([

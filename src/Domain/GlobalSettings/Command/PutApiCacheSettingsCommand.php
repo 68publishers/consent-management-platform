@@ -8,9 +8,6 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class PutApiCacheSettingsCommand extends AbstractCommand
 {
-    /**
-     * @return static
-     */
     public static function create(array $cacheControlDirectives, bool $useEntityTag): self
     {
         return self::fromParameters([

@@ -21,25 +21,16 @@ final class RowResult
         $this->message = $message;
     }
 
-    /**
-     * @return static
-     */
     public static function success(string $rowIndex, string $message): self
     {
         return new self($rowIndex, true, $message);
     }
 
-    /**
-     * @return static
-     */
     public static function error(string $rowIndex, string $message): self
     {
         return new self($rowIndex, false, $message);
     }
 
-    /**
-     * @return $this
-     */
     public function withWarning(string $warning): self
     {
         $result = clone $this;
@@ -64,7 +55,7 @@ final class RowResult
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function warnings(): array
     {

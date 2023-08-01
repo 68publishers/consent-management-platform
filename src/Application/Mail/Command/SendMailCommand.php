@@ -9,9 +9,6 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class SendMailCommand extends AbstractCommand
 {
-    /**
-     * @return static
-     */
     public static function create(Message $message): self
     {
         return self::fromParameters([

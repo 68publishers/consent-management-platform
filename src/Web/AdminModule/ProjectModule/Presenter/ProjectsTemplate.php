@@ -9,6 +9,6 @@ use App\Web\AdminModule\Presenter\AdminTemplate;
 
 final class ProjectsTemplate extends AdminTemplate
 {
-    /** @var ProjectView[]  */
+    /** @var array<ProjectView> */
     public array $projects;
 }

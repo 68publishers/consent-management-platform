@@ -17,9 +17,6 @@ final class ProjectHasCookieProvider
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(Project $project, CookieProviderId $cookieProviderId): self
     {
         $association = new self();

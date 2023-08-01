@@ -35,9 +35,6 @@ final class ConsentSettings implements AggregateRootInterface
 
     private ShortIdentifier $shortIdentifier;
 
-    /**
-     * @return static
-     */
     public static function create(ProjectId $projectId, Checksum $checksum, Settings $settings, CheckChecksumNotExistsInterface $checkChecksumNotExists, ShortIdentifierGeneratorInterface $shortIdentifierGenerator): self
     {
         $checkChecksumNotExists($projectId, $checksum);

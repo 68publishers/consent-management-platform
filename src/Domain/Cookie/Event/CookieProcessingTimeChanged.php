@@ -14,9 +14,6 @@ final class CookieProcessingTimeChanged extends AbstractDomainEvent
 
     private ProcessingTime $processingTime;
 
-    /**
-     * @return static
-     */
     public static function create(CookieId $cookieId, ProcessingTime $processingTime): self
     {
         $event = self::occur($cookieId->toString(), [

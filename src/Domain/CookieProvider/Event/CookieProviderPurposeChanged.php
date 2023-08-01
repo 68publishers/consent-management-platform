@@ -17,9 +17,6 @@ final class CookieProviderPurposeChanged extends AbstractDomainEvent
 
     private Purpose $purpose;
 
-    /**
-     * @return static
-     */
     public static function create(CookieProviderId $cookieProviderId, Locale $locale, Purpose $purpose): self
     {
         $event = self::occur($cookieProviderId->toString(), [

@@ -13,9 +13,6 @@ final class Etag
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function fromValidator(string $value, bool $weak = false): self
     {
         if (0 !== strncmp($value, '"', 1)) {
@@ -28,9 +25,6 @@ final class Etag
         return $etag;
     }
 
-    /**
-     * @return static
-     */
     public static function fromHeader(string $value): self
     {
         $etag = new self();

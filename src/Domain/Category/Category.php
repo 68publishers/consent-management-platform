@@ -38,9 +38,6 @@ final class Category implements AggregateRootInterface
 
     private Collection $translations;
 
-    /**
-     * @return static
-     */
     public static function create(CreateCategoryCommand $command, CheckCodeUniquenessInterface $checkCodeUniqueness): self
     {
         $category = new self();

@@ -9,9 +9,6 @@ use DomainException;
 
 final class ImportNotFoundException extends DomainException
 {
-    /**
-     * @return static
-     */
     public static function withId(ImportId $id): self
     {
         return new self(sprintf(

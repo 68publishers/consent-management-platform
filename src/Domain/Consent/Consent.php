@@ -38,9 +38,6 @@ final class Consent implements AggregateRootInterface
 
     private Attributes $attributes;
 
-    /**
-     * @return static
-     */
     public static function create(StoreConsentCommand $command, CheckUserIdentifierNotExistsInterface $checkUserIdentifierNotExists): self
     {
         $consentId = ConsentId::new();

@@ -7,13 +7,10 @@ namespace App\ReadModel\ConsentSettings;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 /**
- * Returns ConsentSettingsView
+ * Returns `?ConsentSettingsView`
  */
 final class GetConsentSettingsByProjectIdAndChecksumQuery extends AbstractQuery
 {
-    /**
-     * @return static
-     */
     public static function create(string $projectId, string $checksum): self
     {
         return self::fromParameters([

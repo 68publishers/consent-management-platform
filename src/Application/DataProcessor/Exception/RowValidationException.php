@@ -17,9 +17,6 @@ final class RowValidationException extends RuntimeException implements DataReade
         parent::__construct($message);
     }
 
-    /**
-     * @return static
-     */
     public static function error(string $rowIndex, string $error): self
     {
         return new self($rowIndex, sprintf(

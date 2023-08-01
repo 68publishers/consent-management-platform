@@ -8,9 +8,6 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class ChangeNotificationPreferencesCommand extends AbstractCommand
 {
-    /**
-     * @return static
-     */
     public static function create(string $userId, string ...$notificationTypes): self
     {
         return self::fromParameters([

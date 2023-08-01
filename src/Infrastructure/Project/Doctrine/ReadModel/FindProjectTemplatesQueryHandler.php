@@ -27,7 +27,7 @@ final class FindProjectTemplatesQueryHandler implements QueryHandlerInterface
     }
 
     /**
-     * @return ProjectTemplateView[]
+     * @return array<ProjectTemplateView>
      */
     public function __invoke(FindProjectTemplatesQuery $query): array
     {

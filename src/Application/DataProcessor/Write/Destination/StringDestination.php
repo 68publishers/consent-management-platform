@@ -12,9 +12,6 @@ final class StringDestination implements DestinationInterface
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(array $options = []): self
     {
         $destination = new self();
@@ -24,9 +21,6 @@ final class StringDestination implements DestinationInterface
         return $destination;
     }
 
-    /**
-     * @return $this
-     */
     public function append(string $string): self
     {
         $destination = clone $this;

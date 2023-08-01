@@ -13,9 +13,6 @@ final class ProjectActiveStateChanged extends AbstractDomainEvent
 
     private bool $active;
 
-    /**
-     * @return static
-     */
     public static function create(ProjectId $projectId, bool $active): self
     {
         $event = self::occur($projectId->toString(), [

@@ -23,9 +23,6 @@ final class InvalidTemplateException extends DomainException
         $this->locale = $locale;
     }
 
-    /**
-     * @return static
-     */
     public static function fromPrevious(ProjectId $projectId, Locale $locale, Throwable $e): self
     {
         return new self($projectId, $locale, $e->getMessage(), $e->getCode(), $e);

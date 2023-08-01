@@ -8,9 +8,6 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class StoreConsentSettingsCommand extends AbstractCommand
 {
-    /**
-     * @return static
-     */
     public static function create(string $projectId, string $checksum, array $settings): self
     {
         return self::fromParameters([

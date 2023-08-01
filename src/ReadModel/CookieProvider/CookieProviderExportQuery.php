@@ -8,9 +8,6 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractBatchedQuery
 
 final class CookieProviderExportQuery extends AbstractBatchedQuery
 {
-    /**
-     * @return static
-     */
     public static function create(): self
     {
         return self::fromParameters([]);

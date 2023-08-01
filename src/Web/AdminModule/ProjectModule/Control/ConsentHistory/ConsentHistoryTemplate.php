@@ -9,9 +9,9 @@ use SixtyEightPublishers\ArchitectureBundle\Domain\Event\AbstractDomainEvent;
 
 final class ConsentHistoryTemplate extends Template
 {
-    /** @var AbstractDomainEvent[]  */
+    /** @var array<AbstractDomainEvent> */
     public array $events;
 
-    /** @var ?int[] */
+    /** @var array<int> */
     public array $consentSettingsShortIdentifiers;
 }

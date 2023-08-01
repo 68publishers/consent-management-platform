@@ -16,26 +16,23 @@ final class Message
 
     private ?Address $from = null;
 
-    /** @var Address[] */
+    /** @var array<Address> */
     private array $to = [];
 
-    /** @var Address[] */
+    /** @var array<Address> */
     private array $bcc = [];
 
-    /** @var Address[] */
+    /** @var array<Address> */
     private array $cc = [];
 
-    /** @var Address[] */
+    /** @var array<Address> */
     private array $replyTo = [];
 
-    /** @var Attachment[] */
+    /** @var array<Attachment> */
     private array $attachments = [];
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(string $templateFile, ?string $locale = null): self
     {
         $message = new self();
@@ -45,9 +42,6 @@ final class Message
         return $message;
     }
 
-    /**
-     * @return $this
-     */
     public function withArguments(array $arguments): self
     {
         $message = clone $this;
@@ -56,9 +50,6 @@ final class Message
         return $message;
     }
 
-    /**
-     * @return $this
-     */
     public function withSubject(string $subject): self
     {
         $message = clone $this;
@@ -67,9 +58,6 @@ final class Message
         return $message;
     }
 
-    /**
-     * @return $this
-     */
     public function withFrom(Address $from): self
     {
         $message = clone $this;
@@ -78,9 +66,6 @@ final class Message
         return $message;
     }
 
-    /**
-     * @return $this
-     */
     public function withTo(Address $to): self
     {
         $message = clone $this;
@@ -89,9 +74,6 @@ final class Message
         return $message;
     }
 
-    /**
-     * @return $this
-     */
     public function withBcc(Address $bcc): self
     {
         $message = clone $this;
@@ -100,9 +82,6 @@ final class Message
         return $message;
     }
 
-    /**
-     * @return $this
-     */
     public function withCc(Address $cc): self
     {
         $message = clone $this;
@@ -111,9 +90,6 @@ final class Message
         return $message;
     }
 
-    /**
-     * @return $this
-     */
     public function withReplyTo(Address $replyTo): self
     {
         $message = clone $this;
@@ -122,9 +98,6 @@ final class Message
         return $message;
     }
 
-    /**
-     * @return $this
-     */
     public function withAttachment(Attachment $attachment): self
     {
         $message = clone $this;
@@ -159,7 +132,7 @@ final class Message
     }
 
     /**
-     * @return Address[]
+     * @return array<Address>
      */
     public function to(): array
     {
@@ -167,7 +140,7 @@ final class Message
     }
 
     /**
-     * @return Address[]
+     * @return array<Address>
      */
     public function bcc(): array
     {
@@ -175,7 +148,7 @@ final class Message
     }
 
     /**
-     * @return Address[]
+     * @return array<Address>
      */
     public function cc(): array
     {
@@ -183,7 +156,7 @@ final class Message
     }
 
     /**
-     * @return Address[]
+     * @return array<Address>
      */
     public function replyTo(): array
     {
@@ -191,7 +164,7 @@ final class Message
     }
 
     /**
-     * @return Attachment[]
+     * @return array<Attachment>
      */
     public function attachments(): array
     {

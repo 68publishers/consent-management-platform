@@ -13,9 +13,6 @@ final class NameUniquenessException extends DomainException
         parent::__construct($message);
     }
 
-    /**
-     * @return static
-     */
     public static function create(string $name, string $cookieProviderId): self
     {
         return new self(sprintf(

@@ -14,11 +14,11 @@ use App\Application\DataProcessor\Read\Resource\StringResource;
 
 final class DataReaderFactory implements DataReaderFactoryInterface
 {
-    /** @var ReaderFactoryInterface[] */
+    /** @var array<ReaderFactoryInterface> */
     private array $readerFactories;
 
     /**
-     * @param ReaderFactoryInterface[] $readerFactories
+     * @param array<ReaderFactoryInterface> $readerFactories
      */
     public function __construct(array $readerFactories)
     {

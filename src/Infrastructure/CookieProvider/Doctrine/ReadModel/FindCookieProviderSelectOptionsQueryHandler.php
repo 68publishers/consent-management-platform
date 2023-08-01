@@ -30,7 +30,7 @@ final class FindCookieProviderSelectOptionsQueryHandler implements QueryHandlerI
     }
 
     /**
-     * @return CookieProviderSelectOptionView[]
+     * @return array<CookieProviderSelectOptionView>
      */
     public function __invoke(FindCookieProviderSelectOptionsQuery $query): array
     {

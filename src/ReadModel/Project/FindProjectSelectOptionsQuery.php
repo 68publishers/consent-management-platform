@@ -7,21 +7,15 @@ namespace App\ReadModel\Project;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 /**
- * Returns array of ProjectSelectOptionsView
+ * Returns `array<ProjectSelectOptionsView>`
  */
 final class FindProjectSelectOptionsQuery extends AbstractQuery
 {
-    /**
-     * @return static
-     */
     public static function all(): self
     {
         return self::fromParameters([]);
     }
 
-    /**
-     * @return static
-     */
     public static function byUser(string $userId): self
     {
         return self::fromParameters([
@@ -29,9 +23,6 @@ final class FindProjectSelectOptionsQuery extends AbstractQuery
         ]);
     }
 
-    /**
-     * @return static
-     */
     public static function byCookieProviderId(string $cookieProviderId): self
     {
         return self::fromParameters([

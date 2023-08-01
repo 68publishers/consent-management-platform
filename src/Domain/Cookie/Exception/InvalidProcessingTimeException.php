@@ -14,9 +14,6 @@ final class InvalidProcessingTimeException extends DomainException
         parent::__construct($message);
     }
 
-    /**
-     * @return static
-     */
     public static function invalidValue(string $value): self
     {
         return new self(sprintf(

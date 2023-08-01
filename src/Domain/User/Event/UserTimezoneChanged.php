@@ -14,12 +14,6 @@ final class UserTimezoneChanged extends AbstractDomainEvent
 
     private DateTimeZone $timezone;
 
-    /***
-     * @param UserId $userId
-     * @param DateTimeZone $timezone
-     *
-     * @return static
-     */
     public static function create(UserId $userId, DateTimeZone $timezone): self
     {
         $event = self::occur($userId->toString(), [

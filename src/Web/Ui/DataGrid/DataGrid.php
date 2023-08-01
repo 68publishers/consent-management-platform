@@ -129,9 +129,6 @@ class DataGrid extends UblabooDataGrid
         return __DIR__ . '/../templates/datagrid/datagrid.latte';
     }
 
-    /**
-     * @return $this
-     */
     public function setTemplateVariables(array $templateVariables): self
     {
         $this->templateVariables = $templateVariables;
@@ -139,9 +136,6 @@ class DataGrid extends UblabooDataGrid
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function addTemplateVariable(string $name, mixed $value): self
     {
         $this->templateVariables[$name] = $value;

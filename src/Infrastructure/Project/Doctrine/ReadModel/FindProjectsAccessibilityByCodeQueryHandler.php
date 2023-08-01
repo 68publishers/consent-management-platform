@@ -27,7 +27,7 @@ final class FindProjectsAccessibilityByCodeQueryHandler implements QueryHandlerI
     }
 
     /**
-     * @return ProjectPermissionView[]
+     * @return array<ProjectPermissionView>
      */
     public function __invoke(FindProjectsAccessibilityByCodeQuery $query): array
     {

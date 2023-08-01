@@ -14,9 +14,6 @@ final class ProjectColorChanged extends AbstractDomainEvent
 
     private Color $color;
 
-    /**
-     * @return static
-     */
     public static function create(ProjectId $projectId, Color $color): self
     {
         $event = self::occur($projectId->toString(), [

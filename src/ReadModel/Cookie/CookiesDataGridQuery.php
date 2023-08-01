@@ -7,13 +7,10 @@ namespace App\ReadModel\Cookie;
 use App\ReadModel\AbstractDataGridQuery;
 
 /**
- * Returns CookieDataGridItemView[]
+ * Returns `array<CookieDataGridItemView>`
  */
 final class CookiesDataGridQuery extends AbstractDataGridQuery
 {
-    /**
-     * @return static
-     */
     public static function create(?string $locale): self
     {
         return self::fromParameters([
@@ -46,26 +43,17 @@ final class CookiesDataGridQuery extends AbstractDataGridQuery
         return $this->getParam('include_projects_data') ?? false;
     }
 
-    /**
-     * @return $this
-     */
     public function withCookieProviderId(string $cookieProviderId): self
     {
         return $this->withParam('cookie_provider_id', $cookieProviderId);
     }
 
-    /**
-     * @return $this
-     */
     public function withProjectId(string $projectId, bool $servicesOnly = false): self
     {
         return $this->withParam('project_id', $projectId)
             ->withParam('project_services_only', $servicesOnly);
     }
 
-    /**
-     * @return $this
-     */
     public function withProjectsData(bool $includeProjectsData): self
     {
         return $this->withParam('include_projects_data', $includeProjectsData);

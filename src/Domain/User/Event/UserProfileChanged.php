@@ -14,12 +14,6 @@ final class UserProfileChanged extends AbstractDomainEvent
 
     private Locale $profileLocale;
 
-    /***
-     * @param UserId $userId
-     * @param Locale $profileLocale
-     *
-     * @return static
-     */
     public static function create(UserId $userId, Locale $profileLocale): self
     {
         $event = self::occur($userId->toString(), [

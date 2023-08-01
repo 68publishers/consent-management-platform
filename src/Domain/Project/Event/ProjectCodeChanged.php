@@ -14,9 +14,6 @@ final class ProjectCodeChanged extends AbstractDomainEvent
 
     private Code $code;
 
-    /**
-     * @return static
-     */
     public static function create(ProjectId $projectId, Code $code): self
     {
         $event = self::occur($projectId->toString(), [

@@ -8,9 +8,6 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class CompleteImportCommand extends AbstractCommand
 {
-    /**
-     * @return static
-     */
     public static function create(string $id, int $imported, int $failed, int $warned, string $output): self
     {
         return self::fromParameters([

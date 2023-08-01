@@ -9,9 +9,6 @@ use DomainException;
 
 final class CookieNotFoundException extends DomainException
 {
-    /**
-     * @return static
-     */
     public static function withId(CookieId $id): self
     {
         return new self(sprintf(

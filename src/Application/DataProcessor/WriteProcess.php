@@ -29,17 +29,11 @@ final class WriteProcess
         $this->onReaderError = $onReaderError;
     }
 
-    /**
-     * @return $this
-     */
     public function withDescriptor(DescriptorInterface $descriptor): self
     {
         return new self($this->dataWriterFactory, $this->reader, $descriptor, $this->onReaderError);
     }
 
-    /**
-     * @return $this
-     */
     public function withReaderErrorCallback(callable $onReaderError): self
     {
         return new self($this->dataWriterFactory, $this->reader, $this->descriptor, $onReaderError);

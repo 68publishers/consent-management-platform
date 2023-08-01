@@ -14,9 +14,6 @@ final class Attachment
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(string $file): self
     {
         $attachment = new self();
@@ -25,9 +22,6 @@ final class Attachment
         return $attachment;
     }
 
-    /**
-     * @return $this
-     */
     public function withContent(string $content): self
     {
         $attachment = clone $this;
@@ -36,9 +30,6 @@ final class Attachment
         return $attachment;
     }
 
-    /**
-     * @return $this
-     */
     public function withContentType(string $contentType): self
     {
         $attachment = clone $this;

@@ -17,9 +17,6 @@ final class ProjectTemplateChanged extends AbstractDomainEvent
 
     private Locale $locale;
 
-    /**
-     * @return static
-     */
     public static function create(ProjectId $projectId, Template $template, Locale $locale): self
     {
         $event = self::occur($projectId->toString(), [

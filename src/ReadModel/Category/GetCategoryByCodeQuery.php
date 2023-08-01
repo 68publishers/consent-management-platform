@@ -7,13 +7,10 @@ namespace App\ReadModel\Category;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 /**
- * Returns CategoryView or NULL
+ * Returns `?CategoryView`
  */
 final class GetCategoryByCodeQuery extends AbstractQuery
 {
-    /**
-     * @return static
-     */
     public static function create(string $code): self
     {
         return self::fromParameters([

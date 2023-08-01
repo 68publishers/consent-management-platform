@@ -14,7 +14,7 @@ use Doctrine\ORM\Query\SqlWalker;
 
 final class JsonAggFunction extends FunctionNode
 {
-    /** @var Node[] */
+    /** @var array<Node> */
     private array $fields = [];
 
     private ?OrderByClause $orderBy = null;

@@ -17,9 +17,6 @@ final class CategoryNameUpdated extends AbstractDomainEvent
 
     private Name $name;
 
-    /**
-     * @return static
-     */
     public static function create(CategoryId $categoryId, Locale $locale, Name $name): self
     {
         $event = self::occur($categoryId->toString(), [

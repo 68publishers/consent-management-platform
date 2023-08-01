@@ -12,9 +12,6 @@ final class Locale
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(string $code, string $name): self
     {
         $locale = new self();
@@ -24,9 +21,6 @@ final class Locale
         return $locale;
     }
 
-    /**
-     * @return static
-     */
     public static function unknown(): self
     {
         return self::create('unknown', 'unknown');

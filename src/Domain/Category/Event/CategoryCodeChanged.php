@@ -14,9 +14,6 @@ final class CategoryCodeChanged extends AbstractDomainEvent
 
     private Code $code;
 
-    /**
-     * @return static
-     */
     public static function create(CategoryId $categoryId, Code $code): self
     {
         $event = self::occur($categoryId->toString(), [

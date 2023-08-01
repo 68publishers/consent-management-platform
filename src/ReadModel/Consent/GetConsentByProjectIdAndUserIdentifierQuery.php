@@ -8,9 +8,6 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 final class GetConsentByProjectIdAndUserIdentifierQuery extends AbstractQuery
 {
-    /**
-     * @return static
-     */
     public static function create(string $projectId, string $userIdentifier): self
     {
         return self::fromParameters([

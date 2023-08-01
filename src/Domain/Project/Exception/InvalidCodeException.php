@@ -13,9 +13,6 @@ final class InvalidCodeException extends DomainException
         parent::__construct($message);
     }
 
-    /**
-     * @return static
-     */
     public static function containsNonAllowedCharacters(string $code): self
     {
         return new self(sprintf(
@@ -24,9 +21,6 @@ final class InvalidCodeException extends DomainException
         ));
     }
 
-    /**
-     * @return static
-     */
     public static function tooLong(string $code, int $maxLength): self
     {
         return new self(sprintf(

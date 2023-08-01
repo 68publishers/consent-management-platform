@@ -11,7 +11,7 @@ interface ImporterInterface
     public function accepts(RowInterface $row): bool;
 
     /**
-     * @param RowInterface[] $rows
+     * @param array<RowInterface> $rows
      */
     public function import(array $rows): ImporterResult;
 }

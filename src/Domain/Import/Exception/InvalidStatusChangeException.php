@@ -9,9 +9,6 @@ use DomainException;
 
 final class InvalidStatusChangeException extends DomainException
 {
-    /**
-     * @return static
-     */
     public static function unableToFail(ImportId $importId): self
     {
         return new self(sprintf(
@@ -20,9 +17,6 @@ final class InvalidStatusChangeException extends DomainException
         ));
     }
 
-    /**
-     * @return static
-     */
     public static function unableToComplete(ImportId $importId): self
     {
         return new self(sprintf(

@@ -8,9 +8,6 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class PutLocalizationSettingsCommand extends AbstractCommand
 {
-    /**
-     * @return static
-     */
     public static function create(array $locales, string $defaultLocale): self
     {
         return self::fromParameters([

@@ -35,7 +35,7 @@ final class CookieView extends AbstractView
 
     public bool $active;
 
-    /** @var Purpose[] */
+    /** @var array<Purpose> */
     public array $purposes;
 
     public function jsonSerialize(): array

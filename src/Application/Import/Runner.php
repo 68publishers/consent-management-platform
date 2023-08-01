@@ -125,7 +125,7 @@ final class Runner implements RunnerInterface
     }
 
     /**
-     * @param RowInterface[] $rows
+     * @param array<RowInterface> $rows
      */
     private function doImport(Pool $pool, array $rows, ImportState $state, LoggerInterface $logger): void
     {
@@ -170,7 +170,7 @@ final class Runner implements RunnerInterface
     }
 
     /**
-     * @param RowInterface[] $rows
+     * @param array<RowInterface> $rows
      */
     private function processImporterFailed(array $rows, Throwable $e, ImportState $state, LoggerInterface $logger): void
     {
@@ -185,7 +185,7 @@ final class Runner implements RunnerInterface
     }
 
     /**
-     * @param RowInterface[] $rows
+     * @param array<RowInterface> $rows
      */
     private function processImporterTimeout(array $rows, ImportState $state, LoggerInterface $logger): void
     {

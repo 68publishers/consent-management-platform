@@ -15,17 +15,11 @@ use JsonException;
 
 final class JsonReader extends AbstractReader
 {
-    /**
-     * @return static
-     */
     public static function fromFile(FileResource $resource): self
     {
         return new self($resource);
     }
 
-    /**
-     * @return static
-     */
     public static function fromString(StringResource $resource): self
     {
         return new self($resource);

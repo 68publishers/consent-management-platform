@@ -12,9 +12,6 @@ final class Address
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(string $from, ?string $name = null): self
     {
         $address = new self();

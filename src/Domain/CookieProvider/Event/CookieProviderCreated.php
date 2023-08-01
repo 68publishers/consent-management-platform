@@ -31,9 +31,7 @@ final class CookieProviderCreated extends AbstractDomainEvent
     private bool $active;
 
     /**
-     * @param Purpose[] $purposes
-     *
-     * @return static
+     * @param array<Purpose> $purposes
      */
     public static function create(CookieProviderId $cookieProviderId, Code $code, ProviderType $type, Name $name, Link $link, array $purposes, bool $private, bool $active): self
     {
@@ -85,7 +83,7 @@ final class CookieProviderCreated extends AbstractDomainEvent
     }
 
     /**
-     * @return Purpose[]
+     * @return array<Purpose>
      */
     public function purposes(): array
     {

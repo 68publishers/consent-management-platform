@@ -14,9 +14,6 @@ final class UserNotificationPreferencesChanged extends AbstractDomainEvent
 
     private NotificationPreferences $notificationPreferences;
 
-    /**
-     * @return static
-     */
     public static function create(UserId $userId, NotificationPreferences $notificationPreferences): self
     {
         $event = self::occur($userId->toString(), [

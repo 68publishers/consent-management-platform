@@ -37,9 +37,6 @@ final class ColumnDateTimeTz extends Column
         return $value->format($this->format);
     }
 
-    /**
-     * @return $this
-     */
     public function setTimezone(string $timezone): self
     {
         $this->timezone = new DateTimeZone($timezone);

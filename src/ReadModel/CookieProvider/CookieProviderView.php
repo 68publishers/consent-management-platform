@@ -30,7 +30,7 @@ final class CookieProviderView extends AbstractView
 
     public Link $link;
 
-    /** @var Purpose[] */
+    /** @var array<Purpose> */
     public array $purposes;
 
     public bool $private;

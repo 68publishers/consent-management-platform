@@ -8,9 +8,6 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class StartImportCommand extends AbstractCommand
 {
-    /**
-     * @return static
-     */
     public static function create(string $id, string $name, ?string $authorId = null): self
     {
         return self::fromParameters([

@@ -8,9 +8,6 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class UpdateCookieProviderCommand extends AbstractCommand
 {
-    /**
-     * @return static
-     */
     public static function create(string $cookieProviderId): self
     {
         return self::fromParameters([
@@ -53,49 +50,33 @@ final class UpdateCookieProviderCommand extends AbstractCommand
         return $this->getParam('purposes');
     }
 
-    /**
-     * @return $this
-     */
     public function withCode(string $code): self
     {
         return $this->withParam('code', $code);
     }
 
-    /**
-     * @return $this
-     */
     public function withType(string $type): self
     {
         return $this->withParam('type', $type);
     }
 
-    /**
-     * @return $this
-     */
     public function withName(string $name): self
     {
         return $this->withParam('name', $name);
     }
-    /**
-     * @return $this
-     */
+
     public function withLink(string $link): self
     {
         return $this->withParam('link', $link);
     }
 
-    /**
-     * @return $this
-     */
     public function withActive(bool $active): self
     {
         return $this->withParam('active', $active);
     }
 
     /**
-     * @param string[] $purposes
-     *
-     * @return $this
+     * @param array<string> $purposes
      */
     public function withPurposes(array $purposes): self
     {

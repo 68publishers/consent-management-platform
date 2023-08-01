@@ -18,28 +18,13 @@ interface DataGridQueryInterface extends PaginatedQueryInterface
 
     public function mode(): string;
 
-    /**
-     * @return $this
-     */
     public function withFilter(string $name, $value): self;
 
-    /**
-     * @return $this
-     */
     public function withSorting(string $name, string $direction): self;
 
-    /**
-     * @return $this
-     */
     public function withDataMode(): self;
 
-    /**
-     * @return $this
-     */
     public function withOneMode(): self;
 
-    /**
-     * @return $this
-     */
     public function withCountMode(): self;
 }

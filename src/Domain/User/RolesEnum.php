@@ -12,7 +12,7 @@ final class RolesEnum
     private function __construct() {}
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public static function values(): array
     {

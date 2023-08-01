@@ -25,17 +25,11 @@ final class CsvReader extends AbstractReader
     public const OPTION_ESCAPE = 'escape';
     public const OPTION_HAS_HEADER = 'has_header';
 
-    /**
-     * @return static
-     */
     public static function fromFile(FileResource $resource): self
     {
         return new self($resource);
     }
 
-    /**
-     * @return static
-     */
     public static function fromString(StringResource $resource): self
     {
         return new self($resource);

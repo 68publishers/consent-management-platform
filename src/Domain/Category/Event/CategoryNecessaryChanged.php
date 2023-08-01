@@ -13,9 +13,6 @@ final class CategoryNecessaryChanged extends AbstractDomainEvent
 
     private bool $necessary;
 
-    /**
-     * @return static
-     */
     public static function create(CategoryId $categoryId, bool $necessary): self
     {
         $event = self::occur($categoryId->toString(), [

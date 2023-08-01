@@ -13,9 +13,6 @@ final class QueryResource implements ResourceInterface
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(QueryInterface $query): self
     {
         $resource = new self();

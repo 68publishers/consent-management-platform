@@ -26,7 +26,7 @@ final class FindAllProjectsQueryHandler implements QueryHandlerInterface
     }
 
     /**
-     * @return ProjectView[]
+     * @return array<ProjectView>
      */
     public function __invoke(FindAllProjectsQuery $query): array
     {

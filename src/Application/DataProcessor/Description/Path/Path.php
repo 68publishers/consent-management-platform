@@ -12,9 +12,6 @@ final class Path implements Countable
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function fromParts(array $parts): self
     {
         $path = new self();
@@ -23,9 +20,6 @@ final class Path implements Countable
         return $path;
     }
 
-    /**
-     * @return static
-     */
     public static function fromString(string $pathString): self
     {
         $path = new self();

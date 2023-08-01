@@ -7,13 +7,10 @@ namespace App\ReadModel\Project;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 /**
- * Returns array of ProjectPermissionView
+ * Returns `array<ProjectPermissionView>`
  */
 final class FindAllProjectsWithPossibleAssociationWithCookieProviderQuery extends AbstractQuery
 {
-    /**
-     * @return static
-     */
     public static function create(string $cookieProviderId, ?array $projectCodes): self
     {
         return self::fromParameters([
@@ -28,7 +25,7 @@ final class FindAllProjectsWithPossibleAssociationWithCookieProviderQuery extend
     }
 
     /**
-     * @return string[]|NULL
+     * @return array<string>|NULL
      */
     public function projectCodes(): ?array
     {

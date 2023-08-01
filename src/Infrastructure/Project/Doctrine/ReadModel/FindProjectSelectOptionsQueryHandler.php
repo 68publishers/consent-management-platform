@@ -28,7 +28,7 @@ final class FindProjectSelectOptionsQueryHandler implements QueryHandlerInterfac
     }
 
     /**
-     * @return ProjectSelectOptionView[]
+     * @return array<ProjectSelectOptionView>
      */
     public function __invoke(FindProjectSelectOptionsQuery $query): array
     {

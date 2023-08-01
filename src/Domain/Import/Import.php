@@ -46,9 +46,6 @@ final class Import implements AggregateRootInterface
 
     private Output $output;
 
-    /**
-     * @return static
-     */
     public static function create(StartImportCommand $command): self
     {
         $import = new self();

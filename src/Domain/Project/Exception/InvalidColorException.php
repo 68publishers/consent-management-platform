@@ -13,9 +13,6 @@ final class InvalidColorException extends DomainException
         parent::__construct($message);
     }
 
-    /**
-     * @return static
-     */
     public static function invalidValue(string $color): self
     {
         return new self(sprintf(

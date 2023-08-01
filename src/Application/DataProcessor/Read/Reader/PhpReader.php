@@ -13,9 +13,6 @@ use Throwable;
 
 final class PhpReader extends AbstractReader
 {
-    /**
-     * @return static
-     */
     public static function fromFile(FileResource $resource): self
     {
         return new self($resource);

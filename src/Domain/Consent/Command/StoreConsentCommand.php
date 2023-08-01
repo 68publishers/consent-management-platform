@@ -9,9 +9,6 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class StoreConsentCommand extends AbstractCommand
 {
-    /**
-     * @return static
-     */
     public static function create(string $projectId, string $userIdentifier, ?string $settingsChecksum, array $consents, array $attributes): self
     {
         return self::fromParameters([
@@ -23,9 +20,6 @@ final class StoreConsentCommand extends AbstractCommand
         ]);
     }
 
-    /**
-     * @return $this
-     */
     public function withCreatedAt(DateTimeImmutable $createdAt): self
     {
         return $this->withParam('created_at', $createdAt);

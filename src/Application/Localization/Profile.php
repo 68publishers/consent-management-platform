@@ -14,9 +14,6 @@ final class Profile
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(string $locale, string $name, string $icon): self
     {
         $profile = new self();

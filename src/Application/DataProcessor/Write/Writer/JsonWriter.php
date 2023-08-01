@@ -19,17 +19,11 @@ final class JsonWriter extends AbstractWriter
 
     private array $data = [];
 
-    /**
-     * @return static
-     */
     public static function fromFile(ResourceInterface $resource, FileDestination $destination): self
     {
         return new self($resource, $destination);
     }
 
-    /**
-     * @return static
-     */
     public static function fromString(ResourceInterface $resource, StringDestination $destination): self
     {
         return new self($resource, $destination);

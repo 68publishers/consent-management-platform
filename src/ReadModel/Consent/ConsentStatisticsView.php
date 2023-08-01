@@ -21,9 +21,6 @@ final class ConsentStatisticsView extends AbstractView
 
     public int $uniqueNegativeCount;
 
-    /**
-     * @return static
-     */
     public static function createEmpty(): self
     {
         return self::fromData(new ArrayViewData([

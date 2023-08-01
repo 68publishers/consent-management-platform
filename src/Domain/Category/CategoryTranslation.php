@@ -20,9 +20,6 @@ final class CategoryTranslation
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(Category $category, Locale $locale, Name $name): self
     {
         $categoryTranslation = new self();

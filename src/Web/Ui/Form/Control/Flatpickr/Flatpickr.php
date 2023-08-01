@@ -43,7 +43,7 @@ final class Flatpickr extends TextInput
         self::ATTRIBUTE_DEFAULT_MINUTE => null,
     ];
 
-    /** @var NULL|DateTimeInterface|DateTimeInterface[] */
+    /** @var NULL|DateTimeInterface|array<DateTimeInterface> */
     private DateTimeInterface|array|null $realValue = null;
 
     private bool $returnRealValue = true;
@@ -91,7 +91,7 @@ final class Flatpickr extends TextInput
     }
 
     /**
-     * @return DateTimeInterface|DateTimeInterface[]|NULL|string
+     * @return DateTimeInterface|array<DateTimeInterface>|NULL|string
      */
     public function getValue(): DateTimeInterface|array|null|string
     {
@@ -175,7 +175,7 @@ final class Flatpickr extends TextInput
     }
 
     /**
-     * @return DateTimeInterface|DateTimeInterface[]
+     * @return DateTimeInterface|array<DateTimeInterface>
      * @throws Throwable
      */
     private function rawToReal(string $rawValue): DateTimeInterface|array

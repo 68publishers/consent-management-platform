@@ -163,7 +163,7 @@ final class ProviderFormControl extends Control
     }
 
     /**
-     * @param string[] $projectIds
+     * @param array<string> $projectIds
      */
     private function saveProjects(array $projectIds, CookieProviderId $cookieProviderId): void
     {

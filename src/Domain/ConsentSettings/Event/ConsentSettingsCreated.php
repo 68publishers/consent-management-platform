@@ -23,9 +23,6 @@ final class ConsentSettingsCreated extends AbstractDomainEvent
 
     private ShortIdentifier $shortIdentifier;
 
-    /**
-     * @return static
-     */
     public static function create(ConsentSettingsId $consentSettingsId, ProjectId $projectId, Checksum $checksum, SettingsGroup $settings, ShortIdentifier $shortIdentifier): self
     {
         $event = self::occur($consentSettingsId->toString(), [

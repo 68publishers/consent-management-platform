@@ -28,7 +28,7 @@ final class FindAllProjectsWithPossibleAssociationWithCookieProviderQueryHandler
     }
 
     /**
-     * @return ProjectPermissionView[]
+     * @return array<ProjectPermissionView>
      */
     public function __invoke(FindAllProjectsWithPossibleAssociationWithCookieProviderQuery $query): array
     {

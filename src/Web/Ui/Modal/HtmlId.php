@@ -10,9 +10,6 @@ final class HtmlId
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(string $id): self
     {
         $htmlId = new self();

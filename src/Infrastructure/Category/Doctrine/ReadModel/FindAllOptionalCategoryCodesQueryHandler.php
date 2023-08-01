@@ -20,7 +20,7 @@ final class FindAllOptionalCategoryCodesQueryHandler implements QueryHandlerInte
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function __invoke(FindAllOptionalCategoryCodesQuery $query): array
     {

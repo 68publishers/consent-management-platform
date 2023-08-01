@@ -14,9 +14,6 @@ final class ConsentSettingsAdded extends AbstractDomainEvent
 
     private Settings $settings;
 
-    /**
-     * @return static
-     */
     public static function create(ConsentSettingsId $consentSettingsId, Settings $settings): self
     {
         $event = self::occur($consentSettingsId->toString(), [

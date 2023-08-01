@@ -8,9 +8,6 @@ use App\ReadModel\AbstractDataGridQuery;
 
 final class ConsentSettingsDataGridQuery extends AbstractDataGridQuery
 {
-    /**
-     * @return $this
-     */
     public static function create(string $projectId): self
     {
         return self::fromParameters([
