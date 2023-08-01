@@ -3,6 +3,7 @@ version: "3.7"
 services:
     app:
         image: 68publishers/php:8.1-unit-dev-2.0.0
+        user: "www-data:www-data"
         container_name: cmp-app
         profiles:
             - web
@@ -24,6 +25,7 @@ services:
             dockerfile: Dockerfile
             target: worker
         container_name: cmp-worker
+        user: "www-data:www-data"
         profiles:
             - worker
         networks:
