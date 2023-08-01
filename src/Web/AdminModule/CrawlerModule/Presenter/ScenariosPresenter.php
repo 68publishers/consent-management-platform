@@ -8,8 +8,8 @@ use Nette\InvalidStateException;
 use Nette\Application\BadRequestException;
 use App\Application\Acl\CrawlerScenariosResource;
 use App\Web\AdminModule\Presenter\AdminPresenter;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use SixtyEightPublishers\UserBundle\Application\Exception\IdentityException;
 use App\Web\AdminModule\CrawlerModule\Control\ScenarioList\ScenarioListControl;
 use App\Web\AdminModule\CrawlerModule\Control\RunScenarioForm\RunScenarioFormControl;
@@ -19,9 +19,7 @@ use App\Web\AdminModule\CrawlerModule\Control\RunScenarioForm\Event\FailedToRunS
 use App\Web\AdminModule\CrawlerModule\Control\ScenarioList\ScenarioListControlFactoryInterface;
 use App\Web\AdminModule\CrawlerModule\Control\RunScenarioForm\RunScenarioFormModalControlFactoryInterface;
 
-/**
- * @IsAllowed(resource=CrawlerScenariosResource::class, privilege=CrawlerScenariosResource::READ)
- */
+#[Allowed(resource: CrawlerScenariosResource::class, privilege: CrawlerScenariosResource::READ)]
 final class ScenariosPresenter extends AdminPresenter
 {
 	private ScenarioListControlFactoryInterface $scenarioListControlFactory;

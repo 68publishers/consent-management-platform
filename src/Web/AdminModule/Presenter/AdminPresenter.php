@@ -7,21 +7,19 @@ namespace App\Web\AdminModule\Presenter;
 use App\Web\Ui\Presenter;
 use Nette\HtmlStringable;
 use App\ReadModel\User\UserView;
-use Nette\Application\UI\Component;
+use Nette\Application\AbortException;
 use App\Web\Control\Footer\FooterControl;
 use Contributte\MenuControl\UI\MenuComponent;
-use Contributte\MenuControl\UI\IMenuComponentFactory;
+use Contributte\MenuControl\UI\MenuComponentFactory;
 use App\Application\GlobalSettings\ValidLocalesProvider;
 use App\Application\Localization\ApplicationDateTimeZone;
 use App\Web\Control\Footer\FooterControlFactoryInterface;
 use App\Application\GlobalSettings\GlobalSettingsInterface;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\LoggedIn;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\LoggedIn;
 use SixtyEightPublishers\UserBundle\Bridge\Nette\Security\Identity;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\AuthorizationAnnotationInterface;
+use SixtyEightPublishers\SmartNetteComponent\Exception\ForbiddenRequestException;
 
-/**
- * @LoggedIn()
- */
+#[LoggedIn]
 abstract class AdminPresenter extends Presenter
 {
 	private const MENU_NAME_SIDEBAR = 'sidebar';
@@ -31,7 +29,7 @@ abstract class AdminPresenter extends Presenter
 
 	protected ValidLocalesProvider $validLocalesProvider;
 
-	protected IMenuComponentFactory $menuComponentFactory;
+	private MenuComponentFactory $menuComponentFactory;
 
 	protected array $customBreadcrumbItems = [];
 
@@ -40,12 +38,12 @@ abstract class AdminPresenter extends Presenter
 	/**
 	 * @param \App\Application\GlobalSettings\GlobalSettingsInterface $globalSettings
 	 * @param \App\Application\GlobalSettings\ValidLocalesProvider    $validLocalesProvider
-	 * @param \Contributte\MenuControl\UI\IMenuComponentFactory       $menuComponentFactory
+	 * @param \Contributte\MenuControl\UI\MenuComponentFactory        $menuComponentFactory
 	 * @param \App\Web\Control\Footer\FooterControlFactoryInterface   $footerControlFactory
 	 *
 	 * @return void
 	 */
-	public function injectAdminDependencies(GlobalSettingsInterface $globalSettings, ValidLocalesProvider $validLocalesProvider, IMenuComponentFactory $menuComponentFactory, FooterControlFactoryInterface $footerControlFactory): void
+	public function injectAdminDependencies(GlobalSettingsInterface $globalSettings, ValidLocalesProvider $validLocalesProvider, MenuComponentFactory $menuComponentFactory, FooterControlFactoryInterface $footerControlFactory): void
 	{
 		$this->globalSettings = $globalSettings;
 		$this->validLocalesProvider = $validLocalesProvider;
@@ -54,13 +52,11 @@ abstract class AdminPresenter extends Presenter
 	}
 
 	/**
-	 * {@inheritdoc}
-	 *
-	 * @throws \Nette\Application\AbortException
+	 * @throws AbortException
 	 */
-	protected function onForbiddenRequest(AuthorizationAnnotationInterface $annotation): void
+	protected function onForbiddenRequest(ForbiddenRequestException $exception): void
 	{
-		if ($annotation instanceof LoggedIn) {
+		if ($exception->rule instanceof LoggedIn) {
 			$this->redirect(':Front:SignIn:', [
 				'backLink' => $this->storeRequest(),
 			]);
@@ -147,7 +143,7 @@ abstract class AdminPresenter extends Presenter
 	{
 		$control = $this->menuComponentFactory->create(self::MENU_NAME_SIDEBAR);
 
-		$control->onAnchor[] = function (Component $component) {
+		$control->onAnchor[] = function (MenuComponent $component) {
 			$component->template->customBreadcrumbItems = $this->customBreadcrumbItems;
 		};
 

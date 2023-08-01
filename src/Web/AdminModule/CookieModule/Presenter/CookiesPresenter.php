@@ -9,9 +9,9 @@ use App\Application\Acl\CookieResource;
 use App\Web\Ui\Form\FormFactoryInterface;
 use App\Application\Cookie\Import\CookieData;
 use App\Web\AdminModule\Presenter\AdminPresenter;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use App\Web\AdminModule\Control\ExportForm\ExportDropdownControl;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\Control\ExportForm\Callback\CookiesExportCallback;
 use App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControl;
 use App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControl;
@@ -24,9 +24,7 @@ use App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControlFacto
 use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieFormProcessingFailedEvent;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControlFactoryInterface;
 
-/**
- * @IsAllowed(resource=CookieResource::class, privilege=CookieResource::READ)
- */
+#[Allowed(resource: CookieResource::class, privilege: CookieResource::READ)]
 final class CookiesPresenter extends AdminPresenter
 {
 	private CookieListControlFactoryInterface $cookieListControlFactory;

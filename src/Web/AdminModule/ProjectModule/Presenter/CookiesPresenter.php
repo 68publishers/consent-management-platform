@@ -7,8 +7,8 @@ namespace App\Web\AdminModule\ProjectModule\Presenter;
 use Nette\InvalidStateException;
 use App\Web\Ui\Form\FormFactoryInterface;
 use App\Application\Acl\ProjectCookieResource;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControl;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControl;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieCreatedEvent;
@@ -16,9 +16,7 @@ use App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControlFactory
 use App\Web\AdminModule\CookieModule\Control\CookieForm\Event\CookieFormProcessingFailedEvent;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControlFactoryInterface;
 
-/**
- * @IsAllowed(resource=ProjectCookieResource::class, privilege=ProjectCookieResource::READ)
- */
+#[Allowed(resource: ProjectCookieResource::class, privilege: ProjectCookieResource::READ)]
 final class CookiesPresenter extends SelectedProjectPresenter
 {
 	private CookieListControlFactoryInterface $cookieListControlFactory;

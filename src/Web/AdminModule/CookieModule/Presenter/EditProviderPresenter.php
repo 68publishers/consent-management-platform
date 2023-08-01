@@ -14,9 +14,9 @@ use App\ReadModel\CookieProvider\CookieProviderView;
 use App\ReadModel\Project\GetProjectByCookieProviderQuery;
 use App\Domain\CookieProvider\ValueObject\CookieProviderId;
 use App\ReadModel\CookieProvider\GetCookieProviderByIdQuery;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControl;
 use App\Web\AdminModule\CookieModule\Control\ProviderForm\ProviderFormControl;
 use App\Web\AdminModule\CookieModule\Control\CookieForm\CookieFormModalControl;
@@ -32,9 +32,7 @@ use App\Web\AdminModule\ProjectModule\Control\ProviderForm\Event\ProviderUpdated
 use App\Web\AdminModule\ProjectModule\Control\ProviderForm\ProviderFormControlFactoryInterface as PrivateProviderFormControlFactoryInterface;
 use App\Web\AdminModule\ProjectModule\Control\ProviderForm\Event\ProviderFormProcessingFailedEvent as PrivateProviderFormProcessingFailedEvent;
 
-/**
- * @IsAllowed(resource=CookieProviderResource::class, privilege=CookieProviderResource::UPDATE)
- */
+#[Allowed(resource: CookieProviderResource::class, privilege: CookieProviderResource::UPDATE)]
 final class EditProviderPresenter extends AdminPresenter
 {
 	private ProviderFormControlFactoryInterface $providerFormControlFactory;

@@ -9,19 +9,19 @@
             {var $error = $getDataSourceError()}
 
             {if $error instanceof App\Application\Crawler\CrawlerNotConfiguredException}
-                {='crawler_not_configured_error', ['link' => $control->getPresenter()->link(':Admin:Application:Settings:') . '#crawler-settings']|translate|noescape}
+                {_crawler_not_configured_error, ['link' => $control->getPresenter()->link(':Admin:Application:Settings:') . '#crawler-settings']|noescape}
             {elseif $error instanceof SixtyEightPublishers\CrawlerClient\Exception\ControllerResponseExceptionInterface}
                 <div class="mb-4">
-                    {='crawler_api_respond_with_error_status_code', ['code' => $error->getResponse()->getStatusCode()]|translate|noescape}
+                    {_crawler_api_respond_with_error_status_code, ['code' => $error->getResponse()->getStatusCode()]|noescape}
                 </div>
 
                 <textarea x-data x-codemirror.readonly.wrap="javascript">{=Nette\Utils\Json::encode($error->getResponseBody(), Nette\Utils\Json::PRETTY)}</textarea>
             {elseif $error instanceof SixtyEightPublishers\CrawlerClient\Exception\ControllerExceptionInterface}
-                {='crawler_api_respond_with_unexpected_error', ['error' => $error->getMessage()]|translate|noescape}
+                {_crawler_api_respond_with_unexpected_error, ['error' => $error->getMessage()]|noescape}
             {elseif $filter_active}
-                {='ublaboo_datagrid.no_item_found_reset', ['link' => $control->link('resetFilter!')]|translate|noescape}
+                {_ublaboo_datagrid.no_item_found_reset, ['link' => $control->link('resetFilter!')]|noescape}
             {else}
-                {='ublaboo_datagrid.no_item_found'|translate}
+                {_ublaboo_datagrid.no_item_found}
             {/if}
         </td>
     </tr>

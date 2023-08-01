@@ -5,19 +5,18 @@ declare(strict_types=1);
 namespace App\Web\FrontModule\Presenter;
 
 use App\Web\Ui\Presenter;
+use Nette\Application\AbortException;
 use App\Web\Control\Footer\FooterControl;
 use App\Web\Control\Localization\LocalizationControl;
 use App\Web\Control\Footer\FooterControlFactoryInterface;
 use App\Web\Control\Localization\Event\ProfileChangedEvent;
 use App\Web\Control\Localization\Event\ProfileChangeFailed;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\LoggedOut;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\LoggedOut;
 use App\Web\Control\Localization\LocalizationControlFactoryInterface;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\AuthorizationAnnotationInterface;
+use SixtyEightPublishers\SmartNetteComponent\Exception\ForbiddenRequestException;
 
-/**
- * @LoggedOut()
- */
+#[LoggedOut]
 abstract class FrontPresenter extends Presenter
 {
 	/** @persistent */
@@ -40,13 +39,11 @@ abstract class FrontPresenter extends Presenter
 	}
 
 	/**
-	 * {@inheritdoc}
-	 *
-	 * @throws \Nette\Application\AbortException
+	 * @throws AbortException
 	 */
-	protected function onForbiddenRequest(AuthorizationAnnotationInterface $annotation): void
+	protected function onForbiddenRequest(ForbiddenRequestException $exception): void
 	{
-		if ($annotation instanceof LoggedOut) {
+		if ($exception->rule instanceof LoggedOut) {
 			$this->redirect(':Admin:Dashboard:');
 		}
 	}

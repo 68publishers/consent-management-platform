@@ -22,6 +22,7 @@ includes:
 	- contributte.psr6_caching.neon
 	- contributte.recaptcha.neon
 	- kdyby.redis.neon
+	- milo.embedded_svg.neon
 	- nepada.form_renderer.neon
 	- nettrine.annotations.neon
 	- nettrine.cache.neon

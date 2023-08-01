@@ -7,8 +7,8 @@ namespace App\Web\AdminModule\ProjectModule\Presenter;
 use Nette\InvalidStateException;
 use App\Application\Acl\ProjectResource;
 use App\Web\Ui\Form\FormFactoryInterface;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\ProjectModule\Control\ProjectForm\ProjectFormControl;
 use App\Web\AdminModule\ProjectModule\Control\DeleteProject\DeleteProjectControl;
 use App\Web\AdminModule\ProjectModule\Control\ProjectForm\Event\ProjectUpdatedEvent;
@@ -18,9 +18,7 @@ use App\Web\AdminModule\ProjectModule\Control\ProjectForm\ProjectFormControlFact
 use App\Web\AdminModule\ProjectModule\Control\DeleteProject\DeleteProjectControlFactoryInterface;
 use App\Web\AdminModule\ProjectModule\Control\ProjectForm\Event\ProjectFormProcessingFailedEvent;
 
-/**
- * @IsAllowed(resource=ProjectResource::class, privilege=ProjectResource::UPDATE)
- */
+#[Allowed(resource: ProjectResource::class, privilege: ProjectResource::UPDATE)]
 final class EditProjectPresenter extends SelectedProjectPresenter
 {
 	private ProjectFormControlFactoryInterface $projectFormControlFactory;

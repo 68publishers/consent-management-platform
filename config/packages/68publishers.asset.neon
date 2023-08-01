@@ -1,5 +1,5 @@
 extensions:
-	68publishers.asset: SixtyEightPublishers\Asset\DI\AssetExtension
+	68publishers.asset: SixtyEightPublishers\Asset\Bridge\Nette\DI\AssetExtension
 
 68publishers.asset:
 	packages:

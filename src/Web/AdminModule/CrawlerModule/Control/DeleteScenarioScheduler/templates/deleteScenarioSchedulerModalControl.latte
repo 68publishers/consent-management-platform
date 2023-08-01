@@ -16,7 +16,7 @@
             {_question, [name => $scenarioSchedulerResponse->getBody()->name]|noescape}
         </div>
     {elseif $responseError instanceof SixtyEightPublishers\CrawlerClient\Exception\ControllerResponseExceptionInterface}
-        {include #alert, ('error.crawler_api_respond_with_error_status_code', ['code' => $responseError->getResponse()->getStatusCode()]|translate)}
+        {include #alert, ('error.crawler_api_respond_with_error_status_code'|translate: ['code' => $responseError->getResponse()->getStatusCode()])}
 
         <textarea x-data x-codemirror.readonly.wrap="javascript">{=Nette\Utils\Json::encode($responseError->getResponseBody(), Nette\Utils\Json::PRETTY)}</textarea>
     {else}

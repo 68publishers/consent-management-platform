@@ -7,15 +7,18 @@ namespace App\Web\Ui;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerAwareInterface;
 use Nette\Security\User as NetteUser;
+use Nette\Application\UI\Control as NetteControl;
 use App\Web\Ui\Modal\ControlTrait as ModalControlTrait;
 use SixtyEightPublishers\TranslationBridge\TranslatorAwareTrait;
 use SixtyEightPublishers\TranslationBridge\TranslatorAwareInterface;
 use SixtyEightPublishers\EventDispatcherExtra\EventDispatcherAwareTrait;
-use SixtyEightPublishers\SmartNetteComponent\UI\Control as SmartControl;
 use SixtyEightPublishers\EventDispatcherExtra\EventDispatcherAwareInterface;
+use SixtyEightPublishers\SmartNetteComponent\Bridge\Nette\Application\AuthorizationTrait;
+use SixtyEightPublishers\SmartNetteComponent\Bridge\Nette\Application\TemplateResolverTrait;
+use SixtyEightPublishers\SmartNetteComponent\Authorization\ComponentAuthorizatorAwareInterface;
 use SixtyEightPublishers\FlashMessageBundle\Bridge\Nette\Ui\ControlTrait as FlashMessageControlTrait;
 
-abstract class Control extends SmartControl implements TranslatorAwareInterface, EventDispatcherAwareInterface, LoggerAwareInterface
+abstract class Control extends NetteControl implements TranslatorAwareInterface, EventDispatcherAwareInterface, LoggerAwareInterface, ComponentAuthorizatorAwareInterface
 {
 	use TranslatorAwareTrait;
 	use RedrawControlTrait;
@@ -23,6 +26,8 @@ abstract class Control extends SmartControl implements TranslatorAwareInterface,
 	use FlashMessageControlTrait;
 	use LoggerAwareTrait;
 	use ModalControlTrait;
+	use TemplateResolverTrait;
+	use AuthorizationTrait;
 
 	private NetteUser $user;
 
@@ -42,9 +47,7 @@ abstract class Control extends SmartControl implements TranslatorAwareInterface,
 	 */
 	protected function beforeRender(): void
 	{
-		parent::beforeRender();
-
-		$this->template->setTranslator($this->getPrefixedTranslator());
+		$this->getTemplate()->setTranslator($this->getPrefixedTranslator());
 	}
 
 	/**

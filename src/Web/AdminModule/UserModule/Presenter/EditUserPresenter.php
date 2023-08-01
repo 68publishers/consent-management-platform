@@ -9,9 +9,9 @@ use App\Application\Acl\UserResource;
 use App\Web\Ui\Form\FormFactoryInterface;
 use App\Web\AdminModule\Presenter\AdminPresenter;
 use SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\UserModule\Control\UserForm\UserFormControl;
 use SixtyEightPublishers\UserBundle\ReadModel\Query\GetUserByIdQuery;
 use App\Web\AdminModule\UserModule\Control\UserForm\Event\UserUpdatedEvent;
@@ -22,9 +22,7 @@ use App\Web\AdminModule\UserModule\Control\NotificationPreferences\Event\Notific
 use App\Web\AdminModule\UserModule\Control\NotificationPreferences\NotificationPreferencesControlFactoryInterface;
 use App\Web\AdminModule\UserModule\Control\NotificationPreferences\Event\NotificationPreferencesProcessingFailedEvent;
 
-/**
- * @IsAllowed(resource=UserResource::class, privilege=UserResource::UPDATE)
- */
+#[Allowed(resource: UserResource::class, privilege: UserResource::UPDATE)]
 final class EditUserPresenter extends AdminPresenter
 {
 	private UserFormControlFactoryInterface $userFormControlFactory;

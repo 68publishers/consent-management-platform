@@ -1,9 +1,7 @@
 extensions:
-	68publishers.translation_bridge: SixtyEightPublishers\TranslationBridge\Bridge\Contributte\DI\TranslationBridgeExtension
+	68publishers.translation_bridge: SixtyEightPublishers\TranslationBridge\Bridge\Nette\DI\ContributteTranslationBridgeExtension
 
 services:
 	-
 		autowired: no
 		type: App\Bridge\SixtyEightPublishers\TranslationBridge\LoggerUserProfileLocaleResolver
-		tags:
-			68publishers.translation_bridge.translator_locale_resolver: 100

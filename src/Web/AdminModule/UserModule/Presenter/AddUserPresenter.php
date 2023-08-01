@@ -6,16 +6,14 @@ namespace App\Web\AdminModule\UserModule\Presenter;
 
 use App\Application\Acl\UserResource;
 use App\Web\AdminModule\Presenter\AdminPresenter;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use App\Web\AdminModule\UserModule\Control\UserForm\UserFormControl;
 use App\Web\AdminModule\UserModule\Control\UserForm\Event\UserCreatedEvent;
 use App\Web\AdminModule\UserModule\Control\UserForm\UserFormControlFactoryInterface;
 use App\Web\AdminModule\UserModule\Control\UserForm\Event\UserFormProcessingFailedEvent;
 
-/**
- * @IsAllowed(resource=UserResource::class, privilege=UserResource::CREATE)
- */
+#[Allowed(resource: UserResource::class, privilege: UserResource::CREATE)]
 final class AddUserPresenter extends AdminPresenter
 {
 	private UserFormControlFactoryInterface $userFormControlFactory;

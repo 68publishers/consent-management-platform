@@ -6,16 +6,14 @@ namespace App\Web\AdminModule\ImportModule\Presenter;
 
 use App\Application\Acl\ImportResource;
 use App\Web\AdminModule\Presenter\AdminPresenter;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use App\Web\AdminModule\ImportModule\Control\ImportList\ImportListControl;
 use App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControl;
 use App\Web\AdminModule\ImportModule\Control\ImportModal\Event\ShowingImportDetailEvent;
 use App\Web\AdminModule\ImportModule\Control\ImportList\ImportListControlFactoryInterface;
 use App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControlFactoryInterface;
 
-/**
- * @IsAllowed(resource=ImportResource::class, privilege=ImportResource::READ)
- */
+#[Allowed(resource: ImportResource::class, privilege: ImportResource::READ)]
 final class ImportsPresenter extends AdminPresenter
 {
 	private ImportListControlFactoryInterface $importListControlFactory;

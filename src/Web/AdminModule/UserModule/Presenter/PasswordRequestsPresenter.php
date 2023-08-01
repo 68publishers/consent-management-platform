@@ -6,13 +6,11 @@ namespace App\Web\AdminModule\UserModule\Presenter;
 
 use App\Application\Acl\PasswordRequestResource;
 use App\Web\AdminModule\Presenter\AdminPresenter;
-use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use App\Web\AdminModule\UserModule\Control\PasswordRequestList\PasswordRequestListControl;
 use App\Web\AdminModule\UserModule\Control\PasswordRequestList\PasswordRequestListControlFactoryInterface;
 
-/**
- * @IsAllowed(resource=PasswordRequestResource::class, privilege=PasswordRequestResource::READ)
- */
+#[Allowed(resource: PasswordRequestResource::class, privilege: PasswordRequestResource::READ)]
 final class PasswordRequestsPresenter extends AdminPresenter
 {
 	private PasswordRequestListControlFactoryInterface $passwordRequestListControlFactory;

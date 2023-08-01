@@ -1,2 +1,5 @@
 extensions:
-	68publishers.smart_nette_component: SixtyEightPublishers\SmartNetteComponent\DI\SmartNetteComponentExtension
+    68publishers.smart_nette_component.component_authorization: SixtyEightPublishers\SmartNetteComponent\Bridge\Nette\DI\ComponentAuthorizationExtension
+
+68publishers.smart_nette_component.component_authorization:
+    cache: yes
