@@ -16,13 +16,10 @@ use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 #[Allowed(resource: CookieProviderResource::class, privilege: CookieProviderResource::CREATE)]
 final class AddProviderPresenter extends AdminPresenter
 {
-    private ProviderFormControlFactoryInterface $providerFormControlFactory;
-
-    public function __construct(ProviderFormControlFactoryInterface $providerFormControlFactory)
-    {
+    public function __construct(
+        private readonly ProviderFormControlFactoryInterface $providerFormControlFactory,
+    ) {
         parent::__construct();
-
-        $this->providerFormControlFactory = $providerFormControlFactory;
     }
 
     public function actionDefault(): void

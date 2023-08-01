@@ -20,18 +20,11 @@ use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 
 final class SendPasswordChangeRequestedMail implements EventHandlerInterface
 {
-    private CommandBusInterface $commandBus;
-
-    private QueryBusInterface $queryBus;
-
-    private LinkGenerator $linkGenerator;
-
-    public function __construct(CommandBusInterface $commandBus, QueryBusInterface $queryBus, LinkGenerator $linkGenerator)
-    {
-        $this->commandBus = $commandBus;
-        $this->queryBus = $queryBus;
-        $this->linkGenerator = $linkGenerator;
-    }
+    public function __construct(
+        private readonly CommandBusInterface $commandBus,
+        private readonly QueryBusInterface $queryBus,
+        private readonly LinkGenerator $linkGenerator,
+    ) {}
 
     /**
      * @throws InvalidLinkException

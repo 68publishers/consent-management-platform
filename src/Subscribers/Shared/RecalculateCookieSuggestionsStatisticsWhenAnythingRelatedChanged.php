@@ -36,15 +36,10 @@ use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 
 final class RecalculateCookieSuggestionsStatisticsWhenAnythingRelatedChanged implements EventHandlerInterface, MessageSubscriberInterface
 {
-    private CommandBusInterface $commandBus;
-
-    private QueryBusInterface $queryBus;
-
-    public function __construct(CommandBusInterface $commandBus, QueryBusInterface $queryBus)
-    {
-        $this->commandBus = $commandBus;
-        $this->queryBus = $queryBus;
-    }
+    public function __construct(
+        private readonly CommandBusInterface $commandBus,
+        private readonly QueryBusInterface $queryBus,
+    ) {}
 
     public static function getHandledMessages(): iterable
     {

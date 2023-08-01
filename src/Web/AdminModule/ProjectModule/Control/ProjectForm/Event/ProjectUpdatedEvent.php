@@ -9,18 +9,11 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class ProjectUpdatedEvent extends Event
 {
-    private ProjectId $projectId;
-
-    private string $oldCode;
-
-    private string $newCode;
-
-    public function __construct(ProjectId $projectId, string $oldCode, string $newCode)
-    {
-        $this->projectId = $projectId;
-        $this->oldCode = $oldCode;
-        $this->newCode = $newCode;
-    }
+    public function __construct(
+        private readonly ProjectId $projectId,
+        private readonly string $oldCode,
+        private readonly string $newCode,
+    ) {}
 
     public function projectId(): ProjectId
     {

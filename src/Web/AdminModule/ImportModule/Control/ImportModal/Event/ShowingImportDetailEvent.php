@@ -9,12 +9,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class ShowingImportDetailEvent extends Event
 {
-    private ImportState $importState;
-
-    public function __construct(ImportState $importState)
-    {
-        $this->importState = $importState;
-    }
+    public function __construct(
+        private readonly ImportState $importState,
+    ) {}
 
     public function importState(): ImportState
     {

@@ -15,29 +15,18 @@ use Throwable;
 
 final class SendMailCommandHandler implements CommandHandlerInterface
 {
-    private string $projectUrl;
-
     private string $templatesDirectory;
 
-    private Address $fromAddress;
-
-    private IMailBuilderFactory $mailBuilderFactory;
-
-    private LoggerInterface $logger;
-
-    private PrefixedTranslatorFactoryInterface $prefixedTranslatorFactory;
-
-    private TranslatorLocalizerInterface $translatorLocalizer;
-
-    public function __construct(string $projectUrl, string $templatesDirectory, Address $fromAddress, IMailBuilderFactory $mailBuilderFactory, LoggerInterface $logger, PrefixedTranslatorFactoryInterface $prefixedTranslatorFactory, TranslatorLocalizerInterface $translatorLocalizer)
-    {
-        $this->projectUrl = $projectUrl;
+    public function __construct(
+        private readonly string $projectUrl,
+        string $templatesDirectory,
+        private readonly Address $fromAddress,
+        private readonly IMailBuilderFactory $mailBuilderFactory,
+        private readonly LoggerInterface $logger,
+        private readonly PrefixedTranslatorFactoryInterface $prefixedTranslatorFactory,
+        private readonly TranslatorLocalizerInterface $translatorLocalizer,
+    ) {
         $this->templatesDirectory = rtrim($templatesDirectory, DIRECTORY_SEPARATOR);
-        $this->fromAddress = $fromAddress;
-        $this->mailBuilderFactory = $mailBuilderFactory;
-        $this->logger = $logger;
-        $this->prefixedTranslatorFactory = $prefixedTranslatorFactory;
-        $this->translatorLocalizer = $translatorLocalizer;
     }
 
     public function __invoke(SendMailCommand $command): void

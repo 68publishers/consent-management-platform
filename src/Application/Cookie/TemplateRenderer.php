@@ -13,12 +13,9 @@ use Throwable;
 
 final class TemplateRenderer implements TemplateRendererInterface
 {
-    private LatteFactory $latteFactory;
-
-    public function __construct(LatteFactory $latteFactory)
-    {
-        $this->latteFactory = $latteFactory;
-    }
+    public function __construct(
+        private readonly LatteFactory $latteFactory,
+    ) {}
 
     public function render(Template $template): string
     {

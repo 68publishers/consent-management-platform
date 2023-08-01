@@ -23,18 +23,11 @@ use Symfony\Component\Lock\LockFactory;
  */
 final class ConsentController extends AbstractV1Controller
 {
-    private CommandBusInterface $commandBus;
-
-    private QueryBusInterface $queryBus;
-
-    private LockFactory $lockFactory;
-
-    public function __construct(CommandBusInterface $commandBus, QueryBusInterface $queryBus, LockFactory $lockFactory)
-    {
-        $this->commandBus = $commandBus;
-        $this->queryBus = $queryBus;
-        $this->lockFactory = $lockFactory;
-    }
+    public function __construct(
+        private readonly CommandBusInterface $commandBus,
+        private readonly QueryBusInterface $queryBus,
+        private readonly LockFactory $lockFactory,
+    ) {}
 
     /**
      * @Api\Path("/{project}/{userIdentifier}")

@@ -41,18 +41,11 @@ final class ExportFormControl extends Control
         'pipe' => '|',
     ];
 
-    private FormFactoryInterface $formFactory;
-
-    private DataProcessFactory $dataProcessFactory;
-
-    private ExportCallbackInterface $exportCallback;
-
-    public function __construct(FormFactoryInterface $formFactory, DataProcessFactory $dataProcessFactory, ExportCallbackInterface $exportCallback)
-    {
-        $this->formFactory = $formFactory;
-        $this->dataProcessFactory = $dataProcessFactory;
-        $this->exportCallback = $exportCallback;
-    }
+    public function __construct(
+        private readonly FormFactoryInterface $formFactory,
+        private readonly DataProcessFactory $dataProcessFactory,
+        private readonly ExportCallbackInterface $exportCallback,
+    ) {}
 
     protected function createComponentForm(): Form
     {

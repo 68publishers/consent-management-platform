@@ -11,12 +11,9 @@ final class LinkFactory
 {
     use TLink;
 
-    private DataGrid $dataGrid;
-
-    public function __construct(DataGrid $dataGrid)
-    {
-        $this->dataGrid = $dataGrid;
-    }
+    public function __construct(
+        private readonly DataGrid $dataGrid,
+    ) {}
 
     /**
      * @throws DataGridHasToBeAttachedToPresenterComponentException

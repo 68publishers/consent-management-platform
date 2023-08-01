@@ -6,12 +6,9 @@ namespace App\Application\CookieSuggestion\Solution;
 
 final class IgnorePermanently implements SolutionInterface
 {
-    private bool $virtualSuggestion;
-
-    public function __construct(bool $virtualSuggestion = false)
-    {
-        $this->virtualSuggestion = $virtualSuggestion;
-    }
+    public function __construct(
+        private readonly bool $virtualSuggestion = false,
+    ) {}
 
     public function getType(): string
     {

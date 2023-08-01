@@ -9,15 +9,10 @@ use App\Web\Ui\Modal\AbstractModalControl;
 
 final class ConsentSettingsDetailModalControl extends AbstractModalControl
 {
-    private ConsentSettingsView $consentSettingsView;
-
-    private ConsentSettingsDetailControlFactoryInterface $consentHistoryControlFactory;
-
-    public function __construct(ConsentSettingsView $consentSettingsView, ConsentSettingsDetailControlFactoryInterface $consentHistoryControlFactory)
-    {
-        $this->consentSettingsView = $consentSettingsView;
-        $this->consentHistoryControlFactory = $consentHistoryControlFactory;
-    }
+    public function __construct(
+        private readonly ConsentSettingsView $consentSettingsView,
+        private readonly ConsentSettingsDetailControlFactoryInterface $consentHistoryControlFactory,
+    ) {}
 
     protected function beforeRender(): void
     {

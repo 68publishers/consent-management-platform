@@ -18,13 +18,10 @@ use SixtyEightPublishers\UserBundle\Application\Exception\IdentityException;
 
 final class DashboardPresenter extends AdminPresenter
 {
-    private QueryBusInterface $queryBus;
-
-    public function __construct(QueryBusInterface $queryBus)
-    {
+    public function __construct(
+        private readonly QueryBusInterface $queryBus,
+    ) {
         parent::__construct();
-
-        $this->queryBus = $queryBus;
     }
 
     /**

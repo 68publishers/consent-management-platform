@@ -9,15 +9,10 @@ use App\Web\Ui\Control;
 
 final class ExportDropdownControl extends Control
 {
-    private ExportCallbackInterface $exportCallback;
-
-    private ExportFormControlFactoryInterface $exportFormControlFactory;
-
-    public function __construct(ExportCallbackInterface $exportCallback, ExportFormControlFactoryInterface $exportFormControlFactory)
-    {
-        $this->exportCallback = $exportCallback;
-        $this->exportFormControlFactory = $exportFormControlFactory;
-    }
+    public function __construct(
+        private readonly ExportCallbackInterface $exportCallback,
+        private readonly ExportFormControlFactoryInterface $exportFormControlFactory,
+    ) {}
 
     protected function createComponentForm(): ExportFormControl
     {

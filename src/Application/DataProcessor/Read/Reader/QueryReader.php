@@ -20,13 +20,11 @@ use Throwable;
 
 final class QueryReader extends AbstractReader
 {
-    private QueryBusInterface $queryBus;
-
-    protected function __construct(QueryBusInterface $queryBus, QueryResource $resource)
-    {
+    protected function __construct(
+        private readonly QueryBusInterface $queryBus,
+        QueryResource $resource,
+    ) {
         parent::__construct($resource);
-
-        $this->queryBus = $queryBus;
     }
 
     public static function create(QueryBusInterface $queryBus, QueryResource $resource): self

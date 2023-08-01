@@ -12,15 +12,10 @@ use SixtyEightPublishers\ArchitectureBundle\Event\EventHandlerInterface;
 
 final class CreateDefaultTemplateWhenProjectCreated implements EventHandlerInterface
 {
-    private CommandBusInterface $commandBus;
-
-    private LoggerInterface $logger;
-
-    public function __construct(CommandBusInterface $commandBus, LoggerInterface $logger)
-    {
-        $this->commandBus = $commandBus;
-        $this->logger = $logger;
-    }
+    public function __construct(
+        private readonly CommandBusInterface $commandBus,
+        private readonly LoggerInterface $logger,
+    ) {}
 
     public function __invoke(ProjectCreated $event): void
     {

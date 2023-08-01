@@ -11,12 +11,9 @@ use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 
 final class QueryReaderFactory implements ReaderFactoryInterface
 {
-    private QueryBusInterface $queryBus;
-
-    public function __construct(QueryBusInterface $queryBus)
-    {
-        $this->queryBus = $queryBus;
-    }
+    public function __construct(
+        private readonly QueryBusInterface $queryBus,
+    ) {}
 
     public function accepts(string $format, ResourceInterface $resource): bool
     {

@@ -6,20 +6,13 @@ namespace App\Application\Import;
 
 final class RowResult
 {
-    private string $rowIndex;
-
-    private bool $ok;
-
-    private string $message;
-
     private array $warnings = [];
 
-    private function __construct(string $rowIndex, bool $ok, string $message)
-    {
-        $this->rowIndex = $rowIndex;
-        $this->ok = $ok;
-        $this->message = $message;
-    }
+    private function __construct(
+        private readonly string $rowIndex,
+        private readonly bool $ok,
+        private readonly string $message,
+    ) {}
 
     public static function success(string $rowIndex, string $message): self
     {

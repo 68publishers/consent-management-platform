@@ -8,8 +8,6 @@ use App\Application\CookieSuggestion\Solution\Solutions;
 
 final class MissingCookieSuggestion extends AbstractSuggestion
 {
-    public Solutions $solutions;
-
     /**
      * @param non-empty-list<CookieOccurrence> $occurrences
      */
@@ -18,11 +16,9 @@ final class MissingCookieSuggestion extends AbstractSuggestion
         string $suggestionName,
         string $suggestionDomain,
         array $occurrences,
-        Solutions $solutions,
+        public Solutions $solutions,
     ) {
         parent::__construct($suggestionId, false, $suggestionName, $suggestionDomain, $occurrences);
-
-        $this->solutions = $solutions;
     }
 
     public function getSolutions(): Solutions

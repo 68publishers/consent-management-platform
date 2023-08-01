@@ -9,15 +9,10 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class CategoryCreatedEvent extends Event
 {
-    private CategoryId $categoryId;
-
-    private string $code;
-
-    public function __construct(CategoryId $categoryId, string $code)
-    {
-        $this->categoryId = $categoryId;
-        $this->code = $code;
-    }
+    public function __construct(
+        private readonly CategoryId $categoryId,
+        private readonly string $code,
+    ) {}
 
     public function categoryId(): CategoryId
     {

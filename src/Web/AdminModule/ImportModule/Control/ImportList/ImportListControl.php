@@ -23,18 +23,11 @@ use Ublaboo\DataGrid\Exception\DataGridException;
 
 final class ImportListControl extends Control
 {
-    private DataGridFactoryInterface $dataGridFactory;
-
-    private ImportDetailModalControlFactoryInterface $importDetailModalControlFactory;
-
-    private QueryBusInterface $queryBus;
-
-    public function __construct(DataGridFactoryInterface $dataGridFactory, ImportDetailModalControlFactoryInterface $importDetailModalControlFactory, QueryBusInterface $queryBus)
-    {
-        $this->dataGridFactory = $dataGridFactory;
-        $this->importDetailModalControlFactory = $importDetailModalControlFactory;
-        $this->queryBus = $queryBus;
-    }
+    public function __construct(
+        private readonly DataGridFactoryInterface $dataGridFactory,
+        private readonly ImportDetailModalControlFactoryInterface $importDetailModalControlFactory,
+        private readonly QueryBusInterface $queryBus,
+    ) {}
 
     /**
      * @throws DataGridException

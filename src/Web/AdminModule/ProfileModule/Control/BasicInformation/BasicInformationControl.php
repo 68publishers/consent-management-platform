@@ -22,21 +22,12 @@ final class BasicInformationControl extends Control
 {
     use FormFactoryOptionsTrait;
 
-    private FormFactoryInterface $formFactory;
-
-    private CommandBusInterface $commandBus;
-
-    private Profiles $profiles;
-
-    private UserView $userView;
-
-    public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, Profiles $profiles, UserView $userView)
-    {
-        $this->formFactory = $formFactory;
-        $this->commandBus = $commandBus;
-        $this->profiles = $profiles;
-        $this->userView = $userView;
-    }
+    public function __construct(
+        private readonly FormFactoryInterface $formFactory,
+        private readonly CommandBusInterface $commandBus,
+        private readonly Profiles $profiles,
+        private readonly UserView $userView,
+    ) {}
 
     protected function beforeRender(): void
     {

@@ -13,12 +13,9 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Common\Repository\Agg
 
 final class ProjectRepository implements ProjectRepositoryInterface
 {
-    private AggregateRootRepositoryInterface $aggregateRootRepository;
-
-    public function __construct(AggregateRootRepositoryInterface $aggregateRootRepository)
-    {
-        $this->aggregateRootRepository = $aggregateRootRepository;
-    }
+    public function __construct(
+        private readonly AggregateRootRepositoryInterface $aggregateRootRepository,
+    ) {}
 
     public function save(Project $project): void
     {

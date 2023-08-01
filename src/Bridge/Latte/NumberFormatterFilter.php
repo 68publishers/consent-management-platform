@@ -9,15 +9,12 @@ use SixtyEightPublishers\TranslationBridge\Localization\TranslatorLocalizerInter
 
 final class NumberFormatterFilter
 {
-    private TranslatorLocalizerInterface $translatorLocalizer;
-
     /** @var array<string, NumberFormatter> */
     private array $formatters = [];
 
-    public function __construct(TranslatorLocalizerInterface $translatorLocalizer)
-    {
-        $this->translatorLocalizer = $translatorLocalizer;
-    }
+    public function __construct(
+        private readonly TranslatorLocalizerInterface $translatorLocalizer,
+    ) {}
 
     public function format(int|float $number, ?string $locale = null, int $style = NumberFormatter::DEFAULT_STYLE): string
     {

@@ -16,13 +16,10 @@ use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 #[Allowed(resource: CategoryResource::class, privilege: CategoryResource::CREATE)]
 final class AddCategoryPresenter extends AdminPresenter
 {
-    private CategoryFormControlFactoryInterface $categoryFormControlFactory;
-
-    public function __construct(CategoryFormControlFactoryInterface $categoryFormControlFactory)
-    {
+    public function __construct(
+        private readonly CategoryFormControlFactoryInterface $categoryFormControlFactory,
+    ) {
         parent::__construct();
-
-        $this->categoryFormControlFactory = $categoryFormControlFactory;
     }
 
     public function actionDefault(): void

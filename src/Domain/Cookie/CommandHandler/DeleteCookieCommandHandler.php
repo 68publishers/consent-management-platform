@@ -11,12 +11,9 @@ use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
 
 final class DeleteCookieCommandHandler implements CommandHandlerInterface
 {
-    private CookieRepositoryInterface $cookieRepository;
-
-    public function __construct(CookieRepositoryInterface $cookieRepository)
-    {
-        $this->cookieRepository = $cookieRepository;
-    }
+    public function __construct(
+        private readonly CookieRepositoryInterface $cookieRepository,
+    ) {}
 
     public function __invoke(DeleteCookieCommand $command): void
     {

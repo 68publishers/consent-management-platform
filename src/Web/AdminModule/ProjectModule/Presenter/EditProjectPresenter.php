@@ -21,16 +21,11 @@ use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 #[Allowed(resource: ProjectResource::class, privilege: ProjectResource::UPDATE)]
 final class EditProjectPresenter extends SelectedProjectPresenter
 {
-    private ProjectFormControlFactoryInterface $projectFormControlFactory;
-
-    private DeleteProjectControlFactoryInterface $deleteProjectControlFactory;
-
-    public function __construct(ProjectFormControlFactoryInterface $projectFormControlFactory, DeleteProjectControlFactoryInterface $deleteProjectControlFactory)
-    {
+    public function __construct(
+        private readonly ProjectFormControlFactoryInterface $projectFormControlFactory,
+        private readonly DeleteProjectControlFactoryInterface $deleteProjectControlFactory,
+    ) {
         parent::__construct();
-
-        $this->projectFormControlFactory = $projectFormControlFactory;
-        $this->deleteProjectControlFactory = $deleteProjectControlFactory;
     }
 
     protected function createComponentProjectForm(): ProjectFormControl

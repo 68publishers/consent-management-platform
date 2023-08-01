@@ -8,14 +8,11 @@ use App\Application\DataProcessor\Exception\DataReaderExceptionInterface;
 
 final class ReaderErrorEvent
 {
-    private DataReaderExceptionInterface $error;
-
     private bool $stopped = false;
 
-    public function __construct(DataReaderExceptionInterface $error)
-    {
-        $this->error = $error;
-    }
+    public function __construct(
+        private readonly DataReaderExceptionInterface $error,
+    ) {}
 
     public function error(): DataReaderExceptionInterface
     {

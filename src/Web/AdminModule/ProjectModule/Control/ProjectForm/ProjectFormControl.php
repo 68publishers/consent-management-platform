@@ -28,21 +28,12 @@ final class ProjectFormControl extends Control
 {
     use FormFactoryOptionsTrait;
 
-    private FormFactoryInterface $formFactory;
-
-    private CommandBusInterface $commandBus;
-
-    private GlobalSettingsInterface $globalSettings;
-
-    private ?ProjectView $default;
-
-    public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, GlobalSettingsInterface $globalSettings, ?ProjectView $default = null)
-    {
-        $this->formFactory = $formFactory;
-        $this->commandBus = $commandBus;
-        $this->globalSettings = $globalSettings;
-        $this->default = $default;
-    }
+    public function __construct(
+        private readonly FormFactoryInterface $formFactory,
+        private readonly CommandBusInterface $commandBus,
+        private readonly GlobalSettingsInterface $globalSettings,
+        private readonly ?ProjectView $default = null,
+    ) {}
 
     protected function createComponentForm(): Form
     {

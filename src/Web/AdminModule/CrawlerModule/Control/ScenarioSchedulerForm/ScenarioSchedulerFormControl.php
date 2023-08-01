@@ -30,35 +30,16 @@ use Throwable;
 
 final class ScenarioSchedulerFormControl extends Control
 {
-    private FormFactoryInterface $formFactory;
-
-    private QueryBusInterface $queryBus;
-
-    private CrawlerClientProvider $crawlerClientProvider;
-
-    private ValidLocalesProvider $validLocalesProvider;
-
     private ?ControllerResponseExceptionInterface $responseException = null;
 
-    private string $projectUrl;
-
-    private ?ScenarioSchedulerResponse $scenarioSchedulerResponse;
-
     public function __construct(
-        FormFactoryInterface $formFactory,
-        QueryBusInterface $queryBus,
-        CrawlerClientProvider $crawlerClientProvider,
-        ValidLocalesProvider $validLocalesProvider,
-        string $projectUrl,
-        ?ScenarioSchedulerResponse $scenarioSchedulerResponse = null,
-    ) {
-        $this->formFactory = $formFactory;
-        $this->queryBus = $queryBus;
-        $this->crawlerClientProvider = $crawlerClientProvider;
-        $this->validLocalesProvider = $validLocalesProvider;
-        $this->projectUrl = $projectUrl;
-        $this->scenarioSchedulerResponse = $scenarioSchedulerResponse;
-    }
+        private readonly FormFactoryInterface $formFactory,
+        private readonly QueryBusInterface $queryBus,
+        private readonly CrawlerClientProvider $crawlerClientProvider,
+        private readonly ValidLocalesProvider $validLocalesProvider,
+        private readonly string $projectUrl,
+        private readonly ?ScenarioSchedulerResponse $scenarioSchedulerResponse = null,
+    ) {}
 
     protected function beforeRender(): void
     {

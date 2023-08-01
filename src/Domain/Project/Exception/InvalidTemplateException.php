@@ -11,16 +11,14 @@ use Throwable;
 
 final class InvalidTemplateException extends DomainException
 {
-    private ProjectId $projectId;
-
-    private Locale $locale;
-
-    private function __construct(ProjectId $projectId, Locale $locale, string $message, int $code = 0, ?Throwable $previous = null)
-    {
+    private function __construct(
+        private readonly ProjectId $projectId,
+        private readonly Locale $locale,
+        string $message,
+        int $code = 0,
+        ?Throwable $previous = null,
+    ) {
         parent::__construct($message, $code, $previous);
-
-        $this->projectId = $projectId;
-        $this->locale = $locale;
     }
 
     public static function fromPrevious(ProjectId $projectId, Locale $locale, Throwable $e): self

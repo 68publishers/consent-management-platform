@@ -15,14 +15,6 @@ use Throwable;
 
 final class ScenarioDetailModalControl extends AbstractModalControl
 {
-    private string $scenarioId;
-
-    private CrawlerClientProvider $crawlerClientProvider;
-
-    private ScenarioDetailControlFactoryInterface $scenarioDetailControlFactory;
-
-    private User $user;
-
     private ?ScenarioResponse $scenarioResponse = null;
 
     private ?string $serializedScenarioConfig = null;
@@ -30,16 +22,11 @@ final class ScenarioDetailModalControl extends AbstractModalControl
     private ?Throwable $responseError = null;
 
     public function __construct(
-        string $scenarioId,
-        CrawlerClientProvider $crawlerClientProvider,
-        ScenarioDetailControlFactoryInterface $scenarioDetailControlFactory,
-        User $user,
-    ) {
-        $this->scenarioId = $scenarioId;
-        $this->crawlerClientProvider = $crawlerClientProvider;
-        $this->scenarioDetailControlFactory = $scenarioDetailControlFactory;
-        $this->user = $user;
-    }
+        private readonly string $scenarioId,
+        private readonly CrawlerClientProvider $crawlerClientProvider,
+        private readonly ScenarioDetailControlFactoryInterface $scenarioDetailControlFactory,
+        private readonly User $user,
+    ) {}
 
     protected function beforeRender(): void
     {

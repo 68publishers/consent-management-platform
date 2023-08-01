@@ -8,41 +8,18 @@ use DateTimeImmutable;
 
 final class CookieSuggestionForResolving
 {
-    public string $id;
-
-    public string $name;
-
-    public string $domain;
-
-    public DateTimeImmutable $createdAt;
-
-    public bool $ignoredUntilNextOccurrence;
-
-    public bool $ignoredPermanently;
-
-    /** @var array<int, CookieOccurrenceForResolving> */
-    public array $occurrences;
-
     /**
      * @param array<CookieOccurrenceForResolving> $occurrences
      */
     public function __construct(
-        string $id,
-        string $name,
-        string $domain,
-        DateTimeImmutable $createdAt,
-        bool $ignoredUntilNextOccurrence,
-        bool $ignoredPermanently,
-        array $occurrences,
-    ) {
-        $this->id = $id;
-        $this->name = $name;
-        $this->domain = $domain;
-        $this->createdAt = $createdAt;
-        $this->ignoredUntilNextOccurrence = $ignoredUntilNextOccurrence;
-        $this->ignoredPermanently = $ignoredPermanently;
-        $this->occurrences = $occurrences;
-    }
+        public string $id,
+        public string $name,
+        public string $domain,
+        public DateTimeImmutable $createdAt,
+        public bool $ignoredUntilNextOccurrence,
+        public bool $ignoredPermanently,
+        public array $occurrences,
+    ) {}
 
     public function isIgnored(): bool
     {

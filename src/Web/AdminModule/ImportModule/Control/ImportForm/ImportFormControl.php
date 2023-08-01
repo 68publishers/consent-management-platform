@@ -41,21 +41,12 @@ final class ImportFormControl extends Control
         'pipe' => '|',
     ];
 
-    private FormFactoryInterface $formFactory;
-
-    private RunnerInterface $runner;
-
-    private DataReaderFactoryInterface $dataReaderFactory;
-
-    private ?string $strictImportType;
-
-    public function __construct(FormFactoryInterface $formFactory, RunnerInterface $runner, DataReaderFactoryInterface $dataReaderFactory, ?string $strictImportType = null)
-    {
-        $this->formFactory = $formFactory;
-        $this->runner = $runner;
-        $this->dataReaderFactory = $dataReaderFactory;
-        $this->strictImportType = $strictImportType;
-    }
+    public function __construct(
+        private readonly FormFactoryInterface $formFactory,
+        private readonly RunnerInterface $runner,
+        private readonly DataReaderFactoryInterface $dataReaderFactory,
+        private readonly ?string $strictImportType = null,
+    ) {}
 
     protected function createComponentForm(): Form
     {

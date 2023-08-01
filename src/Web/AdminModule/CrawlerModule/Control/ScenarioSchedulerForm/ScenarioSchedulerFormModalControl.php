@@ -15,23 +15,13 @@ final class ScenarioSchedulerFormModalControl extends AbstractModalControl
 {
     use GetScenarioSchedulerResponseTrait;
 
-    private CrawlerClientProvider $crawlerClientProvider;
-
-    private ScenarioSchedulerFormControlFactoryInterface $runScenarioFormControlFactory;
-
-    private ?string $scenarioSchedulerId;
-
     private ?Closure $innerControlCreationCallback = null;
 
     public function __construct(
-        CrawlerClientProvider $crawlerClientProvider,
-        ScenarioSchedulerFormControlFactoryInterface $runScenarioFormControlFactory,
-        ?string $scenarioSchedulerId,
-    ) {
-        $this->crawlerClientProvider = $crawlerClientProvider;
-        $this->runScenarioFormControlFactory = $runScenarioFormControlFactory;
-        $this->scenarioSchedulerId = $scenarioSchedulerId;
-    }
+        private readonly CrawlerClientProvider $crawlerClientProvider,
+        private readonly ScenarioSchedulerFormControlFactoryInterface $runScenarioFormControlFactory,
+        private readonly ?string $scenarioSchedulerId,
+    ) {}
 
     public function setInnerControlCreationCallback(?Closure $innerControlCreationCallback): void
     {

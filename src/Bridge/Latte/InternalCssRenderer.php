@@ -13,18 +13,13 @@ final class InternalCssRenderer
 {
     private string $publicDir;
 
-    private bool $debugMode;
-
-    private EntryPointLookupCollectionInterface $entryPointLookupCollection;
-
-    private LoggerInterface $logger;
-
-    public function __construct(string $publicDir, bool $debugMode, EntryPointLookupCollectionInterface $entryPointLookupCollection, LoggerInterface $logger)
-    {
+    public function __construct(
+        string $publicDir,
+        private readonly bool $debugMode,
+        private readonly EntryPointLookupCollectionInterface $entryPointLookupCollection,
+        private readonly LoggerInterface $logger,
+    ) {
         $this->publicDir = rtrim($publicDir, DIRECTORY_SEPARATOR);
-        $this->debugMode = $debugMode;
-        $this->entryPointLookupCollection = $entryPointLookupCollection;
-        $this->logger = $logger;
     }
 
     public function render(string $entryName, ?string $buildName = null): string

@@ -9,12 +9,9 @@ use Nette\Schema\Elements\Structure;
 
 final class MapAs implements StructureDescriptorPropertyInterface
 {
-    private string $classname;
-
-    public function __construct(string $classname)
-    {
-        $this->classname = $classname;
-    }
+    public function __construct(
+        private readonly string $classname,
+    ) {}
 
     public function applyToStructure(Structure $structure, ContextInterface $context): Structure
     {

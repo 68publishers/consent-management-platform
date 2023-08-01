@@ -16,8 +16,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class ConsoleHandler extends AbstractProcessingHandler implements EventSubscriberInterface
 {
-    private ?OutputInterface $output;
-
     private array $verbosityLevelMap = [
         OutputInterface::VERBOSITY_QUIET => Logger::ERROR,
         OutputInterface::VERBOSITY_NORMAL => Logger::WARNING,
@@ -26,11 +24,12 @@ final class ConsoleHandler extends AbstractProcessingHandler implements EventSub
         OutputInterface::VERBOSITY_DEBUG => Logger::DEBUG,
     ];
 
-    public function __construct(OutputInterface $output = null, bool $bubble = true, array $verbosityLevelMap = [])
-    {
+    public function __construct(
+        private ?OutputInterface $output = null,
+        bool $bubble = true,
+        array $verbosityLevelMap = [],
+    ) {
         parent::__construct(Logger::DEBUG, $bubble);
-
-        $this->output = $output;
 
         if ($verbosityLevelMap) {
             $this->verbosityLevelMap = $verbosityLevelMap;

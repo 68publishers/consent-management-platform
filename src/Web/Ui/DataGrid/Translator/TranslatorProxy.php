@@ -9,12 +9,9 @@ use Nette\Utils\Strings;
 
 final class TranslatorProxy implements Translator
 {
-    private Translator $translator;
-
-    public function __construct(Translator $translator)
-    {
-        $this->translator = $translator;
-    }
+    public function __construct(
+        private readonly Translator $translator,
+    ) {}
 
     public function translate($message, ...$parameters): string
     {

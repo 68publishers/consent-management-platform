@@ -9,12 +9,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class LoggedInEvent extends Event
 {
-    private UserView $userView;
-
-    public function __construct(UserView $userView)
-    {
-        $this->userView = $userView;
-    }
+    public function __construct(
+        private readonly UserView $userView,
+    ) {}
 
     public function userView(): UserView
     {

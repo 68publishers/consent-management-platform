@@ -12,33 +12,14 @@ use DateTimeImmutable;
 
 final class CookieOccurrence
 {
-    private CookieSuggestion $cookieSuggestion;
-
-    private CookieOccurrenceId $id;
-
-    private ScenarioName $scenarioName;
-
-    private FoundOnUrl $foundOnUrl;
-
-    private AcceptedCategories $acceptedCategories;
-
-    private DateTimeImmutable $lastFoundAt;
-
     public function __construct(
-        CookieSuggestion $cookieSuggestion,
-        CookieOccurrenceId $id,
-        ScenarioName $scenarioName,
-        FoundOnUrl $foundOnUrl,
-        AcceptedCategories $acceptedCategories,
-        DateTimeImmutable $lastFoundAt,
-    ) {
-        $this->cookieSuggestion = $cookieSuggestion;
-        $this->id = $id;
-        $this->scenarioName = $scenarioName;
-        $this->foundOnUrl = $foundOnUrl;
-        $this->acceptedCategories = $acceptedCategories;
-        $this->lastFoundAt = $lastFoundAt;
-    }
+        private readonly CookieSuggestion $cookieSuggestion,
+        private readonly CookieOccurrenceId $id,
+        private readonly ScenarioName $scenarioName,
+        private FoundOnUrl $foundOnUrl,
+        private AcceptedCategories $acceptedCategories,
+        private DateTimeImmutable $lastFoundAt,
+    ) {}
 
     public function cookieSuggestion(): CookieSuggestion
     {

@@ -21,19 +21,12 @@ use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 #[Allowed(resource: CookieProviderResource::class, privilege: CookieProviderResource::READ)]
 final class ProvidersPresenter extends AdminPresenter
 {
-    private ProviderListControlFactoryInterface $providerListControlFactory;
-
-    private ExportDropdownControlFactoryInterface $exportDropdownControlFactory;
-
-    private ImportModalControlFactoryInterface $importModalControlFactory;
-
-    public function __construct(ProviderListControlFactoryInterface $providerListControlFactory, ExportDropdownControlFactoryInterface $exportDropdownControlFactory, ImportModalControlFactoryInterface $importModalControlFactory)
-    {
+    public function __construct(
+        private readonly ProviderListControlFactoryInterface $providerListControlFactory,
+        private readonly ExportDropdownControlFactoryInterface $exportDropdownControlFactory,
+        private readonly ImportModalControlFactoryInterface $importModalControlFactory,
+    ) {
         parent::__construct();
-
-        $this->providerListControlFactory = $providerListControlFactory;
-        $this->exportDropdownControlFactory = $exportDropdownControlFactory;
-        $this->importModalControlFactory = $importModalControlFactory;
     }
 
     protected function startup(): void

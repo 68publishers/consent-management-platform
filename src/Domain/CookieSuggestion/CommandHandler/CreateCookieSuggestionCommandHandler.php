@@ -13,17 +13,10 @@ use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
 
 final class CreateCookieSuggestionCommandHandler implements CommandHandlerInterface
 {
-    private CookieSuggestionRepositoryInterface $cookieSuggestionRepository;
-
-    private CheckSuggestionNameAndDomainUniquenessInterface $checkSuggestionNameAndDomainUniqueness;
-
     public function __construct(
-        CookieSuggestionRepositoryInterface $cookieSuggestionRepository,
-        CheckSuggestionNameAndDomainUniquenessInterface $checkSuggestionNameAndDomainUniqueness,
-    ) {
-        $this->cookieSuggestionRepository = $cookieSuggestionRepository;
-        $this->checkSuggestionNameAndDomainUniqueness = $checkSuggestionNameAndDomainUniqueness;
-    }
+        private readonly CookieSuggestionRepositoryInterface $cookieSuggestionRepository,
+        private readonly CheckSuggestionNameAndDomainUniquenessInterface $checkSuggestionNameAndDomainUniqueness,
+    ) {}
 
     /**
      * @throws Exception

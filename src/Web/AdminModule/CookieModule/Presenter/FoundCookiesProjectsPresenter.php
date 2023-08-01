@@ -15,13 +15,10 @@ use SixtyEightPublishers\UserBundle\Application\Exception\IdentityException;
 #[Allowed(resource: FoundCookiesProjectsResource::class, privilege: FoundCookiesProjectsResource::READ)]
 final class FoundCookiesProjectsPresenter extends AdminPresenter
 {
-    private ProjectCookieSuggestionListControlFactoryInterface $projectCookieSuggestionListControlFactory;
-
-    public function __construct(ProjectCookieSuggestionListControlFactoryInterface $projectCookieSuggestionListControlFactory)
-    {
+    public function __construct(
+        private readonly ProjectCookieSuggestionListControlFactoryInterface $projectCookieSuggestionListControlFactory,
+    ) {
         parent::__construct();
-
-        $this->projectCookieSuggestionListControlFactory = $projectCookieSuggestionListControlFactory;
     }
 
     /**

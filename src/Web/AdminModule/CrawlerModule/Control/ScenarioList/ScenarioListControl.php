@@ -29,29 +29,13 @@ use Ublaboo\DataGrid\Exception\DataGridException;
 
 final class ScenarioListControl extends Control
 {
-    private DataGridFactoryInterface $dataGridFactory;
-
-    private CrawlerClientProvider $crawlerClientProvider;
-
-    private QueryBusInterface $queryBus;
-
-    private ScenarioDetailModalControlFactoryInterface $scenarioDetailModalControlFactory;
-
-    private AbortScenarioModalControlFactoryInterface $abortScenarioModalControlFactory;
-
     public function __construct(
-        DataGridFactoryInterface $dataGridFactory,
-        CrawlerClientProvider $crawlerClientProvider,
-        QueryBusInterface $queryBus,
-        ScenarioDetailModalControlFactoryInterface $scenarioDetailModalControlFactory,
-        AbortScenarioModalControlFactoryInterface $abortScenarioModalControlFactory,
-    ) {
-        $this->dataGridFactory = $dataGridFactory;
-        $this->crawlerClientProvider = $crawlerClientProvider;
-        $this->queryBus = $queryBus;
-        $this->scenarioDetailModalControlFactory = $scenarioDetailModalControlFactory;
-        $this->abortScenarioModalControlFactory = $abortScenarioModalControlFactory;
-    }
+        private readonly DataGridFactoryInterface $dataGridFactory,
+        private readonly CrawlerClientProvider $crawlerClientProvider,
+        private readonly QueryBusInterface $queryBus,
+        private readonly ScenarioDetailModalControlFactoryInterface $scenarioDetailModalControlFactory,
+        private readonly AbortScenarioModalControlFactoryInterface $abortScenarioModalControlFactory,
+    ) {}
 
     /**
      * @throws DataGridException

@@ -23,21 +23,12 @@ final class LocalizationSettingsFormControl extends Control
 {
     use FormFactoryOptionsTrait;
 
-    private FormFactoryInterface $formFactory;
-
-    private CommandBusInterface $commandBus;
-
-    private GlobalSettingsInterface $globalSettings;
-
-    private Locales $locales;
-
-    public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, GlobalSettingsInterface $globalSettings, Locales $locales)
-    {
-        $this->formFactory = $formFactory;
-        $this->commandBus = $commandBus;
-        $this->globalSettings = $globalSettings;
-        $this->locales = $locales;
-    }
+    public function __construct(
+        private readonly FormFactoryInterface $formFactory,
+        private readonly CommandBusInterface $commandBus,
+        private readonly GlobalSettingsInterface $globalSettings,
+        private readonly Locales $locales,
+    ) {}
 
     protected function createComponentForm(): Form
     {

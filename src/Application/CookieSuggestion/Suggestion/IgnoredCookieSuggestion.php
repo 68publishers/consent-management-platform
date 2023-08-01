@@ -8,18 +8,11 @@ use App\Application\CookieSuggestion\Solution\Solutions;
 
 final class IgnoredCookieSuggestion implements SuggestionInterface
 {
-    private SuggestionInterface $originalSuggestion;
-
-    private bool $permanentlyIgnored;
-
-    private Solutions $solutions;
-
-    public function __construct(SuggestionInterface $originalSuggestion, bool $permanentlyIgnored, Solutions $solutions)
-    {
-        $this->originalSuggestion = $originalSuggestion;
-        $this->permanentlyIgnored = $permanentlyIgnored;
-        $this->solutions = $solutions;
-    }
+    public function __construct(
+        private readonly SuggestionInterface $originalSuggestion,
+        private readonly bool $permanentlyIgnored,
+        private readonly Solutions $solutions,
+    ) {}
 
     public function getSuggestionId(): string
     {

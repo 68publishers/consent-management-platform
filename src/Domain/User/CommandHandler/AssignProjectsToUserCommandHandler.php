@@ -13,12 +13,9 @@ use SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId;
 
 final class AssignProjectsToUserCommandHandler implements CommandHandlerInterface
 {
-    private UserRepositoryInterface $userRepository;
-
-    public function __construct(UserRepositoryInterface $userRepository)
-    {
-        $this->userRepository = $userRepository;
-    }
+    public function __construct(
+        private readonly UserRepositoryInterface $userRepository,
+    ) {}
 
     public function __invoke(AssignProjectsToUserCommand $command): void
     {

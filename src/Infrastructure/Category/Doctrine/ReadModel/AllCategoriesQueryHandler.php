@@ -15,15 +15,10 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewFactoryInterface;
 
 final class AllCategoriesQueryHandler implements QueryHandlerInterface
 {
-    private EntityManagerInterface $em;
-
-    private ViewFactoryInterface $viewFactory;
-
-    public function __construct(EntityManagerInterface $em, ViewFactoryInterface $viewFactory)
-    {
-        $this->em = $em;
-        $this->viewFactory = $viewFactory;
-    }
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly ViewFactoryInterface $viewFactory,
+    ) {}
 
     /**
      * @return array<CategoryView>

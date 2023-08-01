@@ -16,16 +16,11 @@ use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 #[Allowed(resource: ImportResource::class, privilege: ImportResource::READ)]
 final class ImportsPresenter extends AdminPresenter
 {
-    private ImportListControlFactoryInterface $importListControlFactory;
-
-    private ImportModalControlFactoryInterface $importModalControlFactory;
-
-    public function __construct(ImportListControlFactoryInterface $importListControlFactory, ImportModalControlFactoryInterface $importModalControlFactory)
-    {
+    public function __construct(
+        private readonly ImportListControlFactoryInterface $importListControlFactory,
+        private readonly ImportModalControlFactoryInterface $importModalControlFactory,
+    ) {
         parent::__construct();
-
-        $this->importListControlFactory = $importListControlFactory;
-        $this->importModalControlFactory = $importModalControlFactory;
     }
 
     protected function startup(): void

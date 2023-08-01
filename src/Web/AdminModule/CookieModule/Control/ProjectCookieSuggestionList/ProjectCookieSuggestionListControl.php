@@ -12,13 +12,9 @@ use Ublaboo\DataGrid\Exception\DataGridException;
 
 final class ProjectCookieSuggestionListControl extends Control
 {
-    private DataGridFactoryInterface $dataGridFactory;
-
     public function __construct(
-        DataGridFactoryInterface $dataGridFactory,
-    ) {
-        $this->dataGridFactory = $dataGridFactory;
-    }
+        private readonly DataGridFactoryInterface $dataGridFactory,
+    ) {}
 
     /**
      * @throws DataGridException

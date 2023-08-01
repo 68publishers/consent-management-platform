@@ -17,15 +17,10 @@ use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 
 final class ProjectStatisticsCalculator implements ProjectStatisticsCalculatorInterface
 {
-    private QueryBusInterface $queryBus;
-
-    private GlobalSettingsInterface $globalSettings;
-
-    public function __construct(QueryBusInterface $queryBus, GlobalSettingsInterface $globalSettings)
-    {
-        $this->queryBus = $queryBus;
-        $this->globalSettings = $globalSettings;
-    }
+    public function __construct(
+        private readonly QueryBusInterface $queryBus,
+        private readonly GlobalSettingsInterface $globalSettings,
+    ) {}
 
     public function calculateConsentStatistics(string $projectId, Period $currentPeriod, ?Period $previousPeriod = null): ConsentStatistics
     {

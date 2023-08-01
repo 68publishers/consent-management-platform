@@ -6,9 +6,6 @@ namespace App\Application\CookieSuggestion\Suggestion;
 
 final class UnproblematicCookieSuggestion extends AbstractSuggestion
 {
-    /** @var non-empty-list<ExistingCookie> */
-    private array $existingCookies;
-
     /**
      * @param non-empty-list<CookieOccurrence> $occurrences
      * @param non-empty-list<ExistingCookie>   $existingCookies
@@ -18,11 +15,9 @@ final class UnproblematicCookieSuggestion extends AbstractSuggestion
         string $suggestionName,
         string $suggestionDomain,
         array $occurrences,
-        array $existingCookies,
+        private readonly array $existingCookies,
     ) {
         parent::__construct($suggestionId, false, $suggestionName, $suggestionDomain, $occurrences);
-
-        $this->existingCookies = $existingCookies;
     }
 
     /**

@@ -16,12 +16,9 @@ use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 
 final class CheckSuggestionNameAndDomainUniqueness implements CheckSuggestionNameAndDomainUniquenessInterface
 {
-    private QueryBusInterface $queryBus;
-
-    public function __construct(QueryBusInterface $queryBus)
-    {
-        $this->queryBus = $queryBus;
-    }
+    public function __construct(
+        private readonly QueryBusInterface $queryBus,
+    ) {}
 
     public function __invoke(CookieSuggestionId $cookieSuggestionId, ProjectId $projectId, Name $name, Domain $domain): void
     {

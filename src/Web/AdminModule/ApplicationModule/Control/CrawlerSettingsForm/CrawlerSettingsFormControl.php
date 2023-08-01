@@ -19,18 +19,11 @@ final class CrawlerSettingsFormControl extends Control
 {
     use FormFactoryOptionsTrait;
 
-    private FormFactoryInterface $formFactory;
-
-    private CommandBusInterface $commandBus;
-
-    private GlobalSettingsInterface $globalSettings;
-
-    public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, GlobalSettingsInterface $globalSettings)
-    {
-        $this->formFactory = $formFactory;
-        $this->commandBus = $commandBus;
-        $this->globalSettings = $globalSettings;
-    }
+    public function __construct(
+        private readonly FormFactoryInterface $formFactory,
+        private readonly CommandBusInterface $commandBus,
+        private readonly GlobalSettingsInterface $globalSettings,
+    ) {}
 
     protected function createComponentForm(): Form
     {

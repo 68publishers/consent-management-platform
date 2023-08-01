@@ -11,12 +11,9 @@ use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
 
 final class CompleteImportCommandHandler implements CommandHandlerInterface
 {
-    private ImportRepositoryInterface $importRepository;
-
-    public function __construct(ImportRepositoryInterface $importRepository)
-    {
-        $this->importRepository = $importRepository;
-    }
+    public function __construct(
+        private readonly ImportRepositoryInterface $importRepository,
+    ) {}
 
     public function __invoke(CompleteImportCommand $command): void
     {

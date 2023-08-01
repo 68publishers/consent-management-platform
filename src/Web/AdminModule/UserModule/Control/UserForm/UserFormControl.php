@@ -33,24 +33,13 @@ final class UserFormControl extends Control
 {
     use FormFactoryOptionsTrait;
 
-    private FormFactoryInterface $formFactory;
-
-    private CommandBusInterface $commandBus;
-
-    private QueryBusInterface $queryBus;
-
-    private Profiles $profiles;
-
-    private ?UserView $default;
-
-    public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, QueryBusInterface $queryBus, Profiles $profiles, ?UserView $default = null)
-    {
-        $this->formFactory = $formFactory;
-        $this->commandBus = $commandBus;
-        $this->queryBus = $queryBus;
-        $this->profiles = $profiles;
-        $this->default = $default;
-    }
+    public function __construct(
+        private readonly FormFactoryInterface $formFactory,
+        private readonly CommandBusInterface $commandBus,
+        private readonly QueryBusInterface $queryBus,
+        private readonly Profiles $profiles,
+        private readonly ?UserView $default = null,
+    ) {}
 
     protected function createComponentForm(): Form
     {

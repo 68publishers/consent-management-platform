@@ -14,15 +14,10 @@ use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
 
 final class UpdateProjectTemplatesCommandHandler implements CommandHandlerInterface
 {
-    private ProjectRepositoryInterface $projectRepository;
-
-    private TemplateValidatorInterface $templateValidator;
-
-    public function __construct(ProjectRepositoryInterface $projectRepository, TemplateValidatorInterface $templateValidator)
-    {
-        $this->projectRepository = $projectRepository;
-        $this->templateValidator = $templateValidator;
-    }
+    public function __construct(
+        private readonly ProjectRepositoryInterface $projectRepository,
+        private readonly TemplateValidatorInterface $templateValidator,
+    ) {}
 
     public function __invoke(UpdateProjectTemplatesCommand $command): void
     {

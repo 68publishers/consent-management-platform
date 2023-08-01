@@ -18,18 +18,11 @@ use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
 
 final class StoreConsentSettingsCommandHandler implements CommandHandlerInterface
 {
-    private ConsentSettingsRepositoryInterface $consentSettingsRepository;
-
-    private CheckChecksumNotExistsInterface $checkChecksumNotExists;
-
-    private ShortIdentifierGeneratorInterface $shortIdentifierGenerator;
-
-    public function __construct(ConsentSettingsRepositoryInterface $consentSettingsRepository, CheckChecksumNotExistsInterface $checkChecksumNotExists, ShortIdentifierGeneratorInterface $shortIdentifierGenerator)
-    {
-        $this->consentSettingsRepository = $consentSettingsRepository;
-        $this->checkChecksumNotExists = $checkChecksumNotExists;
-        $this->shortIdentifierGenerator = $shortIdentifierGenerator;
-    }
+    public function __construct(
+        private readonly ConsentSettingsRepositoryInterface $consentSettingsRepository,
+        private readonly CheckChecksumNotExistsInterface $checkChecksumNotExists,
+        private readonly ShortIdentifierGeneratorInterface $shortIdentifierGenerator,
+    ) {}
 
     /**
      * @throws Exception

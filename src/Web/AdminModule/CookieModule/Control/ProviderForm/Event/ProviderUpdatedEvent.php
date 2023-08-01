@@ -9,18 +9,11 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class ProviderUpdatedEvent extends Event
 {
-    private CookieProviderId $cookieProviderId;
-
-    private string $oldCode;
-
-    private string $newCode;
-
-    public function __construct(CookieProviderId $cookieProviderId, string $oldCode, string $newCode)
-    {
-        $this->cookieProviderId = $cookieProviderId;
-        $this->oldCode = $oldCode;
-        $this->newCode = $newCode;
-    }
+    public function __construct(
+        private readonly CookieProviderId $cookieProviderId,
+        private readonly string $oldCode,
+        private readonly string $newCode,
+    ) {}
 
     public function cookieProviderId(): CookieProviderId
     {

@@ -13,20 +13,13 @@ use SixtyEightPublishers\CrawlerClient\Serializer\JmsSerializer;
 
 final class CrawlerClientProvider
 {
-    private GlobalSettingsInterface $globalSettings;
-
-    private string $cacheDir;
-
-    private bool $debugMode;
-
     private ?CrawlerClientInterface $client = null;
 
-    public function __construct(GlobalSettingsInterface $globalSettings, string $cacheDir, bool $debugMode)
-    {
-        $this->globalSettings = $globalSettings;
-        $this->cacheDir = $cacheDir;
-        $this->debugMode = $debugMode;
-    }
+    public function __construct(
+        private readonly GlobalSettingsInterface $globalSettings,
+        private readonly string $cacheDir,
+        private readonly bool $debugMode,
+    ) {}
 
     /**
      * @throws CrawlerNotConfiguredException

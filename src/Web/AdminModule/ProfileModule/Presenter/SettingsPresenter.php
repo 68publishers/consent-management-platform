@@ -26,19 +26,12 @@ use SixtyEightPublishers\UserBundle\Bridge\Nette\Security\Identity;
 
 final class SettingsPresenter extends AdminPresenter
 {
-    private BasicInformationControlFactoryInterface $basicInformationControlFactory;
-
-    private PasswordChangeControlFactoryInterface $passwordChangeControlFactory;
-
-    private NotificationPreferencesControlFactoryInterface $notificationPreferencesControlFactory;
-
-    public function __construct(BasicInformationControlFactoryInterface $basicInformationControlFactory, PasswordChangeControlFactoryInterface $passwordChangeControlFactory, NotificationPreferencesControlFactoryInterface $notificationPreferencesControlFactory)
-    {
+    public function __construct(
+        private readonly BasicInformationControlFactoryInterface $basicInformationControlFactory,
+        private readonly PasswordChangeControlFactoryInterface $passwordChangeControlFactory,
+        private readonly NotificationPreferencesControlFactoryInterface $notificationPreferencesControlFactory,
+    ) {
         parent::__construct();
-
-        $this->basicInformationControlFactory = $basicInformationControlFactory;
-        $this->passwordChangeControlFactory = $passwordChangeControlFactory;
-        $this->notificationPreferencesControlFactory = $notificationPreferencesControlFactory;
     }
 
     /**

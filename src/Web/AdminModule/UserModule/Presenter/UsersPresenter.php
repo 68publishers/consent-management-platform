@@ -13,13 +13,10 @@ use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 #[Allowed(resource: UserResource::class, privilege: UserResource::READ)]
 final class UsersPresenter extends AdminPresenter
 {
-    private UserListControlFactoryInterface $userListControlFactory;
-
-    public function __construct(UserListControlFactoryInterface $userListControlFactory)
-    {
+    public function __construct(
+        private readonly UserListControlFactoryInterface $userListControlFactory,
+    ) {
         parent::__construct();
-
-        $this->userListControlFactory = $userListControlFactory;
     }
 
     protected function startup(): void

@@ -20,18 +20,11 @@ final class NotificationPreferencesControl extends Control
 {
     use FormFactoryOptionsTrait;
 
-    private UserView $userVIew;
-
-    private FormFactoryInterface $formFactory;
-
-    private CommandBusInterface $commandBus;
-
-    public function __construct(UserView $userVIew, FormFactoryInterface $formFactory, CommandBusInterface $commandBus)
-    {
-        $this->userVIew = $userVIew;
-        $this->formFactory = $formFactory;
-        $this->commandBus = $commandBus;
-    }
+    public function __construct(
+        private readonly UserView $userVIew,
+        private readonly FormFactoryInterface $formFactory,
+        private readonly CommandBusInterface $commandBus,
+    ) {}
 
     protected function createComponentForm(): Form
     {

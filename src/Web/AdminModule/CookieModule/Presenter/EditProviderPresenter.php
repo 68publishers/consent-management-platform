@@ -36,34 +36,18 @@ use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 #[Allowed(resource: CookieProviderResource::class, privilege: CookieProviderResource::UPDATE)]
 final class EditProviderPresenter extends AdminPresenter
 {
-    private ProviderFormControlFactoryInterface $providerFormControlFactory;
-
-    private PrivateProviderFormControlFactoryInterface $privateProviderFormControlFactory;
-
-    private CookieListControlFactoryInterface $cookieListControlFactory;
-
-    private CookieFormModalControlFactoryInterface $cookieFormModalControlFactory;
-
-    private QueryBusInterface $queryBus;
-
     private CookieProviderView $cookieProviderView;
 
     private ?ProjectView $projectView = null;
 
     public function __construct(
-        ProviderFormControlFactoryInterface $providerFormControlFactory,
-        PrivateProviderFormControlFactoryInterface $privateProviderFormControlFactory,
-        CookieListControlFactoryInterface $cookieListControlFactory,
-        CookieFormModalControlFactoryInterface $cookieFormModalControlFactory,
-        QueryBusInterface $queryBus,
+        private readonly ProviderFormControlFactoryInterface $providerFormControlFactory,
+        private readonly PrivateProviderFormControlFactoryInterface $privateProviderFormControlFactory,
+        private readonly CookieListControlFactoryInterface $cookieListControlFactory,
+        private readonly CookieFormModalControlFactoryInterface $cookieFormModalControlFactory,
+        private readonly QueryBusInterface $queryBus,
     ) {
         parent::__construct();
-
-        $this->providerFormControlFactory = $providerFormControlFactory;
-        $this->privateProviderFormControlFactory = $privateProviderFormControlFactory;
-        $this->cookieListControlFactory = $cookieListControlFactory;
-        $this->cookieFormModalControlFactory = $cookieFormModalControlFactory;
-        $this->queryBus = $queryBus;
     }
 
     /**

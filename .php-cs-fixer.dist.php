@@ -5,7 +5,6 @@ use PhpCsFixer\Finder;
 use PhpCsFixerCustomFixers\Fixers as CustomFixers;
 use PhpCsFixerCustomFixers\Fixer\ConstructorEmptyBracesFixer;
 use PhpCsFixerCustomFixers\Fixer\MultilinePromotedPropertiesFixer;
-use PhpCsFixerCustomFixers\Fixer\PromotedConstructorPropertyFixer;
 
 $finder = Finder::create()
     ->in(__DIR__ . '/src')

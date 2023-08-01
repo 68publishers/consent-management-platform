@@ -10,12 +10,9 @@ use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 
 final class DataGridFactory implements DataGridFactoryInterface
 {
-    private QueryBusInterface $queryBus;
-
-    public function __construct(QueryBusInterface $queryBus)
-    {
-        $this->queryBus = $queryBus;
-    }
+    public function __construct(
+        private readonly QueryBusInterface $queryBus,
+    ) {}
 
     public function create(?DataGridQueryInterface $query = null): DataGrid
     {

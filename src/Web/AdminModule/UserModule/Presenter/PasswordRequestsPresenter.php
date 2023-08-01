@@ -13,13 +13,10 @@ use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 #[Allowed(resource: PasswordRequestResource::class, privilege: PasswordRequestResource::READ)]
 final class PasswordRequestsPresenter extends AdminPresenter
 {
-    private PasswordRequestListControlFactoryInterface $passwordRequestListControlFactory;
-
-    public function __construct(PasswordRequestListControlFactoryInterface $passwordRequestListControlFactory)
-    {
+    public function __construct(
+        private readonly PasswordRequestListControlFactoryInterface $passwordRequestListControlFactory,
+    ) {
         parent::__construct();
-
-        $this->passwordRequestListControlFactory = $passwordRequestListControlFactory;
     }
 
     protected function startup(): void

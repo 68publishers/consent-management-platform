@@ -10,21 +10,12 @@ use Nette\Http\IResponse;
 
 final class DownloadContentResponse implements Response
 {
-    private string $content;
-
-    private string $contentType;
-
-    private string $name;
-
-    private bool $forceDownload;
-
-    public function __construct(string $content, string $name, string $contentType, bool $forceDownload = true)
-    {
-        $this->content = $content;
-        $this->name = $name;
-        $this->contentType = $contentType;
-        $this->forceDownload = $forceDownload;
-    }
+    public function __construct(
+        private readonly string $content,
+        private readonly string $name,
+        private readonly string $contentType,
+        private readonly bool $forceDownload = true,
+    ) {}
 
     public function send(IRequest $httpRequest, IResponse $httpResponse): void
     {

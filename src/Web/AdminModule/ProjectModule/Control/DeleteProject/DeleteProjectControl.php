@@ -18,21 +18,12 @@ use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 
 final class DeleteProjectControl extends Control
 {
-    private ProjectView $projectView;
-
-    private CommandBusInterface $commandBus;
-
-    private FormFactoryInterface $formFactory;
-
-    private ConfirmModalControlFactoryInterface $confirmModalControlFactory;
-
-    public function __construct(ProjectView $projectView, CommandBusInterface $commandBus, FormFactoryInterface $formFactory, ConfirmModalControlFactoryInterface $confirmModalControlFactory)
-    {
-        $this->projectView = $projectView;
-        $this->commandBus = $commandBus;
-        $this->formFactory = $formFactory;
-        $this->confirmModalControlFactory = $confirmModalControlFactory;
-    }
+    public function __construct(
+        private readonly ProjectView $projectView,
+        private readonly CommandBusInterface $commandBus,
+        private readonly FormFactoryInterface $formFactory,
+        private readonly ConfirmModalControlFactoryInterface $confirmModalControlFactory,
+    ) {}
 
     protected function createComponentForm(): Form
     {

@@ -9,12 +9,9 @@ use Psr\Log\AbstractLogger;
 
 final class ImportLogger extends AbstractLogger
 {
-    private ImportState $state;
-
-    public function __construct(ImportState $state)
-    {
-        $this->state = $state;
-    }
+    public function __construct(
+        private readonly ImportState $state,
+    ) {}
 
     public function log($level, $message, array $context = []): void
     {

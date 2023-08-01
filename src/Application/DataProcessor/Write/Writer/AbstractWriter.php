@@ -13,17 +13,12 @@ use Throwable;
 
 abstract class AbstractWriter implements WriterInterface
 {
-    protected ResourceInterface $resource;
-
-    protected DestinationInterface $destination;
-
     private bool $locked = false;
 
-    protected function __construct(ResourceInterface $resource, DestinationInterface $destination)
-    {
-        $this->resource = $resource;
-        $this->destination = $destination;
-    }
+    protected function __construct(
+        protected ResourceInterface $resource,
+        protected DestinationInterface $destination,
+    ) {}
 
     /**
      * @throws DataReaderExceptionInterface

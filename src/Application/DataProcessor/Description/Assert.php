@@ -12,12 +12,11 @@ final class Assert implements TypeDescriptorPropertyInterface
     /** @var callable  */
     private $validator;
 
-    private ?string $description;
-
-    public function __construct(callable $validator, ?string $description = null)
-    {
+    public function __construct(
+        callable $validator,
+        private readonly ?string $description = null,
+    ) {
         $this->validator = $validator;
-        $this->description = $description;
     }
 
     public function applyToType(Type $type, ContextInterface $context): Type

@@ -12,15 +12,10 @@ use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 
 final class GlobalSettingsFactory implements GlobalSettingsFactoryInterface
 {
-    private QueryBusInterface $queryBus;
-
-    private Locales $locales;
-
-    public function __construct(QueryBusInterface $queryBus, Locales $locales)
-    {
-        $this->queryBus = $queryBus;
-        $this->locales = $locales;
-    }
+    public function __construct(
+        private readonly QueryBusInterface $queryBus,
+        private readonly Locales $locales,
+    ) {}
 
     public function create(): GlobalSettingsInterface
     {

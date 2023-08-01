@@ -21,18 +21,11 @@ final class PasswordChangeControl extends Control
 {
     use FormFactoryOptionsTrait;
 
-    private FormFactoryInterface $formFactory;
-
-    private CommandBusInterface $commandBus;
-
-    private UserView $userView;
-
-    public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, UserView $userView)
-    {
-        $this->formFactory = $formFactory;
-        $this->commandBus = $commandBus;
-        $this->userView = $userView;
-    }
+    public function __construct(
+        private readonly FormFactoryInterface $formFactory,
+        private readonly CommandBusInterface $commandBus,
+        private readonly UserView $userView,
+    ) {}
 
     protected function createComponentForm(): Form
     {

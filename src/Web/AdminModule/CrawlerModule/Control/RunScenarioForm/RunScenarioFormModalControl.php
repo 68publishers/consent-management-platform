@@ -9,14 +9,11 @@ use Closure;
 
 final class RunScenarioFormModalControl extends AbstractModalControl
 {
-    private RunScenarioFormControlFactoryInterface $runScenarioFormControlFactory;
-
     private ?Closure $innerControlCreationCallback = null;
 
-    public function __construct(RunScenarioFormControlFactoryInterface $runScenarioFormControlFactory)
-    {
-        $this->runScenarioFormControlFactory = $runScenarioFormControlFactory;
-    }
+    public function __construct(
+        private readonly RunScenarioFormControlFactoryInterface $runScenarioFormControlFactory,
+    ) {}
 
     public function setInnerControlCreationCallback(?Closure $innerControlCreationCallback): void
     {

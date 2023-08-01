@@ -9,15 +9,10 @@ use App\Domain\Shared\ValueObject\LocalesConfig;
 
 final class ValidLocalesProvider
 {
-    private GlobalSettingsInterface $globalSettings;
-
-    private ?LocalesConfig $localesConfig;
-
-    public function __construct(GlobalSettingsInterface $globalSettings, ?LocalesConfig $localesConfig = null)
-    {
-        $this->globalSettings = $globalSettings;
-        $this->localesConfig = $localesConfig;
-    }
+    public function __construct(
+        private readonly GlobalSettingsInterface $globalSettings,
+        private readonly ?LocalesConfig $localesConfig = null,
+    ) {}
 
     /**
      * @return array<Locale>

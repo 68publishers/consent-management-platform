@@ -12,12 +12,9 @@ use InvalidArgumentException;
 
 final class LocalizationControl extends Control
 {
-    private Profiles $profiles;
-
-    public function __construct(Profiles $profiles)
-    {
-        $this->profiles = $profiles;
-    }
+    public function __construct(
+        private readonly Profiles $profiles,
+    ) {}
 
     public function handleChange(string $code): void
     {

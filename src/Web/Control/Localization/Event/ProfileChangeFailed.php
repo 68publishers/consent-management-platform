@@ -9,15 +9,10 @@ use Throwable;
 
 final class ProfileChangeFailed extends Event
 {
-    private Throwable $error;
-
-    private string $profileCode;
-
-    public function __construct(Throwable $error, string $profileCode)
-    {
-        $this->error = $error;
-        $this->profileCode = $profileCode;
-    }
+    public function __construct(
+        private readonly Throwable $error,
+        private readonly string $profileCode,
+    ) {}
 
     public function error(): Throwable
     {

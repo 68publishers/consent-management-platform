@@ -12,15 +12,10 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Common\Repository\Agg
 
 final class GlobalSettingsRepository implements GlobalSettingsRepositoryInterface
 {
-    private AggregateRootRepositoryInterface $aggregateRootRepository;
-
-    private EntityManagerInterface $em;
-
-    public function __construct(AggregateRootRepositoryInterface $aggregateRootRepository, EntityManagerInterface $em)
-    {
-        $this->aggregateRootRepository = $aggregateRootRepository;
-        $this->em = $em;
-    }
+    public function __construct(
+        private readonly AggregateRootRepositoryInterface $aggregateRootRepository,
+        private readonly EntityManagerInterface $em,
+    ) {}
 
     public function save(GlobalSettings $globalSettings): void
     {

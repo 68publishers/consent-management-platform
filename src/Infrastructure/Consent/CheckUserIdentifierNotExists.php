@@ -14,12 +14,9 @@ use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 
 final class CheckUserIdentifierNotExists implements CheckUserIdentifierNotExistsInterface
 {
-    private QueryBusInterface $queryBus;
-
-    public function __construct(QueryBusInterface $queryBus)
-    {
-        $this->queryBus = $queryBus;
-    }
+    public function __construct(
+        private readonly QueryBusInterface $queryBus,
+    ) {}
 
     public function __invoke(UserIdentifier $userIdentifier, ProjectId $projectId): void
     {

@@ -9,15 +9,10 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class ProjectCreatedEvent extends Event
 {
-    private ProjectId $projectId;
-
-    private string $code;
-
-    public function __construct(ProjectId $projectId, string $code)
-    {
-        $this->projectId = $projectId;
-        $this->code = $code;
-    }
+    public function __construct(
+        private readonly ProjectId $projectId,
+        private readonly string $code,
+    ) {}
 
     public function projectId(): ProjectId
     {

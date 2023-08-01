@@ -10,12 +10,9 @@ use Nette\Application\UI\Form;
 
 final class FormFactory implements FormFactoryInterface
 {
-    private TemplateRendererFactory $templateRendererFactory;
-
-    public function __construct(TemplateRendererFactory $templateRendererFactory)
-    {
-        $this->templateRendererFactory = $templateRendererFactory;
-    }
+    public function __construct(
+        private readonly TemplateRendererFactory $templateRendererFactory,
+    ) {}
 
     public function create(array $options = []): Form
     {

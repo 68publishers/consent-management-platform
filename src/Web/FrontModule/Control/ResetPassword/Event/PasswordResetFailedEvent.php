@@ -9,12 +9,9 @@ use Throwable;
 
 final class PasswordResetFailedEvent extends Event
 {
-    private Throwable $exception;
-
-    public function __construct(Throwable $exception)
-    {
-        $this->exception = $exception;
-    }
+    public function __construct(
+        private readonly Throwable $exception,
+    ) {}
 
     public function exception(): Throwable
     {

@@ -22,18 +22,13 @@ use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 #[Allowed(resource: CategoryResource::class, privilege: CategoryResource::UPDATE)]
 final class EditCategoryPresenter extends AdminPresenter
 {
-    private CategoryFormControlFactoryInterface $categoryFormControlFactory;
-
-    private QueryBusInterface $queryBus;
-
     private CategoryView $categoryView;
 
-    public function __construct(CategoryFormControlFactoryInterface $categoryFormControlFactory, QueryBusInterface $queryBus)
-    {
+    public function __construct(
+        private readonly CategoryFormControlFactoryInterface $categoryFormControlFactory,
+        private readonly QueryBusInterface $queryBus,
+    ) {
         parent::__construct();
-
-        $this->categoryFormControlFactory = $categoryFormControlFactory;
-        $this->queryBus = $queryBus;
     }
 
     /**

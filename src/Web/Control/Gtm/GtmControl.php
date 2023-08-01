@@ -8,12 +8,9 @@ use App\Web\Ui\Control;
 
 final class GtmControl extends Control
 {
-    private ?string $containerId;
-
-    public function __construct(?string $containerId)
-    {
-        $this->containerId = $containerId;
-    }
+    public function __construct(
+        private readonly ?string $containerId,
+    ) {}
 
     public function renderScript(): void
     {

@@ -10,15 +10,10 @@ use App\Application\DataProcessor\Write\DataWriterFactoryInterface;
 
 final class DataProcessFactory
 {
-    private DataReaderFactoryInterface $dataReaderFactory;
-
-    private DataWriterFactoryInterface $dataWriterFactory;
-
-    public function __construct(DataReaderFactoryInterface $dataReaderFactory, DataWriterFactoryInterface $dataWriterFactory)
-    {
-        $this->dataReaderFactory = $dataReaderFactory;
-        $this->dataWriterFactory = $dataWriterFactory;
-    }
+    public function __construct(
+        private readonly DataReaderFactoryInterface $dataReaderFactory,
+        private readonly DataWriterFactoryInterface $dataWriterFactory,
+    ) {}
 
     public function fromResource(string $format, ResourceInterface $resource): WriteProcess
     {

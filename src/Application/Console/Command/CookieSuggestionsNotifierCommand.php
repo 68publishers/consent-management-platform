@@ -29,19 +29,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class CookieSuggestionsNotifierCommand extends Command
 {
-    private QueryBusInterface $queryBus;
-
-    private CommandBusInterface $commandBus;
-
-    private CookieSuggestionsStoreInterface $cookieSuggestionsStore;
-
-    public function __construct(QueryBusInterface $queryBus, CommandBusInterface $commandBus, CookieSuggestionsStoreInterface $cookieSuggestionsStore)
-    {
+    public function __construct(
+        private readonly QueryBusInterface $queryBus,
+        private readonly CommandBusInterface $commandBus,
+        private readonly CookieSuggestionsStoreInterface $cookieSuggestionsStore,
+    ) {
         parent::__construct();
-
-        $this->queryBus = $queryBus;
-        $this->commandBus = $commandBus;
-        $this->cookieSuggestionsStore = $cookieSuggestionsStore;
     }
 
     protected function configure(): void

@@ -26,21 +26,12 @@ use Ublaboo\DataGrid\Exception\DataGridException;
 
 final class UserListControl extends Control
 {
-    private CommandBusInterface $commandBus;
-
-    private QueryBusInterface $queryBus;
-
-    private DataGridFactoryInterface $dataGridFactory;
-
-    private ConfirmModalControlFactoryInterface $confirmModalControlFactory;
-
-    public function __construct(CommandBusInterface $commandBus, QueryBusInterface $queryBus, DataGridFactoryInterface $dataGridFactory, ConfirmModalControlFactoryInterface $confirmModalControlFactory)
-    {
-        $this->commandBus = $commandBus;
-        $this->queryBus = $queryBus;
-        $this->dataGridFactory = $dataGridFactory;
-        $this->confirmModalControlFactory = $confirmModalControlFactory;
-    }
+    public function __construct(
+        private readonly CommandBusInterface $commandBus,
+        private readonly QueryBusInterface $queryBus,
+        private readonly DataGridFactoryInterface $dataGridFactory,
+        private readonly ConfirmModalControlFactoryInterface $confirmModalControlFactory,
+    ) {}
 
     /**
      * @throws DataGridException

@@ -18,16 +18,11 @@ use SixtyEightPublishers\ForgotPasswordBundle\ReadModel\View\PasswordRequestView
 
 final class ResetPasswordPresenter extends FrontPresenter
 {
-    private ResetPasswordControlFactoryInterface $resetPasswordControlFactory;
-
-    private QueryBusInterface $queryBus;
-
-    public function __construct(ResetPasswordControlFactoryInterface $resetPasswordControlFactory, QueryBusInterface $queryBus)
-    {
+    public function __construct(
+        private readonly ResetPasswordControlFactoryInterface $resetPasswordControlFactory,
+        private readonly QueryBusInterface $queryBus,
+    ) {
         parent::__construct();
-
-        $this->resetPasswordControlFactory = $resetPasswordControlFactory;
-        $this->queryBus = $queryBus;
     }
 
     /**

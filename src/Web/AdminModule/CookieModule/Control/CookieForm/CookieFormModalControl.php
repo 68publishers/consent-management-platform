@@ -10,18 +10,11 @@ use App\Web\Ui\Modal\AbstractModalControl;
 
 final class CookieFormModalControl extends AbstractModalControl
 {
-    private ValidLocalesProvider $validLocalesProvider;
-
-    private ?CookieView $default;
-
-    private CookieFormControlFactoryInterface $cookieFormControlFactory;
-
-    public function __construct(ValidLocalesProvider $validLocalesProvider, ?CookieView $default, CookieFormControlFactoryInterface $cookieFormControlFactory)
-    {
-        $this->validLocalesProvider = $validLocalesProvider;
-        $this->default = $default;
-        $this->cookieFormControlFactory = $cookieFormControlFactory;
-    }
+    public function __construct(
+        private readonly ValidLocalesProvider $validLocalesProvider,
+        private readonly ?CookieView $default,
+        private readonly CookieFormControlFactoryInterface $cookieFormControlFactory,
+    ) {}
 
     public function getInnerControl(): CookieFormControl
     {

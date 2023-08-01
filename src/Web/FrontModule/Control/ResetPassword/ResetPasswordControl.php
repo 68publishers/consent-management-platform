@@ -25,18 +25,11 @@ final class ResetPasswordControl extends Control
 {
     use FormFactoryOptionsTrait;
 
-    private PasswordRequestId $passwordRequestId;
-
-    private CommandBusInterface $commandBus;
-
-    private FormFactoryInterface $formFactory;
-
-    public function __construct(PasswordRequestId $passwordRequestId, CommandBusInterface $commandBus, FormFactoryInterface $formFactory)
-    {
-        $this->passwordRequestId = $passwordRequestId;
-        $this->commandBus = $commandBus;
-        $this->formFactory = $formFactory;
-    }
+    public function __construct(
+        private readonly PasswordRequestId $passwordRequestId,
+        private readonly CommandBusInterface $commandBus,
+        private readonly FormFactoryInterface $formFactory,
+    ) {}
 
     protected function createComponentForm(): Form
     {

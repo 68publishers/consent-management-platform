@@ -14,12 +14,9 @@ use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 
 final class RefreshGlobalSettingsWhenChanged implements EventHandlerInterface, MessageSubscriberInterface
 {
-    private GlobalSettingsInterface $globalSettings;
-
-    public function __construct(GlobalSettingsInterface $globalSettings)
-    {
-        $this->globalSettings = $globalSettings;
-    }
+    public function __construct(
+        private readonly GlobalSettingsInterface $globalSettings,
+    ) {}
 
     public static function getHandledMessages(): iterable
     {

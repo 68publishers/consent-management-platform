@@ -18,12 +18,9 @@ final class ErrorPresenter implements IPresenter
 {
     use SmartObject;
 
-    private LoggerInterface $logger;
-
-    public function __construct(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-    }
+    public function __construct(
+        private readonly LoggerInterface $logger,
+    ) {}
 
     public function run(Request $request): Response
     {

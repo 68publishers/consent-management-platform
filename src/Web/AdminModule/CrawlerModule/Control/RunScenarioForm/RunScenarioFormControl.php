@@ -25,31 +25,15 @@ use Throwable;
 
 final class RunScenarioFormControl extends Control
 {
-    private FormFactoryInterface $formFactory;
-
-    private QueryBusInterface $queryBus;
-
-    private CrawlerClientProvider $crawlerClientProvider;
-
-    private ValidLocalesProvider $validLocalesProvider;
-
     private ?ControllerResponseExceptionInterface $responseException = null;
 
-    private string $projectUrl;
-
     public function __construct(
-        FormFactoryInterface $formFactory,
-        QueryBusInterface $queryBus,
-        CrawlerClientProvider $crawlerClientProvider,
-        ValidLocalesProvider $validLocalesProvider,
-        string $projectUrl,
-    ) {
-        $this->formFactory = $formFactory;
-        $this->queryBus = $queryBus;
-        $this->crawlerClientProvider = $crawlerClientProvider;
-        $this->validLocalesProvider = $validLocalesProvider;
-        $this->projectUrl = $projectUrl;
-    }
+        private readonly FormFactoryInterface $formFactory,
+        private readonly QueryBusInterface $queryBus,
+        private readonly CrawlerClientProvider $crawlerClientProvider,
+        private readonly ValidLocalesProvider $validLocalesProvider,
+        private readonly string $projectUrl,
+    ) {}
 
     protected function beforeRender(): void
     {

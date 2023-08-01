@@ -12,13 +12,9 @@ use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
 
 final class AddCookieSuggestionOccurrencesCommandHandler implements CommandHandlerInterface
 {
-    private CookieSuggestionRepositoryInterface $cookieSuggestionRepository;
-
     public function __construct(
-        CookieSuggestionRepositoryInterface $cookieSuggestionRepository,
-    ) {
-        $this->cookieSuggestionRepository = $cookieSuggestionRepository;
-    }
+        private readonly CookieSuggestionRepositoryInterface $cookieSuggestionRepository,
+    ) {}
 
     /**
      * @throws Exception

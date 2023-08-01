@@ -13,12 +13,9 @@ use SixtyEightPublishers\UserBundle\Bridge\Nette\Security\Identity;
 
 final class LoggerUserProfileLocaleResolver implements TranslatorLocaleResolverInterface
 {
-    private NetteUser $user;
-
-    public function __construct(NetteUser $user)
-    {
-        $this->user = $user;
-    }
+    public function __construct(
+        private readonly NetteUser $user,
+    ) {}
 
     /**
      * @throws IdentityException

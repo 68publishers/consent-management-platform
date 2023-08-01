@@ -37,12 +37,9 @@ use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 
 final class ClearEtagStoreWhenAnythingRelatedToCookiesChanged implements EventHandlerInterface, MessageSubscriberInterface
 {
-    private EtagStoreInterface $etagStore;
-
-    public function __construct(EtagStoreInterface $etagStore)
-    {
-        $this->etagStore = $etagStore;
-    }
+    public function __construct(
+        private readonly EtagStoreInterface $etagStore,
+    ) {}
 
     public static function getHandledMessages(): iterable
     {

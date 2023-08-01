@@ -13,15 +13,10 @@ use JsonException;
  */
 final class ModalsControl extends Control
 {
-    private ModalDispatcherInterface $dispatcher;
-
-    private HtmlId $elementId;
-
-    public function __construct(ModalDispatcherInterface $dispatcher, HtmlId $elementId)
-    {
-        $this->dispatcher = $dispatcher;
-        $this->elementId = $elementId;
-    }
+    public function __construct(
+        private readonly ModalDispatcherInterface $dispatcher,
+        private readonly HtmlId $elementId,
+    ) {}
 
     /**
      * @throws JsonException

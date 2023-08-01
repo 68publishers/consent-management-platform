@@ -8,11 +8,6 @@ use App\Application\CookieSuggestion\Solution\Solutions;
 
 final class UnassociatedCookieSuggestion extends AbstractSuggestion
 {
-    /** @var non-empty-list<ExistingCookie> */
-    private array $existingCookies;
-
-    private Solutions $solutions;
-
     /**
      * @param non-empty-list<CookieOccurrence> $occurrences
      * @param non-empty-list<ExistingCookie>   $existingCookies
@@ -22,13 +17,10 @@ final class UnassociatedCookieSuggestion extends AbstractSuggestion
         string $suggestionName,
         string $suggestionDomain,
         array $occurrences,
-        array $existingCookies,
-        Solutions $solutions,
+        private readonly array $existingCookies,
+        private readonly Solutions $solutions,
     ) {
         parent::__construct($suggestionId, false, $suggestionName, $suggestionDomain, $occurrences);
-
-        $this->existingCookies = $existingCookies;
-        $this->solutions = $solutions;
     }
 
     /**

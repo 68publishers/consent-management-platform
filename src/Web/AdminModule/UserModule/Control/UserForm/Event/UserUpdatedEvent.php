@@ -9,12 +9,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class UserUpdatedEvent extends Event
 {
-    private UserId $userId;
-
-    public function __construct(UserId $userId)
-    {
-        $this->userId = $userId;
-    }
+    public function __construct(
+        private readonly UserId $userId,
+    ) {}
 
     public function userId(): UserId
     {

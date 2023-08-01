@@ -11,12 +11,9 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\QueryHandlerInterfac
 
 final class FindAllProjectIdsQueryHandler implements QueryHandlerInterface
 {
-    private EntityManagerInterface $em;
-
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
-    }
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+    ) {}
 
     /**
      * @return array<string>
