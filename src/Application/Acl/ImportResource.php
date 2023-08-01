@@ -6,6 +6,6 @@ namespace App\Application\Acl;
 
 final class ImportResource extends AbstractResource
 {
-	public const READ = 'read';
-	public const IMPORT = 'import';
+    public const READ = 'read';
+    public const IMPORT = 'import';
 }

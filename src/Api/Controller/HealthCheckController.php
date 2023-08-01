@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Api\Controller;
 
+use Apitte\Core\Annotation\Controller as Api;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
-use Apitte\Core\Annotation\Controller as Api;
 use SixtyEightPublishers\HealthCheck\HealthCheckerInterface;
 
 /**

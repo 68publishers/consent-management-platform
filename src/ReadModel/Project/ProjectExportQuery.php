@@ -8,11 +8,11 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractBatchedQuery
 
 final class ProjectExportQuery extends AbstractBatchedQuery
 {
-	/**
-	 * @return static
-	 */
-	public static function create(): self
-	{
-		return self::fromParameters([]);
-	}
+    /**
+     * @return static
+     */
+    public static function create(): self
+    {
+        return self::fromParameters([]);
+    }
 }

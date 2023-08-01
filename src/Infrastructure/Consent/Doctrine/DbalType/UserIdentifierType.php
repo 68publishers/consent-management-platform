@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class UserIdentifierType extends AbstractStringValueObjectType
 {
-	protected string $valueObjectClassname = UserIdentifier::class;
+    protected string $valueObjectClassname = UserIdentifier::class;
 }

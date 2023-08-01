@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class ImportIdType extends AbstractUuidIdentityType
 {
-	protected string $valueObjectClassname = ImportId::class;
+    protected string $valueObjectClassname = ImportId::class;
 }

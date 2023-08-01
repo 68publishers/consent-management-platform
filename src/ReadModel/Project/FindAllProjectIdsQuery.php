@@ -11,8 +11,8 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
  */
 final class FindAllProjectIdsQuery extends AbstractQuery
 {
-	public static function create(): self
-	{
-		return self::fromParameters([]);
-	}
+    public static function create(): self
+    {
+        return self::fromParameters([]);
+    }
 }

@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class PurposeType extends AbstractTextValueObjectType
 {
-	protected string $valueObjectClassname = Purpose::class;
+    protected string $valueObjectClassname = Purpose::class;
 }

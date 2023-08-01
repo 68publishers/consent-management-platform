@@ -10,29 +10,23 @@ use SixtyEightPublishers\ArchitectureBundle\EventStore\EventMetadataExtenderInte
 
 final class CurrentUserExtender implements EventMetadataExtenderInterface
 {
-	public const KEY_USER_ID = 'user_id';
+    public const KEY_USER_ID = 'user_id';
 
-	private NetteUser $user;
+    private NetteUser $user;
 
-	/**
-	 * @param \Nette\Security\User $user
-	 */
-	public function __construct(NetteUser $user)
-	{
-		$this->user = $user;
-	}
+    public function __construct(NetteUser $user)
+    {
+        $this->user = $user;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function extendMetadata(AbstractDomainEvent $event): AbstractDomainEvent
-	{
-		if ($this->user->isLoggedIn()) {
-			$event = $event->withMetadata([
-				self::KEY_USER_ID => (string) $this->user->id,
-			], TRUE);
-		}
+    public function extendMetadata(AbstractDomainEvent $event): AbstractDomainEvent
+    {
+        if ($this->user->isLoggedIn()) {
+            $event = $event->withMetadata([
+                self::KEY_USER_ID => (string) $this->user->id,
+            ], true);
+        }
 
-		return $event;
-	}
+        return $event;
+    }
 }

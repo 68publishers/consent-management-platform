@@ -6,13 +6,7 @@ namespace App\Application\DataProcessor\Read\Resource;
 
 interface ResourceInterface
 {
-	/**
-	 * @return array
-	 */
-	public function options(): array;
+    public function options(): array;
 
-	/**
-	 * @return string
-	 */
-	public function __toString(): string;
+    public function __toString(): string;
 }

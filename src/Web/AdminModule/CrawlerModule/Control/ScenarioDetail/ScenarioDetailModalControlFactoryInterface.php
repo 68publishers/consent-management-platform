@@ -6,5 +6,5 @@ namespace App\Web\AdminModule\CrawlerModule\Control\ScenarioDetail;
 
 interface ScenarioDetailModalControlFactoryInterface
 {
-	public function create(string $scenarioId): ScenarioDetailModalControl;
+    public function create(string $scenarioId): ScenarioDetailModalControl;
 }

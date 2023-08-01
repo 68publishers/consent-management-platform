@@ -8,5 +8,5 @@ use SixtyEightPublishers\CrawlerClient\Controller\Scenario\ResponseBody\Scenario
 
 interface ScenarioDetailControlFactoryInterface
 {
-	public function create(ScenarioResponseBody $scenarioResponseBody, string $serializedScenarioConfig): ScenarioDetailControl;
+    public function create(ScenarioResponseBody $scenarioResponseBody, string $serializedScenarioConfig): ScenarioDetailControl;
 }

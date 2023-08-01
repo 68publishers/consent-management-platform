@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class DomainType extends AbstractStringValueObjectType
 {
-	protected string $valueObjectClassname = Domain::class;
+    protected string $valueObjectClassname = Domain::class;
 }

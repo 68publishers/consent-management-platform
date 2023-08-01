@@ -4,128 +4,104 @@ declare(strict_types=1);
 
 namespace App\Application\DataProcessor\Description;
 
-use Nette\Schema\Schema;
-use Nette\Schema\Elements\Type;
-use App\Application\DataProcessor\Description\Path\Path;
 use App\Application\DataProcessor\Context\ContextInterface;
+use App\Application\DataProcessor\Description\Path\Path;
 use App\Application\DataProcessor\Description\Path\PathInfo;
+use Nette\Schema\Elements\Type;
+use Nette\Schema\Schema;
 
 abstract class AbstractTypeDescriptor implements DescriptorInterface
 {
-	/** @var \App\Application\DataProcessor\Description\TypeDescriptorPropertyInterface[]  */
-	private array $properties = [];
+    /** @var TypeDescriptorPropertyInterface[] */
+    private array $properties = [];
 
-	private function __construct()
-	{
-	}
+    private function __construct() {}
 
-	/**
-	 * @param \App\Application\DataProcessor\Description\TypeDescriptorPropertyInterface ...$properties
-	 *
-	 * @return static
-	 */
-	public static function create(TypeDescriptorPropertyInterface ...$properties): self
-	{
-		$descriptor = new static();
+    /**
+     * @return static
+     */
+    public static function create(TypeDescriptorPropertyInterface ...$properties): self
+    {
+        $descriptor = new static();
 
-		if (!empty($properties)) {
-			$descriptor = $descriptor->withProps(...$properties);
-		}
+        if (!empty($properties)) {
+            $descriptor = $descriptor->withProps(...$properties);
+        }
 
-		return $descriptor;
-	}
+        return $descriptor;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function schema(ContextInterface $context): Schema
-	{
-		$type = $this->createType($context);
+    public function schema(ContextInterface $context): Schema
+    {
+        $type = $this->createType($context);
 
-		foreach ($this->properties as $property) {
-			$type = $property->applyToType($type, $context);
-		}
+        foreach ($this->properties as $property) {
+            $type = $property->applyToType($type, $context);
+        }
 
-		return $type;
-	}
+        return $type;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function pathInfo(Path $path): PathInfo
-	{
-		$part = $path->shift();
-		$pathInfo = new PathInfo();
+    public function pathInfo(Path $path): PathInfo
+    {
+        $part = $path->shift();
+        $pathInfo = new PathInfo();
 
-		if (NULL === $part) {
-			$pathInfo->descriptor = $this;
-			$pathInfo->found = TRUE;
-			$pathInfo->isFinal = TRUE;
+        if (null === $part) {
+            $pathInfo->descriptor = $this;
+            $pathInfo->found = true;
+            $pathInfo->isFinal = true;
 
-			return $pathInfo;
-		}
+            return $pathInfo;
+        }
 
-		$pathInfo->descriptor = NULL;
-		$pathInfo->found = FALSE;
-		$pathInfo->isFinal = FALSE;
+        $pathInfo->descriptor = null;
+        $pathInfo->found = false;
+        $pathInfo->isFinal = false;
 
-		return $pathInfo;
-	}
+        return $pathInfo;
+    }
 
-	/**
-	 * @param \App\Application\DataProcessor\Description\TypeDescriptorPropertyInterface ...$properties
-	 *
-	 * @return $this
-	 */
-	public function withProps(TypeDescriptorPropertyInterface ...$properties): self
-	{
-		$descriptor = clone $this;
-		$descriptor->properties = array_merge($this->properties, $properties);
+    /**
+     * @return $this
+     */
+    public function withProps(TypeDescriptorPropertyInterface ...$properties): self
+    {
+        $descriptor = clone $this;
+        $descriptor->properties = array_merge($this->properties, $properties);
 
-		return $descriptor;
-	}
+        return $descriptor;
+    }
 
-	/**
-	 * @param \App\Application\DataProcessor\Context\ContextInterface $context
-	 *
-	 * @return \Nette\Schema\Elements\Type
-	 */
-	abstract protected function createType(ContextInterface $context): Type;
+    abstract protected function createType(ContextInterface $context): Type;
 
-	/**
-	 * @param mixed $value
-	 *
-	 * @return mixed
-	 */
-	protected function tryToConvertWeakNullValue($value)
-	{
-		if (!is_string($value)) {
-			return $value;
-		}
+    protected function tryToConvertWeakNullValue(mixed $value): mixed
+    {
+        if (!is_string($value)) {
+            return $value;
+        }
 
-		$val = trim($value);
+        $val = trim($value);
 
-		if (('' === $val && !$this->isAnyOf([Required::class]))
-			|| (('null' === $val || 'NULL' === $val) && $this->isAnyOf([Nullable::class]))
-		) {
-			$value = NULL;
-		}
+        if (('' === $val && !$this->isAnyOf([Required::class]))
+            || (('null' === $val || 'NULL' === $val) && $this->isAnyOf([Nullable::class]))
+        ) {
+            $value = null;
+        }
 
-		return $value;
-	}
+        return $value;
+    }
 
-	/**
-	 * @param string[] $propertyClassnames
-	 *
-	 * @return bool
-	 */
-	private function isAnyOf(array $propertyClassnames): bool
-	{
-		return 0 < count(
-			array_filter(
-				$this->properties,
-				static fn (TypeDescriptorPropertyInterface $property): bool => in_array(get_class($property), $propertyClassnames, TRUE)
-			)
-		);
-	}
+    /**
+     * @param string[] $propertyClassnames
+     */
+    private function isAnyOf(array $propertyClassnames): bool
+    {
+        return 0 < count(
+            array_filter(
+                $this->properties,
+                static fn (TypeDescriptorPropertyInterface $property): bool => in_array(get_class($property), $propertyClassnames, true),
+            ),
+        );
+    }
 }

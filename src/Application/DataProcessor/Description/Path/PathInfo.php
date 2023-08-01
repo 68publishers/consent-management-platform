@@ -8,9 +8,9 @@ use App\Application\DataProcessor\Description\DescriptorInterface;
 
 final class PathInfo
 {
-	public ?DescriptorInterface $descriptor;
+    public ?DescriptorInterface $descriptor;
 
-	public bool $found;
+    public bool $found;
 
-	public bool $isFinal;
+    public bool $isFinal;
 }

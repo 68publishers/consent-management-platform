@@ -4,41 +4,41 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\CookieModule\Presenter;
 
-use Nette\Application\BadRequestException;
-use App\Web\AdminModule\Presenter\AdminPresenter;
 use App\Application\Acl\FoundCookiesProjectsResource;
-use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
-use SixtyEightPublishers\UserBundle\Application\Exception\IdentityException;
 use App\Web\AdminModule\CookieModule\Control\ProjectCookieSuggestionList\ProjectCookieSuggestionListControl;
 use App\Web\AdminModule\CookieModule\Control\ProjectCookieSuggestionList\ProjectCookieSuggestionListControlFactoryInterface;
+use App\Web\AdminModule\Presenter\AdminPresenter;
+use Nette\Application\BadRequestException;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
+use SixtyEightPublishers\UserBundle\Application\Exception\IdentityException;
 
 #[Allowed(resource: FoundCookiesProjectsResource::class, privilege: FoundCookiesProjectsResource::READ)]
 final class FoundCookiesProjectsPresenter extends AdminPresenter
 {
-	private ProjectCookieSuggestionListControlFactoryInterface $projectCookieSuggestionListControlFactory;
+    private ProjectCookieSuggestionListControlFactoryInterface $projectCookieSuggestionListControlFactory;
 
-	public function __construct(ProjectCookieSuggestionListControlFactoryInterface $projectCookieSuggestionListControlFactory)
-	{
-		parent::__construct();
+    public function __construct(ProjectCookieSuggestionListControlFactoryInterface $projectCookieSuggestionListControlFactory)
+    {
+        parent::__construct();
 
-		$this->projectCookieSuggestionListControlFactory = $projectCookieSuggestionListControlFactory;
-	}
+        $this->projectCookieSuggestionListControlFactory = $projectCookieSuggestionListControlFactory;
+    }
 
-	/**
-	 * @throws IdentityException
-	 * @throws BadRequestException
-	 */
-	protected function startup(): void
-	{
-		parent::startup();
+    /**
+     * @throws IdentityException
+     * @throws BadRequestException
+     */
+    protected function startup(): void
+    {
+        parent::startup();
 
-		if (!$this->globalSettings->crawlerSettings()->enabled()) {
-			$this->error('Crawler is disabled.');
-		}
-	}
+        if (!$this->globalSettings->crawlerSettings()->enabled()) {
+            $this->error('Crawler is disabled.');
+        }
+    }
 
-	protected function createComponentList(): ProjectCookieSuggestionListControl
-	{
-		return $this->projectCookieSuggestionListControlFactory->create();
-	}
+    protected function createComponentList(): ProjectCookieSuggestionListControl
+    {
+        return $this->projectCookieSuggestionListControlFactory->create();
+    }
 }

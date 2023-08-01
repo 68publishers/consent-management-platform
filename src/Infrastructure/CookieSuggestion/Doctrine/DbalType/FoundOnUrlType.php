@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class FoundOnUrlType extends AbstractTextValueObjectType
 {
-	protected string $valueObjectClassname = FoundOnUrl::class;
+    protected string $valueObjectClassname = FoundOnUrl::class;
 }

@@ -4,216 +4,157 @@ declare(strict_types=1);
 
 namespace App\Domain\Category;
 
-use DateTimeImmutable;
+use App\Domain\Category\Command\CreateCategoryCommand;
+use App\Domain\Category\Command\UpdateCategoryCommand;
+use App\Domain\Category\Event\CategoryActiveStateChanged;
+use App\Domain\Category\Event\CategoryCodeChanged;
+use App\Domain\Category\Event\CategoryCreated;
+use App\Domain\Category\Event\CategoryNameUpdated;
+use App\Domain\Category\Event\CategoryNecessaryChanged;
+use App\Domain\Category\ValueObject\CategoryId;
 use App\Domain\Category\ValueObject\Code;
 use App\Domain\Category\ValueObject\Name;
 use App\Domain\Shared\ValueObject\Locale;
-use Doctrine\Common\Collections\Collection;
-use App\Domain\Category\Event\CategoryCreated;
-use App\Domain\Category\ValueObject\CategoryId;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
-use App\Domain\Category\Event\CategoryCodeChanged;
-use App\Domain\Category\Event\CategoryNameUpdated;
-use App\Domain\Category\Command\CreateCategoryCommand;
-use App\Domain\Category\Command\UpdateCategoryCommand;
-use App\Domain\Category\Event\CategoryNecessaryChanged;
-use App\Domain\Category\Event\CategoryActiveStateChanged;
-use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AggregateId;
+use Doctrine\Common\Collections\Collection;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Aggregate\AggregateRootInterface;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Aggregate\DeletableAggregateRootTrait;
+use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AggregateId;
 
 final class Category implements AggregateRootInterface
 {
-	use DeletableAggregateRootTrait;
+    use DeletableAggregateRootTrait;
 
-	private CategoryId $id;
+    private CategoryId $id;
 
-	private DateTimeImmutable $createdAt;
+    private DateTimeImmutable $createdAt;
 
-	private Code $code;
+    private Code $code;
 
-	private bool $active;
+    private bool $active;
 
-	private bool $necessary;
+    private bool $necessary;
 
-	private Collection $translations;
+    private Collection $translations;
 
-	/**
-	 * @param \App\Domain\Category\Command\CreateCategoryCommand $command
-	 * @param \App\Domain\Category\CheckCodeUniquenessInterface  $checkCodeUniqueness
-	 *
-	 * @return static
-	 */
-	public static function create(CreateCategoryCommand $command, CheckCodeUniquenessInterface $checkCodeUniqueness): self
-	{
-		$category = new self();
+    /**
+     * @return static
+     */
+    public static function create(CreateCategoryCommand $command, CheckCodeUniquenessInterface $checkCodeUniqueness): self
+    {
+        $category = new self();
 
-		$categoryId = NULL !== $command->categoryId() ? CategoryId::fromString($command->categoryId()) : CategoryId::new();
-		$code = Code::fromValidCode($command->code());
-		$active = $command->active();
-		$necessary = $command->necessary();
-		$names = $command->names();
+        $categoryId = null !== $command->categoryId() ? CategoryId::fromString($command->categoryId()) : CategoryId::new();
+        $code = Code::fromValidCode($command->code());
+        $active = $command->active();
+        $necessary = $command->necessary();
+        $names = $command->names();
 
-		$checkCodeUniqueness($categoryId, $code);
+        $checkCodeUniqueness($categoryId, $code);
 
-		$category->recordThat(CategoryCreated::create($categoryId, $code, $active, $necessary, $names));
+        $category->recordThat(CategoryCreated::create($categoryId, $code, $active, $necessary, $names));
 
-		return $category;
-	}
+        return $category;
+    }
 
-	/**
-	 * @param \App\Domain\Category\Command\UpdateCategoryCommand $command
-	 * @param \App\Domain\Category\CheckCodeUniquenessInterface  $checkCodeUniqueness
-	 *
-	 * @return void
-	 */
-	public function update(UpdateCategoryCommand $command, CheckCodeUniquenessInterface $checkCodeUniqueness): void
-	{
-		if (NULL !== $command->code()) {
-			$this->changeCode(Code::fromValidCode($command->code()), $checkCodeUniqueness);
-		}
+    public function update(UpdateCategoryCommand $command, CheckCodeUniquenessInterface $checkCodeUniqueness): void
+    {
+        if (null !== $command->code()) {
+            $this->changeCode(Code::fromValidCode($command->code()), $checkCodeUniqueness);
+        }
 
-		if (NULL !== $command->active()) {
-			$this->changeActiveState($command->active());
-		}
+        if (null !== $command->active()) {
+            $this->changeActiveState($command->active());
+        }
 
-		if (NULL !== $command->necessary()) {
-			$this->changeNecessary($command->necessary());
-		}
+        if (null !== $command->necessary()) {
+            $this->changeNecessary($command->necessary());
+        }
 
-		if (NULL !== $command->names()) {
-			foreach ($command->names() as $locale => $name) {
-				$this->changeName(Locale::fromValue($locale), Name::fromValue($name));
-			}
-		}
-	}
+        if (null !== $command->names()) {
+            foreach ($command->names() as $locale => $name) {
+                $this->changeName(Locale::fromValue($locale), Name::fromValue($name));
+            }
+        }
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function aggregateId(): AggregateId
-	{
-		return AggregateId::fromUuid($this->id->id());
-	}
+    public function aggregateId(): AggregateId
+    {
+        return AggregateId::fromUuid($this->id->id());
+    }
 
-	/**
-	 * @param \App\Domain\Category\ValueObject\Code             $code
-	 * @param \App\Domain\Category\CheckCodeUniquenessInterface $checkCodeUniqueness
-	 *
-	 * @return void
-	 */
-	public function changeCode(Code $code, CheckCodeUniquenessInterface $checkCodeUniqueness): void
-	{
-		if (!$this->code->equals($code)) {
-			$checkCodeUniqueness($this->id, $code);
+    public function changeCode(Code $code, CheckCodeUniquenessInterface $checkCodeUniqueness): void
+    {
+        if (!$this->code->equals($code)) {
+            $checkCodeUniqueness($this->id, $code);
 
-			$this->recordThat(CategoryCodeChanged::create($this->id, $code));
-		}
-	}
+            $this->recordThat(CategoryCodeChanged::create($this->id, $code));
+        }
+    }
 
-	/**
-	 * @param bool $active
-	 *
-	 * @return void
-	 */
-	public function changeActiveState(bool $active): void
-	{
-		if ($this->active !== $active) {
-			$this->recordThat(CategoryActiveStateChanged::create($this->id, $active));
-		}
-	}
+    public function changeActiveState(bool $active): void
+    {
+        if ($this->active !== $active) {
+            $this->recordThat(CategoryActiveStateChanged::create($this->id, $active));
+        }
+    }
 
-	/**
-	 * @param bool $necessary
-	 *
-	 * @return void
-	 */
-	public function changeNecessary(bool $necessary): void
-	{
-		if ($this->necessary !== $necessary) {
-			$this->recordThat(CategoryNecessaryChanged::create($this->id, $necessary));
-		}
-	}
+    public function changeNecessary(bool $necessary): void
+    {
+        if ($this->necessary !== $necessary) {
+            $this->recordThat(CategoryNecessaryChanged::create($this->id, $necessary));
+        }
+    }
 
-	/**
-	 * @param \App\Domain\Shared\ValueObject\Locale $locale
-	 * @param \App\Domain\Category\ValueObject\Name $name
-	 *
-	 * @return void
-	 */
-	public function changeName(Locale $locale, Name $name): void
-	{
-		$translation = $this->translations->filter(static fn (CategoryTranslation $translation): bool => $translation->locale()->equals($locale))->first();
+    public function changeName(Locale $locale, Name $name): void
+    {
+        $translation = $this->translations->filter(static fn (CategoryTranslation $translation): bool => $translation->locale()->equals($locale))->first();
 
-		if (!$translation instanceof CategoryTranslation || !$translation->name()->equals($name)) {
-			$this->recordThat(CategoryNameUpdated::create($this->id, $locale, $name));
-		}
-	}
+        if (!$translation instanceof CategoryTranslation || !$translation->name()->equals($name)) {
+            $this->recordThat(CategoryNameUpdated::create($this->id, $locale, $name));
+        }
+    }
 
-	/**
-	 * @param \App\Domain\Category\Event\CategoryCreated $event
-	 *
-	 * @return void
-	 */
-	protected function whenCategoryCreated(CategoryCreated $event): void
-	{
-		$this->id = $event->categoryId();
-		$this->createdAt = $event->createdAt();
-		$this->code = $event->code();
-		$this->active = $event->active();
-		$this->necessary = $event->necessary();
-		$this->translations = new ArrayCollection();
+    protected function whenCategoryCreated(CategoryCreated $event): void
+    {
+        $this->id = $event->categoryId();
+        $this->createdAt = $event->createdAt();
+        $this->code = $event->code();
+        $this->active = $event->active();
+        $this->necessary = $event->necessary();
+        $this->translations = new ArrayCollection();
 
-		foreach ($event->names() as $locale => $name) {
-			$this->translations->add(CategoryTranslation::create($this, Locale::fromValue($locale), Name::fromValue($name)));
-		}
-	}
+        foreach ($event->names() as $locale => $name) {
+            $this->translations->add(CategoryTranslation::create($this, Locale::fromValue($locale), Name::fromValue($name)));
+        }
+    }
 
-	/**
-	 * @param \App\Domain\Category\Event\CategoryCodeChanged $event
-	 *
-	 * @return void
-	 */
-	protected function whenCategoryCodeChanged(CategoryCodeChanged $event): void
-	{
-		$this->code = $event->code();
-	}
+    protected function whenCategoryCodeChanged(CategoryCodeChanged $event): void
+    {
+        $this->code = $event->code();
+    }
 
-	/**
-	 * @param \App\Domain\Category\Event\CategoryActiveStateChanged $event
-	 *
-	 * @return void
-	 */
-	protected function whenCategoryActiveStateChanged(CategoryActiveStateChanged $event): void
-	{
-		$this->active = $event->active();
-	}
+    protected function whenCategoryActiveStateChanged(CategoryActiveStateChanged $event): void
+    {
+        $this->active = $event->active();
+    }
 
-	/**
-	 * @param \App\Domain\Category\Event\CategoryNecessaryChanged $event
-	 *
-	 * @return void
-	 */
-	protected function whenCategoryNecessaryChanged(CategoryNecessaryChanged $event): void
-	{
-		$this->necessary = $event->necessary();
-	}
+    protected function whenCategoryNecessaryChanged(CategoryNecessaryChanged $event): void
+    {
+        $this->necessary = $event->necessary();
+    }
 
-	/**
-	 * @param \App\Domain\Category\Event\CategoryNameUpdated $event
-	 *
-	 * @return void
-	 */
-	protected function whenCategoryNameUpdated(CategoryNameUpdated $event): void
-	{
-		$translation = $this->translations->filter(static fn (CategoryTranslation $translation): bool => $translation->locale()->equals($event->locale()))->first();
+    protected function whenCategoryNameUpdated(CategoryNameUpdated $event): void
+    {
+        $translation = $this->translations->filter(static fn (CategoryTranslation $translation): bool => $translation->locale()->equals($event->locale()))->first();
 
-		if ($translation instanceof CategoryTranslation) {
-			$translation->setName($event->name());
+        if ($translation instanceof CategoryTranslation) {
+            $translation->setName($event->name());
 
-			return;
-		}
+            return;
+        }
 
-		$this->translations->add(CategoryTranslation::create($this, $event->locale(), $event->name()));
-	}
+        $this->translations->add(CategoryTranslation::create($this, $event->locale(), $event->name()));
+    }
 }

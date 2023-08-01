@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class CodeType extends AbstractStringValueObjectType
 {
-	protected string $valueObjectClassname = Code::class;
+    protected string $valueObjectClassname = Code::class;
 }

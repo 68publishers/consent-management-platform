@@ -9,45 +9,42 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ArrayViewData;
 
 final class ConsentStatisticsView extends AbstractView
 {
-	public int $totalConsentsCount;
+    public int $totalConsentsCount;
 
-	public int $uniqueConsentsCount;
+    public int $uniqueConsentsCount;
 
-	public int $totalPositiveCount;
+    public int $totalPositiveCount;
 
-	public int $uniquePositiveCount;
+    public int $uniquePositiveCount;
 
-	public int $totalNegativeCount;
+    public int $totalNegativeCount;
 
-	public int $uniqueNegativeCount;
+    public int $uniqueNegativeCount;
 
-	/**
-	 * @return static
-	 */
-	public static function createEmpty(): self
-	{
-		return self::fromData(new ArrayViewData([
-			'totalConsentsCount' => 0,
-			'uniqueConsentsCount' => 0,
-			'totalPositiveCount' => 0,
-			'uniquePositiveCount' => 0,
-			'totalNegativeCount' => 0,
-			'uniqueNegativeCount' => 0,
-		]));
-	}
+    /**
+     * @return static
+     */
+    public static function createEmpty(): self
+    {
+        return self::fromData(new ArrayViewData([
+            'totalConsentsCount' => 0,
+            'uniqueConsentsCount' => 0,
+            'totalPositiveCount' => 0,
+            'uniquePositiveCount' => 0,
+            'totalNegativeCount' => 0,
+            'uniqueNegativeCount' => 0,
+        ]));
+    }
 
-	/**
-	 * @return array
-	 */
-	public function jsonSerialize(): array
-	{
-		return [
-			'totalConsentsCount' => $this->totalConsentsCount,
-			'uniqueConsentsCount' => $this->uniqueConsentsCount,
-			'totalPositiveCount' => $this->totalPositiveCount,
-			'uniquePositiveCount' => $this->uniquePositiveCount,
-			'totalNegativeCount' => $this->totalNegativeCount,
-			'uniqueNegativeCount' => $this->uniqueNegativeCount,
-		];
-	}
+    public function jsonSerialize(): array
+    {
+        return [
+            'totalConsentsCount' => $this->totalConsentsCount,
+            'uniqueConsentsCount' => $this->uniqueConsentsCount,
+            'totalPositiveCount' => $this->totalPositiveCount,
+            'uniquePositiveCount' => $this->uniquePositiveCount,
+            'totalNegativeCount' => $this->totalNegativeCount,
+            'uniqueNegativeCount' => $this->uniqueNegativeCount,
+        ];
+    }
 }

@@ -8,11 +8,11 @@ use App\ReadModel\AbstractDataGridQuery;
 
 final class UsersDataGridQuery extends AbstractDataGridQuery
 {
-	/**
-	 * @return $this
-	 */
-	public static function create(): self
-	{
-		return self::fromParameters([]);
-	}
+    /**
+     * @return $this
+     */
+    public static function create(): self
+    {
+        return self::fromParameters([]);
+    }
 }

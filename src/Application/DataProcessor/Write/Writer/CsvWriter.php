@@ -4,160 +4,144 @@ declare(strict_types=1);
 
 namespace App\Application\DataProcessor\Write\Writer;
 
-use League\Csv\Writer;
-use App\Application\DataProcessor\RowInterface;
-use App\Application\DataProcessor\Helper\FlatResource;
+use App\Application\DataProcessor\Description\ListDescriptor;
 use App\Application\DataProcessor\Description\Path\Path;
 use App\Application\DataProcessor\Description\Path\PathInfo;
-use App\Application\DataProcessor\Description\ListDescriptor;
-use App\Application\DataProcessor\Write\Helper\FilePutContents;
-use App\Application\DataProcessor\Write\Resource\ResourceInterface;
+use App\Application\DataProcessor\Helper\FlatResource;
+use App\Application\DataProcessor\RowInterface;
+use App\Application\DataProcessor\Write\Destination\DestinationInterface;
 use App\Application\DataProcessor\Write\Destination\FileDestination;
 use App\Application\DataProcessor\Write\Destination\StringDestination;
-use App\Application\DataProcessor\Write\Destination\DestinationInterface;
+use App\Application\DataProcessor\Write\Helper\FilePutContents;
+use App\Application\DataProcessor\Write\Resource\ResourceInterface;
+use League\Csv\Exception;
+use League\Csv\InvalidArgument;
+use League\Csv\Writer;
 
 final class CsvWriter extends AbstractWriter
 {
-	public const OPTION_DELIMITER = 'delimiter';
-	public const OPTION_ENCLOSURE = 'enclosure';
-	public const OPTION_ESCAPE = 'escape';
-	public const INCLUDE_BOM = 'include_bom';
+    public const OPTION_DELIMITER = 'delimiter';
+    public const OPTION_ENCLOSURE = 'enclosure';
+    public const OPTION_ESCAPE = 'escape';
+    public const INCLUDE_BOM = 'include_bom';
 
-	private ?Writer $writer = NULL;
+    private ?Writer $writer = null;
 
-	private array $headers = [];
+    private array $headers = [];
 
-	private array $rows = [];
+    private array $rows = [];
 
-	private array $pathInfos = [];
+    private array $pathInfos = [];
 
-	/**
-	 * @param \App\Application\DataProcessor\Write\Resource\ResourceInterface  $resource
-	 * @param \App\Application\DataProcessor\Write\Destination\FileDestination $destination
-	 *
-	 * @return static
-	 */
-	public static function fromFile(ResourceInterface $resource, FileDestination $destination): self
-	{
-		return new self($resource, $destination);
-	}
+    /**
+     * @return static
+     */
+    public static function fromFile(ResourceInterface $resource, FileDestination $destination): self
+    {
+        return new self($resource, $destination);
+    }
 
-	/**
-	 * @param \App\Application\DataProcessor\Write\Resource\ResourceInterface    $resource
-	 * @param \App\Application\DataProcessor\Write\Destination\StringDestination $destination
-	 *
-	 * @return static
-	 */
-	public static function fromString(ResourceInterface $resource, StringDestination $destination): self
-	{
-		return new self($resource, $destination);
-	}
+    /**
+     * @return static
+     */
+    public static function fromString(ResourceInterface $resource, StringDestination $destination): self
+    {
+        return new self($resource, $destination);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @throws \League\Csv\InvalidArgument
-	 */
-	protected function prepare(): void
-	{
-		$this->writer = $writer = Writer::createFromString();
-		$this->headers = $this->rows = $this->pathInfos = [];
-		$options = $this->destination->options();
+    /**
+     * @throws InvalidArgument
+     */
+    protected function prepare(): void
+    {
+        $this->writer = $writer = Writer::createFromString();
+        $this->headers = $this->rows = $this->pathInfos = [];
+        $options = $this->destination->options();
 
-		if (isset($options[self::OPTION_DELIMITER])) {
-			$writer->setDelimiter($options[self::OPTION_DELIMITER]);
-		}
+        if (isset($options[self::OPTION_DELIMITER])) {
+            $writer->setDelimiter($options[self::OPTION_DELIMITER]);
+        }
 
-		if (isset($options[self::OPTION_ENCLOSURE])) {
-			$writer->setEnclosure($options[self::OPTION_ENCLOSURE]);
-		}
+        if (isset($options[self::OPTION_ENCLOSURE])) {
+            $writer->setEnclosure($options[self::OPTION_ENCLOSURE]);
+        }
 
-		if (isset($options[self::OPTION_ESCAPE])) {
-			$writer->setEscape($options[self::OPTION_ESCAPE]);
-		}
+        if (isset($options[self::OPTION_ESCAPE])) {
+            $writer->setEscape($options[self::OPTION_ESCAPE]);
+        }
 
-		if (isset($options[self::INCLUDE_BOM])) {
-			$writer->setOutputBOM($writer::BOM_UTF8);
-		}
-	}
+        if (isset($options[self::INCLUDE_BOM])) {
+            $writer->setOutputBOM($writer::BOM_UTF8);
+        }
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	protected function processRow(RowInterface $row, DestinationInterface $destination): DestinationInterface
-	{
-		$flatten = FlatResource::toFlattArray($row->data()->toArray());
-		$data = [];
+    protected function processRow(RowInterface $row, DestinationInterface $destination): DestinationInterface
+    {
+        $flatten = FlatResource::toFlattArray($row->data()->toArray());
+        $data = [];
 
-		foreach ($flatten as $k => $v) {
-			if (is_array($v)) {
-				$v = implode(',', $v);
-			} elseif (is_bool($v)) {
-				$v = $v ? '1' : '0';
-			}
+        foreach ($flatten as $k => $v) {
+            if (is_array($v)) {
+                $v = implode(',', $v);
+            } elseif (is_bool($v)) {
+                $v = $v ? '1' : '0';
+            }
 
-			$pathInfo = $this->getPathInfo($k);
+            $pathInfo = $this->getPathInfo($k);
 
-			if (NULL === $pathInfo) {
-				$this->headers[] = $k;
-				$data[$k] = $v;
+            if (null === $pathInfo) {
+                $this->headers[] = $k;
+                $data[$k] = $v;
 
-				continue;
-			}
+                continue;
+            }
 
-			if (!$pathInfo->found) {
-				continue;
-			}
+            if (!$pathInfo->found) {
+                continue;
+            }
 
-			if ($pathInfo->isFinal || $pathInfo->descriptor instanceof ListDescriptor) {
-				$this->headers[] = $k;
-				$data[$k] = $v;
-			}
-		}
+            if ($pathInfo->isFinal || $pathInfo->descriptor instanceof ListDescriptor) {
+                $this->headers[] = $k;
+                $data[$k] = $v;
+            }
+        }
 
-		$this->rows[] = $data;
+        $this->rows[] = $data;
 
-		return $destination;
-	}
+        return $destination;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @throws \League\Csv\Exception
-	 */
-	protected function finish(DestinationInterface $destination): DestinationInterface
-	{
-		$headers = array_unique($this->headers);
-		$defaults = array_fill_keys($headers, '');
+    /**
+     * @throws Exception
+     */
+    protected function finish(DestinationInterface $destination): DestinationInterface
+    {
+        $headers = array_unique($this->headers);
+        $defaults = array_fill_keys($headers, '');
 
-		$this->writer->insertOne($headers);
+        $this->writer->insertOne($headers);
 
-		foreach ($this->rows as $row) {
-			$this->writer->insertOne(array_merge($defaults, $row));
-		}
+        foreach ($this->rows as $row) {
+            $this->writer->insertOne(array_merge($defaults, $row));
+        }
 
-		$content = $this->writer->toString();
-		$this->writer = NULL;
-		$this->headers = $this->rows = $this->pathInfos = [];
+        $content = $this->writer->toString();
+        $this->writer = null;
+        $this->headers = $this->rows = $this->pathInfos = [];
 
-		if ($destination instanceof StringDestination) {
-			return $destination->append($content);
-		}
+        if ($destination instanceof StringDestination) {
+            return $destination->append($content);
+        }
 
-		assert($destination instanceof FileDestination);
+        assert($destination instanceof FileDestination);
 
-		FilePutContents::put($destination, $content);
+        FilePutContents::put($destination, $content);
 
-		return $destination;
-	}
+        return $destination;
+    }
 
-	/**
-	 * @param string $path
-	 *
-	 * @return \App\Application\DataProcessor\Description\Path\PathInfo|NULL
-	 */
-	private function getPathInfo(string $path): ?PathInfo
-	{
-		return $this->pathInfos[$path] ?? ($this->pathInfos[$path] = NULL !== $this->resource->descriptor() ? $this->resource->descriptor()->pathInfo(Path::fromString($path)) : NULL);
-	}
+    private function getPathInfo(string $path): ?PathInfo
+    {
+        return $this->pathInfos[$path] ?? ($this->pathInfos[$path] = null !== $this->resource->descriptor() ? $this->resource->descriptor()->pathInfo(Path::fromString($path)) : null);
+    }
 }

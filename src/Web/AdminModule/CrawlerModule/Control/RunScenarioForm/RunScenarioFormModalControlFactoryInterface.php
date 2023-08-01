@@ -6,5 +6,5 @@ namespace App\Web\AdminModule\CrawlerModule\Control\RunScenarioForm;
 
 interface RunScenarioFormModalControlFactoryInterface
 {
-	public function create(): RunScenarioFormModalControl;
+    public function create(): RunScenarioFormModalControl;
 }

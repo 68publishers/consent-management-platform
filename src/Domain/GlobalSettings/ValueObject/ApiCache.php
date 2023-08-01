@@ -6,102 +6,79 @@ namespace App\Domain\GlobalSettings\ValueObject;
 
 final class ApiCache
 {
-	private array $cacheControlDirectives = [];
+    private array $cacheControlDirectives = [];
 
-	private bool $useEntityTag = FALSE;
+    private bool $useEntityTag = false;
 
-	private function __construct()
-	{
-	}
+    private function __construct() {}
 
-	/**
-	 * @param array $cacheControlDirectives
-	 * @param bool  $useEntityTag
-	 *
-	 * @return static
-	 */
-	public static function create(array $cacheControlDirectives = [], bool $useEntityTag = FALSE): self
-	{
-		$apiCache = new self();
-		$apiCache->cacheControlDirectives = $cacheControlDirectives;
-		$apiCache->useEntityTag = $useEntityTag;
+    /**
+     * @return static
+     */
+    public static function create(array $cacheControlDirectives = [], bool $useEntityTag = false): self
+    {
+        $apiCache = new self();
+        $apiCache->cacheControlDirectives = $cacheControlDirectives;
+        $apiCache->useEntityTag = $useEntityTag;
 
-		return $apiCache;
-	}
+        return $apiCache;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function cacheControlDirectives(): array
-	{
-		return $this->cacheControlDirectives;
-	}
+    public function cacheControlDirectives(): array
+    {
+        return $this->cacheControlDirectives;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function cacheControlHeader(): ?string
-	{
-		return empty($this->cacheControlDirectives) ? NULL : implode(', ', $this->cacheControlDirectives);
-	}
+    public function cacheControlHeader(): ?string
+    {
+        return empty($this->cacheControlDirectives) ? null : implode(', ', $this->cacheControlDirectives);
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function useEntityTag(): bool
-	{
-		return $this->useEntityTag;
-	}
+    public function useEntityTag(): bool
+    {
+        return $this->useEntityTag;
+    }
 
-	/**
-	 * @param bool $useEntityTag
-	 *
-	 * @return $this
-	 */
-	public function withUseEntityTag(bool $useEntityTag = TRUE): self
-	{
-		$apiCache = clone $this;
-		$apiCache->useEntityTag = $useEntityTag;
+    /**
+     * @return $this
+     */
+    public function withUseEntityTag(bool $useEntityTag = true): self
+    {
+        $apiCache = clone $this;
+        $apiCache->useEntityTag = $useEntityTag;
 
-		return $apiCache;
-	}
+        return $apiCache;
+    }
 
-	/**
-	 * @param string ...$directives
-	 *
-	 * @return $this
-	 */
-	public function withCacheControlDirectives(string ...$directives): self
-	{
-		$apiCache = clone $this;
-		$apiCache->cacheControlDirectives = array_unique(array_merge($this->cacheControlDirectives, $directives));
+    /**
+     * @return $this
+     */
+    public function withCacheControlDirectives(string ...$directives): self
+    {
+        $apiCache = clone $this;
+        $apiCache->cacheControlDirectives = array_unique(array_merge($this->cacheControlDirectives, $directives));
 
-		return $apiCache;
-	}
+        return $apiCache;
+    }
 
-	/**
-	 * @param \App\Domain\GlobalSettings\ValueObject\ApiCache $apiCache
-	 *
-	 * @return bool
-	 */
-	public function equals(self $apiCache): bool
-	{
-		if ($this->useEntityTag() !== $apiCache->useEntityTag()) {
-			return FALSE;
-		}
+    public function equals(self $apiCache): bool
+    {
+        if ($this->useEntityTag() !== $apiCache->useEntityTag()) {
+            return false;
+        }
 
-		if (count($this->cacheControlDirectives()) !== count($apiCache->cacheControlDirectives())) {
-			return FALSE;
-		}
+        if (count($this->cacheControlDirectives()) !== count($apiCache->cacheControlDirectives())) {
+            return false;
+        }
 
-		$directives = $apiCache->cacheControlDirectives();
+        $directives = $apiCache->cacheControlDirectives();
 
-		foreach ($this->cacheControlDirectives() as $directive) {
-			if (!in_array($directive, $directives, TRUE)) {
-				return FALSE;
-			}
-		}
+        foreach ($this->cacheControlDirectives() as $directive) {
+            if (!in_array($directive, $directives, true)) {
+                return false;
+            }
+        }
 
-		return TRUE;
-	}
+        return true;
+    }
 }

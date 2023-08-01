@@ -4,135 +4,121 @@ declare(strict_types=1);
 
 namespace App\Application\Mail\CommandHandler;
 
-use Throwable;
-use Psr\Log\LoggerInterface;
 use App\Application\Mail\Address;
-use Contributte\Mailing\IMailBuilderFactory;
 use App\Application\Mail\Command\SendMailCommand;
+use Contributte\Mailing\IMailBuilderFactory;
+use Psr\Log\LoggerInterface;
 use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
-use SixtyEightPublishers\TranslationBridge\PrefixedTranslatorFactoryInterface;
 use SixtyEightPublishers\TranslationBridge\Localization\TranslatorLocalizerInterface;
+use SixtyEightPublishers\TranslationBridge\PrefixedTranslatorFactoryInterface;
+use Throwable;
 
 final class SendMailCommandHandler implements CommandHandlerInterface
 {
-	private string $projectUrl;
+    private string $projectUrl;
 
-	private string $templatesDirectory;
+    private string $templatesDirectory;
 
-	private Address $fromAddress;
+    private Address $fromAddress;
 
-	private IMailBuilderFactory $mailBuilderFactory;
+    private IMailBuilderFactory $mailBuilderFactory;
 
-	private LoggerInterface $logger;
+    private LoggerInterface $logger;
 
-	private PrefixedTranslatorFactoryInterface $prefixedTranslatorFactory;
+    private PrefixedTranslatorFactoryInterface $prefixedTranslatorFactory;
 
-	private TranslatorLocalizerInterface $translatorLocalizer;
+    private TranslatorLocalizerInterface $translatorLocalizer;
 
-	/**
-	 * @param string                                                                            $projectUrl
-	 * @param string                                                                            $templatesDirectory
-	 * @param \App\Application\Mail\Address                                                     $fromAddress
-	 * @param \Contributte\Mailing\IMailBuilderFactory                                          $mailBuilderFactory
-	 * @param \Psr\Log\LoggerInterface                                                          $logger
-	 * @param \SixtyEightPublishers\TranslationBridge\PrefixedTranslatorFactoryInterface        $prefixedTranslatorFactory
-	 * @param \SixtyEightPublishers\TranslationBridge\Localization\TranslatorLocalizerInterface $translatorLocalizer
-	 */
-	public function __construct(string $projectUrl, string $templatesDirectory, Address $fromAddress, IMailBuilderFactory $mailBuilderFactory, LoggerInterface $logger, PrefixedTranslatorFactoryInterface $prefixedTranslatorFactory, TranslatorLocalizerInterface $translatorLocalizer)
-	{
-		$this->projectUrl = $projectUrl;
-		$this->templatesDirectory = rtrim($templatesDirectory, DIRECTORY_SEPARATOR);
-		$this->fromAddress = $fromAddress;
-		$this->mailBuilderFactory = $mailBuilderFactory;
-		$this->logger = $logger;
-		$this->prefixedTranslatorFactory = $prefixedTranslatorFactory;
-		$this->translatorLocalizer = $translatorLocalizer;
-	}
+    public function __construct(string $projectUrl, string $templatesDirectory, Address $fromAddress, IMailBuilderFactory $mailBuilderFactory, LoggerInterface $logger, PrefixedTranslatorFactoryInterface $prefixedTranslatorFactory, TranslatorLocalizerInterface $translatorLocalizer)
+    {
+        $this->projectUrl = $projectUrl;
+        $this->templatesDirectory = rtrim($templatesDirectory, DIRECTORY_SEPARATOR);
+        $this->fromAddress = $fromAddress;
+        $this->mailBuilderFactory = $mailBuilderFactory;
+        $this->logger = $logger;
+        $this->prefixedTranslatorFactory = $prefixedTranslatorFactory;
+        $this->translatorLocalizer = $translatorLocalizer;
+    }
 
-	/**
-	 * @param \App\Application\Mail\Command\SendMailCommand $command
-	 *
-	 * @return void
-	 */
-	public function __invoke(SendMailCommand $command): void
-	{
-		$mailBuilder = $this->mailBuilderFactory->create();
-		$message = $command->message();
-		$from = $message->from() ?? $this->fromAddress;
+    public function __invoke(SendMailCommand $command): void
+    {
+        $mailBuilder = $this->mailBuilderFactory->create();
+        $message = $command->message();
+        $from = $message->from() ?? $this->fromAddress;
 
-		$mailBuilder->setFrom($from->from(), $from->name());
+        $mailBuilder->setFrom($from->from(), $from->name());
 
-		foreach ($message->to() as $address) {
-			$mailBuilder->addTo($address->from(), $address->name());
-		}
+        foreach ($message->to() as $address) {
+            $mailBuilder->addTo($address->from(), $address->name());
+        }
 
-		foreach ($message->bcc() as $address) {
-			$mailBuilder->addBcc($address->from(), $address->name());
-		}
+        foreach ($message->bcc() as $address) {
+            $mailBuilder->addBcc($address->from(), $address->name());
+        }
 
-		foreach ($message->cc() as $address) {
-			$mailBuilder->addCc($address->from(), $address->name());
-		}
+        foreach ($message->cc() as $address) {
+            $mailBuilder->addCc($address->from(), $address->name());
+        }
 
-		foreach ($message->replyTo() as $address) {
-			$mailBuilder->addReplyTo($address->from(), $address->name());
-		}
+        foreach ($message->replyTo() as $address) {
+            $mailBuilder->addReplyTo($address->from(), $address->name());
+        }
 
-		foreach ($message->attachments() as $attachment) {
-			$mailBuilder->getMessage()->addAttachment($attachment->file(), $attachment->content(), $attachment->contentType());
-		}
+        foreach ($message->attachments() as $attachment) {
+            $mailBuilder->getMessage()->addAttachment($attachment->file(), $attachment->content(), $attachment->contentType());
+        }
 
-		$templateFile = $message->templateFile();
-		$mailName = NULL;
+        $templateFile = $message->templateFile();
+        $mailName = null;
 
-		if (0 === strncmp($templateFile, '~', 1)) {
-			$templateFile = sprintf(
-				'%s/%s',
-				$this->templatesDirectory,
-				mb_substr($templateFile, 1)
-			);
-		} elseif (0 === strncmp($templateFile, 'default:', 8)) {
-			$mailName = mb_substr($templateFile, 8);
-			$templateFile = sprintf(
-				'%s/default.latte',
-				$this->templatesDirectory
-			);
-		}
+        if (0 === strncmp($templateFile, '~', 1)) {
+            $templateFile = sprintf(
+                '%s/%s',
+                $this->templatesDirectory,
+                mb_substr($templateFile, 1),
+            );
+        } elseif (0 === strncmp($templateFile, 'default:', 8)) {
+            $mailName = mb_substr($templateFile, 8);
+            $templateFile = sprintf(
+                '%s/default.latte',
+                $this->templatesDirectory,
+            );
+        }
 
-		if (NULL === $mailName) {
-			$mailName = pathinfo($templateFile, PATHINFO_FILENAME);
-		}
+        if (null === $mailName) {
+            $mailName = pathinfo($templateFile, PATHINFO_FILENAME);
+        }
 
-		$arguments = array_merge(
-			['_projectUrl' => $this->projectUrl],
-			$message->arguments()
-		);
-		$arguments = array_merge(
-			$arguments,
-			['_translatorArgs' => $arguments, '_mailName' => $mailName],
-		);
+        $arguments = array_merge(
+            ['_projectUrl' => $this->projectUrl],
+            $message->arguments(),
+        );
+        $arguments = array_merge(
+            $arguments,
+            ['_translatorArgs' => $arguments, '_mailName' => $mailName],
+        );
 
-		if (NULL !== $message->locale()) {
-			$originalLocale = $this->translatorLocalizer->getLocale();
-			$this->translatorLocalizer->setLocale($message->locale());
-		}
+        if (null !== $message->locale()) {
+            $originalLocale = $this->translatorLocalizer->getLocale();
+            $this->translatorLocalizer->setLocale($message->locale());
+        }
 
-		$translator = $this->prefixedTranslatorFactory->create('mail.' . $mailName);
+        $translator = $this->prefixedTranslatorFactory->create('mail.' . $mailName);
 
-		$mailBuilder->setTemplateFile($templateFile);
-		$mailBuilder->getTemplate()->setTranslator($translator);
-		$mailBuilder->setParameters($arguments);
+        $mailBuilder->setTemplateFile($templateFile);
+        $mailBuilder->getTemplate()->setTranslator($translator);
+        $mailBuilder->setParameters($arguments);
 
-		$mailBuilder->setSubject($message->subject() ?? $translator->translate('subject', $arguments['_translatorArgs']));
+        $mailBuilder->setSubject($message->subject() ?? $translator->translate('subject', $arguments['_translatorArgs']));
 
-		try {
-			$mailBuilder->send();
-		} catch (Throwable $e) {
-			$this->logger->error((string) $e);
-		}
+        try {
+            $mailBuilder->send();
+        } catch (Throwable $e) {
+            $this->logger->error((string) $e);
+        }
 
-		if (isset($originalLocale)) {
-			$this->translatorLocalizer->setLocale($originalLocale);
-		}
-	}
+        if (isset($originalLocale)) {
+            $this->translatorLocalizer->setLocale($originalLocale);
+        }
+    }
 }

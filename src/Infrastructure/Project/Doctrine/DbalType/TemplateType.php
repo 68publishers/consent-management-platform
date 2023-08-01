@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class TemplateType extends AbstractTextValueObjectType
 {
-	protected string $valueObjectClassname = Template::class;
+    protected string $valueObjectClassname = Template::class;
 }

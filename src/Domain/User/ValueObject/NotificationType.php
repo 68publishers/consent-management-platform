@@ -8,16 +8,16 @@ use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AbstractEnumValue
 
 final class NotificationType extends AbstractEnumValueObject
 {
-	public const CONSENT_DECREASED = 'consent_decreased';
-	public const WEEKLY_OVERVIEW = 'weekly_overview';
-	public const COOKIE_SUGGESTIONS = 'cookie_suggestions';
+    public const CONSENT_DECREASED = 'consent_decreased';
+    public const WEEKLY_OVERVIEW = 'weekly_overview';
+    public const COOKIE_SUGGESTIONS = 'cookie_suggestions';
 
-	public static function values(): array
-	{
-		return [
-			self::CONSENT_DECREASED,
-			self::WEEKLY_OVERVIEW,
-			self::COOKIE_SUGGESTIONS,
-		];
-	}
+    public static function values(): array
+    {
+        return [
+            self::CONSENT_DECREASED,
+            self::WEEKLY_OVERVIEW,
+            self::COOKIE_SUGGESTIONS,
+        ];
+    }
 }

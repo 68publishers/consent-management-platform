@@ -8,10 +8,5 @@ use App\Web\AdminModule\Control\ExportForm\Callback\ExportCallbackInterface;
 
 interface ExportDropdownControlFactoryInterface
 {
-	/**
-	 * @param \App\Web\AdminModule\Control\ExportForm\Callback\ExportCallbackInterface $exportCallback
-	 *
-	 * @return \App\Web\AdminModule\Control\ExportForm\ExportDropdownControl
-	 */
-	public function create(ExportCallbackInterface $exportCallback): ExportDropdownControl;
+    public function create(ExportCallbackInterface $exportCallback): ExportDropdownControl;
 }

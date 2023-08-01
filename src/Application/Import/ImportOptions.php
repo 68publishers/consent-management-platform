@@ -4,128 +4,101 @@ declare(strict_types=1);
 
 namespace App\Application\Import;
 
-use Psr\Log\NullLogger;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 final class ImportOptions
 {
-	private string $describedObjectClassname;
+    private string $describedObjectClassname;
 
-	private ?string $authorId = NULL;
+    private ?string $authorId = null;
 
-	private ?LoggerInterface $logger = NULL;
+    private ?LoggerInterface $logger = null;
 
-	private bool $async = FALSE;
+    private bool $async = false;
 
-	private int $batchSize = 10;
+    private int $batchSize = 10;
 
-	private function __construct()
-	{
-	}
+    private function __construct() {}
 
-	/**
-	 * @param string $describedObjectClassname
-	 *
-	 * @return static
-	 */
-	public static function create(string $describedObjectClassname): self
-	{
-		$options = new self();
-		$options->describedObjectClassname = $describedObjectClassname;
-		$options->authorId = NULL;
+    /**
+     * @return static
+     */
+    public static function create(string $describedObjectClassname): self
+    {
+        $options = new self();
+        $options->describedObjectClassname = $describedObjectClassname;
+        $options->authorId = null;
 
-		return $options;
-	}
+        return $options;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function describedObjectClassname(): string
-	{
-		return $this->describedObjectClassname;
-	}
+    public function describedObjectClassname(): string
+    {
+        return $this->describedObjectClassname;
+    }
 
-	/**
-	 * @return string|NULL
-	 */
-	public function authorId(): ?string
-	{
-		return $this->authorId;
-	}
+    public function authorId(): ?string
+    {
+        return $this->authorId;
+    }
 
-	/**
-	 * @return \Psr\Log\LoggerInterface
-	 */
-	public function logger(): LoggerInterface
-	{
-		return $this->logger ?? new NullLogger();
-	}
+    public function logger(): LoggerInterface
+    {
+        return $this->logger ?? new NullLogger();
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function async(): bool
-	{
-		return $this->async;
-	}
+    public function async(): bool
+    {
+        return $this->async;
+    }
 
-	/**
-	 * @return int
-	 */
-	public function batchSize(): int
-	{
-		return $this->batchSize;
-	}
+    public function batchSize(): int
+    {
+        return $this->batchSize;
+    }
 
-	/**
-	 * @param string|NULL $authorId
-	 *
-	 * @return $this
-	 */
-	public function withAuthorId(?string $authorId): self
-	{
-		$options = clone $this;
-		$options->authorId = $authorId;
+    /**
+     * @return $this
+     */
+    public function withAuthorId(?string $authorId): self
+    {
+        $options = clone $this;
+        $options->authorId = $authorId;
 
-		return $options;
-	}
+        return $options;
+    }
 
-	/**
-	 * @param \Psr\Log\LoggerInterface|NULL $logger
-	 *
-	 * @return $this
-	 */
-	public function withLogger(?LoggerInterface $logger): self
-	{
-		$options = clone $this;
-		$options->logger = $logger;
+    /**
+     * @return $this
+     */
+    public function withLogger(?LoggerInterface $logger): self
+    {
+        $options = clone $this;
+        $options->logger = $logger;
 
-		return $options;
-	}
+        return $options;
+    }
 
-	/**
-	 * @param bool $async
-	 *
-	 * @return $this
-	 */
-	public function withAsync(bool $async): self
-	{
-		$options = clone $this;
-		$options->async = $async;
+    /**
+     * @return $this
+     */
+    public function withAsync(bool $async): self
+    {
+        $options = clone $this;
+        $options->async = $async;
 
-		return $options;
-	}
+        return $options;
+    }
 
-	/**
-	 * @param int $batchSize
-	 *
-	 * @return $this
-	 */
-	public function withBatchSize(int $batchSize): self
-	{
-		$options = clone $this;
-		$options->batchSize = $batchSize;
+    /**
+     * @return $this
+     */
+    public function withBatchSize(int $batchSize): self
+    {
+        $options = clone $this;
+        $options->batchSize = $batchSize;
 
-		return $options;
-	}
+        return $options;
+    }
 }

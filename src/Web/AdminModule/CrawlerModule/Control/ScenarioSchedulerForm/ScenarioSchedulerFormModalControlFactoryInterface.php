@@ -6,5 +6,5 @@ namespace App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerForm;
 
 interface ScenarioSchedulerFormModalControlFactoryInterface
 {
-	public function create(?string $scenarioSchedulerId = NULL): ScenarioSchedulerFormModalControl;
+    public function create(?string $scenarioSchedulerId = null): ScenarioSchedulerFormModalControl;
 }

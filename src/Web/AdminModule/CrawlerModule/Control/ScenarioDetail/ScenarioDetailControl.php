@@ -9,24 +9,24 @@ use SixtyEightPublishers\CrawlerClient\Controller\Scenario\ResponseBody\Scenario
 
 final class ScenarioDetailControl extends Control
 {
-	private ScenarioResponseBody $scenarioResponseBody;
+    private ScenarioResponseBody $scenarioResponseBody;
 
-	private string $serializedScenarioConfig;
+    private string $serializedScenarioConfig;
 
-	public function __construct(ScenarioResponseBody $scenarioResponseBody, string $serializedScenarioConfig)
-	{
-		$this->scenarioResponseBody = $scenarioResponseBody;
-		$this->serializedScenarioConfig = $serializedScenarioConfig;
-	}
+    public function __construct(ScenarioResponseBody $scenarioResponseBody, string $serializedScenarioConfig)
+    {
+        $this->scenarioResponseBody = $scenarioResponseBody;
+        $this->serializedScenarioConfig = $serializedScenarioConfig;
+    }
 
-	protected function beforeRender(): void
-	{
-		parent::beforeRender();
+    protected function beforeRender(): void
+    {
+        parent::beforeRender();
 
-		$template = $this->getTemplate();
-		assert($template instanceof ScenarioDetailTemplate);
+        $template = $this->getTemplate();
+        assert($template instanceof ScenarioDetailTemplate);
 
-		$template->scenarioResponseBody = $this->scenarioResponseBody;
-		$template->serializedScenarioConfig = $this->serializedScenarioConfig;
-	}
+        $template->scenarioResponseBody = $this->scenarioResponseBody;
+        $template->serializedScenarioConfig = $this->serializedScenarioConfig;
+    }
 }

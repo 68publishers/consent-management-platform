@@ -6,47 +6,31 @@ namespace App\Web\Ui\DataGrid\Filter;
 
 trait ConvertibleTimezoneDateFilterTrait
 {
-	private string $timezoneFrom = 'UTC';
+    private string $timezoneFrom = 'UTC';
 
-	private string $timezoneTo = 'UTC';
+    private string $timezoneTo = 'UTC';
 
-	/**
-	 * @param string $timezone
-	 *
-	 * @return self
-	 */
-	public function setTimezoneFrom(string $timezone): self
-	{
-		$this->timezoneFrom = $timezone;
+    public function setTimezoneFrom(string $timezone): self
+    {
+        $this->timezoneFrom = $timezone;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @param string $timezone
-	 *
-	 * @return self
-	 */
-	public function setTimezoneTo(string $timezone): self
-	{
-		$this->timezoneTo = $timezone;
+    public function setTimezoneTo(string $timezone): self
+    {
+        $this->timezoneTo = $timezone;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getTimezoneFrom(): string
-	{
-		return $this->timezoneFrom;
-	}
+    public function getTimezoneFrom(): string
+    {
+        return $this->timezoneFrom;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getTimezoneTo(): string
-	{
-		return $this->timezoneTo;
-	}
+    public function getTimezoneTo(): string
+    {
+        return $this->timezoneTo;
+    }
 }

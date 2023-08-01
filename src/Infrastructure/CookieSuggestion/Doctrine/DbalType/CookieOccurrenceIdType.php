@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class CookieOccurrenceIdType extends AbstractUuidIdentityType
 {
-	protected string $valueObjectClassname = CookieOccurrenceId::class;
+    protected string $valueObjectClassname = CookieOccurrenceId::class;
 }

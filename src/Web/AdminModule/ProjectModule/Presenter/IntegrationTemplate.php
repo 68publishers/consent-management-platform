@@ -6,5 +6,5 @@ namespace App\Web\AdminModule\ProjectModule\Presenter;
 
 final class IntegrationTemplate extends SelectedProjectTemplate
 {
-	public string $appHost;
+    public string $appHost;
 }

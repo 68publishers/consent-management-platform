@@ -6,8 +6,5 @@ namespace App\Web\AdminModule\ApplicationModule\Control\ApiCacheSettingsForm;
 
 interface ApiCacheSettingsFormControlFactoryInterface
 {
-	/**
-	 * @return \App\Web\AdminModule\ApplicationModule\Control\ApiCacheSettingsForm\ApiCacheSettingsFormControl
-	 */
-	public function create(): ApiCacheSettingsFormControl;
+    public function create(): ApiCacheSettingsFormControl;
 }

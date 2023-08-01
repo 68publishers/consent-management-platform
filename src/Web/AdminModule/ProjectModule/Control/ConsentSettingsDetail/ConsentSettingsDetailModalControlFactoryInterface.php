@@ -8,10 +8,5 @@ use App\ReadModel\ConsentSettings\ConsentSettingsView;
 
 interface ConsentSettingsDetailModalControlFactoryInterface
 {
-	/**
-	 * @param \App\ReadModel\ConsentSettings\ConsentSettingsView $consentSettingsView
-	 *
-	 * @return \App\Web\AdminModule\ProjectModule\Control\ConsentSettingsDetail\ConsentSettingsDetailModalControl
-	 */
-	public function create(ConsentSettingsView $consentSettingsView): ConsentSettingsDetailModalControl;
+    public function create(ConsentSettingsView $consentSettingsView): ConsentSettingsDetailModalControl;
 }

@@ -11,33 +11,29 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
  */
 final class FindProjectsAccessibilityByCodeQuery extends AbstractQuery
 {
-	/**
-	 * @param string   $userId
-	 * @param string[] $projectCodes
-	 *
-	 * @return static
-	 */
-	public static function create(string $userId, array $projectCodes): self
-	{
-		return self::fromParameters([
-			'user_id' => $userId,
-			'project_codes' => $projectCodes,
-		]);
-	}
+    /**
+     * @param string[] $projectCodes
+     *
+     * @return static
+     */
+    public static function create(string $userId, array $projectCodes): self
+    {
+        return self::fromParameters([
+            'user_id' => $userId,
+            'project_codes' => $projectCodes,
+        ]);
+    }
 
-	/**
-	 * @return string
-	 */
-	public function userId(): string
-	{
-		return $this->getParam('user_id');
-	}
+    public function userId(): string
+    {
+        return $this->getParam('user_id');
+    }
 
-	/**
-	 * @return string[]
-	 */
-	public function projectCodes(): array
-	{
-		return $this->getParam('project_codes');
-	}
+    /**
+     * @return string[]
+     */
+    public function projectCodes(): array
+    {
+        return $this->getParam('project_codes');
+    }
 }

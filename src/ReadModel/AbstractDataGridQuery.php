@@ -8,73 +8,49 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractPaginatedQue
 
 abstract class AbstractDataGridQuery extends AbstractPaginatedQuery implements DataGridQueryInterface
 {
-	/**
-	 * {@inheritDoc}
-	 */
-	public function filters(): array
-	{
-		return $this->getParam('filters') ?? [];
-	}
+    public function filters(): array
+    {
+        return $this->getParam('filters') ?? [];
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function sorting(): array
-	{
-		return $this->getParam('sorting') ?? [];
-	}
+    public function sorting(): array
+    {
+        return $this->getParam('sorting') ?? [];
+    }
 
-	/**
-	 * @return string
-	 */
-	public function mode(): string
-	{
-		return $this->getParam('mode') ?? self::MODE_DATA;
-	}
+    public function mode(): string
+    {
+        return $this->getParam('mode') ?? self::MODE_DATA;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function withFilter(string $name, $value): self
-	{
-		$filters = $this->getParam('filters') ?? [];
-		$filters[$name] = $value;
+    public function withFilter(string $name, $value): self
+    {
+        $filters = $this->getParam('filters') ?? [];
+        $filters[$name] = $value;
 
-		return $this->withParam('filters', $filters);
-	}
+        return $this->withParam('filters', $filters);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function withSorting(string $name, string $direction): self
-	{
-		$sorting = $this->getParam('sorting') ?? [];
-		$sorting[$name] = $direction;
+    public function withSorting(string $name, string $direction): self
+    {
+        $sorting = $this->getParam('sorting') ?? [];
+        $sorting[$name] = $direction;
 
-		return $this->withParam('sorting', $sorting);
-	}
+        return $this->withParam('sorting', $sorting);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function withDataMode(): self
-	{
-		return $this->withParam('mode', self::MODE_DATA);
-	}
+    public function withDataMode(): self
+    {
+        return $this->withParam('mode', self::MODE_DATA);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function withOneMode(): self
-	{
-		return $this->withParam('mode', self::MODE_ONE);
-	}
+    public function withOneMode(): self
+    {
+        return $this->withParam('mode', self::MODE_ONE);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function withCountMode(): self
-	{
-		return $this->withParam('mode', self::MODE_COUNT);
-	}
+    public function withCountMode(): self
+    {
+        return $this->withParam('mode', self::MODE_COUNT);
+    }
 }

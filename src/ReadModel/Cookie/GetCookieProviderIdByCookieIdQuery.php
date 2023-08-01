@@ -11,18 +11,15 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
  */
 final class GetCookieProviderIdByCookieIdQuery extends AbstractQuery
 {
-	public static function create(string $cookieId): self
-	{
-		return self::fromParameters([
-			'cookie_id' => $cookieId,
-		]);
-	}
+    public static function create(string $cookieId): self
+    {
+        return self::fromParameters([
+            'cookie_id' => $cookieId,
+        ]);
+    }
 
-	/**
-	 * @return string
-	 */
-	public function cookieId(): string
-	{
-		return $this->getParam('cookie_id');
-	}
+    public function cookieId(): string
+    {
+        return $this->getParam('cookie_id');
+    }
 }

@@ -9,5 +9,5 @@ use SixtyEightPublishers\CrawlerClient\Exception\ControllerResponseExceptionInte
 
 final class ScenarioSchedulerFormTemplate extends Template
 {
-	public ?ControllerResponseExceptionInterface $responseException = NULL;
+    public ?ControllerResponseExceptionInterface $responseException = null;
 }

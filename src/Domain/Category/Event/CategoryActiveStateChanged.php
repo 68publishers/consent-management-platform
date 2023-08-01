@@ -9,50 +9,38 @@ use SixtyEightPublishers\ArchitectureBundle\Domain\Event\AbstractDomainEvent;
 
 final class CategoryActiveStateChanged extends AbstractDomainEvent
 {
-	private CategoryId $categoryId;
+    private CategoryId $categoryId;
 
-	private bool $active;
+    private bool $active;
 
-	/**
-	 * @param \App\Domain\Category\ValueObject\CategoryId $categoryId
-	 * @param bool                                        $active
-	 *
-	 * @return static
-	 */
-	public static function create(CategoryId $categoryId, bool $active): self
-	{
-		$event = self::occur($categoryId->toString(), [
-			'active' => $active,
-		]);
+    /**
+     * @return static
+     */
+    public static function create(CategoryId $categoryId, bool $active): self
+    {
+        $event = self::occur($categoryId->toString(), [
+            'active' => $active,
+        ]);
 
-		$event->categoryId = $categoryId;
-		$event->active = $active;
+        $event->categoryId = $categoryId;
+        $event->active = $active;
 
-		return $event;
-	}
+        return $event;
+    }
 
-	/**
-	 * @return \App\Domain\Category\ValueObject\CategoryId
-	 */
-	public function categoryId(): CategoryId
-	{
-		return $this->categoryId;
-	}
+    public function categoryId(): CategoryId
+    {
+        return $this->categoryId;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function active(): bool
-	{
-		return $this->active;
-	}
+    public function active(): bool
+    {
+        return $this->active;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	protected function reconstituteState(array $parameters): void
-	{
-		$this->categoryId = CategoryId::fromUuid($this->aggregateId()->id());
-		$this->active = (bool) $parameters['active'];
-	}
+    protected function reconstituteState(array $parameters): void
+    {
+        $this->categoryId = CategoryId::fromUuid($this->aggregateId()->id());
+        $this->active = (bool) $parameters['active'];
+    }
 }

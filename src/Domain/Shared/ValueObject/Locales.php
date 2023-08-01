@@ -8,27 +8,23 @@ use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AbstractValueObje
 
 final class Locales extends AbstractValueObjectSet
 {
-	public const ITEM_CLASSNAME = Locale::class;
+    public const ITEM_CLASSNAME = Locale::class;
 
-	/**
-	 * @param string $value
-	 *
-	 * @return \App\Domain\Shared\ValueObject\Locale
-	 */
-	protected static function reconstituteItem($value): Locale
-	{
-		return Locale::fromValue($value);
-	}
+    /**
+     * @param string $value
+     */
+    protected static function reconstituteItem($value): Locale
+    {
+        return Locale::fromValue($value);
+    }
 
-	/**
-	 * @param \App\Domain\Shared\ValueObject\Locale $item
-	 *
-	 * @return string
-	 */
-	protected static function exportItem($item): string
-	{
-		assert($item instanceof Locale);
+    /**
+     * @param Locale $item
+     */
+    protected static function exportItem($item): string
+    {
+        assert($item instanceof Locale);
 
-		return $item->value();
-	}
+        return $item->value();
+    }
 }

@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class ChecksumType extends AbstractStringValueObjectType
 {
-	protected string $valueObjectClassname = Checksum::class;
+    protected string $valueObjectClassname = Checksum::class;
 }

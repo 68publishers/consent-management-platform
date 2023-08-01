@@ -4,146 +4,129 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\ApplicationModule\Control\LocalizationSettingsForm;
 
-use Throwable;
-use App\Web\Ui\Control;
-use Nette\Application\UI\Form;
-use NasExt\Forms\DependentData;
-use App\Application\Localization\Locales;
-use App\Web\Ui\Form\FormFactoryInterface;
-use App\Application\GlobalSettings\Locale;
-use App\Web\Ui\Form\FormFactoryOptionsTrait;
-use NasExt\Forms\Controls\DependentSelectBox;
 use App\Application\GlobalSettings\GlobalSettingsInterface;
-use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
+use App\Application\GlobalSettings\Locale;
+use App\Application\Localization\Locales;
 use App\Domain\GlobalSettings\Command\PutLocalizationSettingsCommand;
 use App\Web\AdminModule\ApplicationModule\Control\LocalizationSettingsForm\Event\LocalizationSettingsUpdatedEvent;
 use App\Web\AdminModule\ApplicationModule\Control\LocalizationSettingsForm\Event\LocalizationSettingsUpdateFailedEvent;
+use App\Web\Ui\Control;
+use App\Web\Ui\Form\FormFactoryInterface;
+use App\Web\Ui\Form\FormFactoryOptionsTrait;
+use NasExt\Forms\Controls\DependentSelectBox;
+use NasExt\Forms\DependentData;
+use Nette\Application\UI\Form;
+use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
+use Throwable;
 
 final class LocalizationSettingsFormControl extends Control
 {
-	use FormFactoryOptionsTrait;
+    use FormFactoryOptionsTrait;
 
-	private FormFactoryInterface $formFactory;
+    private FormFactoryInterface $formFactory;
 
-	private CommandBusInterface $commandBus;
+    private CommandBusInterface $commandBus;
 
-	private GlobalSettingsInterface $globalSettings;
+    private GlobalSettingsInterface $globalSettings;
 
-	private Locales $locales;
+    private Locales $locales;
 
-	/**
-	 * @param \App\Web\Ui\Form\FormFactoryInterface                            $formFactory
-	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface $commandBus
-	 * @param \App\Application\GlobalSettings\GlobalSettingsInterface          $globalSettings
-	 * @param \App\Application\Localization\Locales                            $locales
-	 */
-	public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, GlobalSettingsInterface $globalSettings, Locales $locales)
-	{
-		$this->formFactory = $formFactory;
-		$this->commandBus = $commandBus;
-		$this->globalSettings = $globalSettings;
-		$this->locales = $locales;
-	}
+    public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, GlobalSettingsInterface $globalSettings, Locales $locales)
+    {
+        $this->formFactory = $formFactory;
+        $this->commandBus = $commandBus;
+        $this->globalSettings = $globalSettings;
+        $this->locales = $locales;
+    }
 
-	/**
-	 * @return \Nette\Application\UI\Form
-	 */
-	protected function createComponentForm(): Form
-	{
-		$form = $this->formFactory->create($this->getFormFactoryOptions());
-		$localeList = $this->getLocales();
+    protected function createComponentForm(): Form
+    {
+        $form = $this->formFactory->create($this->getFormFactoryOptions());
+        $localeList = $this->getLocales();
 
-		$form->setTranslator($this->getPrefixedTranslator());
+        $form->setTranslator($this->getPrefixedTranslator());
 
-		$form->addMultiSelect('locales', 'locales.field', $localeList)
-			->checkDefaultValue(FALSE)
-			->setTranslator(NULL)
-			->setOption('searchbar', TRUE)
-			->setOption('tags', TRUE)
-			->setRequired('locales.required');
+        $form->addMultiSelect('locales', 'locales.field', $localeList)
+            ->checkDefaultValue(false)
+            ->setTranslator(null)
+            ->setOption('searchbar', true)
+            ->setOption('tags', true)
+            ->setRequired('locales.required');
 
-		$form->addComponent(
-			(new DependentSelectBox('default_locale.field', [$form->getComponent('locales')]))
-				->setDependentCallback(function ($values) use ($localeList) {
-					$locales = $values['locales'];
+        $form->addComponent(
+            (new DependentSelectBox('default_locale.field', [$form->getComponent('locales')]))
+                ->setDependentCallback(function ($values) use ($localeList) {
+                    $locales = $values['locales'];
 
-					if (empty($locales)) {
-						return new DependentData([]);
-					}
+                    if (empty($locales)) {
+                        return new DependentData([]);
+                    }
 
-					$defaultValue = $this->globalSettings->defaultLocale()->code();
-					$defaultValue = in_array($defaultValue, $locales, TRUE) ? $defaultValue : NULL;
+                    $defaultValue = $this->globalSettings->defaultLocale()->code();
+                    $defaultValue = in_array($defaultValue, $locales, true) ? $defaultValue : null;
 
-					if (NULL === $defaultValue && 0 < count($locales)) {
-						$defaultValue = reset($locales);
-					}
+                    if (null === $defaultValue && 0 < count($locales)) {
+                        $defaultValue = reset($locales);
+                    }
 
-					return new DependentData(
-						array_filter($localeList, static fn (string $loc): bool => in_array($loc, $locales, TRUE), ARRAY_FILTER_USE_KEY),
-						$defaultValue
-					);
-				})
-				->setPrompt('-------')
-				->checkDefaultValue(FALSE)
-				->setTranslator(NULL)
-				->setRequired('default_locale.required'),
-			'default_locale'
-		);
+                    return new DependentData(
+                        array_filter($localeList, static fn (string $loc): bool => in_array($loc, $locales, true), ARRAY_FILTER_USE_KEY),
+                        $defaultValue,
+                    );
+                })
+                ->setPrompt('-------')
+                ->checkDefaultValue(false)
+                ->setTranslator(null)
+                ->setRequired('default_locale.required'),
+            'default_locale',
+        );
 
-		$form->addProtection('//layout.form_protection');
+        $form->addProtection('//layout.form_protection');
 
-		$form->addSubmit('save', 'save.field');
+        $form->addSubmit('save', 'save.field');
 
-		$form->setDefaults([
-			'locales' => array_map(static fn (Locale $locale): string => $locale->code(), $this->globalSettings->locales()),
-			'default_locale' => $this->globalSettings->defaultLocale()->code(),
-		]);
+        $form->setDefaults([
+            'locales' => array_map(static fn (Locale $locale): string => $locale->code(), $this->globalSettings->locales()),
+            'default_locale' => $this->globalSettings->defaultLocale()->code(),
+        ]);
 
-		$form->onSuccess[] = function (Form $form): void {
-			$this->saveGlobalSettings($form);
-		};
+        $form->onSuccess[] = function (Form $form): void {
+            $this->saveGlobalSettings($form);
+        };
 
-		return $form;
-	}
+        return $form;
+    }
 
-	/**
-	 * @param \Nette\Application\UI\Form $form
-	 *
-	 * @return void
-	 */
-	private function saveGlobalSettings(Form $form): void
-	{
-		$values = $form->values;
-		$command = PutLocalizationSettingsCommand::create($values->locales, $values->default_locale);
+    private function saveGlobalSettings(Form $form): void
+    {
+        $values = $form->values;
+        $command = PutLocalizationSettingsCommand::create($values->locales, $values->default_locale);
 
-		try {
-			$this->commandBus->dispatch($command);
-		} catch (Throwable $e) {
-			$this->logger->error((string) $e);
-			$this->dispatchEvent(new LocalizationSettingsUpdateFailedEvent($e));
+        try {
+            $this->commandBus->dispatch($command);
+        } catch (Throwable $e) {
+            $this->logger->error((string) $e);
+            $this->dispatchEvent(new LocalizationSettingsUpdateFailedEvent($e));
 
-			return;
-		}
+            return;
+        }
 
-		$this->dispatchEvent(new LocalizationSettingsUpdatedEvent());
-		$this->redrawControl();
-	}
+        $this->dispatchEvent(new LocalizationSettingsUpdatedEvent());
+        $this->redrawControl();
+    }
 
-	/**
-	 * @return array
-	 */
-	private function getLocales(): array
-	{
-		$list = $this->locales->get();
+    private function getLocales(): array
+    {
+        $list = $this->locales->get();
 
-		foreach ($list as $locale => $name) {
-			$list[$locale] = sprintf(
-				'%s - %s',
-				$name,
-				$locale
-			);
-		}
+        foreach ($list as $locale => $name) {
+            $list[$locale] = sprintf(
+                '%s - %s',
+                $name,
+                $locale,
+            );
+        }
 
-		return $list;
-	}
+        return $list;
+    }
 }

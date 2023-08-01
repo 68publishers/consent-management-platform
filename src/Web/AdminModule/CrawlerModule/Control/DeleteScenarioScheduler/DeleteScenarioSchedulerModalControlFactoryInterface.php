@@ -6,5 +6,5 @@ namespace App\Web\AdminModule\CrawlerModule\Control\DeleteScenarioScheduler;
 
 interface DeleteScenarioSchedulerModalControlFactoryInterface
 {
-	public function create(string $scenarioSchedulerId): DeleteScenarioSchedulerModalControl;
+    public function create(string $scenarioSchedulerId): DeleteScenarioSchedulerModalControl;
 }

@@ -9,5 +9,5 @@ use App\Web\Ui\Modal\AbstractModalTemplate;
 
 final class ConsentHistoryModalTemplate extends AbstractModalTemplate
 {
-	public ConsentView $consentView;
+    public ConsentView $consentView;
 }

@@ -4,229 +4,205 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\CookieModule\Control\ProviderForm;
 
-use Throwable;
-use Nette\Utils\Html;
-use App\Web\Ui\Control;
-use Nette\Application\UI\Form;
-use Nette\Forms\Controls\TextInput;
-use App\Web\Ui\Form\FormFactoryInterface;
-use App\Web\Ui\Form\FormFactoryOptionsTrait;
-use App\Domain\CookieProvider\ValueObject\Code;
-use App\Domain\CookieProvider\ValueObject\Purpose;
-use App\ReadModel\Project\ProjectSelectOptionView;
-use App\ReadModel\CookieProvider\CookieProviderView;
-use App\Domain\CookieProvider\ValueObject\ProviderType;
 use App\Application\GlobalSettings\ValidLocalesProvider;
-use App\ReadModel\Project\FindProjectSelectOptionsQuery;
-use App\Domain\CookieProvider\ValueObject\CookieProviderId;
-use App\Domain\CookieProvider\Exception\CodeUniquenessException;
 use App\Domain\CookieProvider\Command\CreateCookieProviderCommand;
 use App\Domain\CookieProvider\Command\UpdateCookieProviderCommand;
+use App\Domain\CookieProvider\Exception\CodeUniquenessException;
+use App\Domain\CookieProvider\ValueObject\Code;
+use App\Domain\CookieProvider\ValueObject\CookieProviderId;
+use App\Domain\CookieProvider\ValueObject\ProviderType;
+use App\Domain\CookieProvider\ValueObject\Purpose;
 use App\Domain\Project\Command\AddCookieProvidersToProjectCommand;
-use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
-use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 use App\Domain\Project\Command\RemoveCookieProvidersFromProjectCommand;
+use App\ReadModel\CookieProvider\CookieProviderView;
+use App\ReadModel\Project\FindProjectSelectOptionsQuery;
+use App\ReadModel\Project\ProjectSelectOptionView;
 use App\Web\AdminModule\CookieModule\Control\ProviderForm\Event\ProviderCreatedEvent;
-use App\Web\AdminModule\CookieModule\Control\ProviderForm\Event\ProviderUpdatedEvent;
 use App\Web\AdminModule\CookieModule\Control\ProviderForm\Event\ProviderFormProcessingFailedEvent;
+use App\Web\AdminModule\CookieModule\Control\ProviderForm\Event\ProviderUpdatedEvent;
+use App\Web\Ui\Control;
+use App\Web\Ui\Form\FormFactoryInterface;
+use App\Web\Ui\Form\FormFactoryOptionsTrait;
+use Nette\Application\UI\Form;
+use Nette\Forms\Controls\TextInput;
+use Nette\Utils\Html;
+use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
+use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
+use Throwable;
 
 final class ProviderFormControl extends Control
 {
-	use FormFactoryOptionsTrait;
+    use FormFactoryOptionsTrait;
 
-	private FormFactoryInterface $formFactory;
+    private FormFactoryInterface $formFactory;
 
-	private CommandBusInterface $commandBus;
+    private CommandBusInterface $commandBus;
 
-	private QueryBusInterface $queryBus;
+    private QueryBusInterface $queryBus;
 
-	private ValidLocalesProvider $validLocalesProvider;
+    private ValidLocalesProvider $validLocalesProvider;
 
-	private ?CookieProviderView $default;
+    private ?CookieProviderView $default;
 
-	/**
-	 * @param \App\Web\Ui\Form\FormFactoryInterface                            $formFactory
-	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface $commandBus
-	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface   $queryBus
-	 * @param \App\Application\GlobalSettings\ValidLocalesProvider             $validLocalesProvider
-	 * @param \App\ReadModel\CookieProvider\CookieProviderView|null            $default
-	 */
-	public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, QueryBusInterface $queryBus, ValidLocalesProvider $validLocalesProvider, ?CookieProviderView $default = NULL)
-	{
-		$this->formFactory = $formFactory;
-		$this->commandBus = $commandBus;
-		$this->queryBus = $queryBus;
-		$this->validLocalesProvider = $validLocalesProvider;
-		$this->default = $default;
-	}
+    public function __construct(FormFactoryInterface $formFactory, CommandBusInterface $commandBus, QueryBusInterface $queryBus, ValidLocalesProvider $validLocalesProvider, ?CookieProviderView $default = null)
+    {
+        $this->formFactory = $formFactory;
+        $this->commandBus = $commandBus;
+        $this->queryBus = $queryBus;
+        $this->validLocalesProvider = $validLocalesProvider;
+        $this->default = $default;
+    }
 
-	/**
-	 * @return \Nette\Application\UI\Form
-	 */
-	protected function createComponentForm(): Form
-	{
-		$form = $this->formFactory->create($this->getFormFactoryOptions());
-		$translator = $this->getPrefixedTranslator();
+    protected function createComponentForm(): Form
+    {
+        $form = $this->formFactory->create($this->getFormFactoryOptions());
+        $translator = $this->getPrefixedTranslator();
 
-		$form->setTranslator($translator);
+        $form->setTranslator($translator);
 
-		$form->addText('code', 'code.field')
-			->setRequired('code.required')
-			->addRule($form::MAX_LENGTH, 'code.rule_max_length', Code::MAX_LENGTH);
+        $form->addText('code', 'code.field')
+            ->setRequired('code.required')
+            ->addRule($form::MAX_LENGTH, 'code.rule_max_length', Code::MAX_LENGTH);
 
-		$form->addText('name', 'name.field')
-			->setRequired('name.required');
+        $form->addText('name', 'name.field')
+            ->setRequired('name.required');
 
-		$form->addRadioList('type', 'type.field')
-			->setItems(ProviderType::values(), FALSE)
-			->setRequired('type.required')
-			->setDefaultValue(ProviderType::THIRD_PARTY);
+        $form->addRadioList('type', 'type.field')
+            ->setItems(ProviderType::values(), false)
+            ->setRequired('type.required')
+            ->setDefaultValue(ProviderType::THIRD_PARTY);
 
-		$form->addText('link', 'link.field')
-			->addCondition($form::FILLED, TRUE)
-				->addRule($form::URL, 'link.rule_url');
+        $form->addText('link', 'link.field')
+            ->addCondition($form::FILLED, true)
+                ->addRule($form::URL, 'link.rule_url');
 
-		$form->addCheckbox('active', 'active.field')
-			->setDefaultValue(TRUE);
+        $form->addCheckbox('active', 'active.field')
+            ->setDefaultValue(true);
 
-		$form->addMultiSelect('projects', 'projects.field', $this->getProjectOptions())
-			->checkDefaultValue(FALSE)
-			->setTranslator(NULL)
-			->setOption('tags', TRUE)
-			->setOption('searchbar', TRUE);
+        $form->addMultiSelect('projects', 'projects.field', $this->getProjectOptions())
+            ->checkDefaultValue(false)
+            ->setTranslator(null)
+            ->setOption('tags', true)
+            ->setOption('searchbar', true);
 
-		$namesContainer = $form->addContainer('purposes');
+        $namesContainer = $form->addContainer('purposes');
 
-		foreach ($this->validLocalesProvider->getValidLocales() as $locale) {
-			$namesContainer->addTextArea($locale->code(), Html::fromText($translator->translate('purpose.field', ['code' => $locale->code(), 'name' => $locale->name()])), NULL, 4);
-		}
+        foreach ($this->validLocalesProvider->getValidLocales() as $locale) {
+            $namesContainer->addTextArea($locale->code(), Html::fromText($translator->translate('purpose.field', ['code' => $locale->code(), 'name' => $locale->name()])), null, 4);
+        }
 
-		$form->addProtection('//layout.form_protection');
+        $form->addProtection('//layout.form_protection');
 
-		$form->addSubmit('save', NULL === $this->default ? 'save.field' : 'update.field');
+        $form->addSubmit('save', null === $this->default ? 'save.field' : 'update.field');
 
-		if (NULL !== $this->default) {
-			$form->setDefaults([
-				'code' => $this->default->code->value(),
-				'name' => $this->default->name->value(),
-				'type' => $this->default->type->value(),
-				'link' => $this->default->link->value(),
-				'active' => $this->default->active,
-				'projects' => $this->getDefaultProjectIds(),
-				'purposes' => array_map(static fn (Purpose $purpose): string => $purpose->value(), $this->default->purposes),
-			]);
-		}
+        if (null !== $this->default) {
+            $form->setDefaults([
+                'code' => $this->default->code->value(),
+                'name' => $this->default->name->value(),
+                'type' => $this->default->type->value(),
+                'link' => $this->default->link->value(),
+                'active' => $this->default->active,
+                'projects' => $this->getDefaultProjectIds(),
+                'purposes' => array_map(static fn (Purpose $purpose): string => $purpose->value(), $this->default->purposes),
+            ]);
+        }
 
-		$form->onSuccess[] = function (Form $form): void {
-			$this->saveProvider($form);
-		};
+        $form->onSuccess[] = function (Form $form): void {
+            $this->saveProvider($form);
+        };
 
-		return $form;
-	}
+        return $form;
+    }
 
-	/**
-	 * @param \Nette\Application\UI\Form $form
-	 *
-	 * @return void
-	 */
-	private function saveProvider(Form $form): void
-	{
-		$values = $form->values;
+    private function saveProvider(Form $form): void
+    {
+        $values = $form->values;
 
-		if (NULL === $this->default) {
-			$cookieProviderId = CookieProviderId::new();
-			$command = CreateCookieProviderCommand::create(
-				$values->code,
-				$values->type,
-				$values->name,
-				$values->link,
-				(array) $values->purposes,
-				FALSE,
-				$values->active,
-				$cookieProviderId->toString()
-			);
-		} else {
-			$cookieProviderId = $this->default->id;
-			$command = UpdateCookieProviderCommand::create($cookieProviderId->toString())
-				->withCode($values->code)
-				->withType($values->type)
-				->withName($values->name)
-				->withLink($values->link)
-				->withActive($values->active)
-				->withPurposes((array) $values->purposes);
-		}
+        if (null === $this->default) {
+            $cookieProviderId = CookieProviderId::new();
+            $command = CreateCookieProviderCommand::create(
+                $values->code,
+                $values->type,
+                $values->name,
+                $values->link,
+                (array) $values->purposes,
+                false,
+                $values->active,
+                $cookieProviderId->toString(),
+            );
+        } else {
+            $cookieProviderId = $this->default->id;
+            $command = UpdateCookieProviderCommand::create($cookieProviderId->toString())
+                ->withCode($values->code)
+                ->withType($values->type)
+                ->withName($values->name)
+                ->withLink($values->link)
+                ->withActive($values->active)
+                ->withPurposes((array) $values->purposes);
+        }
 
-		try {
-			$this->commandBus->dispatch($command);
-			$this->saveProjects((array) $values->projects, $cookieProviderId);
-		} catch (CodeUniquenessException $e) {
-			$codeField = $form->getComponent('code');
-			assert($codeField instanceof TextInput);
+        try {
+            $this->commandBus->dispatch($command);
+            $this->saveProjects((array) $values->projects, $cookieProviderId);
+        } catch (CodeUniquenessException $e) {
+            $codeField = $form->getComponent('code');
+            assert($codeField instanceof TextInput);
 
-			$codeField->addError('code.error.duplicated_value');
+            $codeField->addError('code.error.duplicated_value');
 
-			return;
-		} catch (Throwable $e) {
-			$this->logger->error((string) $e);
-			$this->dispatchEvent(new ProviderFormProcessingFailedEvent($e));
+            return;
+        } catch (Throwable $e) {
+            $this->logger->error((string) $e);
+            $this->dispatchEvent(new ProviderFormProcessingFailedEvent($e));
 
-			return;
-		}
+            return;
+        }
 
-		$this->dispatchEvent(NULL === $this->default ? new ProviderCreatedEvent($cookieProviderId, $values->code) : new ProviderUpdatedEvent($cookieProviderId, $this->default->code->value(), $values->code));
-		$this->redrawControl();
-	}
+        $this->dispatchEvent(null === $this->default ? new ProviderCreatedEvent($cookieProviderId, $values->code) : new ProviderUpdatedEvent($cookieProviderId, $this->default->code->value(), $values->code));
+        $this->redrawControl();
+    }
 
-	/**
-	 * @param string[]                                                $projectIds
-	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId $cookieProviderId
-	 *
-	 * @return void
-	 */
-	private function saveProjects(array $projectIds, CookieProviderId $cookieProviderId): void
-	{
-		$default = $this->getDefaultProjectIds();
+    /**
+     * @param string[] $projectIds
+     */
+    private function saveProjects(array $projectIds, CookieProviderId $cookieProviderId): void
+    {
+        $default = $this->getDefaultProjectIds();
 
-		foreach ($default as $projectId) {
-			if (!in_array($projectId, $projectIds, TRUE)) {
-				$this->commandBus->dispatch(RemoveCookieProvidersFromProjectCommand::create($projectId, $cookieProviderId->toString()));
-			}
-		}
+        foreach ($default as $projectId) {
+            if (!in_array($projectId, $projectIds, true)) {
+                $this->commandBus->dispatch(RemoveCookieProvidersFromProjectCommand::create($projectId, $cookieProviderId->toString()));
+            }
+        }
 
-		foreach ($projectIds as $projectId) {
-			if (!in_array($projectId, $default, TRUE)) {
-				$this->commandBus->dispatch(AddCookieProvidersToProjectCommand::create($projectId, $cookieProviderId->toString()));
-			}
-		}
-	}
+        foreach ($projectIds as $projectId) {
+            if (!in_array($projectId, $default, true)) {
+                $this->commandBus->dispatch(AddCookieProvidersToProjectCommand::create($projectId, $cookieProviderId->toString()));
+            }
+        }
+    }
 
-	/**
-	 * @return array
-	 */
-	private function getProjectOptions(): array
-	{
-		$options = [];
+    private function getProjectOptions(): array
+    {
+        $options = [];
 
-		/** @var \App\ReadModel\Project\ProjectSelectOptionView $projectSelectOptionView */
-		foreach ($this->queryBus->dispatch(FindProjectSelectOptionsQuery::all()) as $projectSelectOptionView) {
-			$options += $projectSelectOptionView->toOption();
-		}
+        /** @var ProjectSelectOptionView $projectSelectOptionView */
+        foreach ($this->queryBus->dispatch(FindProjectSelectOptionsQuery::all()) as $projectSelectOptionView) {
+            $options += $projectSelectOptionView->toOption();
+        }
 
-		return $options;
-	}
+        return $options;
+    }
 
-	/**
-	 * @return array
-	 */
-	private function getDefaultProjectIds(): array
-	{
-		if (NULL === $this->default) {
-			return [];
-		}
+    private function getDefaultProjectIds(): array
+    {
+        if (null === $this->default) {
+            return [];
+        }
 
-		return array_map(
-			static fn (ProjectSelectOptionView $view): string => $view->id->toString(),
-			$this->queryBus->dispatch(FindProjectSelectOptionsQuery::byCookieProviderId($this->default->id->toString()))
-		);
-	}
+        return array_map(
+            static fn (ProjectSelectOptionView $view): string => $view->id->toString(),
+            $this->queryBus->dispatch(FindProjectSelectOptionsQuery::byCookieProviderId($this->default->id->toString())),
+        );
+    }
 }

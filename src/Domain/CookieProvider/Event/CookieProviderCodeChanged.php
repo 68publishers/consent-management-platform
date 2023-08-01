@@ -10,52 +10,38 @@ use SixtyEightPublishers\ArchitectureBundle\Domain\Event\AbstractDomainEvent;
 
 final class CookieProviderCodeChanged extends AbstractDomainEvent
 {
-	private CookieProviderId $cookieProviderId;
+    private CookieProviderId $cookieProviderId;
 
-	private Code $code;
+    private Code $code;
 
-	/**
-	 * @param \App\Domain\CookieProvider\ValueObject\CookieProviderId $cookieProviderId
-	 * @param \App\Domain\CookieProvider\ValueObject\Code             $code
-	 *
-	 * @return static
-	 */
-	public static function create(CookieProviderId $cookieProviderId, Code $code): self
-	{
-		$event = self::occur($cookieProviderId->toString(), [
-			'code' => $code->value(),
-		]);
+    /**
+     * @return static
+     */
+    public static function create(CookieProviderId $cookieProviderId, Code $code): self
+    {
+        $event = self::occur($cookieProviderId->toString(), [
+            'code' => $code->value(),
+        ]);
 
-		$event->cookieProviderId = $cookieProviderId;
-		$event->code = $code;
+        $event->cookieProviderId = $cookieProviderId;
+        $event->code = $code;
 
-		return $event;
-	}
+        return $event;
+    }
 
-	/**
-	 * @return \App\Domain\CookieProvider\ValueObject\CookieProviderId
-	 */
-	public function cookieProviderId(): CookieProviderId
-	{
-		return $this->cookieProviderId;
-	}
+    public function cookieProviderId(): CookieProviderId
+    {
+        return $this->cookieProviderId;
+    }
 
-	/**
-	 * @return \App\Domain\CookieProvider\ValueObject\Code
-	 */
-	public function code(): Code
-	{
-		return $this->code;
-	}
+    public function code(): Code
+    {
+        return $this->code;
+    }
 
-	/**
-	 * @param array $parameters
-	 *
-	 * @return void
-	 */
-	protected function reconstituteState(array $parameters): void
-	{
-		$this->cookieProviderId = CookieProviderId::fromUuid($this->aggregateId()->id());
-		$this->code = Code::fromValue($parameters['code']);
-	}
+    protected function reconstituteState(array $parameters): void
+    {
+        $this->cookieProviderId = CookieProviderId::fromUuid($this->aggregateId()->id());
+        $this->code = Code::fromValue($parameters['code']);
+    }
 }

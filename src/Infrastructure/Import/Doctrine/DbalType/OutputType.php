@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class OutputType extends AbstractTextValueObjectType
 {
-	protected string $valueObjectClassname = Output::class;
+    protected string $valueObjectClassname = Output::class;
 }

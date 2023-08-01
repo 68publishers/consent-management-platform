@@ -4,44 +4,41 @@ declare(strict_types=1);
 
 namespace App\ReadModel\Consent;
 
-use DateTimeImmutable;
-use DateTimeInterface;
-use App\Domain\Shared\ValueObject\Checksum;
 use App\Domain\Consent\ValueObject\ConsentId;
 use App\Domain\Consent\ValueObject\UserIdentifier;
-use App\Domain\ConsentSettings\ValueObject\ShortIdentifier;
 use App\Domain\ConsentSettings\ValueObject\ConsentSettingsId;
+use App\Domain\ConsentSettings\ValueObject\ShortIdentifier;
+use App\Domain\Shared\ValueObject\Checksum;
+use DateTimeImmutable;
+use DateTimeInterface;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\AbstractView;
 
 final class ConsentListView extends AbstractView
 {
-	public ConsentId $id;
+    public ConsentId $id;
 
-	public DateTimeImmutable $createdAt;
+    public DateTimeImmutable $createdAt;
 
-	public DateTimeImmutable $lastUpdateAt;
+    public DateTimeImmutable $lastUpdateAt;
 
-	public UserIdentifier $userIdentifier;
+    public UserIdentifier $userIdentifier;
 
-	public ?Checksum $settingsChecksum = NULL;
+    public ?Checksum $settingsChecksum = null;
 
-	public ?ShortIdentifier $settingsShortIdentifier = NULL;
+    public ?ShortIdentifier $settingsShortIdentifier = null;
 
-	public ?ConsentSettingsId $settingsId = NULL;
+    public ?ConsentSettingsId $settingsId = null;
 
-	/**
-	 * @return array
-	 */
-	public function jsonSerialize(): array
-	{
-		return [
-			'id' => $this->id->toString(),
-			'createdAt' => $this->createdAt->format(DateTimeInterface::ATOM),
-			'lastUpdateAt' => $this->lastUpdateAt->format(DateTimeInterface::ATOM),
-			'userIdentifier' => $this->userIdentifier->value(),
-			'settingsChecksum' => NULL !== $this->settingsChecksum ? $this->settingsChecksum->value() : NULL,
-			'shortIdentifier' => NULL !== $this->settingsShortIdentifier ? $this->settingsShortIdentifier->value() : NULL,
-			'settingsId' => NULL !== $this->settingsId ? $this->settingsId->toString() : NULL,
-		];
-	}
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->id->toString(),
+            'createdAt' => $this->createdAt->format(DateTimeInterface::ATOM),
+            'lastUpdateAt' => $this->lastUpdateAt->format(DateTimeInterface::ATOM),
+            'userIdentifier' => $this->userIdentifier->value(),
+            'settingsChecksum' => $this->settingsChecksum?->value(),
+            'shortIdentifier' => $this->settingsShortIdentifier?->value(),
+            'settingsId' => $this->settingsId?->toString(),
+        ];
+    }
 }

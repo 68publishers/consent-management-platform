@@ -6,5 +6,5 @@ namespace App\Web\AdminModule\CookieModule\Control\ProjectCookieSuggestionList;
 
 interface ProjectCookieSuggestionListControlFactoryInterface
 {
-	public function create(): ProjectCookieSuggestionListControl;
+    public function create(): ProjectCookieSuggestionListControl;
 }

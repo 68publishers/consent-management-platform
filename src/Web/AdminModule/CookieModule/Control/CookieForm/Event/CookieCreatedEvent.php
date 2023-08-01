@@ -9,33 +9,23 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class CookieCreatedEvent extends Event
 {
-	private CookieId $cookieId;
+    private CookieId $cookieId;
 
-	private string $name;
+    private string $name;
 
-	/**
-	 * @param \App\Domain\Cookie\ValueObject\CookieId $cookieId
-	 * @param string                                  $name
-	 */
-	public function __construct(CookieId $cookieId, string $name)
-	{
-		$this->cookieId = $cookieId;
-		$this->name = $name;
-	}
+    public function __construct(CookieId $cookieId, string $name)
+    {
+        $this->cookieId = $cookieId;
+        $this->name = $name;
+    }
 
-	/**
-	 * @return \App\Domain\Cookie\ValueObject\CookieId
-	 */
-	public function cookieId(): CookieId
-	{
-		return $this->cookieId;
-	}
+    public function cookieId(): CookieId
+    {
+        return $this->cookieId;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function name(): string
-	{
-		return $this->name;
-	}
+    public function name(): string
+    {
+        return $this->name;
+    }
 }

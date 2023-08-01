@@ -8,41 +8,32 @@ use App\Application\DataProcessor\Exception\DataReaderExceptionInterface;
 
 final class ReaderErrorEvent
 {
-	private DataReaderExceptionInterface $error;
+    private DataReaderExceptionInterface $error;
 
-	private bool $stopped = FALSE;
+    private bool $stopped = false;
 
-	/**
-	 * @param \App\Application\DataProcessor\Exception\DataReaderExceptionInterface $error
-	 */
-	public function __construct(DataReaderExceptionInterface $error)
-	{
-		$this->error = $error;
-	}
+    public function __construct(DataReaderExceptionInterface $error)
+    {
+        $this->error = $error;
+    }
 
-	/**
-	 * @return \App\Application\DataProcessor\Exception\DataReaderExceptionInterface
-	 */
-	public function error(): DataReaderExceptionInterface
-	{
-		return $this->error;
-	}
+    public function error(): DataReaderExceptionInterface
+    {
+        return $this->error;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function stopped(): bool
-	{
-		return $this->stopped;
-	}
+    public function stopped(): bool
+    {
+        return $this->stopped;
+    }
 
-	/**
-	 * @return $this
-	 */
-	public function stop(): self
-	{
-		$this->stopped = TRUE;
+    /**
+     * @return $this
+     */
+    public function stop(): self
+    {
+        $this->stopped = true;
 
-		return $this;
-	}
+        return $this;
+    }
 }

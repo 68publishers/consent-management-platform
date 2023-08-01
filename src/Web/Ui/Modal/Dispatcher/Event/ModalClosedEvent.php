@@ -8,21 +8,15 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class ModalClosedEvent extends Event
 {
-	private array $names;
+    private array $names;
 
-	/**
-	 * @param array $names
-	 */
-	public function __construct(array $names)
-	{
-		$this->names = $names;
-	}
+    public function __construct(array $names)
+    {
+        $this->names = $names;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function names(): array
-	{
-		return $this->names;
-	}
+    public function names(): array
+    {
+        return $this->names;
+    }
 }

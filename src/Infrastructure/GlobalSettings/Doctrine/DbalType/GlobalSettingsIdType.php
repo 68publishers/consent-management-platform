@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class GlobalSettingsIdType extends AbstractUuidIdentityType
 {
-	protected string $valueObjectClassname = GlobalSettingsId::class;
+    protected string $valueObjectClassname = GlobalSettingsId::class;
 }

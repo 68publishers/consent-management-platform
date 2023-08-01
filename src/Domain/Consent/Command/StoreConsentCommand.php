@@ -9,81 +9,55 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class StoreConsentCommand extends AbstractCommand
 {
-	/**
-	 * @param string      $projectId
-	 * @param string      $userIdentifier
-	 * @param string|NULL $settingsChecksum
-	 * @param array       $consents
-	 * @param array       $attributes
-	 *
-	 * @return static
-	 */
-	public static function create(string $projectId, string $userIdentifier, ?string $settingsChecksum, array $consents, array $attributes): self
-	{
-		return self::fromParameters([
-			'project_id' => $projectId,
-			'user_identifier' => $userIdentifier,
-			'settings_checksum' => $settingsChecksum,
-			'consents' => $consents,
-			'attributes' => $attributes,
-		]);
-	}
+    /**
+     * @return static
+     */
+    public static function create(string $projectId, string $userIdentifier, ?string $settingsChecksum, array $consents, array $attributes): self
+    {
+        return self::fromParameters([
+            'project_id' => $projectId,
+            'user_identifier' => $userIdentifier,
+            'settings_checksum' => $settingsChecksum,
+            'consents' => $consents,
+            'attributes' => $attributes,
+        ]);
+    }
 
-	/**
-	 * @param \DateTimeImmutable $createdAt
-	 *
-	 * @return $this
-	 */
-	public function withCreatedAt(DateTimeImmutable $createdAt): self
-	{
-		return $this->withParam('created_at', $createdAt);
-	}
+    /**
+     * @return $this
+     */
+    public function withCreatedAt(DateTimeImmutable $createdAt): self
+    {
+        return $this->withParam('created_at', $createdAt);
+    }
 
-	/**
-	 * @return string
-	 */
-	public function projectId(): string
-	{
-		return $this->getParam('project_id');
-	}
+    public function projectId(): string
+    {
+        return $this->getParam('project_id');
+    }
 
-	/**
-	 * @return string
-	 */
-	public function userIdentifier(): string
-	{
-		return $this->getParam('user_identifier');
-	}
+    public function userIdentifier(): string
+    {
+        return $this->getParam('user_identifier');
+    }
 
-	/**
-	 * @return string
-	 */
-	public function settingsChecksum(): ?string
-	{
-		return $this->getParam('settings_checksum');
-	}
+    public function settingsChecksum(): ?string
+    {
+        return $this->getParam('settings_checksum');
+    }
 
-	/**
-	 * @return array
-	 */
-	public function consents(): array
-	{
-		return $this->getParam('consents');
-	}
+    public function consents(): array
+    {
+        return $this->getParam('consents');
+    }
 
-	/**
-	 * @return array
-	 */
-	public function attributes(): array
-	{
-		return $this->getParam('attributes');
-	}
+    public function attributes(): array
+    {
+        return $this->getParam('attributes');
+    }
 
-	/**
-	 * @return \DateTimeImmutable|NULL
-	 */
-	public function createdAt(): ?DateTimeImmutable
-	{
-		return $this->getParam('created_at');
-	}
+    public function createdAt(): ?DateTimeImmutable
+    {
+        return $this->getParam('created_at');
+    }
 }

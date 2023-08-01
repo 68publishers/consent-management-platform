@@ -12,29 +12,20 @@ use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
 
 final class CreateCategoryCommandHandler implements CommandHandlerInterface
 {
-	private CategoryRepositoryInterface $categoryRepository;
+    private CategoryRepositoryInterface $categoryRepository;
 
-	private CheckCodeUniquenessInterface $checkCodeUniqueness;
+    private CheckCodeUniquenessInterface $checkCodeUniqueness;
 
-	/**
-	 * @param \App\Domain\Category\CategoryRepositoryInterface  $categoryRepository
-	 * @param \App\Domain\Category\CheckCodeUniquenessInterface $checkCodeUniqueness
-	 */
-	public function __construct(CategoryRepositoryInterface $categoryRepository, CheckCodeUniquenessInterface $checkCodeUniqueness)
-	{
-		$this->categoryRepository = $categoryRepository;
-		$this->checkCodeUniqueness = $checkCodeUniqueness;
-	}
+    public function __construct(CategoryRepositoryInterface $categoryRepository, CheckCodeUniquenessInterface $checkCodeUniqueness)
+    {
+        $this->categoryRepository = $categoryRepository;
+        $this->checkCodeUniqueness = $checkCodeUniqueness;
+    }
 
-	/**
-	 * @param \App\Domain\Category\Command\CreateCategoryCommand $command
-	 *
-	 * @return void
-	 */
-	public function __invoke(CreateCategoryCommand $command): void
-	{
-		$category = Category::create($command, $this->checkCodeUniqueness);
+    public function __invoke(CreateCategoryCommand $command): void
+    {
+        $category = Category::create($command, $this->checkCodeUniqueness);
 
-		$this->categoryRepository->save($category);
-	}
+        $this->categoryRepository->save($category);
+    }
 }

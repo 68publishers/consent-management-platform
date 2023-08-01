@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class NameType extends AbstractTextValueObjectType
 {
-	protected string $valueObjectClassname = Name::class;
+    protected string $valueObjectClassname = Name::class;
 }

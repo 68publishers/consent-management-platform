@@ -6,91 +6,67 @@ namespace App\Application\Cookie;
 
 final class Template
 {
-	public const OPTION_NO_CACHE = 'no_cache';
+    public const OPTION_NO_CACHE = 'no_cache';
 
-	private string $projectId;
+    private string $projectId;
 
-	private string $template;
+    private string $template;
 
-	private TemplateArguments $arguments;
+    private TemplateArguments $arguments;
 
-	private array $options = [];
+    private array $options = [];
 
-	private function __construct()
-	{
-	}
+    private function __construct() {}
 
-	/**
-	 * @param string                                    $projectId
-	 * @param string                                    $template
-	 * @param \App\Application\Cookie\TemplateArguments $arguments
-	 *
-	 * @return static
-	 */
-	public static function create(string $projectId, string $template, TemplateArguments $arguments): self
-	{
-		$cookieTemplate = new self();
-		$cookieTemplate->projectId = $projectId;
-		$cookieTemplate->template = $template;
-		$cookieTemplate->arguments = $arguments;
+    /**
+     * @return static
+     */
+    public static function create(string $projectId, string $template, TemplateArguments $arguments): self
+    {
+        $cookieTemplate = new self();
+        $cookieTemplate->projectId = $projectId;
+        $cookieTemplate->template = $template;
+        $cookieTemplate->arguments = $arguments;
 
-		return $cookieTemplate;
-	}
+        return $cookieTemplate;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function projectId(): string
-	{
-		return $this->projectId;
-	}
+    public function projectId(): string
+    {
+        return $this->projectId;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function template(): string
-	{
-		return $this->template;
-	}
+    public function template(): string
+    {
+        return $this->template;
+    }
 
-	/**
-	 * @return \App\Application\Cookie\TemplateArguments
-	 */
-	public function arguments(): TemplateArguments
-	{
-		return $this->arguments;
-	}
+    public function arguments(): TemplateArguments
+    {
+        return $this->arguments;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function options(): array
-	{
-		return $this->options;
-	}
+    public function options(): array
+    {
+        return $this->options;
+    }
 
-	/**
-	 * @param string     $key
-	 * @param mixed|NULL $default
-	 *
-	 * @return mixed|NULL
-	 */
-	public function option(string $key, $default = NULL)
-	{
-		return $this->options()[$key] ?? $default;
-	}
+    /**
+     * @return mixed|NULL
+     */
+    public function option(string $key, mixed $default = null): mixed
+    {
+        return $this->options()[$key] ?? $default;
+    }
 
-	/**
-	 * @param string $key
-	 * @param mixed  $value
-	 *
-	 * @return $this
-	 */
-	public function withOption(string $key, $value): self
-	{
-		$cookieTemplate = clone $this;
-		$cookieTemplate->options[$key] = $value;
+    /**
+     * @return $this
+     */
+    public function withOption(string $key, mixed $value): self
+    {
+        $cookieTemplate = clone $this;
+        $cookieTemplate->options[$key] = $value;
 
-		return $cookieTemplate;
-	}
+        return $cookieTemplate;
+    }
 }

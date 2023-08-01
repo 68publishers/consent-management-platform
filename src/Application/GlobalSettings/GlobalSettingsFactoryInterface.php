@@ -6,5 +6,5 @@ namespace App\Application\GlobalSettings;
 
 interface GlobalSettingsFactoryInterface
 {
-	public function create(): GlobalSettingsInterface;
+    public function create(): GlobalSettingsInterface;
 }

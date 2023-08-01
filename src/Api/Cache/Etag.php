@@ -9,94 +9,74 @@ use Apitte\Core\Http\ApiResponse;
 
 final class Etag
 {
-	private string $value;
+    private string $value;
 
-	private function __construct()
-	{
-	}
+    private function __construct() {}
 
-	/**
-	 * @param string $value
-	 * @param bool   $weak
-	 *
-	 * @return static
-	 */
-	public static function fromValidator(string $value, bool $weak = FALSE): self
-	{
-		if (0 !== strncmp($value, '"', 1)) {
-			$value = '"' . $value . '"';
-		}
+    /**
+     * @return static
+     */
+    public static function fromValidator(string $value, bool $weak = false): self
+    {
+        if (0 !== strncmp($value, '"', 1)) {
+            $value = '"' . $value . '"';
+        }
 
-		$etag = new self();
-		$etag->value = ($weak ? 'W/' : '') . $value;
+        $etag = new self();
+        $etag->value = ($weak ? 'W/' : '') . $value;
 
-		return $etag;
-	}
+        return $etag;
+    }
 
-	/**
-	 * @param string $value
-	 *
-	 * @return static
-	 */
-	public static function fromHeader(string $value): self
-	{
-		$etag = new self();
-		$etag->value = $value;
+    /**
+     * @return static
+     */
+    public static function fromHeader(string $value): self
+    {
+        $etag = new self();
+        $etag->value = $value;
 
-		return $etag;
-	}
+        return $etag;
+    }
 
-	/**
-	 * @param \Apitte\Core\Http\ApiResponse $response
-	 *
-	 * @return \Apitte\Core\Http\ApiResponse
-	 */
-	public function addToResponse(ApiResponse $response): ApiResponse
-	{
-		return $response->withHeader('Etag', $this->value);
-	}
+    public function addToResponse(ApiResponse $response): ApiResponse
+    {
+        return $response->withHeader('Etag', $this->value);
+    }
 
-	/**
-	 * @param \Apitte\Core\Http\ApiRequest $request
-	 *
-	 * @return bool
-	 */
-	public function isNotModified(ApiRequest $request): bool
-	{
-		if (!in_array($request->getMethod(), ['GET', 'HEAD'], TRUE)) {
-			return FALSE;
-		}
+    public function isNotModified(ApiRequest $request): bool
+    {
+        if (!in_array($request->getMethod(), ['GET', 'HEAD'], true)) {
+            return false;
+        }
 
-		$ifNoneMatch = $request->getHeader('If-None-Match');
+        $ifNoneMatch = $request->getHeader('If-None-Match');
 
-		if (0 >= count($ifNoneMatch)) {
-			return FALSE;
-		}
+        if (0 >= count($ifNoneMatch)) {
+            return false;
+        }
 
-		$currentEtag = $this->value;
+        $currentEtag = $this->value;
 
-		if (0 === strncmp($currentEtag, 'W/', 2)) {
-			$currentEtag = substr($currentEtag, 2);
-		}
+        if (0 === strncmp($currentEtag, 'W/', 2)) {
+            $currentEtag = substr($currentEtag, 2);
+        }
 
-		foreach ($ifNoneMatch as $etag) {
-			if (0 === strncmp($etag, 'W/', 2)) {
-				$etag = substr($etag, 2);
-			}
+        foreach ($ifNoneMatch as $etag) {
+            if (0 === strncmp($etag, 'W/', 2)) {
+                $etag = substr($etag, 2);
+            }
 
-			if ($etag === $currentEtag || '*' === $etag) {
-				return TRUE;
-			}
-		}
+            if ($etag === $currentEtag || '*' === $etag) {
+                return true;
+            }
+        }
 
-		return FALSE;
-	}
+        return false;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function __toString(): string
-	{
-		return $this->value;
-	}
+    public function __toString(): string
+    {
+        return $this->value;
+    }
 }

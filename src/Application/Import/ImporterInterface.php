@@ -8,17 +8,10 @@ use App\Application\DataProcessor\RowInterface;
 
 interface ImporterInterface
 {
-	/**
-	 * @param \App\Application\DataProcessor\RowInterface $row
-	 *
-	 * @return bool
-	 */
-	public function accepts(RowInterface $row): bool;
+    public function accepts(RowInterface $row): bool;
 
-	/**
-	 * @param \App\Application\DataProcessor\RowInterface[] $rows
-	 *
-	 * @return \App\Application\Import\ImporterResult
-	 */
-	public function import(array $rows): ImporterResult;
+    /**
+     * @param RowInterface[] $rows
+     */
+    public function import(array $rows): ImporterResult;
 }

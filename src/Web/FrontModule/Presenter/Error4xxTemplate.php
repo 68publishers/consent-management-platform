@@ -8,7 +8,7 @@ use App\Web\Ui\DefaultPresenterTemplate;
 
 final class Error4xxTemplate extends DefaultPresenterTemplate
 {
-	public int $errorCode;
+    public int $errorCode;
 
-	public string $errorCodeString;
+    public string $errorCodeString;
 }

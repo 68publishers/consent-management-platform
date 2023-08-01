@@ -6,8 +6,8 @@ namespace App\Application\Acl;
 
 interface ResourceInterface
 {
-	/**
-	 * @return string[]
-	 */
-	public static function privileges(): array;
+    /**
+     * @return string[]
+     */
+    public static function privileges(): array;
 }

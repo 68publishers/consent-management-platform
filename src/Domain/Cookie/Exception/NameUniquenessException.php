@@ -8,26 +8,20 @@ use DomainException;
 
 final class NameUniquenessException extends DomainException
 {
-	/**
-	 * @param string $message
-	 */
-	private function __construct(string $message)
-	{
-		parent::__construct($message);
-	}
+    private function __construct(string $message)
+    {
+        parent::__construct($message);
+    }
 
-	/**
-	 * @param string $name
-	 * @param string $cookieProviderId
-	 *
-	 * @return static
-	 */
-	public static function create(string $name, string $cookieProviderId): self
-	{
-		return new self(sprintf(
-			'Cookie with a code "%s" already exists for a cookie provider %s.',
-			$name,
-			$cookieProviderId
-		));
-	}
+    /**
+     * @return static
+     */
+    public static function create(string $name, string $cookieProviderId): self
+    {
+        return new self(sprintf(
+            'Cookie with a code "%s" already exists for a cookie provider %s.',
+            $name,
+            $cookieProviderId,
+        ));
+    }
 }

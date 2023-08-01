@@ -9,16 +9,16 @@ use App\Domain\GlobalSettings\ValueObject\CrawlerSettings;
 
 interface GlobalSettingsInterface
 {
-	/**
-	 * @return Locale[]
-	 */
-	public function locales(): array;
+    /**
+     * @return Locale[]
+     */
+    public function locales(): array;
 
-	public function defaultLocale(): Locale;
+    public function defaultLocale(): Locale;
 
-	public function apiCache(): ApiCache;
+    public function apiCache(): ApiCache;
 
-	public function crawlerSettings(): CrawlerSettings;
+    public function crawlerSettings(): CrawlerSettings;
 
-	public function refresh(): void;
+    public function refresh(): void;
 }

@@ -9,35 +9,27 @@ use SixtyEightPublishers\ArchitectureBundle\Domain\Event\AbstractDomainEvent;
 
 final class GlobalSettingsCreated extends AbstractDomainEvent
 {
-	private GlobalSettingsId $globalSettingsId;
+    private GlobalSettingsId $globalSettingsId;
 
-	/**
-	 * @param \App\Domain\GlobalSettings\ValueObject\GlobalSettingsId $globalSettingsId
-	 *
-	 * @return static
-	 */
-	public static function create(GlobalSettingsId $globalSettingsId): self
-	{
-		$event = self::occur($globalSettingsId->toString(), []);
+    /**
+     * @return static
+     */
+    public static function create(GlobalSettingsId $globalSettingsId): self
+    {
+        $event = self::occur($globalSettingsId->toString());
 
-		$event->globalSettingsId = $globalSettingsId;
+        $event->globalSettingsId = $globalSettingsId;
 
-		return $event;
-	}
+        return $event;
+    }
 
-	/**
-	 * @return \App\Domain\GlobalSettings\ValueObject\GlobalSettingsId
-	 */
-	public function globalSettingsId(): GlobalSettingsId
-	{
-		return $this->globalSettingsId;
-	}
+    public function globalSettingsId(): GlobalSettingsId
+    {
+        return $this->globalSettingsId;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	protected function reconstituteState(array $parameters): void
-	{
-		$this->globalSettingsId = GlobalSettingsId::fromUuid($this->aggregateId()->id());
-	}
+    protected function reconstituteState(array $parameters): void
+    {
+        $this->globalSettingsId = GlobalSettingsId::fromUuid($this->aggregateId()->id());
+    }
 }

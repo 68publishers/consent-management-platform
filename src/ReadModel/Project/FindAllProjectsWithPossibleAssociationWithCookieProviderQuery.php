@@ -11,33 +11,27 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
  */
 final class FindAllProjectsWithPossibleAssociationWithCookieProviderQuery extends AbstractQuery
 {
-	/**
-	 * @param string     $cookieProviderId
-	 * @param array|NULL $projectCodes
-	 *
-	 * @return static
-	 */
-	public static function create(string $cookieProviderId, ?array $projectCodes): self
-	{
-		return self::fromParameters([
-			'cookie_provider_id' => $cookieProviderId,
-			'project_codes' => $projectCodes,
-		]);
-	}
+    /**
+     * @return static
+     */
+    public static function create(string $cookieProviderId, ?array $projectCodes): self
+    {
+        return self::fromParameters([
+            'cookie_provider_id' => $cookieProviderId,
+            'project_codes' => $projectCodes,
+        ]);
+    }
 
-	/**
-	 * @return string
-	 */
-	public function cookieProviderId(): string
-	{
-		return $this->getParam('cookie_provider_id');
-	}
+    public function cookieProviderId(): string
+    {
+        return $this->getParam('cookie_provider_id');
+    }
 
-	/**
-	 * @return string[]|NULL
-	 */
-	public function projectCodes(): ?array
-	{
-		return $this->getParam('project_codes');
-	}
+    /**
+     * @return string[]|NULL
+     */
+    public function projectCodes(): ?array
+    {
+        return $this->getParam('project_codes');
+    }
 }

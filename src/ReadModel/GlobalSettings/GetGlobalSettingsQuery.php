@@ -11,11 +11,11 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
  */
 final class GetGlobalSettingsQuery extends AbstractQuery
 {
-	/**
-	 * @return static
-	 */
-	public static function create(): self
-	{
-		return self::fromParameters([]);
-	}
+    /**
+     * @return static
+     */
+    public static function create(): self
+    {
+        return self::fromParameters([]);
+    }
 }

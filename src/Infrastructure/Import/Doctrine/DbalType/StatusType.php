@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class StatusType extends AbstractStringValueObjectType
 {
-	protected string $valueObjectClassname = Status::class;
+    protected string $valueObjectClassname = Status::class;
 }

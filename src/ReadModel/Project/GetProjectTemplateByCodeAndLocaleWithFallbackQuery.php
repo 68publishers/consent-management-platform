@@ -8,33 +8,24 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 final class GetProjectTemplateByCodeAndLocaleWithFallbackQuery extends AbstractQuery
 {
-	/**
-	 * @param string      $code
-	 * @param string|NULL $locale
-	 *
-	 * @return static
-	 */
-	public static function create(string $code, ?string $locale = NULL): self
-	{
-		return self::fromParameters([
-			'code' => $code,
-			'locale' => $locale,
-		]);
-	}
+    /**
+     * @return static
+     */
+    public static function create(string $code, ?string $locale = null): self
+    {
+        return self::fromParameters([
+            'code' => $code,
+            'locale' => $locale,
+        ]);
+    }
 
-	/**
-	 * @return string
-	 */
-	public function code(): string
-	{
-		return $this->getParam('code');
-	}
+    public function code(): string
+    {
+        return $this->getParam('code');
+    }
 
-	/**
-	 * @return string|NULL
-	 */
-	public function locale(): ?string
-	{
-		return $this->getParam('locale');
-	}
+    public function locale(): ?string
+    {
+        return $this->getParam('locale');
+    }
 }

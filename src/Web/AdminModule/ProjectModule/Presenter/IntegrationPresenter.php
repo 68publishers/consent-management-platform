@@ -4,64 +4,58 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\ProjectModule\Presenter;
 
-use Nette\InvalidStateException;
-use App\Web\Ui\Form\FormFactoryInterface;
 use App\Application\Acl\ProjectIntegrationResource;
-use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
-use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
-use App\Web\AdminModule\ProjectModule\Control\TemplatesForm\TemplatesFormControl;
-use App\Web\AdminModule\ProjectModule\Control\TemplatesForm\Event\TemplatesUpdatedEvent;
-use App\Web\AdminModule\ProjectModule\Control\TemplatesForm\TemplatesFormControlFactoryInterface;
 use App\Web\AdminModule\ProjectModule\Control\TemplatesForm\Event\TemplatesFormProcessingFailedEvent;
+use App\Web\AdminModule\ProjectModule\Control\TemplatesForm\Event\TemplatesUpdatedEvent;
+use App\Web\AdminModule\ProjectModule\Control\TemplatesForm\TemplatesFormControl;
+use App\Web\AdminModule\ProjectModule\Control\TemplatesForm\TemplatesFormControlFactoryInterface;
+use App\Web\Ui\Form\FormFactoryInterface;
+use Nette\InvalidStateException;
+use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 
 #[Allowed(resource: ProjectIntegrationResource::class, privilege: ProjectIntegrationResource::READ)]
 final class IntegrationPresenter extends SelectedProjectPresenter
 {
-	private TemplatesFormControlFactoryInterface $templatesFormControlFactory;
+    private TemplatesFormControlFactoryInterface $templatesFormControlFactory;
 
-	/**
-	 * @param \App\Web\AdminModule\ProjectModule\Control\TemplatesForm\TemplatesFormControlFactoryInterface $templatesFormControlFactory
-	 */
-	public function __construct(TemplatesFormControlFactoryInterface $templatesFormControlFactory)
-	{
-		parent::__construct();
+    public function __construct(TemplatesFormControlFactoryInterface $templatesFormControlFactory)
+    {
+        parent::__construct();
 
-		$this->templatesFormControlFactory = $templatesFormControlFactory;
-	}
+        $this->templatesFormControlFactory = $templatesFormControlFactory;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	protected function beforeRender(): void
-	{
-		parent::beforeRender();
+    protected function beforeRender(): void
+    {
+        parent::beforeRender();
 
-		$this->template->appHost = $this->getHttpRequest()->getUrl()->getHostUrl();
-	}
+        $template = $this->getTemplate();
+        assert($template instanceof IntegrationTemplate);
 
-	/**
-	 * @return \App\Web\AdminModule\ProjectModule\Control\TemplatesForm\TemplatesFormControl
-	 */
-	protected function createComponentTemplatesForm(): TemplatesFormControl
-	{
-		if (!$this->getUser()->isAllowed(ProjectIntegrationResource::class, ProjectIntegrationResource::UPDATE)) {
-			throw new InvalidStateException('The user is not allowed to update project\'s templates.');
-		}
+        $template->appHost = $this->getHttpRequest()->getUrl()->getHostUrl();
+    }
 
-		$control = $this->templatesFormControlFactory->create($this->projectView, $this->validLocalesProvider->withLocalesConfig($this->projectView->locales));
+    protected function createComponentTemplatesForm(): TemplatesFormControl
+    {
+        if (!$this->getUser()->isAllowed(ProjectIntegrationResource::class, ProjectIntegrationResource::UPDATE)) {
+            throw new InvalidStateException('The user is not allowed to update project\'s templates.');
+        }
 
-		$control->setFormFactoryOptions([
-			FormFactoryInterface::OPTION_AJAX => TRUE,
-		]);
+        $control = $this->templatesFormControlFactory->create($this->projectView, $this->validLocalesProvider->withLocalesConfig($this->projectView->locales));
 
-		$control->addEventListener(TemplatesUpdatedEvent::class, function () {
-			$this->subscribeFlashMessage(FlashMessage::success('templates_updated'));
-		});
+        $control->setFormFactoryOptions([
+            FormFactoryInterface::OPTION_AJAX => true,
+        ]);
 
-		$control->addEventListener(TemplatesFormProcessingFailedEvent::class, function () {
-			$this->subscribeFlashMessage(FlashMessage::error('templates_updated_failed'));
-		});
+        $control->addEventListener(TemplatesUpdatedEvent::class, function () {
+            $this->subscribeFlashMessage(FlashMessage::success('templates_updated'));
+        });
 
-		return $control;
-	}
+        $control->addEventListener(TemplatesFormProcessingFailedEvent::class, function () {
+            $this->subscribeFlashMessage(FlashMessage::error('templates_updated_failed'));
+        });
+
+        return $control;
+    }
 }

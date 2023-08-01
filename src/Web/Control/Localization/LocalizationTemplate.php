@@ -9,5 +9,5 @@ use Nette\Bridges\ApplicationLatte\Template;
 
 final class LocalizationTemplate extends Template
 {
-	public Profiles $profiles;
+    public Profiles $profiles;
 }

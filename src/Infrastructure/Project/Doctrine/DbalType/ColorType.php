@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class ColorType extends AbstractStringValueObjectType
 {
-	protected string $valueObjectClassname = Color::class;
+    protected string $valueObjectClassname = Color::class;
 }

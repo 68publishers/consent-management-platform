@@ -4,38 +4,38 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\CrawlerModule\Control;
 
-use Throwable;
-use SixtyEightPublishers\CrawlerClient\CrawlerClientInterface;
-use SixtyEightPublishers\CrawlerClient\Exception\ControllerResponseExceptionInterface;
 use SixtyEightPublishers\CrawlerClient\Controller\ScenarioScheduler\ScenarioSchedulerResponse;
 use SixtyEightPublishers\CrawlerClient\Controller\ScenarioScheduler\ScenarioSchedulersController;
+use SixtyEightPublishers\CrawlerClient\CrawlerClientInterface;
+use SixtyEightPublishers\CrawlerClient\Exception\ControllerResponseExceptionInterface;
+use Throwable;
 
 trait GetScenarioSchedulerResponseTrait
 {
-	protected ?ScenarioSchedulerResponse $scenarioSchedulerResponse = NULL;
+    protected ?ScenarioSchedulerResponse $scenarioSchedulerResponse = null;
 
-	protected ?Throwable $responseError = NULL;
+    protected ?Throwable $responseError = null;
 
-	protected function getScenarioSchedulerResponse(CrawlerClientInterface $client, ?string $scenarioSchedulerId): ?ScenarioSchedulerResponse
-	{
-		if (NULL === $scenarioSchedulerId || NULL !== $this->scenarioSchedulerResponse || NULL !== $this->responseError) {
-			return $this->scenarioSchedulerResponse;
-		}
+    protected function getScenarioSchedulerResponse(CrawlerClientInterface $client, ?string $scenarioSchedulerId): ?ScenarioSchedulerResponse
+    {
+        if (null === $scenarioSchedulerId || null !== $this->scenarioSchedulerResponse || null !== $this->responseError) {
+            return $this->scenarioSchedulerResponse;
+        }
 
-		try {
-			$this->scenarioSchedulerResponse = $client
-				->getController(ScenarioSchedulersController::class)
-				->getScenarioScheduler($scenarioSchedulerId);
-		} catch (ControllerResponseExceptionInterface $e) {
-			$this->scenarioSchedulerResponse = NULL;
-			$this->responseError = $e;
-		} catch (Throwable $e) {
-			$this->logger->error((string) $e);
+        try {
+            $this->scenarioSchedulerResponse = $client
+                ->getController(ScenarioSchedulersController::class)
+                ->getScenarioScheduler($scenarioSchedulerId);
+        } catch (ControllerResponseExceptionInterface $e) {
+            $this->scenarioSchedulerResponse = null;
+            $this->responseError = $e;
+        } catch (Throwable $e) {
+            $this->logger->error((string) $e);
 
-			$this->scenarioSchedulerResponse = NULL;
-			$this->responseError = $e;
-		}
+            $this->scenarioSchedulerResponse = null;
+            $this->responseError = $e;
+        }
 
-		return $this->scenarioSchedulerResponse;
-	}
+        return $this->scenarioSchedulerResponse;
+    }
 }

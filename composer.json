@@ -78,7 +78,8 @@
 	"require-dev": {
 		"behat/transliterator": "^1.5",
 		"fakerphp/faker": "^1.20",
-		"friendsofphp/php-cs-fixer": "^3.13",
+		"friendsofphp/php-cs-fixer": "^3.14",
+		"kubawerlos/php-cs-fixer-custom-fixers": "^3.13",
 		"mockery/mockery": "^1.6",
 		"nette/tester": "^2.4",
 		"roave/security-advisories": "dev-latest"

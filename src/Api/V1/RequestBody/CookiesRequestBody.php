@@ -9,17 +9,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 final class CookiesRequestBody extends BasicEntity
 {
-	public ?string $locale = NULL;
+    public ?string $locale = null;
 
-	/**
-	 * @Assert\AtLeastOneOf({
-	 *     @Assert\Type("string"),
-	 *     @Assert\All({
-	 *         @Assert\Type("string")
-	 *     })
-	 * })
-	 *
-	 * @var string|string[]|NULL
-	 */
-	public $category;
+    /**
+     * @Assert\AtLeastOneOf({
+     *     @Assert\Type("string"),
+     *     @Assert\All({
+     *         @Assert\Type("string")
+     *     })
+     * })
+     *
+     * @var string|string[]|NULL
+     */
+    public string|array|null $category = null;
 }

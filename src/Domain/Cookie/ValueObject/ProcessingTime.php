@@ -10,38 +10,30 @@ use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AbstractStringVal
 
 final class ProcessingTime extends AbstractStringValueObject
 {
-	public const PERSISTENT = 'persistent';
-	public const SESSION = 'session';
+    public const PERSISTENT = 'persistent';
+    public const SESSION = 'session';
 
-	/**
-	 * @param string $value
-	 *
-	 * @return static
-	 * @throws \App\Domain\Cookie\Exception\InvalidProcessingTimeException
-	 */
-	public static function withValidation(string $value): self
-	{
-		if (self::PERSISTENT !== $value && self::SESSION !== $value && !Estimate::isMaskValid($value)) {
-			throw InvalidProcessingTimeException::invalidValue($value);
-		}
+    /**
+     * @return static
+     * @throws InvalidProcessingTimeException
+     */
+    public static function withValidation(string $value): self
+    {
+        if (self::PERSISTENT !== $value && self::SESSION !== $value && !Estimate::isMaskValid($value)) {
+            throw InvalidProcessingTimeException::invalidValue($value);
+        }
 
-		return self::fromValue($value);
-	}
+        return self::fromValue($value);
+    }
 
-	/**
-	 * @param string      $locale
-	 * @param string|NULL $fallbackLocale
-	 *
-	 * @return string
-	 */
-	public function print(string $locale, ?string $fallbackLocale = NULL): string
-	{
-		$value = $this->value();
+    public function print(string $locale, ?string $fallbackLocale = null): string
+    {
+        $value = $this->value();
 
-		if (self::PERSISTENT === $value || self::SESSION === $value) {
-			return $value;
-		}
+        if (self::PERSISTENT === $value || self::SESSION === $value) {
+            return $value;
+        }
 
-		return Estimate::fromMask($value, $locale, $fallbackLocale);
-	}
+        return Estimate::fromMask($value, $locale, $fallbackLocale);
+    }
 }

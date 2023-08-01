@@ -11,11 +11,11 @@ use App\ReadModel\AbstractDataGridQuery;
  */
 final class ImportDataGridQuery extends AbstractDataGridQuery
 {
-	/**
-	 * @return static
-	 */
-	public static function create(): self
-	{
-		return self::fromParameters([]);
-	}
+    /**
+     * @return static
+     */
+    public static function create(): self
+    {
+        return self::fromParameters([]);
+    }
 }

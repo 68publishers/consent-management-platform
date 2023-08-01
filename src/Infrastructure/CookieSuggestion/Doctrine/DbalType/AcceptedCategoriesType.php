@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class AcceptedCategoriesType extends AbstractValueObjectSetType
 {
-	protected string $valueObjectClassname = AcceptedCategories::class;
+    protected string $valueObjectClassname = AcceptedCategories::class;
 }

@@ -9,21 +9,15 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class ImportEndedEvent extends Event
 {
-	private ImportState $importState;
+    private ImportState $importState;
 
-	/**
-	 * @param \App\Application\Import\ImportState $importState
-	 */
-	public function __construct(ImportState $importState)
-	{
-		$this->importState = $importState;
-	}
+    public function __construct(ImportState $importState)
+    {
+        $this->importState = $importState;
+    }
 
-	/**
-	 * @return \App\Application\Import\ImportState
-	 */
-	public function importState(): ImportState
-	{
-		return $this->importState;
-	}
+    public function importState(): ImportState
+    {
+        return $this->importState;
+    }
 }
