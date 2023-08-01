@@ -90,6 +90,7 @@ final class WeeklyOverviewCommand extends Command
 			$consentStatistics = $this->projectStatisticsCalculator->calculateConsentStatistics($projectId, $period);
 			$cookieStatistics = $this->projectStatisticsCalculator->calculateCookieStatistics($projectId, $period->endDate());
 			$lastConsentDate = $this->projectStatisticsCalculator->calculateLastConsentDate($projectId, $period->endDate());
+			$cookieSuggestionStatistics = $this->projectStatisticsCalculator->calculateCookieSuggestionStatistics($projectId);
 
 			$projects[$projectId] = array_merge($projects[$projectId], [
 				'uniqueConsents' => [
@@ -110,6 +111,14 @@ final class WeeklyOverviewCommand extends Command
 				'cookies' => [
 					'commonValue' => $cookieStatistics->numberOfCommonCookies(),
 					'privateValue' => $cookieStatistics->numberOfPrivateCookies(),
+				],
+				'cookieSuggestions' => [
+					'enabled' => NULL !== $cookieSuggestionStatistics,
+					'missing' => NULL !== $cookieSuggestionStatistics ? $cookieSuggestionStatistics->missing : 0,
+					'unassociated' => NULL !== $cookieSuggestionStatistics ? $cookieSuggestionStatistics->unassociated : 0,
+					'problematic' => NULL !== $cookieSuggestionStatistics ? $cookieSuggestionStatistics->problematic : 0,
+					'unproblematic' => NULL !== $cookieSuggestionStatistics ? $cookieSuggestionStatistics->unproblematic : 0,
+					'ignored' => NULL !== $cookieSuggestionStatistics ? $cookieSuggestionStatistics->ignored : 0,
 				],
 			]);
 		}

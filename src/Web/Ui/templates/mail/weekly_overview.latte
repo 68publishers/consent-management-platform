@@ -19,6 +19,10 @@
         .arrow-red { color:#ef4444; }
         .arrow i { display:inline-block;vertical-align:middle;font-weight:800;font-style:normal; }
         .arrow span { display:inline-block;vertical-align:middle; }
+        .badge-indigo { padding: 0.125rem 0.25rem;margin-right: 1px;align-items: center;border-radius: 0.25rem;font-size: 0.75rem;line-height: 1rem;font-weight: 500;color: #3730A3;background-color: #E0E7FF; }
+        .badge-red { padding: 0.125rem 0.25rem;margin-right: 1px;align-items: center;border-radius: 0.25rem;font-size: 0.75rem;line-height: 1rem;font-weight: 500;color: #991B1B;background-color: #FEE2E2; }
+        .badge-green { padding: 0.125rem 0.25rem;margin-right: 1px;align-items: center;border-radius: 0.25rem;font-size: 0.75rem;line-height: 1rem;font-weight: 500;color: #065F46;background-color: #D1FAE5; }
+        .badge-gray { padding: 0.125rem 0.25rem;margin-right: 1px;align-items: center;border-radius: 0.25rem;font-size: 0.75rem;line-height: 1rem;font-weight: 500;color: #1F2937;background-color: #F3F4F6; }
     </style>
 {/block}
 
@@ -27,11 +31,11 @@
         <thead>
             <tr>
                 <th scope="col" style="width: 116px">{_col_name}</th>
-                <th scope="col" style="width: 80px">{_col_consents}</th>
-                <th scope="col" style="width: 80px">{_col_positivity}</th>
-                <th scope="col" class="text-center" style="width: 100px">{_col_providers}</th>
-                <th scope="col" class="text-center" style="width: 80px">{_col_cookies}</th>
-                <th scope="col" style="width: 80px">{_col_last_consent_date}</th>
+                <th scope="col" style="width: 70px">{_col_consents}</th>
+                <th scope="col" style="width: 70px">{_col_positivity}</th>
+                <th scope="col" class="text-center" style="width: 90px">{_col_providers}</th>
+                <th scope="col" class="text-center" style="width: 120px">{_col_cookies}</th>
+                <th scope="col" style="width: 70px">{_col_last_consent_date}</th>
             </tr>
         </thead>
         <tbody>
@@ -70,6 +74,12 @@
                     {else}
                         {$project['cookies']['commonValue']|formatNumber} + {$project['cookies']['privateValue']|formatNumber}
                     {/if}
+                    <div n:if="$project['cookieSuggestions']['enabled']" style="margin-top:8px;">
+                        <span class="badge-indigo">{$project['cookieSuggestions']['missing'] + $project['cookieSuggestions']['unassociated']}</span>
+                        <span class="badge-red">{$project['cookieSuggestions']['problematic']}</span>
+                        <span class="badge-green">{$project['cookieSuggestions']['unproblematic']}</span>
+                        <span class="badge-gray">{$project['cookieSuggestions']['ignored']}</span>
+                    </div>
                 </td>
                 <td>
                     {$project['lastConsent']['formattedValue'] ?? '-'}
