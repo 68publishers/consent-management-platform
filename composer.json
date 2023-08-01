@@ -34,7 +34,7 @@
 		"contributte/mailing": "dev-master as 0.5.2",
 		"contributte/menu-control": "^3.0",
 		"contributte/monolog": "^0.5.0",
-		"contributte/psr6-caching": "^0.2.1",
+		"contributte/psr6-caching": "^0.3",
 		"contributte/recaptcha": "^3.4.1",
 		"contributte/translation": "^2.0.2",
 		"fmasa/messenger": "dev-feature/handler-options as 2.0.0",

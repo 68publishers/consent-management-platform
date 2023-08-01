@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c2c40e9f68c0aba4249e1969ba3bf7d",
+    "content-hash": "ef45276bc6cfa36a25d66dd436797500",
     "packages": [
         {
             "name": "68publishers/asset",
@@ -1682,36 +1682,33 @@
         },
         {
             "name": "contributte/psr6-caching",
-            "version": "v0.2.1",
+            "version": "v0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/contributte/psr6-caching.git",
-                "reference": "360bf2fac51490b8dedda2e51f31668b0815bd20"
+                "reference": "3273d92eb6799752e92f92d4053fe302f39322b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/contributte/psr6-caching/zipball/360bf2fac51490b8dedda2e51f31668b0815bd20",
-                "reference": "360bf2fac51490b8dedda2e51f31668b0815bd20",
+                "url": "https://api.github.com/repos/contributte/psr6-caching/zipball/3273d92eb6799752e92f92d4053fe302f39322b5",
+                "reference": "3273d92eb6799752e92f92d4053fe302f39322b5",
                 "shasum": ""
             },
             "require": {
-                "nette/caching": "^3.0.0",
-                "php": ">=7.2",
+                "nette/caching": "^3.2.0",
+                "php": ">=8.1",
                 "psr/cache": "^1.0.0 || ^2.0.0 || ^3.0.0"
             },
             "require-dev": {
-                "nette/di": "^3.0.0",
-                "ninjify/nunjuck": "^0.4",
-                "ninjify/qa": "^0.12",
-                "phpstan/phpstan": "^0.12",
-                "phpstan/phpstan-deprecation-rules": "^0.12",
-                "phpstan/phpstan-nette": "^0.12",
-                "phpstan/phpstan-strict-rules": "^0.12"
+                "contributte/phpstan": "^0.1",
+                "contributte/qa": "^0.4",
+                "contributte/tester": "^0.3",
+                "nette/di": "^3.0.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.3.x-dev"
+                    "dev-master": "0.4.x-dev"
                 }
             },
             "autoload": {
@@ -1743,7 +1740,7 @@
             ],
             "support": {
                 "issues": "https://github.com/contributte/psr6-caching/issues",
-                "source": "https://github.com/contributte/psr6-caching/tree/v0.2.1"
+                "source": "https://github.com/contributte/psr6-caching/tree/v0.3.0"
             },
             "funding": [
                 {
@@ -1755,7 +1752,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-06-25T18:04:51+00:00"
+            "time": "2023-07-27T06:41:53+00:00"
         },
         {
             "name": "contributte/psr7-http-message",
