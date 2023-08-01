@@ -4,107 +4,92 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\ImportModule\Control\ImportModal;
 
-use Nette\InvalidStateException;
-use App\ReadModel\Import\ImportView;
-use App\Web\Ui\Form\FormFactoryInterface;
-use App\Web\Ui\Modal\AbstractModalControl;
 use App\Domain\Import\ValueObject\ImportId;
 use App\ReadModel\Import\GetImportByIdQuery;
-use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
-use App\Web\AdminModule\ImportModule\Control\ImportForm\ImportFormControl;
+use App\ReadModel\Import\ImportView;
 use App\Web\AdminModule\ImportModule\Control\ImportDetail\ImportDetailControl;
-use App\Web\AdminModule\ImportModule\Control\ImportForm\Event\ImportEndedEvent;
-use App\Web\AdminModule\ImportModule\Control\ImportModal\Event\ShowingImportDetailEvent;
-use App\Web\AdminModule\ImportModule\Control\ImportForm\ImportFormControlFactoryInterface;
 use App\Web\AdminModule\ImportModule\Control\ImportDetail\ImportDetailControlFactoryInterface;
+use App\Web\AdminModule\ImportModule\Control\ImportForm\Event\ImportEndedEvent;
+use App\Web\AdminModule\ImportModule\Control\ImportForm\ImportFormControl;
+use App\Web\AdminModule\ImportModule\Control\ImportForm\ImportFormControlFactoryInterface;
+use App\Web\AdminModule\ImportModule\Control\ImportModal\Event\ShowingImportDetailEvent;
+use App\Web\Ui\Form\FormFactoryInterface;
+use App\Web\Ui\Modal\AbstractModalControl;
+use Nette\InvalidStateException;
+use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 
 final class ImportModalControl extends AbstractModalControl
 {
-	/** @persistent */
-	public string $importId  = '';
+    /** @persistent */
+    public string $importId  = '';
 
-	private ImportFormControlFactoryInterface $importFormControlFactory;
+    private ImportFormControlFactoryInterface $importFormControlFactory;
 
-	private ImportDetailControlFactoryInterface $importDetailControlFactory;
+    private ImportDetailControlFactoryInterface $importDetailControlFactory;
 
-	private QueryBusInterface $queryBus;
+    private QueryBusInterface $queryBus;
 
-	private ?string $strictImportType;
+    private ?string $strictImportType;
 
-	private ?ImportView $importView = NULL;
+    private ?ImportView $importView = null;
 
-	/**
-	 * @param \App\Web\AdminModule\ImportModule\Control\ImportForm\ImportFormControlFactoryInterface     $importFormControlFactory
-	 * @param \App\Web\AdminModule\ImportModule\Control\ImportDetail\ImportDetailControlFactoryInterface $importDetailControlFactory
-	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface                             $queryBus
-	 * @param string|NULL                                                                                $strictImportType
-	 */
-	public function __construct(ImportFormControlFactoryInterface $importFormControlFactory, ImportDetailControlFactoryInterface $importDetailControlFactory, QueryBusInterface $queryBus, ?string $strictImportType = NULL)
-	{
-		$this->importFormControlFactory = $importFormControlFactory;
-		$this->importDetailControlFactory = $importDetailControlFactory;
-		$this->queryBus = $queryBus;
-		$this->strictImportType = $strictImportType;
-	}
+    public function __construct(ImportFormControlFactoryInterface $importFormControlFactory, ImportDetailControlFactoryInterface $importDetailControlFactory, QueryBusInterface $queryBus, ?string $strictImportType = null)
+    {
+        $this->importFormControlFactory = $importFormControlFactory;
+        $this->importDetailControlFactory = $importDetailControlFactory;
+        $this->queryBus = $queryBus;
+        $this->strictImportType = $strictImportType;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	protected function beforeRender(): void
-	{
-		parent::beforeRender();
+    protected function beforeRender(): void
+    {
+        parent::beforeRender();
 
-		$this->template->importView = $this->importView();
-	}
+        $template = $this->getTemplate();
+        assert($template instanceof ImportModalTemplate);
 
-	/**
-	 * @return \App\Web\AdminModule\ImportModule\Control\ImportForm\ImportFormControl
-	 */
-	protected function createComponentForm(): ImportFormControl
-	{
-		$control = $this->importFormControlFactory->create($this->strictImportType);
+        $template->importView = $this->importView();
+    }
 
-		$control->setFormFactoryOptions([
-			FormFactoryInterface::OPTION_AJAX => TRUE,
-		]);
+    protected function createComponentForm(): ImportFormControl
+    {
+        $control = $this->importFormControlFactory->create($this->strictImportType);
 
-		$control->addEventListener(ImportEndedEvent::class, function (ImportEndedEvent $event): void {
-			$this->importId = $event->importState()->id;
-			$this->redrawControl();
+        $control->setFormFactoryOptions([
+            FormFactoryInterface::OPTION_AJAX => true,
+        ]);
 
-			$this->dispatchEvent(new ShowingImportDetailEvent($event->importState()));
-		});
+        $control->addEventListener(ImportEndedEvent::class, function (ImportEndedEvent $event): void {
+            $this->importId = $event->importState()->id;
+            $this->redrawControl();
 
-		return $control;
-	}
+            $this->dispatchEvent(new ShowingImportDetailEvent($event->importState()));
+        });
 
-	/**
-	 * @return \App\Web\AdminModule\ImportModule\Control\ImportDetail\ImportDetailControl
-	 */
-	protected function createComponentDetail(): ImportDetailControl
-	{
-		$importView = $this->importView();
+        return $control;
+    }
 
-		if (NULL === $importView) {
-			throw new InvalidStateException('Missing import view.');
-		}
+    protected function createComponentDetail(): ImportDetailControl
+    {
+        $importView = $this->importView();
 
-		return $this->importDetailControlFactory->create($importView);
-	}
+        if (null === $importView) {
+            throw new InvalidStateException('Missing import view.');
+        }
 
-	/**
-	 * @return \App\ReadModel\Import\ImportView|NULL
-	 */
-	private function importView(): ?ImportView
-	{
-		if (NULL !== $this->importView) {
-			return $this->importView;
-		}
+        return $this->importDetailControlFactory->create($importView);
+    }
 
-		if (empty($this->importId) || !ImportId::isValid($this->importId)) {
-			return NULL;
-		}
+    private function importView(): ?ImportView
+    {
+        if (null !== $this->importView) {
+            return $this->importView;
+        }
 
-		return $this->importView = $this->queryBus->dispatch(GetImportByIdQuery::create($this->importId));
-	}
+        if (empty($this->importId) || !ImportId::isValid($this->importId)) {
+            return null;
+        }
+
+        return $this->importView = $this->queryBus->dispatch(GetImportByIdQuery::create($this->importId));
+    }
 }

@@ -6,5 +6,5 @@ namespace App\Web\AdminModule\ApplicationModule\Control\CrawlerSettingsForm;
 
 interface CrawlerSettingsFormControlFactoryInterface
 {
-	public function create(): CrawlerSettingsFormControl;
+    public function create(): CrawlerSettingsFormControl;
 }

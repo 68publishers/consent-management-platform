@@ -8,21 +8,15 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class ModalDispatchedEvent extends Event
 {
-	private string $name;
+    private string $name;
 
-	/**
-	 * @param string $name
-	 */
-	public function __construct(string $name)
-	{
-		$this->name = $name;
-	}
+    public function __construct(string $name)
+    {
+        $this->name = $name;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function name(): string
-	{
-		return $this->name;
-	}
+    public function name(): string
+    {
+        return $this->name;
+    }
 }

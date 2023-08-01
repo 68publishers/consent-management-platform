@@ -4,50 +4,43 @@ declare(strict_types=1);
 
 namespace App\Application\DataProcessor\Read\Reader;
 
-use App\Application\DataProcessor\Read\Event\ReaderErrorEvent;
-use App\Application\DataProcessor\Exception\StopReadingException;
 use App\Application\DataProcessor\Exception\DataReaderExceptionInterface;
+use App\Application\DataProcessor\Exception\StopReadingException;
+use App\Application\DataProcessor\Read\Event\ReaderErrorEvent;
 
 final class ErrorCallback
 {
-	/** @var callable|NULL */
-	private $callback;
+    /** @var callable|NULL */
+    private $callback;
 
-	private function __construct()
-	{
-	}
+    private function __construct() {}
 
-	/**
-	 * @param callable|NULL $callback
-	 *
-	 * @return static
-	 */
-	public static function wrap(?callable $callback = NULL): self
-	{
-		$errorCallback = new self();
-		$errorCallback->callback = $callback;
+    /**
+     * @return static
+     */
+    public static function wrap(?callable $callback = null): self
+    {
+        $errorCallback = new self();
+        $errorCallback->callback = $callback;
 
-		return $errorCallback;
-	}
+        return $errorCallback;
+    }
 
-	/**
-	 * @param \App\Application\DataProcessor\Exception\DataReaderExceptionInterface $exception
-	 *
-	 * @return void
-	 * @throws \App\Application\DataProcessor\Exception\DataReaderExceptionInterface
-	 */
-	public function __invoke(DataReaderExceptionInterface $exception): void
-	{
-		if (NULL === $this->callback) {
-			throw $exception;
-		}
+    /**
+     * @throws DataReaderExceptionInterface
+     */
+    public function __invoke(DataReaderExceptionInterface $exception): void
+    {
+        if (null === $this->callback) {
+            throw $exception;
+        }
 
-		$event = new ReaderErrorEvent($exception);
+        $event = new ReaderErrorEvent($exception);
 
-		($this->callback)($event);
+        ($this->callback)($event);
 
-		if ($event->stopped()) {
-			throw StopReadingException::create();
-		}
-	}
+        if ($event->stopped()) {
+            throw StopReadingException::create();
+        }
+    }
 }

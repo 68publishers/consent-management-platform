@@ -9,52 +9,43 @@ use SixtyEightPublishers\TranslationBridge\Localization\TranslatorLocalizerInter
 
 final class Locales
 {
-	private string $vendorDir;
+    private string $vendorDir;
 
-	private TranslatorLocalizerInterface $translatorLocalizer;
+    private TranslatorLocalizerInterface $translatorLocalizer;
 
-	private array $cache = [];
+    private array $cache = [];
 
-	/**
-	 * @param string                                                                            $vendorDir
-	 * @param \SixtyEightPublishers\TranslationBridge\Localization\TranslatorLocalizerInterface $translatorLocalizer
-	 */
-	public function __construct(string $vendorDir, TranslatorLocalizerInterface $translatorLocalizer)
-	{
-		$this->vendorDir = $vendorDir;
-		$this->translatorLocalizer = $translatorLocalizer;
-	}
+    public function __construct(string $vendorDir, TranslatorLocalizerInterface $translatorLocalizer)
+    {
+        $this->vendorDir = $vendorDir;
+        $this->translatorLocalizer = $translatorLocalizer;
+    }
 
-	/**
-	 * @param string|NULL $locale
-	 *
-	 * @return array
-	 */
-	public function get(?string $locale = NULL): array
-	{
-		$locale = $locale ?? $this->translatorLocalizer->getLocale();
+    public function get(?string $locale = null): array
+    {
+        $locale = $locale ?? $this->translatorLocalizer->getLocale();
 
-		if (isset($this->cache[$locale])) {
-			return $this->cache[$locale];
-		}
+        if (isset($this->cache[$locale])) {
+            return $this->cache[$locale];
+        }
 
-		$locales = array_merge([$locale], $this->translatorLocalizer->getFallbackLocales());
+        $locales = array_merge([$locale], $this->translatorLocalizer->getFallbackLocales());
 
-		foreach ($locales as $loc) {
-			$filename = sprintf(
-				'%s/umpirsky/locale-list/data/%s/locales.php',
-				$this->vendorDir,
-				$loc
-			);
+        foreach ($locales as $loc) {
+            $filename = sprintf(
+                '%s/umpirsky/locale-list/data/%s/locales.php',
+                $this->vendorDir,
+                $loc,
+            );
 
-			if (file_exists($filename)) {
-				return $this->cache[$locale] = include $filename;
-			}
-		}
+            if (file_exists($filename)) {
+                return $this->cache[$locale] = include $filename;
+            }
+        }
 
-		throw new RuntimeException(sprintf(
-			'Can\'t resolve the list of locales for locale %s.',
-			$locale
-		));
-	}
+        throw new RuntimeException(sprintf(
+            'Can\'t resolve the list of locales for locale %s.',
+            $locale,
+        ));
+    }
 }

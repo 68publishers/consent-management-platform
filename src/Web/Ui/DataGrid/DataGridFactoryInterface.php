@@ -8,10 +8,5 @@ use App\ReadModel\DataGridQueryInterface;
 
 interface DataGridFactoryInterface
 {
-	/**
-	 * @param \App\ReadModel\DataGridQueryInterface|null $query
-	 *
-	 * @return \App\Web\Ui\DataGrid\DataGrid
-	 */
-	public function create(?DataGridQueryInterface $query = NULL): DataGrid;
+    public function create(?DataGridQueryInterface $query = null): DataGrid;
 }

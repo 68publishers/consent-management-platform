@@ -4,165 +4,131 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\Presenter;
 
-use App\Web\Ui\Presenter;
-use Nette\HtmlStringable;
-use App\ReadModel\User\UserView;
-use Nette\Application\AbortException;
-use App\Web\Control\Footer\FooterControl;
-use Contributte\MenuControl\UI\MenuComponent;
-use Contributte\MenuControl\UI\MenuComponentFactory;
+use App\Application\GlobalSettings\GlobalSettingsInterface;
 use App\Application\GlobalSettings\ValidLocalesProvider;
 use App\Application\Localization\ApplicationDateTimeZone;
+use App\ReadModel\User\UserView;
+use App\Web\Control\Footer\FooterControl;
 use App\Web\Control\Footer\FooterControlFactoryInterface;
-use App\Application\GlobalSettings\GlobalSettingsInterface;
+use App\Web\Ui\Presenter;
+use Contributte\MenuControl\UI\MenuComponent;
+use Contributte\MenuControl\UI\MenuComponentFactory;
+use Nette\Application\AbortException;
+use Nette\HtmlStringable;
 use SixtyEightPublishers\SmartNetteComponent\Attribute\LoggedIn;
-use SixtyEightPublishers\UserBundle\Bridge\Nette\Security\Identity;
 use SixtyEightPublishers\SmartNetteComponent\Exception\ForbiddenRequestException;
+use SixtyEightPublishers\UserBundle\Application\Exception\IdentityException;
+use SixtyEightPublishers\UserBundle\Bridge\Nette\Security\Identity;
 
 #[LoggedIn]
 abstract class AdminPresenter extends Presenter
 {
-	private const MENU_NAME_SIDEBAR = 'sidebar';
-	private const MENU_NAME_PROFILE = 'profile';
+    private const MENU_NAME_SIDEBAR = 'sidebar';
+    private const MENU_NAME_PROFILE = 'profile';
 
-	protected GlobalSettingsInterface $globalSettings;
+    protected GlobalSettingsInterface $globalSettings;
 
-	protected ValidLocalesProvider $validLocalesProvider;
+    protected ValidLocalesProvider $validLocalesProvider;
 
-	private MenuComponentFactory $menuComponentFactory;
+    private MenuComponentFactory $menuComponentFactory;
 
-	protected array $customBreadcrumbItems = [];
+    protected array $customBreadcrumbItems = [];
 
-	private FooterControlFactoryInterface $footerControlFactory;
+    private FooterControlFactoryInterface $footerControlFactory;
 
-	/**
-	 * @param \App\Application\GlobalSettings\GlobalSettingsInterface $globalSettings
-	 * @param \App\Application\GlobalSettings\ValidLocalesProvider    $validLocalesProvider
-	 * @param \Contributte\MenuControl\UI\MenuComponentFactory        $menuComponentFactory
-	 * @param \App\Web\Control\Footer\FooterControlFactoryInterface   $footerControlFactory
-	 *
-	 * @return void
-	 */
-	public function injectAdminDependencies(GlobalSettingsInterface $globalSettings, ValidLocalesProvider $validLocalesProvider, MenuComponentFactory $menuComponentFactory, FooterControlFactoryInterface $footerControlFactory): void
-	{
-		$this->globalSettings = $globalSettings;
-		$this->validLocalesProvider = $validLocalesProvider;
-		$this->menuComponentFactory = $menuComponentFactory;
-		$this->footerControlFactory = $footerControlFactory;
-	}
+    public function injectAdminDependencies(GlobalSettingsInterface $globalSettings, ValidLocalesProvider $validLocalesProvider, MenuComponentFactory $menuComponentFactory, FooterControlFactoryInterface $footerControlFactory): void
+    {
+        $this->globalSettings = $globalSettings;
+        $this->validLocalesProvider = $validLocalesProvider;
+        $this->menuComponentFactory = $menuComponentFactory;
+        $this->footerControlFactory = $footerControlFactory;
+    }
 
-	/**
-	 * @throws AbortException
-	 */
-	protected function onForbiddenRequest(ForbiddenRequestException $exception): void
-	{
-		if ($exception->rule instanceof LoggedIn) {
-			$this->redirect(':Front:SignIn:', [
-				'backLink' => $this->storeRequest(),
-			]);
-		}
-	}
+    /**
+     * @throws AbortException
+     */
+    protected function onForbiddenRequest(ForbiddenRequestException $exception): void
+    {
+        if ($exception->rule instanceof LoggedIn) {
+            $this->redirect(':Front:SignIn:', [
+                'backLink' => $this->storeRequest(),
+            ]);
+        }
+    }
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @throws \SixtyEightPublishers\UserBundle\Application\Exception\IdentityException
-	 */
-	protected function startup(): void
-	{
-		parent::startup();
+    /**
+     * @throws IdentityException
+     */
+    protected function startup(): void
+    {
+        parent::startup();
 
-		$userView = $this->getIdentity()->data();
-		assert($userView instanceof UserView);
+        $userView = $this->getIdentity()->data();
+        assert($userView instanceof UserView);
 
-		ApplicationDateTimeZone::set($userView->timezone);
-	}
+        ApplicationDateTimeZone::set($userView->timezone);
+    }
 
-	/**
-	 * @return void
-	 * @throws \SixtyEightPublishers\UserBundle\Application\Exception\IdentityException
-	 */
-	protected function beforeRender(): void
-	{
-		parent::beforeRender();
+    /**
+     * @throws IdentityException
+     */
+    protected function beforeRender(): void
+    {
+        parent::beforeRender();
 
-		$template = $this->getTemplate();
-		assert($template instanceof AdminTemplate);
+        $template = $this->getTemplate();
+        assert($template instanceof AdminTemplate);
 
-		$userView = $this->getIdentity()->data();
-		assert($userView instanceof UserView);
+        $userView = $this->getIdentity()->data();
+        assert($userView instanceof UserView);
 
-		$template->identity = $userView;
-		$template->locales = $this->validLocalesProvider->getValidLocales();
-		$template->defaultLocale = $this->validLocalesProvider->getValidDefaultLocale();
-	}
+        $template->identity = $userView;
+        $template->locales = $this->validLocalesProvider->getValidLocales();
+        $template->defaultLocale = $this->validLocalesProvider->getValidDefaultLocale();
+    }
 
-	/**
-	 * @param \Nette\HtmlStringable|string $title
-	 *
-	 * @return void
-	 */
-	protected function addBreadcrumbItem($title): void
-	{
-		assert(is_string($title) || $title instanceof HtmlStringable);
+    protected function addBreadcrumbItem(HtmlStringable|string $title): void
+    {
+        $this->customBreadcrumbItems[] = $title;
+    }
 
-		$this->customBreadcrumbItems[] = $title;
-	}
+    protected function setBreadcrumbItems(array $items): void
+    {
+        $this->customBreadcrumbItems = $items;
+    }
 
-	/**
-	 * @param array $items
-	 *
-	 * @return void
-	 */
-	protected function setBreadcrumbItems(array $items): void
-	{
-		$this->customBreadcrumbItems = $items;
-	}
+    protected function getIdentity(): Identity
+    {
+        $identity = $this->getUser()->getIdentity();
+        assert($identity instanceof Identity);
 
-	/**
-	 * @return \SixtyEightPublishers\UserBundle\Bridge\Nette\Security\Identity
-	 */
-	protected function getIdentity(): Identity
-	{
-		$identity = $this->getUser()->getIdentity();
-		assert($identity instanceof Identity);
+        return $identity;
+    }
 
-		return $identity;
-	}
+    protected function redrawSidebar(): void
+    {
+        $this->redrawControl('sidebar-menu-mobile');
+        $this->redrawControl('sidebar-menu-desktop');
+    }
 
-	protected function redrawSidebar(): void
-	{
-		$this->redrawControl('sidebar-menu-mobile');
-		$this->redrawControl('sidebar-menu-desktop');
-	}
+    protected function createComponentSidebarMenu(): MenuComponent
+    {
+        $control = $this->menuComponentFactory->create(self::MENU_NAME_SIDEBAR);
 
-	/**
-	 * @return \Contributte\MenuControl\UI\MenuComponent
-	 */
-	protected function createComponentSidebarMenu(): MenuComponent
-	{
-		$control = $this->menuComponentFactory->create(self::MENU_NAME_SIDEBAR);
+        $control->onAnchor[] = function (MenuComponent $component) {
+            $component->template->customBreadcrumbItems = $this->customBreadcrumbItems;
+        };
 
-		$control->onAnchor[] = function (MenuComponent $component) {
-			$component->template->customBreadcrumbItems = $this->customBreadcrumbItems;
-		};
+        return $control;
+    }
 
-		return $control;
-	}
+    protected function createComponentProfileMenu(): MenuComponent
+    {
+        return $this->menuComponentFactory->create(self::MENU_NAME_PROFILE);
+    }
 
-	/**
-	 * @return \Contributte\MenuControl\UI\MenuComponent
-	 */
-	protected function createComponentProfileMenu(): MenuComponent
-	{
-		return $this->menuComponentFactory->create(self::MENU_NAME_PROFILE);
-	}
-
-	/**
-	 * @return \App\Web\Control\Footer\FooterControl
-	 */
-	protected function createComponentFooter(): FooterControl
-	{
-		return $this->footerControlFactory->create();
-	}
+    protected function createComponentFooter(): FooterControl
+    {
+        return $this->footerControlFactory->create();
+    }
 }

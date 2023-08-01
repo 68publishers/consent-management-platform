@@ -4,31 +4,24 @@ declare(strict_types=1);
 
 namespace App\Application\DataProcessor\Description;
 
-use Nette\Schema\Elements\Type;
 use App\Application\DataProcessor\Context\ContextInterface;
+use Nette\Schema\Elements\Type;
 
 final class Assert implements TypeDescriptorPropertyInterface
 {
-	/** @var callable  */
-	private $validator;
+    /** @var callable  */
+    private $validator;
 
-	private ?string $description;
+    private ?string $description;
 
-	/**
-	 * @param callable    $validator
-	 * @param string|NULL $description
-	 */
-	public function __construct(callable $validator, ?string $description = NULL)
-	{
-		$this->validator = $validator;
-		$this->description = $description;
-	}
+    public function __construct(callable $validator, ?string $description = null)
+    {
+        $this->validator = $validator;
+        $this->description = $description;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function applyToType(Type $type, ContextInterface $context): Type
-	{
-		return $type->assert($this->validator, $this->description);
-	}
+    public function applyToType(Type $type, ContextInterface $context): Type
+    {
+        return $type->assert($this->validator, $this->description);
+    }
 }

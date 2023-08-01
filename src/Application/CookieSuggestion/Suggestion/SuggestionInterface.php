@@ -6,20 +6,20 @@ namespace App\Application\CookieSuggestion\Suggestion;
 
 interface SuggestionInterface
 {
-	public function getSuggestionId(): string;
+    public function getSuggestionId(): string;
 
-	public function getSuggestionName(): string;
+    public function getSuggestionName(): string;
 
-	public function getSuggestionDomain(): string;
+    public function getSuggestionDomain(): string;
 
-	/**
-	 * @return non-empty-list<CookieOccurrence>
-	 */
-	public function getOccurrences(): array;
+    /**
+     * @return non-empty-list<CookieOccurrence>
+     */
+    public function getOccurrences(): array;
 
-	public function hasWarnings(): bool;
+    public function hasWarnings(): bool;
 
-	public function isVirtual(): bool;
+    public function isVirtual(): bool;
 
-	public function getLatestOccurrence(): ?CookieOccurrence;
+    public function getLatestOccurrence(): ?CookieOccurrence;
 }

@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class ConsentsType extends AbstractArrayValueObjectType
 {
-	protected string $valueObjectClassname = Consents::class;
+    protected string $valueObjectClassname = Consents::class;
 }

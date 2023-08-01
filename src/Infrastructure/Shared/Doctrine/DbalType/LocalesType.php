@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class LocalesType extends AbstractValueObjectSetType
 {
-	protected string $valueObjectClassname = Locales::class;
+    protected string $valueObjectClassname = Locales::class;
 }

@@ -9,56 +9,46 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 final class GetProjectStatisticsRequestBody extends BasicEntity
 {
-	/**
-	 * @Assert\NotBlank()
-	 * @Assert\Uuid(),
-	 *
-	 * @var string|NULL
-	 */
-	public $userId;
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Uuid(),
+     */
+    public ?string $userId = null;
 
-	/**
-	 * @Assert\NotBlank()
-	 * @Assert\Timezone(),
-	 *
-	 * @var string|NULL
-	 */
-	public $timezone;
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Timezone(),
+     */
+    public ?string $timezone = null;
 
-	/**
-	 * @Assert\NotBlank()
-	 * @Assert\Type("string"),
-	 *
-	 * @var string|NULL
-	 */
-	public $locale;
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Type("string"),
+     */
+    public ?string $locale = null;
 
-	/**
-	 * @Assert\NotBlank()
-	 * @Assert\Type("string"),
-	 *
-	 * @var string
-	 */
-	public $startDate;
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Type("string"),
+     */
+    public string $startDate = '';
 
-	/**
-	 * @Assert\NotBlank()
-	 * @Assert\Type("string"),
-	 *
-	 * @var string
-	 */
-	public $endDate;
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Type("string"),
+     */
+    public string $endDate = '';
 
-	/**
-	 * @Assert\NotBlank()
-	 * @Assert\AtLeastOneOf({
-	 *     @Assert\Type("string"),
-	 *     @Assert\All({
-	 *         @Assert\Type("string")
-	 *     })
-	 * })
-	 *
-	 * @var string|string[]|NULL
-	 */
-	public $projects;
+    /**
+     * @Assert\NotBlank()
+     * @Assert\AtLeastOneOf({
+     *     @Assert\Type("string"),
+     *     @Assert\All({
+     *         @Assert\Type("string")
+     *     })
+     * })
+     *
+     * @var string|string[]|NULL
+     */
+    public string|array|null $projects = null;
 }

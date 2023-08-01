@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class ShortIdentifierType extends AbstractIntegerValueObjectType
 {
-	protected string $valueObjectClassname = ShortIdentifier::class;
+    protected string $valueObjectClassname = ShortIdentifier::class;
 }

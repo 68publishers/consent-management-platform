@@ -11,23 +11,18 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
  */
 final class FindUserProjectsQuery extends AbstractQuery
 {
-	/**
-	 * @param string $userId
-	 *
-	 * @return static
-	 */
-	public static function create(string $userId): self
-	{
-		return self::fromParameters([
-			'user_id' => $userId,
-		]);
-	}
+    /**
+     * @return static
+     */
+    public static function create(string $userId): self
+    {
+        return self::fromParameters([
+            'user_id' => $userId,
+        ]);
+    }
 
-	/**
-	 * @return string
-	 */
-	public function userId(): string
-	{
-		return $this->getParam('user_id');
-	}
+    public function userId(): string
+    {
+        return $this->getParam('user_id');
+    }
 }

@@ -6,8 +6,5 @@ namespace App\Web\AdminModule\UserModule\Control\PasswordRequestList;
 
 interface PasswordRequestListControlFactoryInterface
 {
-	/**
-	 * @return \App\Web\AdminModule\UserModule\Control\PasswordRequestList\PasswordRequestListControl
-	 */
-	public function create(): PasswordRequestListControl;
+    public function create(): PasswordRequestListControl;
 }

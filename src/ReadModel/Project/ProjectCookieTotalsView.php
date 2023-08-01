@@ -8,21 +8,18 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\AbstractView;
 
 final class ProjectCookieTotalsView extends AbstractView
 {
-	public int $providers;
+    public int $providers;
 
-	public int $commonCookies;
+    public int $commonCookies;
 
-	public int $privateCookies;
+    public int $privateCookies;
 
-	/**
-	 * @return array
-	 */
-	public function jsonSerialize(): array
-	{
-		return [
-			'providers' => $this->providers,
-			'commonCookies' => $this->commonCookies,
-			'privateCookies' => $this->privateCookies,
-		];
-	}
+    public function jsonSerialize(): array
+    {
+        return [
+            'providers' => $this->providers,
+            'commonCookies' => $this->commonCookies,
+            'privateCookies' => $this->privateCookies,
+        ];
+    }
 }

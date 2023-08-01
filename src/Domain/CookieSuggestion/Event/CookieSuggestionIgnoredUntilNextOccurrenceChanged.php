@@ -9,37 +9,37 @@ use SixtyEightPublishers\ArchitectureBundle\Domain\Event\AbstractDomainEvent;
 
 final class CookieSuggestionIgnoredUntilNextOccurrenceChanged extends AbstractDomainEvent
 {
-	private CookieSuggestionId $cookieSuggestionId;
+    private CookieSuggestionId $cookieSuggestionId;
 
-	private bool $ignoredUntilNextOccurrence;
+    private bool $ignoredUntilNextOccurrence;
 
-	public static function create(
-		CookieSuggestionId $cookieSuggestionId,
-		bool $ignoredUntilNextOccurrence
-	): self {
-		$event = self::occur($cookieSuggestionId->toString(), [
-			'ignored_until_next_occurrence' => $ignoredUntilNextOccurrence,
-		]);
+    public static function create(
+        CookieSuggestionId $cookieSuggestionId,
+        bool $ignoredUntilNextOccurrence,
+    ): self {
+        $event = self::occur($cookieSuggestionId->toString(), [
+            'ignored_until_next_occurrence' => $ignoredUntilNextOccurrence,
+        ]);
 
-		$event->cookieSuggestionId = $cookieSuggestionId;
-		$event->ignoredUntilNextOccurrence = $ignoredUntilNextOccurrence;
+        $event->cookieSuggestionId = $cookieSuggestionId;
+        $event->ignoredUntilNextOccurrence = $ignoredUntilNextOccurrence;
 
-		return $event;
-	}
+        return $event;
+    }
 
-	public function cookieSuggestionId(): CookieSuggestionId
-	{
-		return $this->cookieSuggestionId;
-	}
+    public function cookieSuggestionId(): CookieSuggestionId
+    {
+        return $this->cookieSuggestionId;
+    }
 
-	public function ignoredUntilNextOccurrence(): bool
-	{
-		return $this->ignoredUntilNextOccurrence;
-	}
+    public function ignoredUntilNextOccurrence(): bool
+    {
+        return $this->ignoredUntilNextOccurrence;
+    }
 
-	protected function reconstituteState(array $parameters): void
-	{
-		$this->cookieSuggestionId = CookieSuggestionId::fromUuid($this->aggregateId()->id());
-		$this->ignoredUntilNextOccurrence = (bool) $parameters['ignored_until_next_occurrence'];
-	}
+    protected function reconstituteState(array $parameters): void
+    {
+        $this->cookieSuggestionId = CookieSuggestionId::fromUuid($this->aggregateId()->id());
+        $this->ignoredUntilNextOccurrence = (bool) $parameters['ignored_until_next_occurrence'];
+    }
 }

@@ -9,5 +9,5 @@ use Nette\Bridges\ApplicationLatte\Template;
 
 final class CookieFormModalTemplate extends Template
 {
-	public ?CookieView $default = NULL;
+    public ?CookieView $default = null;
 }

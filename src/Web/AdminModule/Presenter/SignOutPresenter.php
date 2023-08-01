@@ -5,24 +5,25 @@ declare(strict_types=1);
 namespace App\Web\AdminModule\Presenter;
 
 use App\ReadModel\User\UserView;
+use Nette\Application\AbortException;
+use SixtyEightPublishers\UserBundle\Application\Exception\IdentityException;
 use SixtyEightPublishers\UserBundle\Bridge\Nette\Ui\LogoutPresenterTrait;
 
 final class SignOutPresenter extends AdminPresenter
 {
-	use LogoutPresenterTrait;
+    use LogoutPresenterTrait;
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @throws \SixtyEightPublishers\UserBundle\Application\Exception\IdentityException
-	 */
-	protected function handleUserLoggedOut(): void
-	{
-		$userView = $this->getIdentity()->data();
-		assert($userView instanceof UserView);
+    /**
+     * @throws IdentityException
+     * @throws AbortException
+     */
+    protected function handleUserLoggedOut(): never
+    {
+        $userView = $this->getIdentity()->data();
+        assert($userView instanceof UserView);
 
-		$this->redirect(':Front:SignIn:', [
-			'locale' => $userView->profileLocale->value(),
-		]);
-	}
+        $this->redirect(':Front:SignIn:', [
+            'locale' => $userView->profileLocale->value(),
+        ]);
+    }
 }

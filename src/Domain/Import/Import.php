@@ -4,163 +4,133 @@ declare(strict_types=1);
 
 namespace App\Domain\Import;
 
-use DateTimeImmutable;
-use App\Domain\Import\ValueObject\Name;
-use App\Domain\Import\ValueObject\Total;
-use App\Domain\Import\Event\ImportFailed;
-use App\Domain\Import\ValueObject\Output;
-use App\Domain\Import\ValueObject\Status;
-use App\Domain\Import\Event\ImportStarted;
-use App\Domain\Import\ValueObject\ImportId;
-use App\Domain\Import\Event\ImportCompleted;
+use App\Domain\Import\Command\CompleteImportCommand;
 use App\Domain\Import\Command\FailImportCommand;
 use App\Domain\Import\Command\StartImportCommand;
-use App\Domain\Import\Command\CompleteImportCommand;
+use App\Domain\Import\Event\ImportCompleted;
+use App\Domain\Import\Event\ImportFailed;
+use App\Domain\Import\Event\ImportStarted;
 use App\Domain\Import\Exception\InvalidStatusChangeException;
-use SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId;
-use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AggregateId;
-use SixtyEightPublishers\ArchitectureBundle\Domain\Aggregate\AggregateRootTrait;
+use App\Domain\Import\ValueObject\ImportId;
+use App\Domain\Import\ValueObject\Name;
+use App\Domain\Import\ValueObject\Output;
+use App\Domain\Import\ValueObject\Status;
+use App\Domain\Import\ValueObject\Total;
+use DateTimeImmutable;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Aggregate\AggregateRootInterface;
+use SixtyEightPublishers\ArchitectureBundle\Domain\Aggregate\AggregateRootTrait;
+use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AggregateId;
+use SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId;
 
 final class Import implements AggregateRootInterface
 {
-	use AggregateRootTrait;
+    use AggregateRootTrait;
 
-	private ImportId $id;
+    private ImportId $id;
 
-	private UserId $authorId;
+    private UserId $authorId;
 
-	private DateTimeImmutable $createdAt;
+    private DateTimeImmutable $createdAt;
 
-	private ?DateTimeImmutable $endedAt = NULL;
+    private ?DateTimeImmutable $endedAt = null;
 
-	private Name $name;
+    private Name $name;
 
-	private Status $status;
+    private Status $status;
 
-	private Total $imported;
+    private Total $imported;
 
-	private Total $failed;
+    private Total $failed;
 
-	private Total $warned;
+    private Total $warned;
 
-	private Output $output;
+    private Output $output;
 
-	/**
-	 * @param \App\Domain\Import\Command\StartImportCommand $command
-	 *
-	 * @return static
-	 */
-	public static function create(StartImportCommand $command): self
-	{
-		$import = new self();
+    /**
+     * @return static
+     */
+    public static function create(StartImportCommand $command): self
+    {
+        $import = new self();
 
-		$import->recordThat(ImportStarted::create(
-			ImportId::fromString($command->id()),
-			Name::fromValue($command->name()),
-			NULL !== $command->authorId() ? UserId::fromString($command->authorId()) : NULL
-		));
+        $import->recordThat(ImportStarted::create(
+            ImportId::fromString($command->id()),
+            Name::fromValue($command->name()),
+            null !== $command->authorId() ? UserId::fromString($command->authorId()) : null,
+        ));
 
-		return $import;
-	}
+        return $import;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function aggregateId(): AggregateId
-	{
-		return AggregateId::fromUuid($this->id->id());
-	}
+    public function aggregateId(): AggregateId
+    {
+        return AggregateId::fromUuid($this->id->id());
+    }
 
-	/**
-	 * @param \App\Domain\Import\Command\FailImportCommand $command
-	 *
-	 * @return void
-	 */
-	public function fail(FailImportCommand $command): void
-	{
-		$id = ImportId::fromString($command->id());
+    public function fail(FailImportCommand $command): void
+    {
+        $id = ImportId::fromString($command->id());
 
-		if (!$this->id->equals($id) || !$this->status->is(Status::RUNNING)) {
-			throw InvalidStatusChangeException::unableToFail($this->id);
-		}
+        if (!$this->id->equals($id) || !$this->status->is(Status::RUNNING)) {
+            throw InvalidStatusChangeException::unableToFail($this->id);
+        }
 
-		$this->recordThat(ImportFailed::create(
-			$id,
-			Total::fromValue($command->imported()),
-			Total::fromValue($command->failed()),
-			Total::fromValue($command->warned()),
-			Output::fromValue($command->output())
-		));
-	}
+        $this->recordThat(ImportFailed::create(
+            $id,
+            Total::fromValue($command->imported()),
+            Total::fromValue($command->failed()),
+            Total::fromValue($command->warned()),
+            Output::fromValue($command->output()),
+        ));
+    }
 
-	/**
-	 * @param \App\Domain\Import\Command\CompleteImportCommand $command
-	 *
-	 * @return void
-	 */
-	public function complete(CompleteImportCommand $command): void
-	{
-		$id = ImportId::fromString($command->id());
+    public function complete(CompleteImportCommand $command): void
+    {
+        $id = ImportId::fromString($command->id());
 
-		if (!$this->id->equals($id) || !$this->status->is(Status::RUNNING)) {
-			throw InvalidStatusChangeException::unableToComplete($this->id);
-		}
+        if (!$this->id->equals($id) || !$this->status->is(Status::RUNNING)) {
+            throw InvalidStatusChangeException::unableToComplete($this->id);
+        }
 
-		$this->recordThat(ImportCompleted::create(
-			$id,
-			Total::fromValue($command->imported()),
-			Total::fromValue($command->failed()),
-			Total::fromValue($command->warned()),
-			Output::fromValue($command->output())
-		));
-	}
+        $this->recordThat(ImportCompleted::create(
+            $id,
+            Total::fromValue($command->imported()),
+            Total::fromValue($command->failed()),
+            Total::fromValue($command->warned()),
+            Output::fromValue($command->output()),
+        ));
+    }
 
-	/**
-	 * @param \App\Domain\Import\Event\ImportStarted $event
-	 *
-	 * @return void
-	 */
-	protected function whenImportStarted(ImportStarted $event): void
-	{
-		$this->id = $event->id();
-		$this->createdAt = $event->createdAt();
-		$this->name = $event->name();
-		$this->status = Status::running();
-		$this->authorId = $event->authorId();
-		$this->imported = Total::fromValue(0);
-		$this->failed = Total::fromValue(0);
-		$this->warned = Total::fromValue(0);
-		$this->output = Output::fromValue('');
-	}
+    protected function whenImportStarted(ImportStarted $event): void
+    {
+        $this->id = $event->id();
+        $this->createdAt = $event->createdAt();
+        $this->name = $event->name();
+        $this->status = Status::running();
+        $this->authorId = $event->authorId();
+        $this->imported = Total::fromValue(0);
+        $this->failed = Total::fromValue(0);
+        $this->warned = Total::fromValue(0);
+        $this->output = Output::fromValue('');
+    }
 
-	/**
-	 * @param \App\Domain\Import\Event\ImportFailed $event
-	 *
-	 * @return void
-	 */
-	protected function whenImportFailed(ImportFailed $event): void
-	{
-		$this->endedAt = $event->createdAt();
-		$this->status = Status::failed();
-		$this->imported = $event->imported();
-		$this->failed = $event->failed();
-		$this->warned = $event->warned();
-		$this->output = $event->output();
-	}
+    protected function whenImportFailed(ImportFailed $event): void
+    {
+        $this->endedAt = $event->createdAt();
+        $this->status = Status::failed();
+        $this->imported = $event->imported();
+        $this->failed = $event->failed();
+        $this->warned = $event->warned();
+        $this->output = $event->output();
+    }
 
-	/**
-	 * @param \App\Domain\Import\Event\ImportCompleted $event
-	 *
-	 * @return void
-	 */
-	protected function whenImportCompleted(ImportCompleted $event): void
-	{
-		$this->endedAt = $event->createdAt();
-		$this->status = Status::completed();
-		$this->imported = $event->imported();
-		$this->failed = $event->failed();
-		$this->warned = $event->warned();
-		$this->output = $event->output();
-	}
+    protected function whenImportCompleted(ImportCompleted $event): void
+    {
+        $this->endedAt = $event->createdAt();
+        $this->status = Status::completed();
+        $this->imported = $event->imported();
+        $this->failed = $event->failed();
+        $this->warned = $event->warned();
+        $this->output = $event->output();
+    }
 }

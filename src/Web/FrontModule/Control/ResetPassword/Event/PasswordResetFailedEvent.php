@@ -4,26 +4,20 @@ declare(strict_types=1);
 
 namespace App\Web\FrontModule\Control\ResetPassword\Event;
 
-use Throwable;
 use Symfony\Contracts\EventDispatcher\Event;
+use Throwable;
 
 final class PasswordResetFailedEvent extends Event
 {
-	private Throwable $exception;
+    private Throwable $exception;
 
-	/**
-	 * @param \Throwable $exception
-	 */
-	public function __construct(Throwable $exception)
-	{
-		$this->exception = $exception;
-	}
+    public function __construct(Throwable $exception)
+    {
+        $this->exception = $exception;
+    }
 
-	/**
-	 * @return \Throwable
-	 */
-	public function exception(): Throwable
-	{
-		return $this->exception;
-	}
+    public function exception(): Throwable
+    {
+        return $this->exception;
+    }
 }

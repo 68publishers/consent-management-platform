@@ -5,47 +5,38 @@ declare(strict_types=1);
 namespace App\Web\AdminModule\ProjectModule\Presenter;
 
 use App\Application\Acl\ProjectCookieResource;
-use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 use App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControl;
 use App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControlFactoryInterface;
+use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
 
 #[Allowed(resource: ProjectCookieResource::class, privilege: ProjectCookieResource::READ)]
 final class ServiceCookiesPresenter extends SelectedProjectPresenter
 {
-	private CookieListControlFactoryInterface $cookieListControlFactory;
+    private CookieListControlFactoryInterface $cookieListControlFactory;
 
-	/**
-	 * @param \App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControlFactoryInterface $cookieListControlFactory
-	 */
-	public function __construct(CookieListControlFactoryInterface $cookieListControlFactory)
-	{
-		parent::__construct();
+    public function __construct(CookieListControlFactoryInterface $cookieListControlFactory)
+    {
+        parent::__construct();
 
-		$this->cookieListControlFactory = $cookieListControlFactory;
-	}
+        $this->cookieListControlFactory = $cookieListControlFactory;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	protected function startup(): void
-	{
-		parent::startup();
+    protected function startup(): void
+    {
+        parent::startup();
 
-		$this->addBreadcrumbItem($this->getPrefixedTranslator()->translate('page_title'));
-	}
+        $this->addBreadcrumbItem($this->getPrefixedTranslator()->translate('page_title'));
+    }
 
-	/**
-	 * @return \App\Web\AdminModule\CookieModule\Control\CookieList\CookieListControl
-	 */
-	protected function createComponentList(): CookieListControl
-	{
-		$control = $this->cookieListControlFactory->create(
-			$this->validLocalesProvider->withLocalesConfig($this->projectView->locales)
-		);
+    protected function createComponentList(): CookieListControl
+    {
+        $control = $this->cookieListControlFactory->create(
+            $this->validLocalesProvider->withLocalesConfig($this->projectView->locales),
+        );
 
-		$control->configureActions(FALSE, FALSE);
-		$control->projectOnly($this->projectView->id, TRUE);
+        $control->configureActions(false, false);
+        $control->projectOnly($this->projectView->id, true);
 
-		return $control;
-	}
+        return $control;
+    }
 }

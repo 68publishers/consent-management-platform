@@ -8,5 +8,5 @@ use Nette\Bridges\ApplicationLatte\Template;
 
 final class GtmTemplate extends Template
 {
-	public ?string $containerId;
+    public ?string $containerId;
 }

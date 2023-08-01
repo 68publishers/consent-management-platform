@@ -6,23 +6,15 @@ namespace App\Web\Ui\Form;
 
 trait FormFactoryOptionsTrait
 {
-	private array $formFactoryOptions = [];
+    private array $formFactoryOptions = [];
 
-	/**
-	 * @param array $options
-	 *
-	 * @return void
-	 */
-	public function setFormFactoryOptions(array $options): void
-	{
-		$this->formFactoryOptions = $options;
-	}
+    public function setFormFactoryOptions(array $options): void
+    {
+        $this->formFactoryOptions = $options;
+    }
 
-	/**
-	 * @return array
-	 */
-	protected function getFormFactoryOptions(): array
-	{
-		return $this->formFactoryOptions;
-	}
+    protected function getFormFactoryOptions(): array
+    {
+        return $this->formFactoryOptions;
+    }
 }

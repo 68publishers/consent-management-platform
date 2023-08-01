@@ -9,40 +9,27 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20220525230831 extends AbstractMigration
 {
-	/**
-	 * @return string
-	 */
-	public function getDescription(): string
-	{
-		return 'Adds column user.deleted_at (soft-delete) and changed unique indexes for username and email_address (both case-insensitive).';
-	}
+    public function getDescription(): string
+    {
+        return 'Adds column user.deleted_at (soft-delete) and changed unique indexes for username and email_address (both case-insensitive).';
+    }
 
-	/**
-	 * @param \Doctrine\DBAL\Schema\Schema $schema
-	 *
-	 * @return void
-	 */
-	public function up(Schema $schema): void
-	{
-		$this->addSql('DROP INDEX uniq_8d93d649b08e074e');
-		$this->addSql('DROP INDEX uniq_8d93d649f85e0677');
-		$this->addSql('ALTER TABLE "user" ADD deleted_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL');
-		$this->addSql('COMMENT ON COLUMN "user".deleted_at IS \'(DC2Type:datetime_immutable)\'');
-		$this->addSql('CREATE UNIQUE INDEX uniq_user_username ON "user" (lower(username)) WHERE deleted_at IS NULL');
-		$this->addSql('CREATE UNIQUE INDEX uniq_user_email_address ON "user" (lower(email_address)) WHERE deleted_at IS NULL');
-	}
+    public function up(Schema $schema): void
+    {
+        $this->addSql('DROP INDEX uniq_8d93d649b08e074e');
+        $this->addSql('DROP INDEX uniq_8d93d649f85e0677');
+        $this->addSql('ALTER TABLE "user" ADD deleted_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL');
+        $this->addSql('COMMENT ON COLUMN "user".deleted_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('CREATE UNIQUE INDEX uniq_user_username ON "user" (lower(username)) WHERE deleted_at IS NULL');
+        $this->addSql('CREATE UNIQUE INDEX uniq_user_email_address ON "user" (lower(email_address)) WHERE deleted_at IS NULL');
+    }
 
-	/**
-	 * @param \Doctrine\DBAL\Schema\Schema $schema
-	 *
-	 * @return void
-	 */
-	public function down(Schema $schema): void
-	{
-		$this->addSql('DROP INDEX uniq_user_username');
-		$this->addSql('DROP INDEX uniq_user_email_address');
-		$this->addSql('ALTER TABLE "user" DROP deleted_at');
-		$this->addSql('CREATE UNIQUE INDEX uniq_8d93d649b08e074e ON "user" (email_address)');
-		$this->addSql('CREATE UNIQUE INDEX uniq_8d93d649f85e0677 ON "user" (username)');
-	}
+    public function down(Schema $schema): void
+    {
+        $this->addSql('DROP INDEX uniq_user_username');
+        $this->addSql('DROP INDEX uniq_user_email_address');
+        $this->addSql('ALTER TABLE "user" DROP deleted_at');
+        $this->addSql('CREATE UNIQUE INDEX uniq_8d93d649b08e074e ON "user" (email_address)');
+        $this->addSql('CREATE UNIQUE INDEX uniq_8d93d649f85e0677 ON "user" (username)');
+    }
 }

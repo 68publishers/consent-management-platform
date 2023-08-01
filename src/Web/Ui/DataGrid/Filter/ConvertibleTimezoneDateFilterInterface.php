@@ -6,13 +6,7 @@ namespace App\Web\Ui\DataGrid\Filter;
 
 interface ConvertibleTimezoneDateFilterInterface
 {
-	/**
-	 * @return string
-	 */
-	public function getTimezoneFrom(): string;
+    public function getTimezoneFrom(): string;
 
-	/**
-	 * @return string
-	 */
-	public function getTimezoneTo(): string;
+    public function getTimezoneTo(): string;
 }

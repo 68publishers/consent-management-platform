@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class TotalType extends AbstractIntegerValueObjectType
 {
-	protected string $valueObjectClassname = Total::class;
+    protected string $valueObjectClassname = Total::class;
 }

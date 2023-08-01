@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class ProviderTypeType extends AbstractStringValueObjectType
 {
-	protected string $valueObjectClassname = ProviderType::class;
+    protected string $valueObjectClassname = ProviderType::class;
 }

@@ -8,10 +8,5 @@ use SixtyEightPublishers\ForgotPasswordBundle\Domain\ValueObject\PasswordRequest
 
 interface ResetPasswordControlFactoryInterface
 {
-	/**
-	 * @param \SixtyEightPublishers\ForgotPasswordBundle\Domain\ValueObject\PasswordRequestId $passwordRequestId
-	 *
-	 * @return \App\Web\FrontModule\Control\ResetPassword\ResetPasswordControl
-	 */
-	public function create(PasswordRequestId $passwordRequestId): ResetPasswordControl;
+    public function create(PasswordRequestId $passwordRequestId): ResetPasswordControl;
 }

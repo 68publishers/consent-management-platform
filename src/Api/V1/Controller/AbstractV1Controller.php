@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Api\V1\Controller;
 
-use App\Api\Controller\AbstractController;
 use Apitte\Core\Annotation\Controller as Api;
+use App\Api\Controller\AbstractController;
 
 /**
  * @Api\Path("/v1")

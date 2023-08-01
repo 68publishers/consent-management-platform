@@ -8,27 +8,20 @@ use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AbstractValueObje
 
 final class SettingsGroup extends AbstractValueObjectSet
 {
-	public const ITEM_CLASSNAME = Settings::class;
+    public const ITEM_CLASSNAME = Settings::class;
 
-	/**
-	 * @param mixed $value
-	 *
-	 * @return \App\Domain\ConsentSettings\ValueObject\Settings
-	 */
-	protected static function reconstituteItem($value): Settings
-	{
-		return Settings::fromArray($value);
-	}
+    protected static function reconstituteItem($value): Settings
+    {
+        return Settings::fromArray($value);
+    }
 
-	/**
-	 * @param \App\Domain\ConsentSettings\ValueObject\Settings $item
-	 *
-	 * @return array
-	 */
-	protected static function exportItem($item): array
-	{
-		assert($item instanceof Settings);
+    /**
+     * @param Settings $item
+     */
+    protected static function exportItem($item): array
+    {
+        assert($item instanceof Settings);
 
-		return $item->values();
-	}
+        return $item->values();
+    }
 }

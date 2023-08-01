@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class ProcessingTimeType extends AbstractStringValueObjectType
 {
-	protected string $valueObjectClassname = ProcessingTime::class;
+    protected string $valueObjectClassname = ProcessingTime::class;
 }

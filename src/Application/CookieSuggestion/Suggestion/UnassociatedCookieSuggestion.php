@@ -8,50 +8,50 @@ use App\Application\CookieSuggestion\Solution\Solutions;
 
 final class UnassociatedCookieSuggestion extends AbstractSuggestion
 {
-	/** @var non-empty-list<ExistingCookie> */
-	private array $existingCookies;
+    /** @var non-empty-list<ExistingCookie> */
+    private array $existingCookies;
 
-	private Solutions $solutions;
+    private Solutions $solutions;
 
-	/**
-	 * @param non-empty-list<CookieOccurrence> $occurrences
-	 * @param non-empty-list<ExistingCookie>   $existingCookies
-	 */
-	public function __construct(
-		string $suggestionId,
-		string $suggestionName,
-		string $suggestionDomain,
-		array $occurrences,
-		array $existingCookies,
-		Solutions $solutions
-	) {
-		parent::__construct($suggestionId, FALSE, $suggestionName, $suggestionDomain, $occurrences);
+    /**
+     * @param non-empty-list<CookieOccurrence> $occurrences
+     * @param non-empty-list<ExistingCookie>   $existingCookies
+     */
+    public function __construct(
+        string $suggestionId,
+        string $suggestionName,
+        string $suggestionDomain,
+        array $occurrences,
+        array $existingCookies,
+        Solutions $solutions,
+    ) {
+        parent::__construct($suggestionId, false, $suggestionName, $suggestionDomain, $occurrences);
 
-		$this->existingCookies = $existingCookies;
-		$this->solutions = $solutions;
-	}
+        $this->existingCookies = $existingCookies;
+        $this->solutions = $solutions;
+    }
 
-	/**
-	 * @return non-empty-list<ExistingCookie>
-	 */
-	public function getExistingCookies(): array
-	{
-		return $this->existingCookies;
-	}
+    /**
+     * @return non-empty-list<ExistingCookie>
+     */
+    public function getExistingCookies(): array
+    {
+        return $this->existingCookies;
+    }
 
-	public function getSolutions(): Solutions
-	{
-		return $this->solutions;
-	}
+    public function getSolutions(): Solutions
+    {
+        return $this->solutions;
+    }
 
-	public function hasWarnings(): bool
-	{
-		foreach ($this->existingCookies as $existingCookie) {
-			if (0 < count($existingCookie->warnings)) {
-				return TRUE;
-			}
-		}
+    public function hasWarnings(): bool
+    {
+        foreach ($this->existingCookies as $existingCookie) {
+            if (0 < count($existingCookie->warnings)) {
+                return true;
+            }
+        }
 
-		return FALSE;
-	}
+        return false;
+    }
 }

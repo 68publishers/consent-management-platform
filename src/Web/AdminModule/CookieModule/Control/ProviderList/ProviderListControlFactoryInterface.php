@@ -6,8 +6,5 @@ namespace App\Web\AdminModule\CookieModule\Control\ProviderList;
 
 interface ProviderListControlFactoryInterface
 {
-	/**
-	 * @return \App\Web\AdminModule\CookieModule\Control\ProviderList\ProviderListControl
-	 */
-	public function create(): ProviderListControl;
+    public function create(): ProviderListControl;
 }

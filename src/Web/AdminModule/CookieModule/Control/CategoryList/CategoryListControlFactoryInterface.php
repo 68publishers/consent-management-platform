@@ -8,10 +8,5 @@ use App\Application\GlobalSettings\Locale;
 
 interface CategoryListControlFactoryInterface
 {
-	/**
-	 * @param \App\Application\GlobalSettings\Locale|NULL $locale
-	 *
-	 * @return \App\Web\AdminModule\CookieModule\Control\CategoryList\CategoryListControl
-	 */
-	public function create(?Locale $locale): CategoryListControl;
+    public function create(?Locale $locale): CategoryListControl;
 }

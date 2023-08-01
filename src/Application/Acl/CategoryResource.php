@@ -6,8 +6,8 @@ namespace App\Application\Acl;
 
 final class CategoryResource extends AbstractResource
 {
-	public const READ = 'read';
-	public const CREATE = 'create';
-	public const UPDATE = 'update';
-	public const DELETE = 'delete';
+    public const READ = 'read';
+    public const CREATE = 'create';
+    public const UPDATE = 'update';
+    public const DELETE = 'delete';
 }

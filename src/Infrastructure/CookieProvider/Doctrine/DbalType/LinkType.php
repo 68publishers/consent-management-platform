@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class LinkType extends AbstractTextValueObjectType
 {
-	protected string $valueObjectClassname = Link::class;
+    protected string $valueObjectClassname = Link::class;
 }

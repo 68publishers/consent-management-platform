@@ -8,11 +8,11 @@ use RuntimeException;
 
 final class StopReadingException extends RuntimeException
 {
-	/**
-	 * @return static
-	 */
-	public static function create(): self
-	{
-		return new self();
-	}
+    /**
+     * @return static
+     */
+    public static function create(): self
+    {
+        return new self();
+    }
 }

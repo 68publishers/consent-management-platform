@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace App\Domain\ConsentSettings;
 
-use App\Domain\Project\ValueObject\ProjectId;
+use App\Domain\ConsentSettings\Exception\ShortIdentifierGeneratorException;
 use App\Domain\ConsentSettings\ValueObject\ShortIdentifier;
+use App\Domain\Project\ValueObject\ProjectId;
 
 interface ShortIdentifierGeneratorInterface
 {
-	/**
-	 * @param \App\Domain\Project\ValueObject\ProjectId $projectId
-	 *
-	 * @return \App\Domain\ConsentSettings\ValueObject\ShortIdentifier
-	 * @throws \App\Domain\ConsentSettings\Exception\ShortIdentifierGeneratorException
-	 */
-	public function generate(ProjectId $projectId): ShortIdentifier;
+    /**
+     * @throws ShortIdentifierGeneratorException
+     */
+    public function generate(ProjectId $projectId): ShortIdentifier;
 }

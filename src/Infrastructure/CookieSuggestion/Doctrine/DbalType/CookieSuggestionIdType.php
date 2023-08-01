@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class CookieSuggestionIdType extends AbstractUuidIdentityType
 {
-	protected string $valueObjectClassname = CookieSuggestionId::class;
+    protected string $valueObjectClassname = CookieSuggestionId::class;
 }

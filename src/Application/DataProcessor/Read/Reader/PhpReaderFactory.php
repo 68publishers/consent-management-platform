@@ -10,23 +10,17 @@ use App\Application\DataProcessor\Read\Resource\ResourceInterface;
 
 final class PhpReaderFactory implements ReaderFactoryInterface
 {
-	/**
-	 * {@inheritDoc}
-	 */
-	public function accepts(string $format, ResourceInterface $resource): bool
-	{
-		return 'php' === $format && $resource instanceof FileResource;
-	}
+    public function accepts(string $format, ResourceInterface $resource): bool
+    {
+        return 'php' === $format && $resource instanceof FileResource;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function create(ResourceInterface $resource): ReaderInterface
-	{
-		if ($resource instanceof FileResource) {
-			return PhpReader::fromFile($resource);
-		}
+    public function create(ResourceInterface $resource): ReaderInterface
+    {
+        if ($resource instanceof FileResource) {
+            return PhpReader::fromFile($resource);
+        }
 
-		throw ReaderException::unacceptableResource('php', $resource);
-	}
+        throw ReaderException::unacceptableResource('php', $resource);
+    }
 }

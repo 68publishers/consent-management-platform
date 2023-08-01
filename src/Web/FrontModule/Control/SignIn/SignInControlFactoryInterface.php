@@ -6,8 +6,5 @@ namespace App\Web\FrontModule\Control\SignIn;
 
 interface SignInControlFactoryInterface
 {
-	/**
-	 * @return \App\Web\FrontModule\Control\SignIn\SignInControl
-	 */
-	public function create(): SignInControl;
+    public function create(): SignInControl;
 }

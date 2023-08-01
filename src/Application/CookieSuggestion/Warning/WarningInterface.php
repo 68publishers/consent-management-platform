@@ -6,5 +6,5 @@ namespace App\Application\CookieSuggestion\Warning;
 
 interface WarningInterface
 {
-	public function getMessage(): string;
+    public function getMessage(): string;
 }

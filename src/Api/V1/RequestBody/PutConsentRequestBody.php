@@ -9,15 +9,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 final class PutConsentRequestBody extends BasicEntity
 {
-	public ?string $settingsChecksum = NULL;
+    public ?string $settingsChecksum = null;
 
-	/**
-	 * @Assert\NotBlank
-	 * @Assert\All({
-	 *      @Assert\Type("boolean")
-	 * })
-	 */
-	public array $consents = [];
+    /**
+     * @Assert\NotBlank
+     * @Assert\All({
+     *      @Assert\Type("boolean")
+     * })
+     */
+    public array $consents = [];
 
-	public array $attributes = [];
+    public array $attributes = [];
 }

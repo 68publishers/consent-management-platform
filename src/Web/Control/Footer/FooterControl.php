@@ -9,23 +9,20 @@ use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
 
 final class FooterControl extends Control
 {
-	private GitRepositoryInterface $gitRepository;
+    private GitRepositoryInterface $gitRepository;
 
-	/**
-	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface $gitRepository
-	 */
-	public function __construct(GitRepositoryInterface $gitRepository)
-	{
-		$this->gitRepository = $gitRepository;
-	}
+    public function __construct(GitRepositoryInterface $gitRepository)
+    {
+        $this->gitRepository = $gitRepository;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	protected function beforeRender(): void
-	{
-		parent::beforeRender();
+    protected function beforeRender(): void
+    {
+        parent::beforeRender();
 
-		$this->template->gitRepository = $this->gitRepository;
-	}
+        $template = $this->getTemplate();
+        assert($template instanceof FooterTemplate);
+
+        $template->gitRepository = $this->gitRepository;
+    }
 }

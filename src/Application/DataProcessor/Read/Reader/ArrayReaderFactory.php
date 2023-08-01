@@ -10,23 +10,17 @@ use App\Application\DataProcessor\Read\Resource\ResourceInterface;
 
 final class ArrayReaderFactory implements ReaderFactoryInterface
 {
-	/**
-	 * {@inheritDoc}
-	 */
-	public function accepts(string $format, ResourceInterface $resource): bool
-	{
-		return 'array' === $format && $resource instanceof ArrayResource;
-	}
+    public function accepts(string $format, ResourceInterface $resource): bool
+    {
+        return 'array' === $format && $resource instanceof ArrayResource;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function create(ResourceInterface $resource): ReaderInterface
-	{
-		if ($resource instanceof ArrayResource) {
-			return ArrayReader::fromArray($resource);
-		}
+    public function create(ResourceInterface $resource): ReaderInterface
+    {
+        if ($resource instanceof ArrayResource) {
+            return ArrayReader::fromArray($resource);
+        }
 
-		throw ReaderException::unacceptableResource('array', $resource);
-	}
+        throw ReaderException::unacceptableResource('array', $resource);
+    }
 }

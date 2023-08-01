@@ -6,5 +6,5 @@ namespace App\Web\AdminModule\CrawlerModule\Control\ScenarioList;
 
 interface ScenarioListControlFactoryInterface
 {
-	public function create(): ScenarioListControl;
+    public function create(): ScenarioListControl;
 }

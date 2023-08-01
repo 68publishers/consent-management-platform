@@ -6,8 +6,5 @@ namespace App\Web\AdminModule\ImportModule\Control\ImportList;
 
 interface ImportListControlFactoryInterface
 {
-	/**
-	 * @return \App\Web\AdminModule\ImportModule\Control\ImportList\ImportListControl
-	 */
-	public function create(): ImportListControl;
+    public function create(): ImportListControl;
 }

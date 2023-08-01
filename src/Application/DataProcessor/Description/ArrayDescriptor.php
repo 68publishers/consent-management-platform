@@ -4,64 +4,53 @@ declare(strict_types=1);
 
 namespace App\Application\DataProcessor\Description;
 
+use App\Application\DataProcessor\Context\ContextInterface;
+use App\Application\DataProcessor\Description\Path\Path;
+use App\Application\DataProcessor\Description\Path\PathInfo;
 use Nette\Schema\Expect;
 use Nette\Schema\Schema;
-use App\Application\DataProcessor\Description\Path\Path;
-use App\Application\DataProcessor\Context\ContextInterface;
-use App\Application\DataProcessor\Description\Path\PathInfo;
 
 final class ArrayDescriptor implements DescriptorInterface
 {
-	private DescriptorInterface $valueDescriptor;
+    private DescriptorInterface $valueDescriptor;
 
-	private ?DescriptorInterface $keyDescriptor;
+    private ?DescriptorInterface $keyDescriptor;
 
-	private function __construct()
-	{
-	}
+    private function __construct() {}
 
-	/**
-	 * @param \App\Application\DataProcessor\Description\DescriptorInterface      $valueDescriptor
-	 * @param \App\Application\DataProcessor\Description\DescriptorInterface|NULL $keyDescriptor
-	 *
-	 * @return static
-	 */
-	public static function create(DescriptorInterface $valueDescriptor, ?DescriptorInterface $keyDescriptor = NULL): self
-	{
-		$descriptor = new self();
-		$descriptor->valueDescriptor = $valueDescriptor;
-		$descriptor->keyDescriptor = $keyDescriptor;
+    /**
+     * @return static
+     */
+    public static function create(DescriptorInterface $valueDescriptor, ?DescriptorInterface $keyDescriptor = null): self
+    {
+        $descriptor = new self();
+        $descriptor->valueDescriptor = $valueDescriptor;
+        $descriptor->keyDescriptor = $keyDescriptor;
 
-		return $descriptor;
-	}
+        return $descriptor;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function schema(ContextInterface $context): Schema
-	{
-		return Expect::arrayOf(
-			$this->valueDescriptor->schema($context),
-			NULL !== $this->keyDescriptor ? $this->keyDescriptor->schema($context) : NULL
-		);
-	}
+    public function schema(ContextInterface $context): Schema
+    {
+        return Expect::arrayOf(
+            $this->valueDescriptor->schema($context),
+            $this->keyDescriptor?->schema($context),
+        );
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function pathInfo(Path $path): PathInfo
-	{
-		$part = $path->shift();
-		$pathInfo = new PathInfo();
+    public function pathInfo(Path $path): PathInfo
+    {
+        $part = $path->shift();
+        $pathInfo = new PathInfo();
 
-		if (NULL === $part) {
-			$pathInfo->descriptor = $this;
-			$pathInfo->found = TRUE;
-			$pathInfo->isFinal = FALSE;
+        if (null === $part) {
+            $pathInfo->descriptor = $this;
+            $pathInfo->found = true;
+            $pathInfo->isFinal = false;
 
-			return $pathInfo;
-		}
+            return $pathInfo;
+        }
 
-		return $this->valueDescriptor->pathInfo($path);
-	}
+        return $this->valueDescriptor->pathInfo($path);
+    }
 }

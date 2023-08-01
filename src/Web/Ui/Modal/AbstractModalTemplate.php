@@ -8,7 +8,7 @@ use Nette\Bridges\ApplicationLatte\Template;
 
 abstract class AbstractModalTemplate extends Template
 {
-	public string $modalName;
+    public string $modalName;
 
-	public string $layout;
+    public string $layout;
 }

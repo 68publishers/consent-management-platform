@@ -4,29 +4,22 @@ declare(strict_types=1);
 
 namespace App\Application\DataProcessor\Description;
 
-use Nette\Schema\Elements\Type;
 use App\Application\DataProcessor\Context\ContextInterface;
+use Nette\Schema\Elements\Type;
 
 final class Range implements TypeDescriptorPropertyInterface
 {
-	private array $range;
+    private array $range;
 
-	/**
-	 * @param float|NULL $min
-	 * @param float|NULL $max
-	 */
-	public function __construct(?float $min, ?float $max)
-	{
-		$this->range = [$min, $max];
-	}
+    public function __construct(?float $min, ?float $max)
+    {
+        $this->range = [$min, $max];
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function applyToType(Type $type, ContextInterface $context): Type
-	{
-		return $type
-			->min($this->range[0])
-			->max($this->range[1]);
-	}
+    public function applyToType(Type $type, ContextInterface $context): Type
+    {
+        return $type
+            ->min($this->range[0])
+            ->max($this->range[1]);
+    }
 }

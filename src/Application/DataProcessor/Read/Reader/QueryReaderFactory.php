@@ -11,33 +11,24 @@ use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 
 final class QueryReaderFactory implements ReaderFactoryInterface
 {
-	private QueryBusInterface $queryBus;
+    private QueryBusInterface $queryBus;
 
-	/**
-	 * @param \SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface $queryBus
-	 */
-	public function __construct(QueryBusInterface $queryBus)
-	{
-		$this->queryBus = $queryBus;
-	}
+    public function __construct(QueryBusInterface $queryBus)
+    {
+        $this->queryBus = $queryBus;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function accepts(string $format, ResourceInterface $resource): bool
-	{
-		return $resource instanceof QueryResource; // ignore a format
-	}
+    public function accepts(string $format, ResourceInterface $resource): bool
+    {
+        return $resource instanceof QueryResource; // ignore a format
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function create(ResourceInterface $resource): ReaderInterface
-	{
-		if ($resource instanceof QueryResource) {
-			return QueryReader::create($this->queryBus, $resource);
-		}
+    public function create(ResourceInterface $resource): ReaderInterface
+    {
+        if ($resource instanceof QueryResource) {
+            return QueryReader::create($this->queryBus, $resource);
+        }
 
-		throw ReaderException::unacceptableResource('query', $resource);
-	}
+        throw ReaderException::unacceptableResource('query', $resource);
+    }
 }

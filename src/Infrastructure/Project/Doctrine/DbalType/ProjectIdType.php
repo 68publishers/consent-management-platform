@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class ProjectIdType extends AbstractUuidIdentityType
 {
-	protected string $valueObjectClassname = ProjectId::class;
+    protected string $valueObjectClassname = ProjectId::class;
 }

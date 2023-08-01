@@ -8,53 +8,38 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\PaginatedQueryInterf
 
 interface DataGridQueryInterface extends PaginatedQueryInterface
 {
-	public const MODE_DATA = 'data';
-	public const MODE_ONE = 'one';
-	public const MODE_COUNT = 'count';
+    public const MODE_DATA = 'data';
+    public const MODE_ONE = 'one';
+    public const MODE_COUNT = 'count';
 
-	/**
-	 * @return array
-	 */
-	public function filters(): array;
+    public function filters(): array;
 
-	/**
-	 * @return array
-	 */
-	public function sorting(): array;
+    public function sorting(): array;
 
-	/**
-	 * @return string
-	 */
-	public function mode(): string;
+    public function mode(): string;
 
-	/**
-	 * @param string $name
-	 * @param $value
-	 *
-	 * @return $this
-	 */
-	public function withFilter(string $name, $value): self;
+    /**
+     * @return $this
+     */
+    public function withFilter(string $name, $value): self;
 
-	/**
-	 * @param string $name
-	 * @param string $direction
-	 *
-	 * @return $this
-	 */
-	public function withSorting(string $name, string $direction): self;
+    /**
+     * @return $this
+     */
+    public function withSorting(string $name, string $direction): self;
 
-	/**
-	 * @return $this
-	 */
-	public function withDataMode(): self;
+    /**
+     * @return $this
+     */
+    public function withDataMode(): self;
 
-	/**
-	 * @return $this
-	 */
-	public function withOneMode(): self;
+    /**
+     * @return $this
+     */
+    public function withOneMode(): self;
 
-	/**
-	 * @return $this
-	 */
-	public function withCountMode(): self;
+    /**
+     * @return $this
+     */
+    public function withCountMode(): self;
 }

@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class SettingsGroupType extends AbstractValueObjectSetType
 {
-	protected string $valueObjectClassname = SettingsGroup::class;
+    protected string $valueObjectClassname = SettingsGroup::class;
 }

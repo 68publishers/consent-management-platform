@@ -9,5 +9,5 @@ use App\Web\Ui\Modal\AbstractModalTemplate;
 
 final class ImportModalTemplate extends AbstractModalTemplate
 {
-	public ?ImportView $importView = NULL;
+    public ?ImportView $importView = null;
 }

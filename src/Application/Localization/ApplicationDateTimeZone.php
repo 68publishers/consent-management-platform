@@ -8,39 +8,29 @@ use DateTimeZone;
 
 final class ApplicationDateTimeZone
 {
-	private static ?DateTimeZone $dateTimeZone = NULL;
+    private static ?DateTimeZone $dateTimeZone = null;
 
-	private function __construct()
-	{
-	}
+    private function __construct() {}
 
-	/**
-	 * @param \DateTimeZone $dateTimeZone
-	 *
-	 * @return void
-	 */
-	public static function set(DateTimeZone $dateTimeZone): void
-	{
-		self::$dateTimeZone = $dateTimeZone;
-	}
+    public static function set(DateTimeZone $dateTimeZone): void
+    {
+        self::$dateTimeZone = $dateTimeZone;
+    }
 
-	/**
-	 * @return \DateTimeZone
-	 */
-	public static function get(): DateTimeZone
-	{
-		if (NULL === self::$dateTimeZone) {
-			self::set(new DateTimeZone('UTC'));
-		}
+    public static function get(): DateTimeZone
+    {
+        if (null === self::$dateTimeZone) {
+            self::set(new DateTimeZone('UTC'));
+        }
 
-		return self::$dateTimeZone;
-	}
+        return self::$dateTimeZone;
+    }
 
-	/**
-	 * @return string[]
-	 */
-	public static function all(): array
-	{
-		return DateTimeZone::listIdentifiers(DateTimeZone::ALL);
-	}
+    /**
+     * @return string[]
+     */
+    public static function all(): array
+    {
+        return DateTimeZone::listIdentifiers();
+    }
 }

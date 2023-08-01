@@ -11,48 +11,48 @@ use SixtyEightPublishers\ArchitectureBundle\Domain\Event\AbstractDomainEvent;
 
 final class CookieOccurrenceAcceptedCategoriesChanged extends AbstractDomainEvent
 {
-	private CookieSuggestionId $cookieSuggestionId;
+    private CookieSuggestionId $cookieSuggestionId;
 
-	private CookieOccurrenceId $cookieOccurrenceId;
+    private CookieOccurrenceId $cookieOccurrenceId;
 
-	private AcceptedCategories $acceptedCategories;
+    private AcceptedCategories $acceptedCategories;
 
-	public static function create(
-		CookieSuggestionId $cookieSuggestionId,
-		CookieOccurrenceId $cookieOccurrenceId,
-		AcceptedCategories $acceptedCategories
-	): self {
-		$event = self::occur($cookieSuggestionId->toString(), [
-			'cookie_occurrence_id' => $cookieOccurrenceId->toString(),
-			'accepted_categories' => $acceptedCategories->toArray(),
-		]);
+    public static function create(
+        CookieSuggestionId $cookieSuggestionId,
+        CookieOccurrenceId $cookieOccurrenceId,
+        AcceptedCategories $acceptedCategories,
+    ): self {
+        $event = self::occur($cookieSuggestionId->toString(), [
+            'cookie_occurrence_id' => $cookieOccurrenceId->toString(),
+            'accepted_categories' => $acceptedCategories->toArray(),
+        ]);
 
-		$event->cookieSuggestionId = $cookieSuggestionId;
-		$event->cookieOccurrenceId = $cookieOccurrenceId;
-		$event->acceptedCategories = $acceptedCategories;
+        $event->cookieSuggestionId = $cookieSuggestionId;
+        $event->cookieOccurrenceId = $cookieOccurrenceId;
+        $event->acceptedCategories = $acceptedCategories;
 
-		return $event;
-	}
+        return $event;
+    }
 
-	public function cookieSuggestionId(): CookieSuggestionId
-	{
-		return $this->cookieSuggestionId;
-	}
+    public function cookieSuggestionId(): CookieSuggestionId
+    {
+        return $this->cookieSuggestionId;
+    }
 
-	public function cookieOccurrenceId(): CookieOccurrenceId
-	{
-		return $this->cookieOccurrenceId;
-	}
+    public function cookieOccurrenceId(): CookieOccurrenceId
+    {
+        return $this->cookieOccurrenceId;
+    }
 
-	public function acceptedCategories(): AcceptedCategories
-	{
-		return $this->acceptedCategories;
-	}
+    public function acceptedCategories(): AcceptedCategories
+    {
+        return $this->acceptedCategories;
+    }
 
-	protected function reconstituteState(array $parameters): void
-	{
-		$this->cookieSuggestionId = CookieSuggestionId::fromUuid($this->aggregateId()->id());
-		$this->cookieOccurrenceId = CookieOccurrenceId::fromString($parameters['cookie_occurrence_id']);
-		$this->acceptedCategories = AcceptedCategories::reconstitute($parameters['accepted_categories']);
-	}
+    protected function reconstituteState(array $parameters): void
+    {
+        $this->cookieSuggestionId = CookieSuggestionId::fromUuid($this->aggregateId()->id());
+        $this->cookieOccurrenceId = CookieOccurrenceId::fromString($parameters['cookie_occurrence_id']);
+        $this->acceptedCategories = AcceptedCategories::reconstitute($parameters['accepted_categories']);
+    }
 }

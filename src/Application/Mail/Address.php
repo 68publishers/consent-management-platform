@@ -6,42 +6,31 @@ namespace App\Application\Mail;
 
 final class Address
 {
-	private string $from;
+    private string $from;
 
-	private ?string $name;
+    private ?string $name;
 
-	private function __construct()
-	{
-	}
+    private function __construct() {}
 
-	/**
-	 * @param string      $from
-	 * @param string|NULL $name
-	 *
-	 * @return static
-	 */
-	public static function create(string $from, ?string $name = NULL): self
-	{
-		$address = new self();
-		$address->from = $from;
-		$address->name = empty($name) ? NULL : $name;
+    /**
+     * @return static
+     */
+    public static function create(string $from, ?string $name = null): self
+    {
+        $address = new self();
+        $address->from = $from;
+        $address->name = empty($name) ? null : $name;
 
-		return $address;
-	}
+        return $address;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function from(): string
-	{
-		return $this->from;
-	}
+    public function from(): string
+    {
+        return $this->from;
+    }
 
-	/**
-	 * @return string|NULL
-	 */
-	public function name(): ?string
-	{
-		return $this->name;
-	}
+    public function name(): ?string
+    {
+        return $this->name;
+    }
 }

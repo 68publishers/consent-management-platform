@@ -6,21 +6,19 @@ namespace App\Domain\User;
 
 final class RolesEnum
 {
-	public const MANAGER = 'manager';
-	public const ADMIN = 'admin';
+    public const MANAGER = 'manager';
+    public const ADMIN = 'admin';
 
-	private function __construct()
-	{
-	}
+    private function __construct() {}
 
-	/**
-	 * @return string[]
-	 */
-	public static function values(): array
-	{
-		return [
-			self::MANAGER,
-			self::ADMIN,
-		];
-	}
+    /**
+     * @return string[]
+     */
+    public static function values(): array
+    {
+        return [
+            self::MANAGER,
+            self::ADMIN,
+        ];
+    }
 }

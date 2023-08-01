@@ -6,32 +6,32 @@ namespace App\Application\CookieSuggestion\Solution;
 
 final class IgnoreUntilNexOccurrence implements SolutionInterface
 {
-	private bool $virtualSuggestion;
+    private bool $virtualSuggestion;
 
-	public function __construct(bool $virtualSuggestion = FALSE)
-	{
-		$this->virtualSuggestion = $virtualSuggestion;
-	}
+    public function __construct(bool $virtualSuggestion = false)
+    {
+        $this->virtualSuggestion = $virtualSuggestion;
+    }
 
-	public function getType(): string
-	{
-		return 'ignore_until_next_occurrence';
-	}
+    public function getType(): string
+    {
+        return 'ignore_until_next_occurrence';
+    }
 
-	public function getUniqueId(): string
-	{
-		return md5($this->getType());
-	}
+    public function getUniqueId(): string
+    {
+        return md5($this->getType());
+    }
 
-	public function getArguments(): array
-	{
-		return [
-			'virtual_suggestion' => $this->virtualSuggestion,
-		];
-	}
+    public function getArguments(): array
+    {
+        return [
+            'virtual_suggestion' => $this->virtualSuggestion,
+        ];
+    }
 
-	public function getTranslatorArgs(): array
-	{
-		return [];
-	}
+    public function getTranslatorArgs(): array
+    {
+        return [];
+    }
 }

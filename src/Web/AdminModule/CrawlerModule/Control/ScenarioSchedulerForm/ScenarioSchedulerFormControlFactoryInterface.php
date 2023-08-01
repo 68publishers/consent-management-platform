@@ -8,5 +8,5 @@ use SixtyEightPublishers\CrawlerClient\Controller\ScenarioScheduler\ScenarioSche
 
 interface ScenarioSchedulerFormControlFactoryInterface
 {
-	public function create(?ScenarioSchedulerResponse $scenarioSchedulerResponse = NULL): ScenarioSchedulerFormControl;
+    public function create(?ScenarioSchedulerResponse $scenarioSchedulerResponse = null): ScenarioSchedulerFormControl;
 }

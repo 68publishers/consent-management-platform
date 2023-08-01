@@ -8,11 +8,11 @@ use DomainException;
 
 final class InvalidUrlException extends DomainException
 {
-	public static function create(string $invalidUrl): self
-	{
-		return new self(sprintf(
-			'Value %s is not valid url.',
-			$invalidUrl,
-		));
-	}
+    public static function create(string $invalidUrl): self
+    {
+        return new self(sprintf(
+            'Value %s is not valid url.',
+            $invalidUrl,
+        ));
+    }
 }

@@ -9,50 +9,38 @@ use SixtyEightPublishers\ArchitectureBundle\Domain\Event\AbstractDomainEvent;
 
 final class CategoryNecessaryChanged extends AbstractDomainEvent
 {
-	private CategoryId $categoryId;
+    private CategoryId $categoryId;
 
-	private bool $necessary;
+    private bool $necessary;
 
-	/**
-	 * @param \App\Domain\Category\ValueObject\CategoryId $categoryId
-	 * @param bool                                        $necessary
-	 *
-	 * @return static
-	 */
-	public static function create(CategoryId $categoryId, bool $necessary): self
-	{
-		$event = self::occur($categoryId->toString(), [
-			'necessary' => $necessary,
-		]);
+    /**
+     * @return static
+     */
+    public static function create(CategoryId $categoryId, bool $necessary): self
+    {
+        $event = self::occur($categoryId->toString(), [
+            'necessary' => $necessary,
+        ]);
 
-		$event->categoryId = $categoryId;
-		$event->necessary = $necessary;
+        $event->categoryId = $categoryId;
+        $event->necessary = $necessary;
 
-		return $event;
-	}
+        return $event;
+    }
 
-	/**
-	 * @return \App\Domain\Category\ValueObject\CategoryId
-	 */
-	public function categoryId(): CategoryId
-	{
-		return $this->categoryId;
-	}
+    public function categoryId(): CategoryId
+    {
+        return $this->categoryId;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function necessary(): bool
-	{
-		return $this->necessary;
-	}
+    public function necessary(): bool
+    {
+        return $this->necessary;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	protected function reconstituteState(array $parameters): void
-	{
-		$this->categoryId = CategoryId::fromUuid($this->aggregateId()->id());
-		$this->necessary = (bool) $parameters['necessary'];
-	}
+    protected function reconstituteState(array $parameters): void
+    {
+        $this->categoryId = CategoryId::fromUuid($this->aggregateId()->id());
+        $this->necessary = (bool) $parameters['necessary'];
+    }
 }

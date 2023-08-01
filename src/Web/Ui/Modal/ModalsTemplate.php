@@ -8,7 +8,7 @@ use Nette\Bridges\ApplicationLatte\Template;
 
 final class ModalsTemplate extends Template
 {
-	public HtmlId $elementId;
+    public HtmlId $elementId;
 
-	public string $payload;
+    public string $payload;
 }

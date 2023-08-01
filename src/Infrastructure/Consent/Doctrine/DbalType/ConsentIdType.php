@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class ConsentIdType extends AbstractUuidIdentityType
 {
-	protected string $valueObjectClassname = ConsentId::class;
+    protected string $valueObjectClassname = ConsentId::class;
 }

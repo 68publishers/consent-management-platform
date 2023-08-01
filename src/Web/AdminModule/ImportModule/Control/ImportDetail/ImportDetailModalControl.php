@@ -9,35 +9,28 @@ use App\Web\Ui\Modal\AbstractModalControl;
 
 final class ImportDetailModalControl extends AbstractModalControl
 {
-	private ImportView $importView;
+    private ImportView $importView;
 
-	private ImportDetailControlFactoryInterface $importDetailControlFactory;
+    private ImportDetailControlFactoryInterface $importDetailControlFactory;
 
-	/**
-	 * @param \App\ReadModel\Import\ImportView                                                           $importView
-	 * @param \App\Web\AdminModule\ImportModule\Control\ImportDetail\ImportDetailControlFactoryInterface $importDetailControlFactory
-	 */
-	public function __construct(ImportView $importView, ImportDetailControlFactoryInterface $importDetailControlFactory)
-	{
-		$this->importView = $importView;
-		$this->importDetailControlFactory = $importDetailControlFactory;
-	}
+    public function __construct(ImportView $importView, ImportDetailControlFactoryInterface $importDetailControlFactory)
+    {
+        $this->importView = $importView;
+        $this->importDetailControlFactory = $importDetailControlFactory;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	protected function beforeRender(): void
-	{
-		parent::beforeRender();
+    protected function beforeRender(): void
+    {
+        parent::beforeRender();
 
-		$this->template->importView = $this->importView;
-	}
+        $template = $this->getTemplate();
+        assert($template instanceof ImportDetailModalTemplate);
 
-	/**
-	 * @return \App\Web\AdminModule\ImportModule\Control\ImportDetail\ImportDetailControl
-	 */
-	protected function createComponentDetail(): ImportDetailControl
-	{
-		return $this->importDetailControlFactory->create($this->importView);
-	}
+        $template->importView = $this->importView;
+    }
+
+    protected function createComponentDetail(): ImportDetailControl
+    {
+        return $this->importDetailControlFactory->create($this->importView);
+    }
 }

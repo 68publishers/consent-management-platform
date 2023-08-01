@@ -8,10 +8,5 @@ use App\ReadModel\Import\ImportView;
 
 interface ImportDetailModalControlFactoryInterface
 {
-	/**
-	 * @param \App\ReadModel\Import\ImportView $importView
-	 *
-	 * @return \App\Web\AdminModule\ImportModule\Control\ImportDetail\ImportDetailModalControl
-	 */
-	public function create(ImportView $importView): ImportDetailModalControl;
+    public function create(ImportView $importView): ImportDetailModalControl;
 }

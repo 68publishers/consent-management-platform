@@ -8,10 +8,5 @@ use App\ReadModel\Category\CategoryView;
 
 interface CategoryFormControlFactoryInterface
 {
-	/**
-	 * @param \App\ReadModel\Category\CategoryView|NULL $default
-	 *
-	 * @return \App\Web\AdminModule\CookieModule\Control\CategoryForm\CategoryFormControl
-	 */
-	public function create(?CategoryView $default = NULL): CategoryFormControl;
+    public function create(?CategoryView $default = null): CategoryFormControl;
 }

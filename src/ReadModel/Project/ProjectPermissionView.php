@@ -10,21 +10,18 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\AbstractView;
 
 final class ProjectPermissionView extends AbstractView
 {
-	public ProjectId $projectId;
+    public ProjectId $projectId;
 
-	public Code $projectCode;
+    public Code $projectCode;
 
-	public bool $permission;
+    public bool $permission;
 
-	/**
-	 * @return array
-	 */
-	public function jsonSerialize(): array
-	{
-		return [
-			'project_id' => $this->projectId->toString(),
-			'project_code' => $this->projectCode->value(),
-			'permission' => $this->permission,
-		];
-	}
+    public function jsonSerialize(): array
+    {
+        return [
+            'project_id' => $this->projectId->toString(),
+            'project_code' => $this->projectCode->value(),
+            'permission' => $this->permission,
+        ];
+    }
 }

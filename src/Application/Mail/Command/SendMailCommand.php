@@ -9,23 +9,18 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class SendMailCommand extends AbstractCommand
 {
-	/**
-	 * @param \App\Application\Mail\Message $message
-	 *
-	 * @return static
-	 */
-	public static function create(Message $message): self
-	{
-		return self::fromParameters([
-			'message' => $message,
-		]);
-	}
+    /**
+     * @return static
+     */
+    public static function create(Message $message): self
+    {
+        return self::fromParameters([
+            'message' => $message,
+        ]);
+    }
 
-	/**
-	 * @return \App\Application\Mail\Message
-	 */
-	public function message(): Message
-	{
-		return $this->getParam('message');
-	}
+    public function message(): Message
+    {
+        return $this->getParam('message');
+    }
 }

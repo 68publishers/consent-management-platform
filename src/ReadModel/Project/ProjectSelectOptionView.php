@@ -10,28 +10,25 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\AbstractView;
 
 final class ProjectSelectOptionView extends AbstractView
 {
-	public ProjectId $id;
+    public ProjectId $id;
 
-	public Name $name;
+    public Name $name;
 
-	/**
-	 * @return array<string, string>
-	 */
-	public function toOption(): array
-	{
-		return [
-			$this->id->toString() => $this->name->value(),
-		];
-	}
+    /**
+     * @return array<string, string>
+     */
+    public function toOption(): array
+    {
+        return [
+            $this->id->toString() => $this->name->value(),
+        ];
+    }
 
-	/**
-	 * @return array
-	 */
-	public function jsonSerialize(): array
-	{
-		return [
-			'id' => $this->id->toString(),
-			'name' => $this->name->value(),
-		];
-	}
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->id->toString(),
+            'name' => $this->name->value(),
+        ];
+    }
 }

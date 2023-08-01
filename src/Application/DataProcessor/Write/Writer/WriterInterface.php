@@ -8,8 +8,5 @@ use App\Application\DataProcessor\Write\Destination\DestinationInterface;
 
 interface WriterInterface
 {
-	/**
-	 * @return \App\Application\DataProcessor\Write\Destination\DestinationInterface
-	 */
-	public function write(): DestinationInterface;
+    public function write(): DestinationInterface;
 }

@@ -8,27 +8,23 @@ use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AbstractValueObje
 
 final class NotificationPreferences extends AbstractValueObjectSet
 {
-	public const ITEM_CLASSNAME = NotificationType::class;
+    public const ITEM_CLASSNAME = NotificationType::class;
 
-	/**
-	 * @param string $value
-	 *
-	 * @return \App\Domain\User\ValueObject\NotificationType
-	 */
-	protected static function reconstituteItem($value): NotificationType
-	{
-		return NotificationType::fromValue($value);
-	}
+    /**
+     * @param string $value
+     */
+    protected static function reconstituteItem($value): NotificationType
+    {
+        return NotificationType::fromValue($value);
+    }
 
-	/**
-	 * @param \App\Domain\User\ValueObject\NotificationType $item
-	 *
-	 * @return string
-	 */
-	protected static function exportItem($item): string
-	{
-		assert($item instanceof NotificationType);
+    /**
+     * @param NotificationType $item
+     */
+    protected static function exportItem($item): string
+    {
+        assert($item instanceof NotificationType);
 
-		return $item->value();
-	}
+        return $item->value();
+    }
 }

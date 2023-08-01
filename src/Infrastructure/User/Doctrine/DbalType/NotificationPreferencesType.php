@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class NotificationPreferencesType extends AbstractValueObjectSetType
 {
-	protected string $valueObjectClassname = NotificationPreferences::class;
+    protected string $valueObjectClassname = NotificationPreferences::class;
 }

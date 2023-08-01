@@ -11,8 +11,8 @@ use App\ReadModel\AbstractDataGridQuery;
  */
 final class ProjectCookieSuggestionsDataGridQuery extends AbstractDataGridQuery
 {
-	public static function create(): self
-	{
-		return self::fromParameters([]);
-	}
+    public static function create(): self
+    {
+        return self::fromParameters([]);
+    }
 }

@@ -8,21 +8,15 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class PasswordChangeRequestedEvent extends Event
 {
-	private string $emailAddress;
+    private string $emailAddress;
 
-	/**
-	 * @param string $emailAddress
-	 */
-	public function __construct(string $emailAddress)
-	{
-		$this->emailAddress = $emailAddress;
-	}
+    public function __construct(string $emailAddress)
+    {
+        $this->emailAddress = $emailAddress;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function emailAddress(): string
-	{
-		return $this->emailAddress;
-	}
+    public function emailAddress(): string
+    {
+        return $this->emailAddress;
+    }
 }

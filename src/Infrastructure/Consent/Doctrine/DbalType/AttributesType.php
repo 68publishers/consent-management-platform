@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class AttributesType extends AbstractArrayValueObjectType
 {
-	protected string $valueObjectClassname = Attributes::class;
+    protected string $valueObjectClassname = Attributes::class;
 }

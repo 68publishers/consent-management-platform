@@ -6,30 +6,23 @@ namespace App\Web\Ui\Modal;
 
 final class HtmlId
 {
-	private string $id;
+    private string $id;
 
-	private function __construct()
-	{
-	}
+    private function __construct() {}
 
-	/**
-	 * @param string $id
-	 *
-	 * @return static
-	 */
-	public static function create(string $id): self
-	{
-		$htmlId = new self();
-		$htmlId->id = $id;
+    /**
+     * @return static
+     */
+    public static function create(string $id): self
+    {
+        $htmlId = new self();
+        $htmlId->id = $id;
 
-		return $htmlId;
-	}
+        return $htmlId;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function __toString(): string
-	{
-		return $this->id;
-	}
+    public function __toString(): string
+    {
+        return $this->id;
+    }
 }

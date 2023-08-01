@@ -6,8 +6,5 @@ namespace App\Web\AdminModule\UserModule\Control\UserList;
 
 interface UserListControlFactoryInterface
 {
-	/**
-	 * @return \App\Web\AdminModule\UserModule\Control\UserList\UserListControl
-	 */
-	public function create(): UserListControl;
+    public function create(): UserListControl;
 }

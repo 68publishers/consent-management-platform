@@ -8,10 +8,5 @@ use App\ReadModel\Project\ProjectView;
 
 interface DeleteProjectControlFactoryInterface
 {
-	/**
-	 * @param \App\ReadModel\Project\ProjectView $projectView
-	 *
-	 * @return \App\Web\AdminModule\ProjectModule\Control\DeleteProject\DeleteProjectControl
-	 */
-	public function create(ProjectView $projectView): DeleteProjectControl;
+    public function create(ProjectView $projectView): DeleteProjectControl;
 }

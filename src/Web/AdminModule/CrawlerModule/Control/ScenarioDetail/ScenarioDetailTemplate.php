@@ -9,7 +9,7 @@ use SixtyEightPublishers\CrawlerClient\Controller\Scenario\ResponseBody\Scenario
 
 final class ScenarioDetailTemplate extends Template
 {
-	public ScenarioResponseBody $scenarioResponseBody;
+    public ScenarioResponseBody $scenarioResponseBody;
 
-	public string $serializedScenarioConfig;
+    public string $serializedScenarioConfig;
 }

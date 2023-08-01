@@ -6,23 +6,9 @@ namespace App\Application\DataProcessor;
 
 interface RowDataInterface
 {
-	/**
-	 * @param string|int $column
-	 *
-	 * @return bool
-	 */
-	public function has($column): bool;
+    public function has(string|int $column): bool;
 
-	/**
-	 * @param string|int $column
-	 * @param mixed      $default
-	 *
-	 * @return mixed
-	 */
-	public function get($column, $default = NULL);
+    public function get(string|int $column, mixed $default = null): mixed;
 
-	/**
-	 * @return array
-	 */
-	public function toArray(): array;
+    public function toArray(): array;
 }

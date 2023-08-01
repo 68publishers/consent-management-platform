@@ -10,38 +10,35 @@ use SixtyEightPublishers\ArchitectureBundle\Domain\Event\AbstractDomainEvent;
 
 final class CrawlerSettingsChanged extends AbstractDomainEvent
 {
-	private GlobalSettingsId $globalSettingsId;
+    private GlobalSettingsId $globalSettingsId;
 
-	private CrawlerSettings $crawlerSettings;
+    private CrawlerSettings $crawlerSettings;
 
-	public static function create(GlobalSettingsId $globalSettingsId, CrawlerSettings $crawlerSettings): self
-	{
-		$event = self::occur($globalSettingsId->toString(), [
-			'crawler_settings' => $crawlerSettings->values(),
-		]);
+    public static function create(GlobalSettingsId $globalSettingsId, CrawlerSettings $crawlerSettings): self
+    {
+        $event = self::occur($globalSettingsId->toString(), [
+            'crawler_settings' => $crawlerSettings->values(),
+        ]);
 
-		$event->globalSettingsId = $globalSettingsId;
-		$event->crawlerSettings = $crawlerSettings;
+        $event->globalSettingsId = $globalSettingsId;
+        $event->crawlerSettings = $crawlerSettings;
 
-		return $event;
-	}
+        return $event;
+    }
 
-	public function globalSettingsId(): GlobalSettingsId
-	{
-		return $this->globalSettingsId;
-	}
+    public function globalSettingsId(): GlobalSettingsId
+    {
+        return $this->globalSettingsId;
+    }
 
-	public function crawlerSettings(): CrawlerSettings
-	{
-		return $this->crawlerSettings;
-	}
+    public function crawlerSettings(): CrawlerSettings
+    {
+        return $this->crawlerSettings;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	protected function reconstituteState(array $parameters): void
-	{
-		$this->globalSettingsId = GlobalSettingsId::fromUuid($this->aggregateId()->id());
-		$this->crawlerSettings = CrawlerSettings::fromArray($parameters['crawler_settings']);
-	}
+    protected function reconstituteState(array $parameters): void
+    {
+        $this->globalSettingsId = GlobalSettingsId::fromUuid($this->aggregateId()->id());
+        $this->crawlerSettings = CrawlerSettings::fromArray($parameters['crawler_settings']);
+    }
 }

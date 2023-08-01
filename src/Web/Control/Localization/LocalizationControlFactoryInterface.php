@@ -6,8 +6,5 @@ namespace App\Web\Control\Localization;
 
 interface LocalizationControlFactoryInterface
 {
-	/**
-	 * @return \App\Web\Control\Localization\LocalizationControl
-	 */
-	public function create(): LocalizationControl;
+    public function create(): LocalizationControl;
 }

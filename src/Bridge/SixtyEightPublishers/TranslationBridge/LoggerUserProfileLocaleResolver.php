@@ -7,41 +7,37 @@ namespace App\Bridge\SixtyEightPublishers\TranslationBridge;
 use App\ReadModel\User\UserView;
 use Nette\Localization\Translator;
 use Nette\Security\User as NetteUser;
-use SixtyEightPublishers\UserBundle\Bridge\Nette\Security\Identity;
 use SixtyEightPublishers\TranslationBridge\Localization\TranslatorLocaleResolverInterface;
+use SixtyEightPublishers\UserBundle\Application\Exception\IdentityException;
+use SixtyEightPublishers\UserBundle\Bridge\Nette\Security\Identity;
 
 final class LoggerUserProfileLocaleResolver implements TranslatorLocaleResolverInterface
 {
-	private NetteUser $user;
+    private NetteUser $user;
 
-	/**
-	 * @param \Nette\Security\User $user
-	 */
-	public function __construct(NetteUser $user)
-	{
-		$this->user = $user;
-	}
+    public function __construct(NetteUser $user)
+    {
+        $this->user = $user;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @throws \SixtyEightPublishers\UserBundle\Application\Exception\IdentityException
-	 */
-	public function resolveLocale(Translator $translator): ?string
-	{
-		if (!$this->user->isLoggedIn()) {
-			return NULL;
-		}
+    /**
+     * @throws IdentityException
+     */
+    public function resolveLocale(Translator $translator): ?string
+    {
+        if (!$this->user->isLoggedIn()) {
+            return null;
+        }
 
-		$identity = $this->user->getIdentity();
+        $identity = $this->user->getIdentity();
 
-		if (!$identity instanceof Identity) {
-			return NULL;
-		}
+        if (!$identity instanceof Identity) {
+            return null;
+        }
 
-		$data = $identity->data();
-		assert($data instanceof UserView);
+        $data = $identity->data();
+        assert($data instanceof UserView);
 
-		return $data->profileLocale->value();
-	}
+        return $data->profileLocale->value();
+    }
 }

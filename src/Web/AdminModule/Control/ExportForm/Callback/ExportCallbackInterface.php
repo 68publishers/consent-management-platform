@@ -8,17 +8,7 @@ use App\Application\DataProcessor\DataProcessFactory;
 
 interface ExportCallbackInterface
 {
-	/**
-	 * @return string
-	 */
-	public function name(): string;
+    public function name(): string;
 
-	/**
-	 * @param \App\Application\DataProcessor\DataProcessFactory $dataProcessFactory
-	 * @param string                                            $format
-	 * @param array                                             $options
-	 *
-	 * @return string
-	 */
-	public function __invoke(DataProcessFactory $dataProcessFactory, string $format, array $options): string;
+    public function __invoke(DataProcessFactory $dataProcessFactory, string $format, array $options): string;
 }

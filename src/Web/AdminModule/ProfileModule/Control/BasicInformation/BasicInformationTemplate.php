@@ -9,5 +9,5 @@ use Nette\Bridges\ApplicationLatte\Template;
 
 final class BasicInformationTemplate extends Template
 {
-	public UserView $userView;
+    public UserView $userView;
 }

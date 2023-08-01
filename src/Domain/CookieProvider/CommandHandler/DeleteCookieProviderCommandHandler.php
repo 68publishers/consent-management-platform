@@ -4,34 +4,26 @@ declare(strict_types=1);
 
 namespace App\Domain\CookieProvider\CommandHandler;
 
-use App\Domain\CookieProvider\ValueObject\CookieProviderId;
-use App\Domain\CookieProvider\CookieProviderRepositoryInterface;
 use App\Domain\CookieProvider\Command\DeleteCookieProviderCommand;
+use App\Domain\CookieProvider\CookieProviderRepositoryInterface;
+use App\Domain\CookieProvider\ValueObject\CookieProviderId;
 use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
 
 final class DeleteCookieProviderCommandHandler implements CommandHandlerInterface
 {
-	private CookieProviderRepositoryInterface $cookieProviderRepository;
+    private CookieProviderRepositoryInterface $cookieProviderRepository;
 
-	/**
-	 * @param \App\Domain\CookieProvider\CookieProviderRepositoryInterface $cookieProviderRepository
-	 */
-	public function __construct(CookieProviderRepositoryInterface $cookieProviderRepository)
-	{
-		$this->cookieProviderRepository = $cookieProviderRepository;
-	}
+    public function __construct(CookieProviderRepositoryInterface $cookieProviderRepository)
+    {
+        $this->cookieProviderRepository = $cookieProviderRepository;
+    }
 
-	/**
-	 * @param \App\Domain\CookieProvider\Command\DeleteCookieProviderCommand $command
-	 *
-	 * @return void
-	 */
-	public function __invoke(DeleteCookieProviderCommand $command): void
-	{
-		$cookieProvider = $this->cookieProviderRepository->get(CookieProviderId::fromString($command->cookieProviderId()));
+    public function __invoke(DeleteCookieProviderCommand $command): void
+    {
+        $cookieProvider = $this->cookieProviderRepository->get(CookieProviderId::fromString($command->cookieProviderId()));
 
-		$cookieProvider->delete();
+        $cookieProvider->delete();
 
-		$this->cookieProviderRepository->save($cookieProvider);
-	}
+        $this->cookieProviderRepository->save($cookieProvider);
+    }
 }

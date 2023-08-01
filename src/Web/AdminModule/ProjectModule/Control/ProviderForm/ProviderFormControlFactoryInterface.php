@@ -8,10 +8,5 @@ use App\ReadModel\Project\ProjectView;
 
 interface ProviderFormControlFactoryInterface
 {
-	/**
-	 * @param \App\ReadModel\Project\ProjectView $projectView
-	 *
-	 * @return \App\Web\AdminModule\ProjectModule\Control\ProviderForm\ProviderFormControl
-	 */
-	public function create(ProjectView $projectView): ProviderFormControl;
+    public function create(ProjectView $projectView): ProviderFormControl;
 }

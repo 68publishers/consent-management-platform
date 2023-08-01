@@ -11,15 +11,15 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
  */
 final class FindAllProjectIdsByCookieProviderIdQuery extends AbstractQuery
 {
-	public static function create(string $cookieProviderId): self
-	{
-		return self::fromParameters([
-			'cookie_provider_id' => $cookieProviderId,
-		]);
-	}
+    public static function create(string $cookieProviderId): self
+    {
+        return self::fromParameters([
+            'cookie_provider_id' => $cookieProviderId,
+        ]);
+    }
 
-	public function cookieProviderId(): string
-	{
-		return $this->getParam('cookie_provider_id');
-	}
+    public function cookieProviderId(): string
+    {
+        return $this->getParam('cookie_provider_id');
+    }
 }

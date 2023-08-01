@@ -9,5 +9,5 @@ use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
 
 final class FooterTemplate extends Template
 {
-	public GitRepositoryInterface $gitRepository;
+    public GitRepositoryInterface $gitRepository;
 }

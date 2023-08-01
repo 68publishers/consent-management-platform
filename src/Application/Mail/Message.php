@@ -6,231 +6,195 @@ namespace App\Application\Mail;
 
 final class Message
 {
-	private string $templateFile;
+    private string $templateFile;
 
-	private ?string $locale;
+    private ?string $locale;
 
-	private array $arguments = [];
+    private array $arguments = [];
 
-	private ?string $subject = NULL;
+    private ?string $subject = null;
 
-	private ?Address $from = NULL;
+    private ?Address $from = null;
 
-	/** @var \App\Application\Mail\Address[]  */
-	private array $to = [];
+    /** @var Address[] */
+    private array $to = [];
 
-	/** @var \App\Application\Mail\Address[]  */
-	private array $bcc = [];
+    /** @var Address[] */
+    private array $bcc = [];
 
-	/** @var \App\Application\Mail\Address[]  */
-	private array $cc = [];
+    /** @var Address[] */
+    private array $cc = [];
 
-	/** @var \App\Application\Mail\Address[]  */
-	private array $replyTo = [];
+    /** @var Address[] */
+    private array $replyTo = [];
 
-	/** @var \App\Application\Mail\Attachment[]  */
-	private array $attachments = [];
+    /** @var Attachment[] */
+    private array $attachments = [];
 
-	private function __construct()
-	{
-	}
+    private function __construct() {}
 
-	/**
-	 * @param string      $templateFile
-	 * @param string|NULL $locale
-	 *
-	 * @return static
-	 */
-	public static function create(string $templateFile, ?string $locale = NULL): self
-	{
-		$message = new self();
-		$message->templateFile = $templateFile;
-		$message->locale = $locale;
+    /**
+     * @return static
+     */
+    public static function create(string $templateFile, ?string $locale = null): self
+    {
+        $message = new self();
+        $message->templateFile = $templateFile;
+        $message->locale = $locale;
 
-		return $message;
-	}
+        return $message;
+    }
 
-	/**
-	 * @param array $arguments
-	 *
-	 * @return $this
-	 */
-	public function withArguments(array $arguments): self
-	{
-		$message = clone $this;
-		$message->arguments = array_merge($message->arguments, $arguments);
+    /**
+     * @return $this
+     */
+    public function withArguments(array $arguments): self
+    {
+        $message = clone $this;
+        $message->arguments = array_merge($message->arguments, $arguments);
 
-		return $message;
-	}
+        return $message;
+    }
 
-	/**
-	 * @param string $subject
-	 *
-	 * @return $this
-	 */
-	public function withSubject(string $subject): self
-	{
-		$message = clone $this;
-		$message->subject = $subject;
+    /**
+     * @return $this
+     */
+    public function withSubject(string $subject): self
+    {
+        $message = clone $this;
+        $message->subject = $subject;
 
-		return $message;
-	}
+        return $message;
+    }
 
-	/**
-	 * @param \App\Application\Mail\Address $from
-	 *
-	 * @return $this
-	 */
-	public function withFrom(Address $from): self
-	{
-		$message = clone $this;
-		$message->from = $from;
+    /**
+     * @return $this
+     */
+    public function withFrom(Address $from): self
+    {
+        $message = clone $this;
+        $message->from = $from;
 
-		return $message;
-	}
+        return $message;
+    }
 
-	/**
-	 * @param \App\Application\Mail\Address $to
-	 *
-	 * @return $this
-	 */
-	public function withTo(Address $to): self
-	{
-		$message = clone $this;
-		$message->to[] = $to;
+    /**
+     * @return $this
+     */
+    public function withTo(Address $to): self
+    {
+        $message = clone $this;
+        $message->to[] = $to;
 
-		return $message;
-	}
+        return $message;
+    }
 
-	/**
-	 * @param \App\Application\Mail\Address $bcc
-	 *
-	 * @return $this
-	 */
-	public function withBcc(Address $bcc): self
-	{
-		$message = clone $this;
-		$message->bcc[] = $bcc;
+    /**
+     * @return $this
+     */
+    public function withBcc(Address $bcc): self
+    {
+        $message = clone $this;
+        $message->bcc[] = $bcc;
 
-		return $message;
-	}
+        return $message;
+    }
 
-	/**
-	 * @param \App\Application\Mail\Address $cc
-	 *
-	 * @return $this
-	 */
-	public function withCc(Address $cc): self
-	{
-		$message = clone $this;
-		$message->cc[] = $cc;
+    /**
+     * @return $this
+     */
+    public function withCc(Address $cc): self
+    {
+        $message = clone $this;
+        $message->cc[] = $cc;
 
-		return $message;
-	}
+        return $message;
+    }
 
-	/**
-	 * @param \App\Application\Mail\Address $replyTo
-	 *
-	 * @return $this
-	 */
-	public function withReplyTo(Address $replyTo): self
-	{
-		$message = clone $this;
-		$message->replyTo[] = $replyTo;
+    /**
+     * @return $this
+     */
+    public function withReplyTo(Address $replyTo): self
+    {
+        $message = clone $this;
+        $message->replyTo[] = $replyTo;
 
-		return $message;
-	}
+        return $message;
+    }
 
-	/**
-	 * @param \App\Application\Mail\Attachment $attachment
-	 *
-	 * @return $this
-	 */
-	public function withAttachment(Attachment $attachment): self
-	{
-		$message = clone $this;
-		$message->attachments[] = $attachment;
+    /**
+     * @return $this
+     */
+    public function withAttachment(Attachment $attachment): self
+    {
+        $message = clone $this;
+        $message->attachments[] = $attachment;
 
-		return $message;
-	}
+        return $message;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function templateFile(): string
-	{
-		return $this->templateFile;
-	}
+    public function templateFile(): string
+    {
+        return $this->templateFile;
+    }
 
-	/**
-	 * @return string|NULL
-	 */
-	public function locale(): ?string
-	{
-		return $this->locale;
-	}
+    public function locale(): ?string
+    {
+        return $this->locale;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function arguments(): array
-	{
-		return $this->arguments;
-	}
+    public function arguments(): array
+    {
+        return $this->arguments;
+    }
 
-	/**
-	 * @return string|NULL
-	 */
-	public function subject(): ?string
-	{
-		return $this->subject;
-	}
+    public function subject(): ?string
+    {
+        return $this->subject;
+    }
 
-	/**
-	 * @return \App\Application\Mail\Address|NULL
-	 */
-	public function from(): ?Address
-	{
-		return $this->from;
-	}
+    public function from(): ?Address
+    {
+        return $this->from;
+    }
 
-	/**
-	 * @return \App\Application\Mail\Address[]
-	 */
-	public function to(): array
-	{
-		return $this->to;
-	}
+    /**
+     * @return Address[]
+     */
+    public function to(): array
+    {
+        return $this->to;
+    }
 
-	/**
-	 * @return \App\Application\Mail\Address[]
-	 */
-	public function bcc(): array
-	{
-		return $this->bcc;
-	}
+    /**
+     * @return Address[]
+     */
+    public function bcc(): array
+    {
+        return $this->bcc;
+    }
 
-	/**
-	 * @return \App\Application\Mail\Address[]
-	 */
-	public function cc(): array
-	{
-		return $this->cc;
-	}
+    /**
+     * @return Address[]
+     */
+    public function cc(): array
+    {
+        return $this->cc;
+    }
 
-	/**
-	 * @return \App\Application\Mail\Address[]
-	 */
-	public function replyTo(): array
-	{
-		return $this->replyTo;
-	}
+    /**
+     * @return Address[]
+     */
+    public function replyTo(): array
+    {
+        return $this->replyTo;
+    }
 
-	/**
-	 * @return \App\Application\Mail\Attachment[]
-	 */
-	public function attachments(): array
-	{
-		return $this->attachments;
-	}
+    /**
+     * @return Attachment[]
+     */
+    public function attachments(): array
+    {
+        return $this->attachments;
+    }
 }

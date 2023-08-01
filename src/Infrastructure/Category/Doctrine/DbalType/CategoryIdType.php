@@ -9,5 +9,5 @@ use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\DbalType\Abs
 
 final class CategoryIdType extends AbstractUuidIdentityType
 {
-	protected string $valueObjectClassname = CategoryId::class;
+    protected string $valueObjectClassname = CategoryId::class;
 }

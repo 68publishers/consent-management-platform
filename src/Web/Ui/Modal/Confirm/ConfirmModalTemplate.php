@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Web\Ui\Modal\Confirm;
 
-use Nette\Utils\Html;
 use Nette\Bridges\ApplicationLatte\Template;
+use Nette\Utils\Html;
 
 final class ConfirmModalTemplate extends Template
 {
-	public Html $title;
+    public Html $title;
 
-	public Html $question;
+    public Html $question;
 
-	public array $args = [];
+    public array $args = [];
 
-	public ?string $yesButtonText = NULL;
+    public ?string $yesButtonText = null;
 
-	public ?string $noButtonText = NULL;
+    public ?string $noButtonText = null;
 }
