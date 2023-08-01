@@ -1,25 +1,25 @@
 services:
-	acl:
-		type: Nette\Security\Permission
-		setup:
-			- addRole(guest)
-			- addRole(App\Domain\User\RolesEnum::MANAGER)
-			- addRole(App\Domain\User\RolesEnum::ADMIN)
+    acl:
+        type: Nette\Security\Permission
+        setup:
+            - addRole(guest)
+            - addRole(App\Domain\User\RolesEnum::MANAGER)
+            - addRole(App\Domain\User\RolesEnum::ADMIN)
 
-			- addResource(App\Application\Acl\ApplicationSettingsResource)
-			- addResource(App\Application\Acl\CategoryResource)
-			- addResource(App\Application\Acl\CookieProviderResource)
-			- addResource(App\Application\Acl\CookieResource)
-			- addResource(App\Application\Acl\CrawlerScenarioSchedulersResource)
-			- addResource(App\Application\Acl\CrawlerScenariosResource)
-			- addResource(App\Application\Acl\FoundCookiesProjectsResource)
-			- addResource(App\Application\Acl\FoundCookiesResource)
-			- addResource(App\Application\Acl\ImportResource)
-			- addResource(App\Application\Acl\PasswordRequestResource)
-			- addResource(App\Application\Acl\ProjectConsentResource)
-			- addResource(App\Application\Acl\ProjectConsentSettingsResource)
-			- addResource(App\Application\Acl\ProjectCookieProviderResource)
-			- addResource(App\Application\Acl\ProjectCookieResource)
-			- addResource(App\Application\Acl\ProjectResource)
-			- addResource(App\Application\Acl\ProjectIntegrationResource)
-			- addResource(App\Application\Acl\UserResource)
+            - addResource(App\Application\Acl\ApplicationSettingsResource)
+            - addResource(App\Application\Acl\CategoryResource)
+            - addResource(App\Application\Acl\CookieProviderResource)
+            - addResource(App\Application\Acl\CookieResource)
+            - addResource(App\Application\Acl\CrawlerScenarioSchedulersResource)
+            - addResource(App\Application\Acl\CrawlerScenariosResource)
+            - addResource(App\Application\Acl\FoundCookiesProjectsResource)
+            - addResource(App\Application\Acl\FoundCookiesResource)
+            - addResource(App\Application\Acl\ImportResource)
+            - addResource(App\Application\Acl\PasswordRequestResource)
+            - addResource(App\Application\Acl\ProjectConsentResource)
+            - addResource(App\Application\Acl\ProjectConsentSettingsResource)
+            - addResource(App\Application\Acl\ProjectCookieProviderResource)
+            - addResource(App\Application\Acl\ProjectCookieResource)
+            - addResource(App\Application\Acl\ProjectResource)
+            - addResource(App\Application\Acl\ProjectIntegrationResource)
+            - addResource(App\Application\Acl\UserResource)

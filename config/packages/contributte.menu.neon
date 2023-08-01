@@ -1,153 +1,153 @@
 extensions:
-	contributte.menu: Contributte\MenuControl\DI\MenuExtension
+    contributte.menu: Contributte\MenuControl\DI\MenuExtension
 
 services:
-	menu_item_authorizator:
-		type: Contributte\MenuControl\Security\IAuthorizator
-		factory: App\Web\Ui\Menu\MenuItemAuthorizator
-		autowired: no
+    menu_item_authorizator:
+        type: Contributte\MenuControl\Security\IAuthorizator
+        factory: App\Web\Ui\Menu\MenuItemAuthorizator
+        autowired: no
 
 contributte.menu:
-	sidebar:
-		translator: yes
-		authorizator: @menu_item_authorizator
-		templates:
-			menu: %appDir%/Web/Ui/templates/menu/sidebar.latte
-		items:
-			layout.sidebar.dashboard:
-				action: Admin:Dashboard:default
-				data:
-					icon: dashboard
-			layout.sidebar.users:
-				items:
-					layout.sidebar.users_users:
-						action: Admin:User:Users:default
-						include:
-							- '^Admin\:User\:Users\:.+$'
-							- '^Admin\:User\:AddUser\:.+$'
-							- '^Admin\:User\:EditUser\:.+$'
-					layout.sidebar.users_password_requests:
-						action: Admin:User:PasswordRequests:default
-						include:
-							- '^Admin\:User\:PasswordRequests\:.+$'
-				data:
-					icon: users
-			layout.sidebar.application_settings:
-				action: Admin:Application:Settings:default
-				include:
-					- '^Admin\:Application\:Settings\:.+$'
-				data:
-					icon: settings
-			layout.sidebar.cookies:
-				items:
-					layout.sidebar.cookies_categories:
-						action: Admin:Cookie:Categories:default
-						include:
-							- '^Admin\:Cookie\:Categories\:.+$'
-							- '^Admin\:Cookie\:AddCategory\:.+$'
-							- '^Admin\:Cookie\:EditCategory\:.+$'
-					layout.sidebar.cookies_providers:
-						action: Admin:Cookie:Providers:default
-						include:
-							- '^Admin\:Cookie\:Providers\:.+$'
-							- '^Admin\:Cookie\:AddProvider\:.+$'
-							- '^Admin\:Cookie\:EditProvider\:.+$'
-					layout.sidebar.cookies_cookies:
-						action: Admin:Cookie:Cookies:default
-						include:
-							- '^Admin\:Cookie\:Cookies\:.+$'
-					layout.sidebar.cookies_found_cookies:
-						action: Admin:Cookie:FoundCookiesProjects:default
-						include:
-							- '^Admin\:Cookie\:FoundCookiesProjects\:.+$'
-							- '^Admin\:Cookie\:FoundCookies\:.+$'
-				data:
-					icon: cookies
-			layout.sidebar.crawler:
-				items:
-					layout.sidebar.crawler_scenario_schedulers:
-						action: Admin:Crawler:ScenarioSchedulers:default
-						include:
-							- '^Admin\:Crawler\:ScenarioSchedulers\:.+$'
-					layout.sidebar.crawler_scenarios:
-						action: Admin:Crawler:Scenarios:default
-						include:
-							- '^Admin\:Crawler\:Scenarios\:.+$'
-				data:
-					icon: crawler
-			layout.sidebar.imports:
-				action: Admin:Import:Imports:default
-				include:
-					- '^Admin\:Import\:Imports\:.+$'
-				data:
-					icon: imports
-			layout.sidebar.projects:
-				action: Admin:Project:Projects:default
-				include:
-					- '^Admin\:Project\:Projects\:.+$'
-					- '^Admin\:Project\:AddProject\:.+$'
-				data:
-					icon: projects
+    sidebar:
+        translator: yes
+        authorizator: @menu_item_authorizator
+        templates:
+            menu: %appDir%/Web/Ui/templates/menu/sidebar.latte
+        items:
+            layout.sidebar.dashboard:
+                action: Admin:Dashboard:default
+                data:
+                    icon: dashboard
+            layout.sidebar.users:
+                items:
+                    layout.sidebar.users_users:
+                        action: Admin:User:Users:default
+                        include:
+                            - '^Admin\:User\:Users\:.+$'
+                            - '^Admin\:User\:AddUser\:.+$'
+                            - '^Admin\:User\:EditUser\:.+$'
+                    layout.sidebar.users_password_requests:
+                        action: Admin:User:PasswordRequests:default
+                        include:
+                            - '^Admin\:User\:PasswordRequests\:.+$'
+                data:
+                    icon: users
+            layout.sidebar.application_settings:
+                action: Admin:Application:Settings:default
+                include:
+                    - '^Admin\:Application\:Settings\:.+$'
+                data:
+                    icon: settings
+            layout.sidebar.cookies:
+                items:
+                    layout.sidebar.cookies_categories:
+                        action: Admin:Cookie:Categories:default
+                        include:
+                            - '^Admin\:Cookie\:Categories\:.+$'
+                            - '^Admin\:Cookie\:AddCategory\:.+$'
+                            - '^Admin\:Cookie\:EditCategory\:.+$'
+                    layout.sidebar.cookies_providers:
+                        action: Admin:Cookie:Providers:default
+                        include:
+                            - '^Admin\:Cookie\:Providers\:.+$'
+                            - '^Admin\:Cookie\:AddProvider\:.+$'
+                            - '^Admin\:Cookie\:EditProvider\:.+$'
+                    layout.sidebar.cookies_cookies:
+                        action: Admin:Cookie:Cookies:default
+                        include:
+                            - '^Admin\:Cookie\:Cookies\:.+$'
+                    layout.sidebar.cookies_found_cookies:
+                        action: Admin:Cookie:FoundCookiesProjects:default
+                        include:
+                            - '^Admin\:Cookie\:FoundCookiesProjects\:.+$'
+                            - '^Admin\:Cookie\:FoundCookies\:.+$'
+                data:
+                    icon: cookies
+            layout.sidebar.crawler:
+                items:
+                    layout.sidebar.crawler_scenario_schedulers:
+                        action: Admin:Crawler:ScenarioSchedulers:default
+                        include:
+                            - '^Admin\:Crawler\:ScenarioSchedulers\:.+$'
+                    layout.sidebar.crawler_scenarios:
+                        action: Admin:Crawler:Scenarios:default
+                        include:
+                            - '^Admin\:Crawler\:Scenarios\:.+$'
+                data:
+                    icon: crawler
+            layout.sidebar.imports:
+                action: Admin:Import:Imports:default
+                include:
+                    - '^Admin\:Import\:Imports\:.+$'
+                data:
+                    icon: imports
+            layout.sidebar.projects:
+                action: Admin:Project:Projects:default
+                include:
+                    - '^Admin\:Project\:Projects\:.+$'
+                    - '^Admin\:Project\:AddProject\:.+$'
+                data:
+                    icon: projects
 
-	sidebar_project:
-		translator: yes
-		authorizator: @menu_item_authorizator
-		templates:
-			menu: %appDir%/Web/Ui/templates/menu/sidebar.latte
-			breadcrumbs: %appDir%/Web/Ui/templates/menu/breadcrumbs.latte
-		items:
-			layout.sidebar_project.consents:
-				action: Admin:Project:Consents:default
-				include:
-					- '^Admin\:Project\:Consents\:.+$'
-				data:
-					icon: consents
-			layout.sidebar_project.consent_settings:
-				action: Admin:Project:ConsentSettings:default
-				include:
-					- '^Admin\:Project\:ConsentSettings\:.+$'
-				data:
-					icon: consent-settings
-			layout.sidebar_project.cookies:
-				items:
-					layout.sidebar_project.cookies_providers:
-						action: Admin:Project:Providers:default
-						include:
-							- '^Admin\:Project\:Providers\:.+$'
-					layout.sidebar_project.cookies_cookies:
-						action: Admin:Project:Cookies:default
-						include:
-							- '^Admin\:Project\:Cookies\:.+$'
-					layout.sidebar_project.cookies_service_cookies:
-						action: Admin:Project:ServiceCookies:default
-						include:
-							- '^Admin\:Project\:ServiceCookies\:.+$'
-				data:
-					icon: cookies
-			layout.sidebar_project.integration:
-				action: Admin:Project:Integration:default
-				include:
-					- '^Admin\:Project\:Integration\:.+$'
-				data:
-					icon: integration
-			layout.sidebar_project.edit_project:
-				action: Admin:Project:EditProject:default
-				include:
-					- '^Admin\:Project\:EditProject\:.+$'
-				data:
-					icon: edit-project
+    sidebar_project:
+        translator: yes
+        authorizator: @menu_item_authorizator
+        templates:
+            menu: %appDir%/Web/Ui/templates/menu/sidebar.latte
+            breadcrumbs: %appDir%/Web/Ui/templates/menu/breadcrumbs.latte
+        items:
+            layout.sidebar_project.consents:
+                action: Admin:Project:Consents:default
+                include:
+                    - '^Admin\:Project\:Consents\:.+$'
+                data:
+                    icon: consents
+            layout.sidebar_project.consent_settings:
+                action: Admin:Project:ConsentSettings:default
+                include:
+                    - '^Admin\:Project\:ConsentSettings\:.+$'
+                data:
+                    icon: consent-settings
+            layout.sidebar_project.cookies:
+                items:
+                    layout.sidebar_project.cookies_providers:
+                        action: Admin:Project:Providers:default
+                        include:
+                            - '^Admin\:Project\:Providers\:.+$'
+                    layout.sidebar_project.cookies_cookies:
+                        action: Admin:Project:Cookies:default
+                        include:
+                            - '^Admin\:Project\:Cookies\:.+$'
+                    layout.sidebar_project.cookies_service_cookies:
+                        action: Admin:Project:ServiceCookies:default
+                        include:
+                            - '^Admin\:Project\:ServiceCookies\:.+$'
+                data:
+                    icon: cookies
+            layout.sidebar_project.integration:
+                action: Admin:Project:Integration:default
+                include:
+                    - '^Admin\:Project\:Integration\:.+$'
+                data:
+                    icon: integration
+            layout.sidebar_project.edit_project:
+                action: Admin:Project:EditProject:default
+                include:
+                    - '^Admin\:Project\:EditProject\:.+$'
+                data:
+                    icon: edit-project
 
-	profile:
-		translator: yes
-		templates:
-			menu: %appDir%/Web/Ui/templates/menu/profile.latte
-		items:
-			layout.profile.settings:
-				action: Admin:Profile:Settings:default
-				data:
-					icon: profile
-			layout.profile.sign_out:
-				action:
-					target: Admin:SignOut:default
-				data:
-					icon: sign-out
+    profile:
+        translator: yes
+        templates:
+            menu: %appDir%/Web/Ui/templates/menu/profile.latte
+        items:
+            layout.profile.settings:
+                action: Admin:Profile:Settings:default
+                data:
+                    icon: profile
+            layout.profile.sign_out:
+                action:
+                    target: Admin:SignOut:default
+                data:
+                    icon: sign-out

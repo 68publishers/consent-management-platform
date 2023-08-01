@@ -1,28 +1,28 @@
 services:
-	# infra: doctrine
-	-
-		type: App\Domain\GlobalSettings\GlobalSettingsRepositoryInterface
-		factory: App\Infrastructure\GlobalSettings\Doctrine\GlobalSettingsRepository
-	-
-		autowired: self
-		type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
-		factory: App\Infrastructure\GlobalSettings\Doctrine\ReadModel\GlobalSettingsViewDataTransformer
-	-
-		autowired: no
-		factory: App\Infrastructure\GlobalSettings\Doctrine\ReadModel\GetGlobalSettingsQueryHandler
+    # infra: doctrine
+    -
+        type: App\Domain\GlobalSettings\GlobalSettingsRepositoryInterface
+        factory: App\Infrastructure\GlobalSettings\Doctrine\GlobalSettingsRepository
+    -
+        autowired: self
+        type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
+        factory: App\Infrastructure\GlobalSettings\Doctrine\ReadModel\GlobalSettingsViewDataTransformer
+    -
+        autowired: no
+        factory: App\Infrastructure\GlobalSettings\Doctrine\ReadModel\GetGlobalSettingsQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:
-	mapping:
-		App\Domain\GlobalSettings: %appDir%/Infrastructure/GlobalSettings/Doctrine/Mapping
+    mapping:
+        App\Domain\GlobalSettings: %appDir%/Infrastructure/GlobalSettings/Doctrine/Mapping
 
 # infra: dbal types
 nettrine.dbal:
-	connection:
-		types:
-			App\Domain\GlobalSettings\ValueObject\GlobalSettingsId:
-				class: App\Infrastructure\GlobalSettings\Doctrine\DbalType\GlobalSettingsIdType
-				commented: yes
-			App\Domain\GlobalSettings\ValueObject\CrawlerSettings:
-				class: App\Infrastructure\GlobalSettings\Doctrine\DbalType\CrawlerSettingsType
-				commented: yes
+    connection:
+        types:
+            App\Domain\GlobalSettings\ValueObject\GlobalSettingsId:
+                class: App\Infrastructure\GlobalSettings\Doctrine\DbalType\GlobalSettingsIdType
+                commented: yes
+            App\Domain\GlobalSettings\ValueObject\CrawlerSettings:
+                class: App\Infrastructure\GlobalSettings\Doctrine\DbalType\CrawlerSettingsType
+                commented: yes

@@ -1,47 +1,47 @@
 name:
-	field: Název
-	required: Vyplňte prosím název.
+    field: Název
+    required: Vyplňte prosím název.
 
 code:
-	field: Kód
-	required: Vyplňte prosím kód.
-	rule_pattern: 'Kód smí obsahovat pouze malá písmena (a-z), číslice a znaky "_", "-" a ".".'
-	rule_max_length: Maximální povolená délka je %d znaků.
-	error:
-		duplicated_value: 'Projekt s tímto kódem již existuje.'
-	description: 'Povolená jsou pouze malá písmena, číslice, tečka, podtržítko a pomlčka.'
+    field: Kód
+    required: Vyplňte prosím kód.
+    rule_pattern: 'Kód smí obsahovat pouze malá písmena (a-z), číslice a znaky "_", "-" a ".".'
+    rule_max_length: Maximální povolená délka je %d znaků.
+    error:
+        duplicated_value: 'Projekt s tímto kódem již existuje.'
+    description: 'Povolená jsou pouze malá písmena, číslice, tečka, podtržítko a pomlčka.'
 
 domain:
-	field: Doména
-	required: Vyplňte prosím doménu.
-	description: 'Použije se jako výchozí doména pro přiřazené cookies.'
+    field: Doména
+    required: Vyplňte prosím doménu.
+    description: 'Použije se jako výchozí doména pro přiřazené cookies.'
 
 color:
-	field: Barva
-	required: Vyplňte prosím barvu.
-	rule_pattern: Nevalidní formát.
-	description: 'Povolen je hexadecimální formát #xxx, či #xxxxxx.'
+    field: Barva
+    required: Vyplňte prosím barvu.
+    rule_pattern: Nevalidní formát.
+    description: 'Povolen je hexadecimální formát #xxx, či #xxxxxx.'
 
 active:
-	field: Zapnuto
+    field: Zapnuto
 
 locales:
-	field: Jazyky překladů
-	required: Zvolte alespoň jeden jazyk.
+    field: Jazyky překladů
+    required: Zvolte alespoň jeden jazyk.
 
 default_locale:
-	field: Výchozí jazyk
-	required: Zvolte výchozí jazyk.
+    field: Výchozí jazyk
+    required: Zvolte výchozí jazyk.
 
 timezone:
-	field: Časové pásmo
-	required: Zvolte prosím časové pásmo.
+    field: Časové pásmo
+    required: Zvolte prosím časové pásmo.
 
 description:
-	field: Popis projektu
+    field: Popis projektu
 
 save:
-	field: Vytvořit projekt
+    field: Vytvořit projekt
 
 update:
-	field: Uložit
+    field: Uložit

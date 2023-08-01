@@ -11,5 +11,5 @@ manage_suggestions: Manage suggestions
 close_button_text: Close
 
 error:
-	crawler_api_respond_with_error_status_code: 'The API returned a response with the code <strong>%code%</strong>'
-	generic_message: The scenario data could not be obtained.
+    crawler_api_respond_with_error_status_code: 'The API returned a response with the code <strong>%code%</strong>'
+    generic_message: The scenario data could not be obtained.

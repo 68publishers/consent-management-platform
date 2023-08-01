@@ -4,5 +4,5 @@ heading_including: Vložení tabulky na webu
 text_including: 'Pro vložení tabulky cookies na vaší stránce zkopírujte následující script a vložte jej přesně na místo, kde chcete tabulku zobrazit.'
 
 message:
-	templates_updated: Šablony byly uloženy.
-	templates_updated_failed: Při ukládání šablon došlo k chybě.
+    templates_updated: Šablony byly uloženy.
+    templates_updated_failed: Při ukládání šablon došlo k chybě.

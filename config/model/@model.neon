@@ -1,13 +1,13 @@
 includes:
-	- category/@default.neon
-	- consent/@default.neon
-	- consent_settings/@default.neon
-	- cookie/@default.neon
-	- cookie_provider/@default.neon
-	- cookie_suggestion/@default.neon
-	- global_settings/@default.neon
-	- import/@default.neon
-	- password_request/@default.neon
-	- project/@default.neon
-	- shared/@default.neon
-	- user/@default.neon
+    - category/@default.neon
+    - consent/@default.neon
+    - consent_settings/@default.neon
+    - cookie/@default.neon
+    - cookie_provider/@default.neon
+    - cookie_suggestion/@default.neon
+    - global_settings/@default.neon
+    - import/@default.neon
+    - password_request/@default.neon
+    - project/@default.neon
+    - shared/@default.neon
+    - user/@default.neon

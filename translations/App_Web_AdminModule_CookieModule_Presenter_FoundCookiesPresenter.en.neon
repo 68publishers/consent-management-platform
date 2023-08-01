@@ -3,24 +3,24 @@ back_to_list: Back to project suggestions
 running_scenarios: Running scenarios
 
 caption:
-	new_cookies: New cookies
-	problematic_cookies: Problematic cookies
-	occurrences: Occurrences
-	warnings: Warnings
-	existing_cookie: Information about cookie from CMP
-	unproblematic_cookies: Unproblematic cookies
-	ignored_cookies: Ignored cookies
+    new_cookies: New cookies
+    problematic_cookies: Problematic cookies
+    occurrences: Occurrences
+    warnings: Warnings
+    existing_cookie: Information about cookie from CMP
+    unproblematic_cookies: Unproblematic cookies
+    ignored_cookies: Ignored cookies
 
 no_found_cookie:
-	new_cookies: No new cookies were found.
-	problematic_cookies: No problematic cookies were found.
-	unproblematic_cookies: No unproblematic cookies were found.
-	ignored_cookies: No ignored cookies were found.
+    new_cookies: No new cookies were found.
+    problematic_cookies: No problematic cookies were found.
+    unproblematic_cookies: No unproblematic cookies were found.
+    ignored_cookies: No ignored cookies were found.
 
 tooltip:
-	last_founded_at: Last found
-	suggestion_contains_warnings: 'Cookie contains a warning, click for more information.'
-	domain: Domain
+    last_founded_at: Last found
+    suggestion_contains_warnings: 'Cookie contains a warning, click for more information.'
+    domain: Domain
 
 not_found_in_cmp: Not found in CMP
 found_in_cmp: Found in CMP
@@ -32,58 +32,58 @@ reset_all_solutions: 'Cancel the changes (%changed%/%total%)'
 edit_cookie: Edit
 
 occurrences_table:
-	scanerio_name: Scenario name
-	cookie_name: Cookie name
-	last_found_at: Last found
-	accepted_categories: Allowed categories
-	found_on_url: URL of the first find
-	no_occurrences_found: No occurrences were found.
+    scanerio_name: Scenario name
+    cookie_name: Cookie name
+    last_found_at: Last found
+    accepted_categories: Allowed categories
+    found_on_url: URL of the first find
+    no_occurrences_found: No occurrences were found.
 
 existing_cookie_table:
-	name: Name
-	domain: Domain
-	category: Category
-	provider: Provider
+    name: Name
+    domain: Domain
+    category: Category
+    provider: Provider
 
 warning:
-	cookie_does_not_have_same_domain: 'The cookie has a different domain than the found one, so it is not certain that it is the same cookie.'
+    cookie_does_not_have_same_domain: 'The cookie has a different domain than the found one, so it is not certain that it is the same cookie.'
 
 problem:
-	cookie_is_in_category_that_is_not_accepted: 'The scenario <span class="font-semibold">"%scenarioName%"</span> was run with categories <span class="font-semibold">[%acceptedCategories%]</span> but the cookie is in categories <span class="font-semibold">[%cookieCategories%]</span>.'
-	cookie_long_time_not_found: "Cookie hasn't been found by any scenario for <span class=\"font-semibold\">%not_found_for_days%</span> days."
-	cookie_was_never_found: 'Cookie was never found by any scenario.'
+    cookie_is_in_category_that_is_not_accepted: 'The scenario <span class="font-semibold">"%scenarioName%"</span> was run with categories <span class="font-semibold">[%acceptedCategories%]</span> but the cookie is in categories <span class="font-semibold">[%cookieCategories%]</span>.'
+    cookie_long_time_not_found: "Cookie hasn't been found by any scenario for <span class=\"font-semibold\">%not_found_for_days%</span> days."
+    cookie_was_never_found: 'Cookie was never found by any scenario.'
 
 solution:
-	associate_cookie_provider_with_project: 'Add provider "%provider_name%" to the project'
-	change_cookie_category: Change cookie category
-	create_new_cookie: Create a new cookie
-	create_new_cookie_with_not_accepted_category: Create the same cookie with a different category
-	ignore_until_next_occurrence: Ignore until next occurrence
-	ignore_permanently: Ignore permanently
-	do_not_ignore: "Don't ignore"
+    associate_cookie_provider_with_project: 'Add provider "%provider_name%" to the project'
+    change_cookie_category: Change cookie category
+    create_new_cookie: Create a new cookie
+    create_new_cookie_with_not_accepted_category: Create the same cookie with a different category
+    ignore_until_next_occurrence: Ignore until next occurrence
+    ignore_permanently: Ignore permanently
+    do_not_ignore: "Don't ignore"
 
 solution_group:
-	associate_cookie_provider_with_project: Add a provider to the project
-	change_cookie_category: Change cookie category
-	create_new_cookie_with_not_accepted_category: Create the same cookie with a different category
+    associate_cookie_provider_with_project: Add a provider to the project
+    change_cookie_category: Change cookie category
+    create_new_cookie_with_not_accepted_category: Create the same cookie with a different category
 
 solution_group_description:
-	associate_cookie_provider_with_project: Choose a provider
-	change_cookie_category: Which cookie you want to edit
-	create_new_cookie_with_not_accepted_category: Which cookie should be used as a template
+    associate_cookie_provider_with_project: Choose a provider
+    change_cookie_category: Which cookie you want to edit
+    create_new_cookie_with_not_accepted_category: Which cookie should be used as a template
 
 solution_in_group:
-	associate_cookie_provider_with_project: 'Provider <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 ml-2 my-0.5">%provider_name%</span>'
-	change_cookie_category: 'Cookie with category <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 mx-1 my-0.5">%category_code%</span> and provider <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 mx-1 my-0.5">%provider_name%</span>'
-	create_new_cookie_with_not_accepted_category: 'Cookie with category <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 mx-1 my-0.5">%category_code%</span> and provider <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 mx-1 my-0.5">%provider_name%</span>'
+    associate_cookie_provider_with_project: 'Provider <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 ml-2 my-0.5">%provider_name%</span>'
+    change_cookie_category: 'Cookie with category <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 mx-1 my-0.5">%category_code%</span> and provider <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 mx-1 my-0.5">%provider_name%</span>'
+    create_new_cookie_with_not_accepted_category: 'Cookie with category <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 mx-1 my-0.5">%category_code%</span> and provider <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 mx-1 my-0.5">%provider_name%</span>'
 
 message:
-	project_not_found: The project has not been found.
-	unable_to_process_solution: The solution could not be processed.
-	suggestion_resolved: The suggestion was successfully resolved.
-	unable_to_resolve_solution: There was an error in the evaluation of the suggestion.
-	cookie_is_no_longer_ignored: The suggestion is no longer ignored.
-	multiple_suggestions_resolved: '{1} One suggestion has been successfully resolved.|[2,Inf[ A total of %count% suggestions were successfully resolved.'
-	unable_to_resolve_multiple_solutions: '{1} One suggestion could not be resolved.|[2,Inf[ A total of %count% suggestions could not be resolved.'
-	cookie_updated: The cookie has been edited.
-	cookie_update_failed: An error occurred while editing the cookie.
+    project_not_found: The project has not been found.
+    unable_to_process_solution: The solution could not be processed.
+    suggestion_resolved: The suggestion was successfully resolved.
+    unable_to_resolve_solution: There was an error in the evaluation of the suggestion.
+    cookie_is_no_longer_ignored: The suggestion is no longer ignored.
+    multiple_suggestions_resolved: '{1} One suggestion has been successfully resolved.|[2,Inf[ A total of %count% suggestions were successfully resolved.'
+    unable_to_resolve_multiple_solutions: '{1} One suggestion could not be resolved.|[2,Inf[ A total of %count% suggestions could not be resolved.'
+    cookie_updated: The cookie has been edited.
+    cookie_update_failed: An error occurred while editing the cookie.

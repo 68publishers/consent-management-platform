@@ -2,20 +2,20 @@ email_address: Email
 roles: Role
 
 firstname:
-	field: Jméno
-	required: Vyplňte prosím jméno.
+    field: Jméno
+    required: Vyplňte prosím jméno.
 
 surname:
-	field: Příjmení
-	required: Vyplňte prosím příjmení.
+    field: Příjmení
+    required: Vyplňte prosím příjmení.
 
 profile:
-	field: Jazyk
-	required: Zvolte prosím jazyk.
+    field: Jazyk
+    required: Zvolte prosím jazyk.
 
 timezone:
-	field: Časové pásmo
-	required: Zvolte prosím časové pásmo.
+    field: Časové pásmo
+    required: Zvolte prosím časové pásmo.
 
 save:
-	field: Uložit
+    field: Uložit

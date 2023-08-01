@@ -1,35 +1,35 @@
 error:
-	processing_fail: Při zpracování formuláře došlo k chybě.
+    processing_fail: Při zpracování formuláře došlo k chybě.
 
 type:
-	field: Typ
-	required: Zvolte prosím typ.
+    field: Typ
+    required: Zvolte prosím typ.
 
 format:
-	field: Formát
-	required: Zvolte prosím formát.
-	item:
-		csv: CSV
-		json: JSON
+    field: Formát
+    required: Zvolte prosím formát.
+    item:
+        csv: CSV
+        json: JSON
 
 separator:
-	field: Separátor
-	required: Zvolte prosím separátor.
-	item:
-		auto: 'Automaticky detekovat'
-		comma: 'Čárka (,)'
-		semicolon: 'Středník (;)'
-		tabulator: 'Tabulátor (\t)'
-		space: 'Mezera ( )'
-		pipe: 'Svislá čára (|)'
+    field: Separátor
+    required: Zvolte prosím separátor.
+    item:
+        auto: 'Automaticky detekovat'
+        comma: 'Čárka (,)'
+        semicolon: 'Středník (;)'
+        tabulator: 'Tabulátor (\t)'
+        space: 'Mezera ( )'
+        pipe: 'Svislá čára (|)'
 
 file:
-	field: Soubor
-	required: Zvolte prosím soubor.
-	rule:
-		mime_type:
-			csv: Zvolený soubor není soubor typu csv.
-			json: Zvolený soubor není soubor typu json.
+    field: Soubor
+    required: Zvolte prosím soubor.
+    rule:
+        mime_type:
+            csv: Zvolený soubor není soubor typu csv.
+            json: Zvolený soubor není soubor typu json.
 
 import:
-	field: Importovat
+    field: Importovat

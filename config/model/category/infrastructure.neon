@@ -1,50 +1,50 @@
 services:
-	# infra
-	-
-		type: App\Domain\Category\CategoryRepositoryInterface
-		factory: App\Infrastructure\Category\CategoryRepository
-	-
-		type: App\Domain\Category\CheckCodeUniquenessInterface
-		factory: App\Infrastructure\Category\CheckCodeUniqueness
+    # infra
+    -
+        type: App\Domain\Category\CategoryRepositoryInterface
+        factory: App\Infrastructure\Category\CategoryRepository
+    -
+        type: App\Domain\Category\CheckCodeUniquenessInterface
+        factory: App\Infrastructure\Category\CheckCodeUniqueness
 
-	# infra: doctrine
-	-
-		autowired: self
-		type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
-		factory: App\Infrastructure\Category\Doctrine\ReadModel\CategoryViewDataTransformer
-	-
-		autowired: no
-		factory: App\Infrastructure\Category\Doctrine\ReadModel\AllCategoriesQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Category\Doctrine\ReadModel\CategoriesDataGridQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Category\Doctrine\ReadModel\FindAllOptionalCategoryCodesQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Category\Doctrine\ReadModel\GetCategoryByCodeQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Category\Doctrine\ReadModel\GetCategoryByIdQueryHandler
+    # infra: doctrine
+    -
+        autowired: self
+        type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
+        factory: App\Infrastructure\Category\Doctrine\ReadModel\CategoryViewDataTransformer
+    -
+        autowired: no
+        factory: App\Infrastructure\Category\Doctrine\ReadModel\AllCategoriesQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Category\Doctrine\ReadModel\CategoriesDataGridQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Category\Doctrine\ReadModel\FindAllOptionalCategoryCodesQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Category\Doctrine\ReadModel\GetCategoryByCodeQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Category\Doctrine\ReadModel\GetCategoryByIdQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:
-	mapping:
-		App\Domain\Category: %appDir%/Infrastructure/Category/Doctrine/Mapping
+    mapping:
+        App\Domain\Category: %appDir%/Infrastructure/Category/Doctrine/Mapping
 
 # infra: dbal types
 nettrine.dbal:
-	connection:
-		types:
-			App\Domain\Category\ValueObject\CategoryId:
-				class: App\Infrastructure\Category\Doctrine\DbalType\CategoryIdType
-				commented: yes
+    connection:
+        types:
+            App\Domain\Category\ValueObject\CategoryId:
+                class: App\Infrastructure\Category\Doctrine\DbalType\CategoryIdType
+                commented: yes
 
-			App\Domain\Category\ValueObject\Code:
-				class: App\Infrastructure\Category\Doctrine\DbalType\CodeType
-				commented: yes
+            App\Domain\Category\ValueObject\Code:
+                class: App\Infrastructure\Category\Doctrine\DbalType\CodeType
+                commented: yes
 
-			App\Domain\Category\ValueObject\Name:
-				class: App\Infrastructure\Category\Doctrine\DbalType\NameType
-				commented: yes
+            App\Domain\Category\ValueObject\Name:
+                class: App\Infrastructure\Category\Doctrine\DbalType\NameType
+                commented: yes

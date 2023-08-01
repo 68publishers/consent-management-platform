@@ -1,5 +1,5 @@
 services:
-	# infra: doctrine
-	-
-		autowired: no
-		factory: App\Infrastructure\PasswordRequest\Doctrine\ReadModel\PasswordRequestsDataGridQueryHandler
+    # infra: doctrine
+    -
+        autowired: no
+        factory: App\Infrastructure\PasswordRequest\Doctrine\ReadModel\PasswordRequestsDataGridQueryHandler

@@ -2,5 +2,5 @@ page_title: Plánování scénařů
 create_scenario_scheduler: Naplánovat scénař
 
 message:
-	scenario_scheduler_created: Scénař byl úspěšně naplánován.
-	failed_to_create_scenario_scheduler: Scénař nebylo možné naplánovat.
+    scenario_scheduler_created: Scénař byl úspěšně naplánován.
+    failed_to_create_scenario_scheduler: Scénař nebylo možné naplánovat.

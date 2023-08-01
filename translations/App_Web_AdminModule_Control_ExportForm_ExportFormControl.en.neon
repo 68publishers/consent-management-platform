@@ -1,22 +1,22 @@
 error:
-	processing_fail: An error occurred while exporting the data.
+    processing_fail: An error occurred while exporting the data.
 
 format:
-	field: Format
-	required: Please select a format.
-	item:
-		csv: CSV
-		json: JSON
+    field: Format
+    required: Please select a format.
+    item:
+        csv: CSV
+        json: JSON
 
 separator:
-	field: Separator
-	required: Please select a separator.
-	item:
-		comma: 'Comma (,)'
-		semicolon: 'Semicolon (;)'
-		tabulator: 'Tabulator (\t)'
-		space: 'Whitespace ( )'
-		pipe: 'Pipe (|)'
+    field: Separator
+    required: Please select a separator.
+    item:
+        comma: 'Comma (,)'
+        semicolon: 'Semicolon (;)'
+        tabulator: 'Tabulator (\t)'
+        space: 'Whitespace ( )'
+        pipe: 'Pipe (|)'
 
 export:
-	field: Export
+    field: Export

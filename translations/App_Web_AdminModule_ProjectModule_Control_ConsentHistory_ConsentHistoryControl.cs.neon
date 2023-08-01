@@ -1,8 +1,8 @@
 App_Domain_Consent_Event_ConsentUpdated:
-	title: Souhlas byl aktualizován
+    title: Souhlas byl aktualizován
 
 App_Domain_Consent_Event_ConsentCreated:
-	title: Uživatel "%user_identifier%" odeslal souhlas
+    title: Uživatel "%user_identifier%" odeslal souhlas
 
 consents: Souhlasy
 attributes: Atributy

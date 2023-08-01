@@ -1,43 +1,43 @@
 name:
-	field: Název
-	required: Vyplňte prosím název.
-	error:
-		duplicated_value: 'Cookie s tímto názvem již existuje.'
+    field: Název
+    required: Vyplňte prosím název.
+    error:
+        duplicated_value: 'Cookie s tímto názvem již existuje.'
 
 domain:
-	field: Doména
-	description: 'Ponechte prázdné pokud je cookie vždy nastavená pro doménu daného projektu.'
+    field: Doména
+    description: 'Ponechte prázdné pokud je cookie vždy nastavená pro doménu daného projektu.'
 
 provider:
-	field: Poskytovatel
-	required: Zvolte prosím poskytovatele.
+    field: Poskytovatel
+    required: Zvolte prosím poskytovatele.
 
 category:
-	field: Kategorie
-	required: Zvolte prosím kategorii.
+    field: Kategorie
+    required: Zvolte prosím kategorii.
 
 processing_time:
-	field: Doba zpracování
-	required: Zvolte prosím dobu zpracování.
+    field: Doba zpracování
+    required: Zvolte prosím dobu zpracování.
 
 active:
-	field: Aktivní
+    field: Aktivní
 
 session: Session
 persistent: Persistent
 expiration: Expirace
 
 processing_time_mask:
-	field: 'Doba zpracování - expirace'
-	required: Vyplňte prosím expiraci.
-	rule_pattern: Hodnota není validní expirace.
-	description: 'Jsou povoleny modifikátory "y" (rok), "m" (měsíc), "d" (den), "h" (hodina), "i" (minute), "s" (sekunda). Například expirace "1y 6m" znamená, že cookie má expiraci jeden rok a 6 měsíců.'
+    field: 'Doba zpracování - expirace'
+    required: Vyplňte prosím expiraci.
+    rule_pattern: Hodnota není validní expirace.
+    description: 'Jsou povoleny modifikátory "y" (rok), "m" (měsíc), "d" (den), "h" (hodina), "i" (minute), "s" (sekunda). Například expirace "1y 6m" znamená, že cookie má expiraci jeden rok a 6 měsíců.'
 
 purpose:
-	field: 'Účel - %name%'
+    field: 'Účel - %name%'
 
 save:
-	field: Vytvořit cookie
+    field: Vytvořit cookie
 
 update:
-	field: Uložit
+    field: Uložit

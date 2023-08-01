@@ -1,28 +1,28 @@
 extensions:
-	contributte.monolog: Contributte\Monolog\DI\MonologExtension
+    contributte.monolog: Contributte\Monolog\DI\MonologExtension
 
 services:
-	sentry_client:
-		autowired: no
-		type: Sentry\Client
-		factory: Sentry\ClientBuilder::create([
-			dsn: ::env(SENTRY_DSN)
-		])::getClient()
+    sentry_client:
+        autowired: no
+        type: Sentry\Client
+        factory: Sentry\ClientBuilder::create([
+            dsn: ::env(SENTRY_DSN)
+        ])::getClient()
 
-	sentry_hub:
-		autowired: no
-		type: Sentry\State\HubInterface
-		factory: Sentry\SentrySdk::getCurrentHub()
-		setup:
-			- bindClient(@sentry_client)
+    sentry_hub:
+        autowired: no
+        type: Sentry\State\HubInterface
+        factory: Sentry\SentrySdk::getCurrentHub()
+        setup:
+            - bindClient(@sentry_client)
 
 contributte.monolog:
-	channel:
-		default:
-			handlers:
-				console: App\Bridge\Monolog\Handler\ConsoleHandler()
-				sentry: Sentry\Monolog\Handler(@sentry_hub, Monolog\Logger::NOTICE)
-				tracy: Monolog\Handler\PsrHandler(Tracy\Bridges\Psr\TracyToPsrLoggerAdapter(), Monolog\Logger::NOTICE)
-	hook:
-		fromTracy: no
-		toTracy: no
+    channel:
+        default:
+            handlers:
+                console: App\Bridge\Monolog\Handler\ConsoleHandler()
+                sentry: Sentry\Monolog\Handler(@sentry_hub, Monolog\Logger::NOTICE)
+                tracy: Monolog\Handler\PsrHandler(Tracy\Bridges\Psr\TracyToPsrLoggerAdapter(), Monolog\Logger::NOTICE)
+    hook:
+        fromTracy: no
+        toTracy: no

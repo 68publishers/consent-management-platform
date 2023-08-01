@@ -1,13 +1,13 @@
 username:
-	field: Email
-	required: Please enter a email.
+    field: Email
+    required: Please enter a email.
 
 password:
-	field: Heslo
-	required: Please enter a password.
+    field: Heslo
+    required: Please enter a password.
 
 remember_me:
-	field: Remember me
+    field: Remember me
 
 login:
-	field: Sign in
+    field: Sign in

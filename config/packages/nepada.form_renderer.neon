@@ -1,7 +1,7 @@
 extensions:
-	nepada.form_renderer: Nepada\Bridges\FormRendererDI\FormRendererExtension
+    nepada.form_renderer: Nepada\Bridges\FormRendererDI\FormRendererExtension
 
 nepada.form_renderer:
-	default:
-		imports:
-			- %appDir%/Web/Ui/templates/forms/imports.latte
+    default:
+        imports:
+            - %appDir%/Web/Ui/templates/forms/imports.latte

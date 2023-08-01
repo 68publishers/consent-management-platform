@@ -1,13 +1,13 @@
 go_back_home: Zpět na hlavní stránku
 
 404:
-	page_title: Stránka neexistuje
-	error_message: 'Odkaz vede na stránku, která neexistuje nebo již není funkční.'
+    page_title: Stránka neexistuje
+    error_message: 'Odkaz vede na stránku, která neexistuje nebo již není funkční.'
 
 403:
-	page_title: Přístup zamítnut
-	error_message: 'K obsahu této stránky nemáte přístup.'
+    page_title: Přístup zamítnut
+    error_message: 'K obsahu této stránky nemáte přístup.'
 
 4xx:
-	page_title: Něco se pokazilo...
-	error_message: 'Došlo k neočekávané chybě, kontaktujte prosím support.'
+    page_title: Něco se pokazilo...
+    error_message: 'Došlo k neočekávané chybě, kontaktujte prosím support.'

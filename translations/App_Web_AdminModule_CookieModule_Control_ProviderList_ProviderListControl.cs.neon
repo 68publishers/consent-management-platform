@@ -12,8 +12,8 @@ active_value: aktivní
 inactive_value: neaktivní
 
 tooltip:
-	edit_action: Upravit
-	delete_action: Odstranit
+    edit_action: Upravit
+    delete_action: Odstranit
 
 delete_confirm:
-	question: 'Opravdu si přejete odstranit poskytovatele <strong>"%name%"</strong>?'
+    question: 'Opravdu si přejete odstranit poskytovatele <strong>"%name%"</strong>?'

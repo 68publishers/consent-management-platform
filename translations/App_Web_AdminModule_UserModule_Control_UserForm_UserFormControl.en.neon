@@ -1,43 +1,43 @@
 email_address:
-	field: Email
-	required: Please enter a email.
-	rule: The value is not valid email.
-	error:
-		duplicated_value: A user with this email already exists.
+    field: Email
+    required: Please enter a email.
+    rule: The value is not valid email.
+    error:
+        duplicated_value: A user with this email already exists.
 
 firstname:
-	field: Firstname
-	required: Please enter a firstname.
+    field: Firstname
+    required: Please enter a firstname.
 
 surname:
-	field: Surname
-	required: Please enter a surname.
+    field: Surname
+    required: Please enter a surname.
 
 profile:
-	field: Locale
-	required: Please select a locale.
+    field: Locale
+    required: Please select a locale.
 
 timezone:
-	field: Timezone
-	required: Please select a timezone.
+    field: Timezone
+    required: Please select a timezone.
 
 roles:
-	field: Roles
-	required: A user must have at least one role.
+    field: Roles
+    required: A user must have at least one role.
 
 password:
-	field: Password
-	description:
-		create_user: 'Optional, the user can later set his password via "forgotten password".'
-		update_user:
-			create_password: 'The user does not have a password set, fill in the field if you want to set one.'
-			change_password: 'The user has a set password, fill in the field only if you want to change it.'
+    field: Password
+    description:
+        create_user: 'Optional, the user can later set his password via "forgotten password".'
+        update_user:
+            create_password: 'The user does not have a password set, fill in the field if you want to set one.'
+            change_password: 'The user has a set password, fill in the field only if you want to change it.'
 
 projects:
-	field: Projects
+    field: Projects
 
 save:
-	field: Create user
+    field: Create user
 
 update:
-	field: Save
+    field: Save

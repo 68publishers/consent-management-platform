@@ -1,4 +1,4 @@
 services:
-	-
-		autowired: no
-		factory: App\Subscribers\CookieProvider\DeleteCookiesWhenCookieProviderDeleted
+    -
+        autowired: no
+        factory: App\Subscribers\CookieProvider\DeleteCookiesWhenCookieProviderDeleted

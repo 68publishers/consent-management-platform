@@ -1,4 +1,4 @@
 services:
-	-
-		type: App\Application\Statistics\ProjectStatisticsCalculatorInterface
-		factory: App\Application\Statistics\ProjectStatisticsCalculator
+    -
+        type: App\Application\Statistics\ProjectStatisticsCalculatorInterface
+        factory: App\Application\Statistics\ProjectStatisticsCalculator

@@ -1,13 +1,13 @@
 username:
-	field: Email
-	required: Vyplňte prosím email.
+    field: Email
+    required: Vyplňte prosím email.
 
 password:
-	field: Heslo
-	required: Vyplňte prosím heslo.
+    field: Heslo
+    required: Vyplňte prosím heslo.
 
 remember_me:
-	field: Zůstat přihlášený
+    field: Zůstat přihlášený
 
 login:
-	field: Přihlásit se
+    field: Přihlásit se

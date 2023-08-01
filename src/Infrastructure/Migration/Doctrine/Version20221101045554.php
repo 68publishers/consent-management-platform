@@ -17,20 +17,20 @@ final class Version20221101045554 extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->addSql('
-			UPDATE consent_event_stream es
-			SET parameters = parameters || json_build_object(\'project_id\', p.id)::jsonb
-			FROM consent c
-			JOIN project p ON p.id = c.project_id
-			WHERE es.aggregate_id = c.id AND es.event_name = \'App\Domain\Consent\Event\ConsentUpdated\'
-		');
+            UPDATE consent_event_stream es
+            SET parameters = parameters || json_build_object(\'project_id\', p.id)::jsonb
+            FROM consent c
+            JOIN project p ON p.id = c.project_id
+            WHERE es.aggregate_id = c.id AND es.event_name = \'App\Domain\Consent\Event\ConsentUpdated\'
+        ');
     }
 
     public function down(Schema $schema): void
     {
         $this->addSql('
-			UPDATE consent_event_stream es
-			SET parameters = parameters - \'project_id\'
-			WHERE es.event_name = \'App\Domain\Consent\Event\ConsentUpdated\'
-		');
+            UPDATE consent_event_stream es
+            SET parameters = parameters - \'project_id\'
+            WHERE es.event_name = \'App\Domain\Consent\Event\ConsentUpdated\'
+        ');
     }
 }

@@ -1,25 +1,25 @@
 services:
-	# infra: doctrine
-	-
-		autowired: self
-		type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
-		factory: App\Infrastructure\User\Doctrine\ReadModel\NotificationReceiverViewDataTransformer
-	-
-		autowired: no
-		factory: App\Infrastructure\User\Doctrine\ReadModel\UsersDataGridQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\User\Doctrine\ReadModel\FindNotificationReceiversByTypeAndProjectIdsQueryHandler
+    # infra: doctrine
+    -
+        autowired: self
+        type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
+        factory: App\Infrastructure\User\Doctrine\ReadModel\NotificationReceiverViewDataTransformer
+    -
+        autowired: no
+        factory: App\Infrastructure\User\Doctrine\ReadModel\UsersDataGridQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\User\Doctrine\ReadModel\FindNotificationReceiversByTypeAndProjectIdsQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:
-	mapping:
-		App\Domain\User: %appDir%/Infrastructure/User/Doctrine/Mapping
+    mapping:
+        App\Domain\User: %appDir%/Infrastructure/User/Doctrine/Mapping
 
 # infra: dbal types
 nettrine.dbal:
-	connection:
-		types:
-			App\Domain\User\ValueObject\NotificationPreferences:
-				class: App\Infrastructure\User\Doctrine\DbalType\NotificationPreferencesType
-				commented: yes
+    connection:
+        types:
+            App\Domain\User\ValueObject\NotificationPreferences:
+                class: App\Infrastructure\User\Doctrine\DbalType\NotificationPreferencesType
+                commented: yes

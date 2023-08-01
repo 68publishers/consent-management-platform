@@ -1,10 +1,10 @@
 services:
-	-
-		autowired: no
-		factory: App\Domain\Category\CommandHandler\CreateCategoryCommandHandler
-	-
-		autowired: no
-		factory: App\Domain\Category\CommandHandler\UpdateCategoryCommandHandler
-	-
-		autowired: no
-		factory: App\Domain\Category\CommandHandler\DeleteCategoryCommandHandler
+    -
+        autowired: no
+        factory: App\Domain\Category\CommandHandler\CreateCategoryCommandHandler
+    -
+        autowired: no
+        factory: App\Domain\Category\CommandHandler\UpdateCategoryCommandHandler
+    -
+        autowired: no
+        factory: App\Domain\Category\CommandHandler\DeleteCategoryCommandHandler

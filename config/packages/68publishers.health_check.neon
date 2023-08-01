@@ -1,18 +1,18 @@
 extensions:
-	68publishers.health_check: SixtyEightPublishers\HealthCheck\Bridge\Nette\DI\HealthCheckExtension
+    68publishers.health_check: SixtyEightPublishers\HealthCheck\Bridge\Nette\DI\HealthCheckExtension
 
 68publishers.health_check:
-	service_checkers:
-		- SixtyEightPublishers\HealthCheck\ServiceChecker\RedisServiceChecker(
-			::env('REDIS_HOST'),
-			::env('REDIS_PORT|int'),
-			::env('REDIS_AUTH|nullable', '')
-		)
-		- SixtyEightPublishers\HealthCheck\ServiceChecker\PDOServiceChecker::fromParams([
-			driver: pgsql
-			host: ::env(DB_HOST)
-			port: ::env(DB_PORT)
-			dbname: ::env(DB_NAME)
-			user: ::env(DB_USER)
-			password: ::env(DB_PASSWORD)
-		])
+    service_checkers:
+        - SixtyEightPublishers\HealthCheck\ServiceChecker\RedisServiceChecker(
+            ::env('REDIS_HOST'),
+            ::env('REDIS_PORT|int'),
+            ::env('REDIS_AUTH|nullable', '')
+        )
+        - SixtyEightPublishers\HealthCheck\ServiceChecker\PDOServiceChecker::fromParams([
+            driver: pgsql
+            host: ::env(DB_HOST)
+            port: ::env(DB_PORT)
+            dbname: ::env(DB_NAME)
+            user: ::env(DB_USER)
+            password: ::env(DB_PASSWORD)
+        ])

@@ -11,20 +11,20 @@ visited_urls: 'Visited URLs (%count%)'
 screenshots: 'Screenshots (%count%)'
 
 search:
-	cookies: Search in cookie name...
-	visited_urls: Search URL...
-	screenshots: Search in screenshot title...
+    cookies: Search in cookie name...
+    visited_urls: Search URL...
+    screenshots: Search in screenshot title...
 
 cookie:
-	name: Name
-	domain: Domain
-	found_on_url: The first find
+    name: Name
+    domain: Domain
+    found_on_url: The first find
 
 visited_url:
-	url: URL
-	status_code: Status
-	found_on_url: Found on URL
+    url: URL
+    status_code: Status
+    found_on_url: Found on URL
 
 screenshot:
-	image: Screenshot
-	found_on_url: Found on URL
+    image: Screenshot
+    found_on_url: Found on URL

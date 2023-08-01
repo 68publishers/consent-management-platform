@@ -1,4 +1,4 @@
 services:
-	@SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewClassnameTranslatorInterface:
-		setup:
-			- register(SixtyEightPublishers\UserBundle\ReadModel\View\UserView, App\ReadModel\User\UserView)
+    @SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewClassnameTranslatorInterface:
+        setup:
+            - register(SixtyEightPublishers\UserBundle\ReadModel\View\UserView, App\ReadModel\User\UserView)

@@ -4,9 +4,9 @@ unknown_author: Unknown author
 status: State
 
 status_value:
-	running: running
-	completed: completed
-	failed: failed
+    running: running
+    completed: completed
+    failed: failed
 
 duration: Duration
 totals: Item count

@@ -4,5 +4,5 @@ delete: Přerušit
 close: Zavřít
 
 error:
-	crawler_api_respond_with_error_status_code: 'API vrátilo odpověď s kódem <strong>%code%</strong>'
-	generic_message: Data scénaře se nepovedlo získat.
+    crawler_api_respond_with_error_status_code: 'API vrátilo odpověď s kódem <strong>%code%</strong>'
+    generic_message: Data scénaře se nepovedlo získat.

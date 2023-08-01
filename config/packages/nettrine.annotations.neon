@@ -1,8 +1,8 @@
 extensions:
-	nettrine.annotations: Nettrine\Annotations\DI\AnnotationsExtension
+    nettrine.annotations: Nettrine\Annotations\DI\AnnotationsExtension
 
 nettrine.annotations:
-	ignore:
-		- persistent
-		- serializationVersion
-		- secured
+    ignore:
+        - persistent
+        - serializationVersion
+        - secured

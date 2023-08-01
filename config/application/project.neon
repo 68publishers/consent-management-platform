@@ -1,5 +1,5 @@
 services:
-	# command handlers
-	-
-		autowired: no
-		factory: App\Application\Project\CommandHandler\RecalculateCookieSuggestionStatisticsCommandHandler
+    # command handlers
+    -
+        autowired: no
+        factory: App\Application\Project\CommandHandler\RecalculateCookieSuggestionStatisticsCommandHandler

@@ -10,10 +10,10 @@ crawler_api_respond_with_error_status_code: 'API vrátilo odpověď s kódem <st
 crawler_api_respond_with_unexpected_error: 'Volání API vyvovalo neočekávánou chybu: %error%'
 
 tooltip:
-	abort_action: Přerušit scénář
-	detail_action: Detail
-	suggestions_action: Spravovat návrhy
+    abort_action: Přerušit scénář
+    detail_action: Detail
+    suggestions_action: Spravovat návrhy
 
 message:
-	scenario_aborted: Scénář byl úspěšně přerušen.
-	failed_to_abort_scenario: Scénař nebylo možné přerušit.
+    scenario_aborted: Scénář byl úspěšně přerušen.
+    failed_to_abort_scenario: Scénař nebylo možné přerušit.

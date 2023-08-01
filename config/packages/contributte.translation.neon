@@ -1,15 +1,15 @@
 extensions:
-	contributte.translation: Contributte\Translation\DI\TranslationExtension
+    contributte.translation: Contributte\Translation\DI\TranslationExtension
 
 contributte.translation:
-	locales:
-		whitelist:
-			- cs
-			- en
-		default: cs
-		fallback:
-			- cs
-	dirs:
-		- %appDir%/../translations
-	localeResolvers:
-		- Contributte\Translation\LocalesResolvers\Router
+    locales:
+        whitelist:
+            - cs
+            - en
+        default: cs
+        fallback:
+            - cs
+    dirs:
+        - %appDir%/../translations
+    localeResolvers:
+        - Contributte\Translation\LocalesResolvers\Router

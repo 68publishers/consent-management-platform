@@ -1,5 +1,5 @@
 services:
-	-
-		autowired: self
-		type: SixtyEightPublishers\ArchitectureBundle\EventStore\EventMetadataExtenderInterface
-		factory: App\Application\EventMetadataExtender\CurrentUserExtender
+    -
+        autowired: self
+        type: SixtyEightPublishers\ArchitectureBundle\EventStore\EventMetadataExtenderInterface
+        factory: App\Application\EventMetadataExtender\CurrentUserExtender

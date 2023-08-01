@@ -1,47 +1,47 @@
 name:
-	field: Name
-	required: Please enter a name.
+    field: Name
+    required: Please enter a name.
 
 code:
-	field: Code
-	required: Please enter a code.
-	rule_pattern: 'Code can only contain lowercase letters (a-z), numbers, and the characters "_", "-" and ".".'
-	rule_max_length: The maximum length allowed is %d characters.
-	error:
-		duplicated_value: 'A project with this code already exists.'
-	description: 'Only lowercase letters, numbers, dots, underscores, and dashes are allowed.'
+    field: Code
+    required: Please enter a code.
+    rule_pattern: 'Code can only contain lowercase letters (a-z), numbers, and the characters "_", "-" and ".".'
+    rule_max_length: The maximum length allowed is %d characters.
+    error:
+        duplicated_value: 'A project with this code already exists.'
+    description: 'Only lowercase letters, numbers, dots, underscores, and dashes are allowed.'
 
 domain:
-	field: Domain
-	required: Please enter a domain.
-	description: 'The value will be used as the default domain for the associated cookies.'
+    field: Domain
+    required: Please enter a domain.
+    description: 'The value will be used as the default domain for the associated cookies.'
 
 color:
-	field: Color
-	required: Please enter a color.
-	rule_pattern: Invalid format.
-	description: 'Hexadecimal formats #xxx or #xxxxxx are allowed.'
+    field: Color
+    required: Please enter a color.
+    rule_pattern: Invalid format.
+    description: 'Hexadecimal formats #xxx or #xxxxxx are allowed.'
 
 active:
-	field: Active
+    field: Active
 
 locales:
-	field: Translation locales
-	required: Please select at least one locale.
+    field: Translation locales
+    required: Please select at least one locale.
 
 default_locale:
-	field: Default locale
-	required: Please select the default locale.
+    field: Default locale
+    required: Please select the default locale.
 
 timezone:
-	field: Timezone
-	required: Please select a timezone.
+    field: Timezone
+    required: Please select a timezone.
 
 description:
-	field: Project description
+    field: Project description
 
 save:
-	field: Create project
+    field: Create project
 
 update:
-	field: Save
+    field: Save

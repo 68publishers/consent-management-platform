@@ -1,22 +1,22 @@
 enabled:
-	field: Enabled
+    field: Enabled
 
 host_url:
-	field: URL
-	required: Please enter a URL.
-	rule:
-		url: The value is not a valid URL.
+    field: URL
+    required: Please enter a URL.
+    rule:
+        url: The value is not a valid URL.
 
 username:
-	field: Username
-	required: Please enter a username.
+    field: Username
+    required: Please enter a username.
 
 password:
-	field: Password
+    field: Password
 
 callback_uri_token:
-	field: Callback URI Token
-	required: Please enter a Callback URI Token.
+    field: Callback URI Token
+    required: Please enter a Callback URI Token.
 
 save:
-	field: Save
+    field: Save

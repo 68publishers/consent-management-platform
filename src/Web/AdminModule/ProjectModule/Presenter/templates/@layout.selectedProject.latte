@@ -3,62 +3,62 @@
 {templateType App\Web\AdminModule\ProjectModule\Presenter\SelectedProjectTemplate}
 
 <div n:block="breadcrumbs" class="flex">
-	<div class="flex place-items-center mb-1">
-		<div id="project-select">
-			<div x-data>
-				<span x-init="$el.style.display = 'none'" class="inline-block w-auto px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2" style="background-color: {$projectView->color->value()|noescape} !important;">
-					{$projectView->name->value()}
-				</span>
-			</div>
-			<select x-data x-select.searchbar x-cloak x-on:change="window.location.href = $el.options[$el.selectedIndex].getAttribute('data-link')">
-				{foreach $userProjects as $userProject}
-					{capture $itemHtml}
-						<span class="inline-block w-auto px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2" style="background-color: {$userProject->color->value()|noescape} !important;">
-							{$userProject->name->value()}
-						</span>
-					{/capture}
+    <div class="flex place-items-center mb-1">
+        <div id="project-select">
+            <div x-data>
+                <span x-init="$el.style.display = 'none'" class="inline-block w-auto px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2" style="background-color: {$projectView->color->value()|noescape} !important;">
+                    {$projectView->name->value()}
+                </span>
+            </div>
+            <select x-data x-select.searchbar x-cloak x-on:change="window.location.href = $el.options[$el.selectedIndex].getAttribute('data-link')">
+                {foreach $userProjects as $userProject}
+                    {capture $itemHtml}
+                        <span class="inline-block w-auto px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2" style="background-color: {$userProject->color->value()|noescape} !important;">
+                            {$userProject->name->value()}
+                        </span>
+                    {/capture}
 
-					<option value="{$userProject->code->value()}" data-link="{link changeProject!, $userProject->code->value()}" data-selected-html="{$itemHtml}" n:attr="selected => $userProject->id->equals($projectView->id)">{$userProject->name->value()}</option>
-				{/foreach}
-			</select>
-		</div>
-	</div>
+                    <option value="{$userProject->code->value()}" data-link="{link changeProject!, $userProject->code->value()}" data-selected-html="{$itemHtml}" n:attr="selected => $userProject->id->equals($projectView->id)">{$userProject->name->value()}</option>
+                {/foreach}
+            </select>
+        </div>
+    </div>
 </div>
 
 {block #sidebar_menu_desktop}
-	{control sidebarMenu}
+    {control sidebarMenu}
 
-	<h3 class="text-sm font-semibold text-indigo-100 uppercase tracking-wider px-3 pb-2 pt-6">
-		{$projectView->name->value()}
-	</h3>
+    <h3 class="text-sm font-semibold text-indigo-100 uppercase tracking-wider px-3 pb-2 pt-6">
+        {$projectView->name->value()}
+    </h3>
 
-	{control sidebarProjectMenu}
+    {control sidebarProjectMenu}
 {/block}
 
 {block #sidebar_menu_mobile}
-	{control sidebarMenu}
+    {control sidebarMenu}
 
-	<h3 class="text-sm font-semibold text-indigo-100 uppercase tracking-wider px-3 pb-2 pt-6">
-		{$projectView->name->value()}
-	</h3>
+    <h3 class="text-sm font-semibold text-indigo-100 uppercase tracking-wider px-3 pb-2 pt-6">
+        {$projectView->name->value()}
+    </h3>
 
-	{control sidebarProjectMenu}
+    {control sidebarProjectMenu}
 {/block}
 
 {block #before_content}
-	{include parent}
+    {include parent}
 
-	<div n:if="NULL === $defaultProjectLocale" class="bg-yellow-50 border-l-4 border-yellow-400 p-4 sm:rounded-lg mb-3">
-		<div class="flex">
-			<div class="flex-shrink-0">
-				{svg common/exclamation-triangle.svg, class: 'h-5 w-5 text-yellow-400'}
-			</div>
-			<div class="ml-3">
-				<p class="text-sm text-yellow-700">
-					{_//layout.alert.missing_default_project_locale.text}
-					<a n:href="EditProject:" class="font-medium underline text-yellow-700 hover:text-yellow-600">{_//layout.alert.missing_default_project_locale.link_text}</a>
-				</p>
-			</div>
-		</div>
-	</div>
+    <div n:if="NULL === $defaultProjectLocale" class="bg-yellow-50 border-l-4 border-yellow-400 p-4 sm:rounded-lg mb-3">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                {svg common/exclamation-triangle.svg, class: 'h-5 w-5 text-yellow-400'}
+            </div>
+            <div class="ml-3">
+                <p class="text-sm text-yellow-700">
+                    {_//layout.alert.missing_default_project_locale.text}
+                    <a n:href="EditProject:" class="font-medium underline text-yellow-700 hover:text-yellow-600">{_//layout.alert.missing_default_project_locale.link_text}</a>
+                </p>
+            </div>
+        </div>
+    </div>
 {/block}

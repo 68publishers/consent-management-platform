@@ -3,24 +3,24 @@ back_to_list: Zpět na návrhy projektů
 running_scenarios: Spuštěné scénaře
 
 caption:
-	new_cookies: Nové cookies
-	problematic_cookies: Problematické cookies
-	occurrences: Výskyty
-	warnings: Varování
-	existing_cookie: Informace o cookie z CMP
-	unproblematic_cookies: Bezproblémové cookies
-	ignored_cookies: Ignorované cookies
+    new_cookies: Nové cookies
+    problematic_cookies: Problematické cookies
+    occurrences: Výskyty
+    warnings: Varování
+    existing_cookie: Informace o cookie z CMP
+    unproblematic_cookies: Bezproblémové cookies
+    ignored_cookies: Ignorované cookies
 
 no_found_cookie:
-	new_cookies: Žádné nové cookies nebyly nalezeny.
-	problematic_cookies: Žádné problematické cookies nebyly nalezeny.
-	unproblematic_cookies: Žádné bezproblémové cookies nebyly nelezeny.
-	ignored_cookies: Žádné ignorované cookies nebyly nelezeny.
+    new_cookies: Žádné nové cookies nebyly nalezeny.
+    problematic_cookies: Žádné problematické cookies nebyly nalezeny.
+    unproblematic_cookies: Žádné bezproblémové cookies nebyly nelezeny.
+    ignored_cookies: Žádné ignorované cookies nebyly nelezeny.
 
 tooltip:
-	last_founded_at: Naposledy nalezeno
-	suggestion_contains_warnings: 'Cookie obsahuje varování, pro více informací rozklikněte.'
-	domain: Doména
+    last_founded_at: Naposledy nalezeno
+    suggestion_contains_warnings: 'Cookie obsahuje varování, pro více informací rozklikněte.'
+    domain: Doména
 
 not_found_in_cmp: Nenalezeno v CMP
 found_in_cmp: Nalezeno v CMP
@@ -32,58 +32,58 @@ reset_all_solutions: 'Zrušit provedené změny (%changed%/%total%)'
 edit_cookie: Upravit
 
 occurrences_table:
-	scanerio_name: Název scénáře
-	cookie_name: Název cookie
-	last_found_at: Naposledy nalezeno
-	accepted_categories: Povolené kategorie
-	found_on_url: URL prvního nálezu
-	no_occurrences_found: Žádné výskyty nebyly nalezeny.
+    scanerio_name: Název scénáře
+    cookie_name: Název cookie
+    last_found_at: Naposledy nalezeno
+    accepted_categories: Povolené kategorie
+    found_on_url: URL prvního nálezu
+    no_occurrences_found: Žádné výskyty nebyly nalezeny.
 
 existing_cookie_table:
-	name: Název
-	domain: Doména
-	category: Kategorie
-	provider: Poskytovatel
+    name: Název
+    domain: Doména
+    category: Kategorie
+    provider: Poskytovatel
 
 warning:
-	cookie_does_not_have_same_domain: 'Cookie má odlišnou doménu, než nález a není tedy jisté, jestli se jedná o stejnou cookie.'
+    cookie_does_not_have_same_domain: 'Cookie má odlišnou doménu, než nález a není tedy jisté, jestli se jedná o stejnou cookie.'
 
 problem:
-	cookie_is_in_category_that_is_not_accepted: 'Scénář <span class="font-semibold">"%scenarioName%"</span> byl spuštěn s kategoriemi <span class="font-semibold">[%acceptedCategories%]</span>, ale cookie se nachází v kategoriích <span class="font-semibold">[%cookieCategories%]</span>.'
-	cookie_long_time_not_found: 'Cookie nebyla nalezena žádným scénářem již <span class="font-semibold">%not_found_for_days%</span> dní.'
-	cookie_was_never_found: 'Cookie nebyla nikdy nalezena žádným scénářem.'
+    cookie_is_in_category_that_is_not_accepted: 'Scénář <span class="font-semibold">"%scenarioName%"</span> byl spuštěn s kategoriemi <span class="font-semibold">[%acceptedCategories%]</span>, ale cookie se nachází v kategoriích <span class="font-semibold">[%cookieCategories%]</span>.'
+    cookie_long_time_not_found: 'Cookie nebyla nalezena žádným scénářem již <span class="font-semibold">%not_found_for_days%</span> dní.'
+    cookie_was_never_found: 'Cookie nebyla nikdy nalezena žádným scénářem.'
 
 solution:
-	associate_cookie_provider_with_project: 'Přidat poskytovatele "%provider_name%" na projekt'
-	change_cookie_category: Změnit kategorii cookie
-	create_new_cookie: Vytvořit novou cookie
-	create_new_cookie_with_not_accepted_category: Vytvořit stejnou cookie s jinou kategorii
-	ignore_until_next_occurrence: Ignorovat do dalšího výskytu
-	ignore_permanently: Ignorovat trvale
-	do_not_ignore: Neignorovat
+    associate_cookie_provider_with_project: 'Přidat poskytovatele "%provider_name%" na projekt'
+    change_cookie_category: Změnit kategorii cookie
+    create_new_cookie: Vytvořit novou cookie
+    create_new_cookie_with_not_accepted_category: Vytvořit stejnou cookie s jinou kategorii
+    ignore_until_next_occurrence: Ignorovat do dalšího výskytu
+    ignore_permanently: Ignorovat trvale
+    do_not_ignore: Neignorovat
 
 solution_group:
-	associate_cookie_provider_with_project: Přidat poskytovatele na projekt
-	change_cookie_category: Změnit kategorii cookie
-	create_new_cookie_with_not_accepted_category: Vytvořit stejnou cookie s jinou kategorii
+    associate_cookie_provider_with_project: Přidat poskytovatele na projekt
+    change_cookie_category: Změnit kategorii cookie
+    create_new_cookie_with_not_accepted_category: Vytvořit stejnou cookie s jinou kategorii
 
 solution_group_description:
-	associate_cookie_provider_with_project: Zvolte poskytovatele
-	change_cookie_category: Kterou cookie chcete upravit
-	create_new_cookie_with_not_accepted_category: Která cookie má posloužit jako vzor
+    associate_cookie_provider_with_project: Zvolte poskytovatele
+    change_cookie_category: Kterou cookie chcete upravit
+    create_new_cookie_with_not_accepted_category: Která cookie má posloužit jako vzor
 
 solution_in_group:
-	associate_cookie_provider_with_project: 'Poskytovatel <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 ml-2 my-0.5">%provider_name%</span>'
-	change_cookie_category: 'Cookie s kategorií <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 mx-1 my-0.5">%category_code%</span> a poskytovatelem <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 mx-1 my-0.5">%provider_name%</span>'
-	create_new_cookie_with_not_accepted_category: 'Cookie s kategorií <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 mx-1 my-0.5">%category_code%</span> a poskytovatelem <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 mx-1 my-0.5">%provider_name%</span>'
+    associate_cookie_provider_with_project: 'Poskytovatel <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 ml-2 my-0.5">%provider_name%</span>'
+    change_cookie_category: 'Cookie s kategorií <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 mx-1 my-0.5">%category_code%</span> a poskytovatelem <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 mx-1 my-0.5">%provider_name%</span>'
+    create_new_cookie_with_not_accepted_category: 'Cookie s kategorií <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 mx-1 my-0.5">%category_code%</span> a poskytovatelem <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 mx-1 my-0.5">%provider_name%</span>'
 
 message:
-	project_not_found: Projekt nebyl nalezen.
-	unable_to_process_solution: Řešení nebylo možné zpracovat.
-	suggestion_resolved: Návrh byl úspěšně vyřešen.
-	unable_to_resolve_solution: Při vyhodnocování návrhu došlo k chybě.
-	cookie_is_no_longer_ignored: Návrh již není ignorován.
-	multiple_suggestions_resolved: '{1} Jeden návrh byl úspěšně vyřešen.|[2,4] Celkem %count% návrhy byly úspěšně vyřešeny.|[5,Inf[ Celkem %count% návrhů bylo úspěšně vyřešeno.'
-	unable_to_resolve_multiple_solutions: '{1} Jeden návrh nebylo možné vyřešit.|[2,4] Celkem %count% návrhy nebylo možné vyřešit.|[5,Inf[ Celkem %count% návrhů nebylo možné vyřešit.'
-	cookie_updated: Cookie byla upravena.
-	cookie_update_failed: Při upravování cookie došlo k chybě.
+    project_not_found: Projekt nebyl nalezen.
+    unable_to_process_solution: Řešení nebylo možné zpracovat.
+    suggestion_resolved: Návrh byl úspěšně vyřešen.
+    unable_to_resolve_solution: Při vyhodnocování návrhu došlo k chybě.
+    cookie_is_no_longer_ignored: Návrh již není ignorován.
+    multiple_suggestions_resolved: '{1} Jeden návrh byl úspěšně vyřešen.|[2,4] Celkem %count% návrhy byly úspěšně vyřešeny.|[5,Inf[ Celkem %count% návrhů bylo úspěšně vyřešeno.'
+    unable_to_resolve_multiple_solutions: '{1} Jeden návrh nebylo možné vyřešit.|[2,4] Celkem %count% návrhy nebylo možné vyřešit.|[5,Inf[ Celkem %count% návrhů nebylo možné vyřešit.'
+    cookie_updated: Cookie byla upravena.
+    cookie_update_failed: Při upravování cookie došlo k chybě.

@@ -12,8 +12,8 @@ active_value: active
 inactive_value: inactive
 
 tooltip:
-	edit_action: Edit
-	delete_action: Delete
+    edit_action: Edit
+    delete_action: Delete
 
 delete_confirm:
-	question: 'Are you sure you want to delete the provider <strong>"%name%"</strong>?'
+    question: 'Are you sure you want to delete the provider <strong>"%name%"</strong>?'

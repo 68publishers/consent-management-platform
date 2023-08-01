@@ -1,10 +1,10 @@
 extensions:
-	68publishers.tracy_git_version: SixtyEightPublishers\TracyGitVersion\Bridge\Nette\DI\TracyGitVersionExtension
-	68publishers.tracy_git_version.export: SixtyEightPublishers\TracyGitVersion\Bridge\Nette\DI\TracyGitVersionExportExtension
+    68publishers.tracy_git_version: SixtyEightPublishers\TracyGitVersion\Bridge\Nette\DI\TracyGitVersionExtension
+    68publishers.tracy_git_version.export: SixtyEightPublishers\TracyGitVersion\Bridge\Nette\DI\TracyGitVersionExportExtension
 
 68publishers.tracy_git_version:
-	panel:
-		blocks:
-			- SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\SimpleTableBlock([
-				Version: ::env(BUILD_VERSION, 'unknown')
-			], Build)
+    panel:
+        blocks:
+            - SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\SimpleTableBlock([
+                Version: ::env(BUILD_VERSION, 'unknown')
+            ], Build)

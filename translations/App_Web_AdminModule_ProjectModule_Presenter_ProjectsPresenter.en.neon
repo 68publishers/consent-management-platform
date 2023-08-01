@@ -4,7 +4,7 @@ import: Import
 search_placeholder: Search project...
 
 alert:
-	no_projects: 'You have no projects available.'
+    no_projects: 'You have no projects available.'
 
 tooltip:
-	edit_project: Edit project
+    edit_project: Edit project

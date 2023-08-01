@@ -1,21 +1,21 @@
 extensions:
-	nettrine.dbal: Nettrine\DBAL\DI\DbalExtension
+    nettrine.dbal: Nettrine\DBAL\DI\DbalExtension
 
 nettrine.dbal:
-	debug:
-		panel: %debugMode%
-		sourcePaths:
-			- %appDir%
-	connection:
-		driver: pdo_pgsql
-		platform: @68publishers.doctrine_platform
-		host: ::env(DB_HOST)
-		port: ::env(DB_PORT)
-		dbname: ::env(DB_NAME)
-		user: ::env(DB_USER)
-		password: ::env(DB_PASSWORD)
+    debug:
+        panel: %debugMode%
+        sourcePaths:
+            - %appDir%
+    connection:
+        driver: pdo_pgsql
+        platform: @68publishers.doctrine_platform
+        host: ::env(DB_HOST)
+        port: ::env(DB_PORT)
+        dbname: ::env(DB_NAME)
+        user: ::env(DB_USER)
+        password: ::env(DB_PASSWORD)
 
 services:
-	nettrine.dbal.configuration:
-		setup:
-			- setSchemaAssetsFilter(App\Infrastructure\Shared\Doctrine\SchemaAssetsFilter())
+    nettrine.dbal.configuration:
+        setup:
+            - setSchemaAssetsFilter(App\Infrastructure\Shared\Doctrine\SchemaAssetsFilter())

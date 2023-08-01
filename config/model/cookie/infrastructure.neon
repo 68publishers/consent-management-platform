@@ -1,81 +1,81 @@
 services:
-	# infra
-	-
-		type: App\Domain\Cookie\CookieRepositoryInterface
-		factory: App\Infrastructure\Cookie\CookieRepository
-	-
-		type: App\Domain\Cookie\CheckCategoryExistsInterface
-		factory: App\Infrastructure\Cookie\CheckCategoryExists
-	-
-		type: App\Domain\Cookie\CheckCookieProviderExistsInterface
-		factory: App\Infrastructure\Cookie\CheckCookieProviderExists
-	-
-		type: App\Domain\Cookie\CheckNameUniquenessInterface
-		factory: App\Infrastructure\Cookie\CheckNameUniqueness
+    # infra
+    -
+        type: App\Domain\Cookie\CookieRepositoryInterface
+        factory: App\Infrastructure\Cookie\CookieRepository
+    -
+        type: App\Domain\Cookie\CheckCategoryExistsInterface
+        factory: App\Infrastructure\Cookie\CheckCategoryExists
+    -
+        type: App\Domain\Cookie\CheckCookieProviderExistsInterface
+        factory: App\Infrastructure\Cookie\CheckCookieProviderExists
+    -
+        type: App\Domain\Cookie\CheckNameUniquenessInterface
+        factory: App\Infrastructure\Cookie\CheckNameUniqueness
 
-	# infra: doctrine
-	-
-		autowired: self
-		type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
-		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\CookieViewDataTransformer
-	-
-		autowired: self
-		type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
-		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\CookieDataGridItemViewDataTransformer
-	-
-		autowired: self
-		type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
-		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\CookieApiViewDataTransformer
-	-
-		autowired: no
-		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\CookieExportQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\GetCookieByIdQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\CookiesDataGridQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\FindCookieDataForSuggestionQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\FindCookiesByCookieProviderQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\FindCookiesForApiQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\GetCookieByNameAndCookieProviderAndCategoryQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\Cookie\Doctrine\ReadModel\GetCookieProviderIdByCookieIdQueryHandler
+    # infra: doctrine
+    -
+        autowired: self
+        type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
+        factory: App\Infrastructure\Cookie\Doctrine\ReadModel\CookieViewDataTransformer
+    -
+        autowired: self
+        type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
+        factory: App\Infrastructure\Cookie\Doctrine\ReadModel\CookieDataGridItemViewDataTransformer
+    -
+        autowired: self
+        type: SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ViewDataTransformerInterface
+        factory: App\Infrastructure\Cookie\Doctrine\ReadModel\CookieApiViewDataTransformer
+    -
+        autowired: no
+        factory: App\Infrastructure\Cookie\Doctrine\ReadModel\CookieExportQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Cookie\Doctrine\ReadModel\GetCookieByIdQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Cookie\Doctrine\ReadModel\CookiesDataGridQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Cookie\Doctrine\ReadModel\FindCookieDataForSuggestionQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Cookie\Doctrine\ReadModel\FindCookiesByCookieProviderQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Cookie\Doctrine\ReadModel\FindCookiesForApiQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Cookie\Doctrine\ReadModel\GetCookieByNameAndCookieProviderAndCategoryQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\Cookie\Doctrine\ReadModel\GetCookieProviderIdByCookieIdQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:
-	mapping:
-		App\Domain\Cookie\: %appDir%/Infrastructure/Cookie/Doctrine/Mapping
+    mapping:
+        App\Domain\Cookie\: %appDir%/Infrastructure/Cookie/Doctrine/Mapping
 
 # infra: dbal types
 nettrine.dbal:
-	connection:
-		types:
-			App\Domain\Cookie\ValueObject\CookieId:
-				class: App\Infrastructure\Cookie\Doctrine\DbalType\CookieIdType
-				commented: yes
+    connection:
+        types:
+            App\Domain\Cookie\ValueObject\CookieId:
+                class: App\Infrastructure\Cookie\Doctrine\DbalType\CookieIdType
+                commented: yes
 
-			App\Domain\Cookie\ValueObject\Domain:
-				class: App\Infrastructure\Cookie\Doctrine\DbalType\DomainType
-				commented: yes
+            App\Domain\Cookie\ValueObject\Domain:
+                class: App\Infrastructure\Cookie\Doctrine\DbalType\DomainType
+                commented: yes
 
-			App\Domain\Cookie\ValueObject\Name:
-				class: App\Infrastructure\Cookie\Doctrine\DbalType\NameType
-				commented: yes
+            App\Domain\Cookie\ValueObject\Name:
+                class: App\Infrastructure\Cookie\Doctrine\DbalType\NameType
+                commented: yes
 
-			App\Domain\Cookie\ValueObject\ProcessingTime:
-				class: App\Infrastructure\Cookie\Doctrine\DbalType\ProcessingTimeType
-				commented: yes
+            App\Domain\Cookie\ValueObject\ProcessingTime:
+                class: App\Infrastructure\Cookie\Doctrine\DbalType\ProcessingTimeType
+                commented: yes
 
-			App\Domain\Cookie\ValueObject\Purpose:
-				class: App\Infrastructure\Cookie\Doctrine\DbalType\PurposeType
-				commented: yes
+            App\Domain\Cookie\ValueObject\Purpose:
+                class: App\Infrastructure\Cookie\Doctrine\DbalType\PurposeType
+                commented: yes

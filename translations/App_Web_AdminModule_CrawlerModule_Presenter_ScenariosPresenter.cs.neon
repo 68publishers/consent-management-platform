@@ -2,5 +2,5 @@ page_title: Spuštěné scénaře
 run_scenario: Spustit scénář
 
 message:
-	scenario_running: Scénař byl spuštěn.
-	failed_to_run_scenario: Scénař nebylo možné spustit.
+    scenario_running: Scénař byl spuštěn.
+    failed_to_run_scenario: Scénař nebylo možné spustit.

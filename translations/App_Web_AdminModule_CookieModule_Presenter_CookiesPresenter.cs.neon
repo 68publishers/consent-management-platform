@@ -3,5 +3,5 @@ add_new_cookie: Přidat cookie
 import: Import
 
 message:
-	cookie_created: Cookie byla vytvořena.
-	cookie_creation_failed: Při vytváření cookie došlo k chybě.
+    cookie_created: Cookie byla vytvořena.
+    cookie_creation_failed: Při vytváření cookie došlo k chybě.

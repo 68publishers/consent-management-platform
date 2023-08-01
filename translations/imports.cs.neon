@@ -1,4 +1,4 @@
 name:
-	App\Application\CookieProvider\Import\CookieProviderData: Poskytovatelé
-	App\Application\Cookie\Import\CookieData: Cookies
-	App\Application\Project\Import\ProjectData: Projekty
+    App\Application\CookieProvider\Import\CookieProviderData: Poskytovatelé
+    App\Application\Cookie\Import\CookieData: Cookies
+    App\Application\Project\Import\ProjectData: Projekty

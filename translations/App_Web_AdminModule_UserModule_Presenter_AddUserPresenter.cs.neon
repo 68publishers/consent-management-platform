@@ -3,5 +3,5 @@ heading_basic: Základní informace
 back_to_list: Zpět na výpis uživatelů
 
 message:
-	user_created: Uživatel byl vytvořen.
-	user_creation_failed: Při vytváření uživatele došlo k chybě.
+    user_created: Uživatel byl vytvořen.
+    user_creation_failed: Při vytváření uživatele došlo k chybě.

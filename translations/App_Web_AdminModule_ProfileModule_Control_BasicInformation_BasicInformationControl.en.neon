@@ -2,20 +2,20 @@ email_address: Email
 roles: Roles
 
 firstname:
-	field: Firstname
-	required: Please enter a firstname.
+    field: Firstname
+    required: Please enter a firstname.
 
 surname:
-	field: Surname
-	required: Please enter a surname.
+    field: Surname
+    required: Please enter a surname.
 
 profile:
-	field: Locale
-	required: Please select a locale.
+    field: Locale
+    required: Please select a locale.
 
 timezone:
-	field: Timezone
-	required: Please select a timezone.
+    field: Timezone
+    required: Please select a timezone.
 
 save:
-	field: Save
+    field: Save

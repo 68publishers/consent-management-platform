@@ -1,46 +1,46 @@
 services:
-	# infra
-	-
-		type: App\Domain\ConsentSettings\ConsentSettingsRepositoryInterface
-		factory: App\Infrastructure\ConsentSettings\ConsentSettingsRepository
-	-
-		type: App\Domain\ConsentSettings\CheckChecksumNotExistsInterface
-		factory: App\Infrastructure\ConsentSettings\CheckChecksumNotExists
+    # infra
+    -
+        type: App\Domain\ConsentSettings\ConsentSettingsRepositoryInterface
+        factory: App\Infrastructure\ConsentSettings\ConsentSettingsRepository
+    -
+        type: App\Domain\ConsentSettings\CheckChecksumNotExistsInterface
+        factory: App\Infrastructure\ConsentSettings\CheckChecksumNotExists
 
-	# infra: doctrine
-	-
-		type: App\Domain\ConsentSettings\ShortIdentifierGeneratorInterface
-		factory: App\Infrastructure\ConsentSettings\Doctrine\ShortIdentifierGenerator
-	-
-		autowired: no
-		factory: App\Infrastructure\ConsentSettings\Doctrine\ReadModel\ConsentSettingsDataGridQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\ConsentSettings\Doctrine\ReadModel\GetConsentSettingByIdAndProjectIdQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\ConsentSettings\Doctrine\ReadModel\GetConsentSettingByProjectIdAndChecksumQueryHandler
-	-
-		autowired: no
-		factory: App\Infrastructure\ConsentSettings\Doctrine\ReadModel\GetLatestShortIdentifierQueryHandler
+    # infra: doctrine
+    -
+        type: App\Domain\ConsentSettings\ShortIdentifierGeneratorInterface
+        factory: App\Infrastructure\ConsentSettings\Doctrine\ShortIdentifierGenerator
+    -
+        autowired: no
+        factory: App\Infrastructure\ConsentSettings\Doctrine\ReadModel\ConsentSettingsDataGridQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\ConsentSettings\Doctrine\ReadModel\GetConsentSettingByIdAndProjectIdQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\ConsentSettings\Doctrine\ReadModel\GetConsentSettingByProjectIdAndChecksumQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\ConsentSettings\Doctrine\ReadModel\GetLatestShortIdentifierQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:
-	mapping:
-		App\Domain\ConsentSettings: %appDir%/Infrastructure/ConsentSettings/Doctrine/Mapping
+    mapping:
+        App\Domain\ConsentSettings: %appDir%/Infrastructure/ConsentSettings/Doctrine/Mapping
 
 # infra: dbal types
 nettrine.dbal:
-	connection:
-		types:
-			App\Domain\ConsentSettings\ValueObject\ConsentSettingsId:
-				class: App\Infrastructure\ConsentSettings\Doctrine\DbalType\ConsentSettingsIdType
-				commented: yes
+    connection:
+        types:
+            App\Domain\ConsentSettings\ValueObject\ConsentSettingsId:
+                class: App\Infrastructure\ConsentSettings\Doctrine\DbalType\ConsentSettingsIdType
+                commented: yes
 
-			App\Domain\ConsentSettings\ValueObject\SettingsGroup:
-				class: App\Infrastructure\ConsentSettings\Doctrine\DbalType\SettingsGroupType
-				commented: yes
+            App\Domain\ConsentSettings\ValueObject\SettingsGroup:
+                class: App\Infrastructure\ConsentSettings\Doctrine\DbalType\SettingsGroupType
+                commented: yes
 
-			App\Domain\ConsentSettings\ValueObject\ShortIdentifier:
-				class: App\Infrastructure\ConsentSettings\Doctrine\DbalType\ShortIdentifierType
-				commented: yes
+            App\Domain\ConsentSettings\ValueObject\ShortIdentifier:
+                class: App\Infrastructure\ConsentSettings\Doctrine\DbalType\ShortIdentifierType
+                commented: yes
