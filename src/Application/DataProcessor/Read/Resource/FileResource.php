@@ -14,9 +14,6 @@ final class FileResource implements ResourceInterface
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(string $filename, array $options = []): self
     {
         $resource = new self();

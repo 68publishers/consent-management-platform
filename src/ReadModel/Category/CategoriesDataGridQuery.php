@@ -7,13 +7,10 @@ namespace App\ReadModel\Category;
 use App\ReadModel\AbstractDataGridQuery;
 
 /**
- * Returns CategoryView[]
+ * Returns `array<CategoryView>`
  */
 final class CategoriesDataGridQuery extends AbstractDataGridQuery
 {
-    /**
-     * @return static
-     */
     public static function create(?string $locale): self
     {
         return self::fromParameters([

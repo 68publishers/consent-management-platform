@@ -15,9 +15,6 @@ final class MissingLocaleException extends DomainException
         parent::__construct($message);
     }
 
-    /**
-     * @return $this
-     */
     public static function missingLocale(Locales $locales, Locale $missingLocale): self
     {
         return new self(sprintf(

@@ -12,9 +12,6 @@ final class PeriodStatistics
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(int $previousValue, int $currentValue): self
     {
         $periodStatistics = new self();

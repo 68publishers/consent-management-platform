@@ -7,21 +7,15 @@ namespace App\ReadModel\CookieProvider;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 /**
- * Returns CookieProviderSelectOptionView[]
+ * Returns `array<CookieProviderSelectOptionView>`
  */
 final class FindCookieProviderSelectOptionsQuery extends AbstractQuery
 {
-    /**
-     * @return static
-     */
     public static function all(): self
     {
         return self::fromParameters([]);
     }
 
-    /**
-     * @return static
-     */
     public static function assignedToProject(string $projectId): self
     {
         return self::fromParameters([

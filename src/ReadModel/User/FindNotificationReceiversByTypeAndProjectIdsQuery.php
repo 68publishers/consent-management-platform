@@ -9,9 +9,7 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractBatchedQuery
 final class FindNotificationReceiversByTypeAndProjectIdsQuery extends AbstractBatchedQuery
 {
     /**
-     * @param string[] $projectIdsOnly
-     *
-     * @return static
+     * @param array<string> $projectIdsOnly
      */
     public static function create(string $notificationType, array $projectIdsOnly = []): self
     {
@@ -27,7 +25,7 @@ final class FindNotificationReceiversByTypeAndProjectIdsQuery extends AbstractBa
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function projectIdsOnly(): array
     {

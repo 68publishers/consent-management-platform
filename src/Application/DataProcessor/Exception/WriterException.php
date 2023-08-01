@@ -11,9 +11,6 @@ use Throwable;
 
 final class WriterException extends RuntimeException
 {
-    /**
-     * @return static
-     */
     public static function writerLocked(ResourceInterface $resource, DestinationInterface $destination): self
     {
         return new self(sprintf(
@@ -23,9 +20,6 @@ final class WriterException extends RuntimeException
         ));
     }
 
-    /**
-     * @return static
-     */
     public static function wrap(ResourceInterface $resource, DestinationInterface $destination, Throwable $e): self
     {
         return new self(sprintf(
@@ -36,9 +30,6 @@ final class WriterException extends RuntimeException
         ), $e->getCode(), $e);
     }
 
-    /**
-     * @return static
-     */
     public static function unacceptableDestination(string $format, DestinationInterface $destination): self
     {
         return new self(sprintf(
@@ -48,9 +39,6 @@ final class WriterException extends RuntimeException
         ));
     }
 
-    /**
-     * @return static
-     */
     public static function unresolvableDestination(string $format, DestinationInterface $destination): self
     {
         return new self(sprintf(

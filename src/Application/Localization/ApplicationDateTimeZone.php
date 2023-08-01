@@ -27,7 +27,7 @@ final class ApplicationDateTimeZone
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public static function all(): array
     {

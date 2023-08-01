@@ -17,9 +17,6 @@ final class ImportStarted extends AbstractDomainEvent
 
     private ?UserId $authorId = null;
 
-    /**
-     * @return static
-     */
     public static function create(ImportId $id, Name $name, ?UserId $authorId): self
     {
         $event = self::occur($id->toString(), [

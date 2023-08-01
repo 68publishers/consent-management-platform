@@ -20,9 +20,6 @@ final class CookieProviderTranslation
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(CookieProvider $cookieProvider, Locale $locale, Purpose $purpose): self
     {
         $cookieProviderTranslation = new self();

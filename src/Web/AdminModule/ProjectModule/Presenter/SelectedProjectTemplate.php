@@ -12,11 +12,11 @@ abstract class SelectedProjectTemplate extends AdminTemplate
 {
     public ProjectView $projectView;
 
-    /** @var Locale[] */
+    /** @var array<Locale> */
     public array $projectLocales;
 
     public ?Locale $defaultProjectLocale = null;
 
-    /** @var ProjectView[] */
+    /** @var array<ProjectView> */
     public array $userProjects;
 }

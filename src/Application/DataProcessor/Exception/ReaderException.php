@@ -14,9 +14,6 @@ final class ReaderException extends RuntimeException implements DataReaderExcept
         parent::__construct($message);
     }
 
-    /**
-     * @return static
-     */
     public static function invalidResource(string $message): self
     {
         return new self(sprintf(
@@ -25,9 +22,6 @@ final class ReaderException extends RuntimeException implements DataReaderExcept
         ));
     }
 
-    /**
-     * @return static
-     */
     public static function unacceptableResource(string $format, ResourceInterface $resource): self
     {
         return new self(sprintf(
@@ -37,9 +31,6 @@ final class ReaderException extends RuntimeException implements DataReaderExcept
         ));
     }
 
-    /**
-     * @return static
-     */
     public static function unresolvableResource(string $format, ResourceInterface $resource): self
     {
         return new self(sprintf(

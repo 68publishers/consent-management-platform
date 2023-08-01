@@ -12,9 +12,6 @@ final class ArrayResource implements ResourceInterface
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(array $data, array $options = []): self
     {
         $resource = new self();

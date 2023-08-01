@@ -14,9 +14,6 @@ final class CookieStatistics
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(int $numberOfProviders, int $numberOfCommonCookies, int $numberOfPrivateCookies): self
     {
         $cookieStatistics = new self();

@@ -7,13 +7,10 @@ namespace App\ReadModel\Import;
 use App\ReadModel\AbstractDataGridQuery;
 
 /**
- * Returns ImportListView[]
+ * Returns `array<ImportListView>`
  */
 final class ImportDataGridQuery extends AbstractDataGridQuery
 {
-    /**
-     * @return static
-     */
     public static function create(): self
     {
         return self::fromParameters([]);

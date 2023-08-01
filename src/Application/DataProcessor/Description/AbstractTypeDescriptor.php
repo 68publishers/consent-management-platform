@@ -12,14 +12,11 @@ use Nette\Schema\Schema;
 
 abstract class AbstractTypeDescriptor implements DescriptorInterface
 {
-    /** @var TypeDescriptorPropertyInterface[] */
+    /** @var array<TypeDescriptorPropertyInterface> */
     private array $properties = [];
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(TypeDescriptorPropertyInterface ...$properties): self
     {
         $descriptor = new static();
@@ -62,9 +59,6 @@ abstract class AbstractTypeDescriptor implements DescriptorInterface
         return $pathInfo;
     }
 
-    /**
-     * @return $this
-     */
     public function withProps(TypeDescriptorPropertyInterface ...$properties): self
     {
         $descriptor = clone $this;
@@ -93,7 +87,7 @@ abstract class AbstractTypeDescriptor implements DescriptorInterface
     }
 
     /**
-     * @param string[] $propertyClassnames
+     * @param array<string> $propertyClassnames
      */
     private function isAnyOf(array $propertyClassnames): bool
     {

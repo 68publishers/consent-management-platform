@@ -8,9 +8,6 @@ use App\ReadModel\AbstractDataGridQuery;
 
 final class PasswordRequestsDataGridQuery extends AbstractDataGridQuery
 {
-    /**
-     * @return $this
-     */
     public static function create(): self
     {
         return self::fromParameters([]);

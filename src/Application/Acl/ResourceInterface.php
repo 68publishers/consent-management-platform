@@ -7,7 +7,7 @@ namespace App\Application\Acl;
 interface ResourceInterface
 {
     /**
-     * @return string[]
+     * @return array<string>
      */
     public static function privileges(): array;
 }

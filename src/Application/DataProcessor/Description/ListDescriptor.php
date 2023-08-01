@@ -16,9 +16,6 @@ final class ListDescriptor implements DescriptorInterface
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(DescriptorInterface $valueDescriptor): self
     {
         $descriptor = new self();

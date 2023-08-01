@@ -26,7 +26,7 @@ final class FindProjectsByCodesQueryHandler implements QueryHandlerInterface
     }
 
     /**
-     * @return ProjectView[]
+     * @return array<ProjectView>
      */
     public function __invoke(FindProjectsByCodesQuery $query): array
     {

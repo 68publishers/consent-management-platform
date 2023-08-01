@@ -7,13 +7,10 @@ namespace App\ReadModel\Project;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 /**
- * Returns ProjectView
+ * Returns `?ProjectView`
  */
 final class GetProjectByCodeQuery extends AbstractQuery
 {
-    /**
-     * @return static
-     */
     public static function create(string $code): self
     {
         return self::fromParameters([

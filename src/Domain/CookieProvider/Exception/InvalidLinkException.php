@@ -13,9 +13,6 @@ final class InvalidLinkException extends DomainException
         parent::__construct($message);
     }
 
-    /**
-     * @return static
-     */
     public static function invalidUrl(string $link): self
     {
         return new self(sprintf(

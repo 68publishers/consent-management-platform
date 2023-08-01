@@ -39,7 +39,7 @@ final class Descriptor
     }
 
     /**
-     * @param DescriptorInterface[] $descriptors
+     * @param array<DescriptorInterface> $descriptors
      */
     public static function structure(array $descriptors = [], StructureDescriptorPropertyInterface ...$properties): StructureDescriptor
     {

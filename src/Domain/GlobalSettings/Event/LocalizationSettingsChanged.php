@@ -16,9 +16,6 @@ final class LocalizationSettingsChanged extends AbstractDomainEvent
 
     private LocalesConfig $locales;
 
-    /**
-     * @return static
-     */
     public static function create(GlobalSettingsId $globalSettingsId, LocalesConfig $locales): self
     {
         $event = self::occur($globalSettingsId->toString(), [

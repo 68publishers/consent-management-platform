@@ -14,9 +14,6 @@ final class CookieProviderLinkChanged extends AbstractDomainEvent
 
     private Link $link;
 
-    /**
-     * @return static
-     */
     public static function create(CookieProviderId $cookieProviderId, Link $link): self
     {
         $event = self::occur($cookieProviderId->toString(), [

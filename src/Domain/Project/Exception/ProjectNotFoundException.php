@@ -9,9 +9,6 @@ use DomainException;
 
 final class ProjectNotFoundException extends DomainException
 {
-    /**
-     * @return static
-     */
     public static function withId(ProjectId $id): self
     {
         return new self(sprintf(

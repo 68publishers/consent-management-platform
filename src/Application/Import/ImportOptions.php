@@ -21,9 +21,6 @@ final class ImportOptions
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(string $describedObjectClassname): self
     {
         $options = new self();
@@ -58,9 +55,6 @@ final class ImportOptions
         return $this->batchSize;
     }
 
-    /**
-     * @return $this
-     */
     public function withAuthorId(?string $authorId): self
     {
         $options = clone $this;
@@ -69,9 +63,6 @@ final class ImportOptions
         return $options;
     }
 
-    /**
-     * @return $this
-     */
     public function withLogger(?LoggerInterface $logger): self
     {
         $options = clone $this;
@@ -80,9 +71,6 @@ final class ImportOptions
         return $options;
     }
 
-    /**
-     * @return $this
-     */
     public function withAsync(bool $async): self
     {
         $options = clone $this;
@@ -91,9 +79,6 @@ final class ImportOptions
         return $options;
     }
 
-    /**
-     * @return $this
-     */
     public function withBatchSize(int $batchSize): self
     {
         $options = clone $this;

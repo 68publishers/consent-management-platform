@@ -18,9 +18,6 @@ final class ArrayDescriptor implements DescriptorInterface
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(DescriptorInterface $valueDescriptor, ?DescriptorInterface $keyDescriptor = null): self
     {
         $descriptor = new self();

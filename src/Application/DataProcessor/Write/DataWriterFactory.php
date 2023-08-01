@@ -14,11 +14,11 @@ use App\Application\DataProcessor\Write\Writer\WriterInterface;
 
 final class DataWriterFactory implements DataWriterFactoryInterface
 {
-    /** @var WriterFactoryInterface[] */
+    /** @var array<WriterFactoryInterface> */
     private array $writerFactories;
 
     /**
-     * @param WriterFactoryInterface[] $writerFactories
+     * @param array<WriterFactoryInterface> $writerFactories
      */
     public function __construct(array $writerFactories)
     {

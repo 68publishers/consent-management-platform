@@ -12,12 +12,9 @@ final class UserProjectsChanged extends AbstractDomainEvent
 {
     private UserId $userId;
 
-    /** @var ProjectId[] */
+    /** @var array<ProjectId> */
     private array $projectIds;
 
-    /**
-     * @return static
-     */
     public static function create(UserId $userId, array $projectIds): self
     {
         $event = self::occur($userId->toString(), [
@@ -36,7 +33,7 @@ final class UserProjectsChanged extends AbstractDomainEvent
     }
 
     /**
-     * @return ProjectId[]
+     * @return array<ProjectId>
      */
     public function projectIds(): array
     {

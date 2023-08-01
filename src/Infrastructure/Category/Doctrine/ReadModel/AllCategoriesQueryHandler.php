@@ -26,7 +26,7 @@ final class AllCategoriesQueryHandler implements QueryHandlerInterface
     }
 
     /**
-     * @return CategoryView[]
+     * @return array<CategoryView>
      */
     public function __invoke(AllCategoriesQuery $query): array
     {

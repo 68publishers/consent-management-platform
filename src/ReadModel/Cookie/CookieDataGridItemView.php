@@ -40,7 +40,7 @@ final class CookieDataGridItemView extends AbstractView
 
     public DateTimeImmutable $createdAt;
 
-    /** @var string[]|NULL  */
+    /** @var array<string>|null  */
     public ?array $projects = null;
 
     public function jsonSerialize(): array

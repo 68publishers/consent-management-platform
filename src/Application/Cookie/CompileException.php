@@ -9,9 +9,6 @@ use Throwable;
 
 final class CompileException extends RuntimeException
 {
-    /**
-     * @return static
-     */
     public static function fromPrevious(Throwable $e): self
     {
         return new self($e->getMessage(), $e->getCode(), $e);

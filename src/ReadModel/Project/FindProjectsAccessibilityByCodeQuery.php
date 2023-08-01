@@ -7,14 +7,12 @@ namespace App\ReadModel\Project;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 /**
- * Returns array of ProjectAccessibilityView
+ * Returns `array<ProjectAccessibilityView>`
  */
 final class FindProjectsAccessibilityByCodeQuery extends AbstractQuery
 {
     /**
-     * @param string[] $projectCodes
-     *
-     * @return static
+     * @param array<string> $projectCodes
      */
     public static function create(string $userId, array $projectCodes): self
     {
@@ -30,7 +28,7 @@ final class FindProjectsAccessibilityByCodeQuery extends AbstractQuery
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function projectCodes(): array
     {

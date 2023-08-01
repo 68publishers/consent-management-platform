@@ -20,9 +20,6 @@ final class CategoryCreated extends AbstractDomainEvent
 
     private array $names;
 
-    /**
-     * @return static
-     */
     public static function create(CategoryId $categoryId, Code $code, bool $active, bool $necessary, array $names): self
     {
         $event = self::occur($categoryId->toString(), [

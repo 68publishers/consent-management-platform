@@ -14,9 +14,6 @@ final class LocalesConfig
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(Locales $locales, Locale $defaultLocale): self
     {
         if (!$locales->has($defaultLocale)) {

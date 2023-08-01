@@ -22,9 +22,6 @@ final class UserIdentifierExistsException extends DomainException
         $this->userIdentifier = $userIdentifier;
     }
 
-    /**
-     * @return static
-     */
     public static function create(ConsentId $consentId, UserIdentifier $userIdentifier): self
     {
         return new self($consentId, $userIdentifier, sprintf(

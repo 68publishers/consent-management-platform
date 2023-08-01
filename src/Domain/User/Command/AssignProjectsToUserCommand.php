@@ -8,9 +8,6 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class AssignProjectsToUserCommand extends AbstractCommand
 {
-    /**
-     * @return static
-     */
     public static function create(string $userId, array $projectIds): self
     {
         return self::fromParameters([

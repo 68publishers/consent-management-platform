@@ -12,9 +12,6 @@ final class StringResource implements ResourceInterface
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(string $string, array $options = []): self
     {
         $resource = new self();

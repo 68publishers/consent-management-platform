@@ -13,9 +13,6 @@ final class CategoryActiveStateChanged extends AbstractDomainEvent
 
     private bool $active;
 
-    /**
-     * @return static
-     */
     public static function create(CategoryId $categoryId, bool $active): self
     {
         $event = self::occur($categoryId->toString(), [

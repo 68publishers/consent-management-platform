@@ -11,9 +11,6 @@ use App\Application\DataProcessor\Row;
 
 final class ArrayReader extends AbstractReader
 {
-    /**
-     * @return static
-     */
     public static function fromArray(ArrayResource $resource): self
     {
         return new self($resource);

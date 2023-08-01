@@ -21,9 +21,6 @@ final class ImportCompleted extends AbstractDomainEvent
 
     private Output $output;
 
-    /**
-     * @return static
-     */
     public static function create(ImportId $id, Total $imported, Total $failed, Total $warned, Output $output): self
     {
         $event = self::occur($id->toString(), [

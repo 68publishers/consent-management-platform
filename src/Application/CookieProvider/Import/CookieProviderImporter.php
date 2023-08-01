@@ -145,7 +145,7 @@ final class CookieProviderImporter extends AbstractImporter
     }
 
     /**
-     * @return CookieProviderView[]
+     * @return array<CookieProviderView>
      */
     private function findExistingProviders(array $rows): array
     {

@@ -20,7 +20,7 @@ final class ValidLocalesProvider
     }
 
     /**
-     * @return Locale[]
+     * @return array<Locale>
      */
     public function getValidLocales(?LocalesConfig $localesConfig = null): array
     {
@@ -69,9 +69,6 @@ final class ValidLocalesProvider
         return null;
     }
 
-    /**
-     * @return $this
-     */
     public function withLocalesConfig(?LocalesConfig $localesConfig): self
     {
         return new self($this->globalSettings, $localesConfig);

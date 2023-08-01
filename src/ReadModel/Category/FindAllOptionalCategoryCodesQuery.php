@@ -7,13 +7,10 @@ namespace App\ReadModel\Category;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 /**
- * Returns string[]
+ * Returns `array<string>`
  */
 final class FindAllOptionalCategoryCodesQuery extends AbstractQuery
 {
-    /**
-     * @return static
-     */
     public static function create(): self
     {
         return self::fromParameters([]);

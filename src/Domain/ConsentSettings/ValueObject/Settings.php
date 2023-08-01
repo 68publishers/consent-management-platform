@@ -13,7 +13,6 @@ use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AbstractArrayValu
 final class Settings extends AbstractArrayValueObject
 {
     /**
-     * @return static
      * @throws Exception
      */
     public static function create(array $settings, ?DateTimeImmutable $createdAt = null): self

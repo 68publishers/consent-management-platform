@@ -10,13 +10,13 @@ use Spatie\Async\Task;
 
 final class ImportTask extends Task
 {
-    /** @var RowInterface[] */
+    /** @var array<RowInterface> */
     private array $rows;
 
     private ?ImporterInterface $importer;
 
     /**
-     * @param RowInterface[] $rows
+     * @param array<RowInterface> $rows
      */
     public function __construct(array $rows, ImporterInterface $importer)
     {
@@ -39,7 +39,7 @@ final class ImportTask extends Task
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function __sleep(): array
     {

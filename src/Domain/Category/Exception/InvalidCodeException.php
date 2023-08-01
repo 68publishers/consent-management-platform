@@ -13,9 +13,6 @@ final class InvalidCodeException extends DomainException
         parent::__construct($message);
     }
 
-    /**
-     * @return static
-     */
     public static function tooLong(string $code, int $maxLength): self
     {
         return new self(sprintf(

@@ -14,9 +14,6 @@ final class ProjectCookieProviderAdded extends AbstractDomainEvent
 
     private CookieProviderId $cookieProviderId;
 
-    /**
-     * @return static
-     */
     public static function create(ProjectId $projectId, CookieProviderId $cookieProviderId): self
     {
         $event = self::occur($projectId->toString(), [

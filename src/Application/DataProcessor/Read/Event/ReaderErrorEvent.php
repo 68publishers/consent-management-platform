@@ -27,9 +27,6 @@ final class ReaderErrorEvent
         return $this->stopped;
     }
 
-    /**
-     * @return $this
-     */
     public function stop(): self
     {
         $this->stopped = true;

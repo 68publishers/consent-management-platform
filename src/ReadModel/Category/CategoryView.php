@@ -25,7 +25,7 @@ final class CategoryView extends AbstractView
 
     public bool $necessary;
 
-    /** @var Name[] */
+    /** @var array<Name> */
     public array $names;
 
     public function jsonSerialize(): array

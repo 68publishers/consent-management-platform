@@ -6,14 +6,11 @@ namespace App\Application\Import;
 
 final class ImporterResult
 {
-    /** @var RowResult[] */
+    /** @var array<RowResult> */
     private array $rows = [];
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function of(RowResult ...$rows): self
     {
         $result = new self();
@@ -22,9 +19,6 @@ final class ImporterResult
         return $result;
     }
 
-    /**
-     * @return $this
-     */
     public function with(RowResult $rowResult): self
     {
         $rows = $this->rows;
@@ -33,9 +27,6 @@ final class ImporterResult
         return self::of(...$rows);
     }
 
-    /**
-     * @return $this
-     */
     public function merge(self $importerResult): self
     {
         $rows = array_merge($this->rows, $importerResult->all());
@@ -44,7 +35,7 @@ final class ImporterResult
     }
 
     /**
-     * @return RowResult[]
+     * @return array<RowResult>
      */
     public function all(): array
     {

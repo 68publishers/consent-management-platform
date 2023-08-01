@@ -28,7 +28,7 @@ final class FindUserProjectsQueryHandler implements QueryHandlerInterface
     }
 
     /**
-     * @return ProjectView[]
+     * @return array<ProjectView>
      */
     public function __invoke(FindUserProjectsQuery $query): array
     {

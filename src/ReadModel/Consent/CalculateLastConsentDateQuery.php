@@ -8,13 +8,10 @@ use DateTimeImmutable;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 /**
- * Returns DateTimeImmutable or NULL
+ * Returns `?DateTimeImmutable`
  */
 final class CalculateLastConsentDateQuery extends AbstractQuery
 {
-    /**
-     * @return static
-     */
     public static function create(string $projectId, DateTimeImmutable $maxDate): self
     {
         return self::fromParameters([

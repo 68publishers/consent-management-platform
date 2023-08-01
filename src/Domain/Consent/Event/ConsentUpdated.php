@@ -24,9 +24,6 @@ final class ConsentUpdated extends AbstractDomainEvent
 
     private Attributes $attributes;
 
-    /**
-     * @return static
-     */
     public static function create(ConsentId $consentId, ProjectId $projectId, ?Checksum $settingsChecksum, Consents $consents, Attributes $attributes, ?DateTimeImmutable $createdAt = null): self
     {
         $event = self::occur($consentId->toString(), [

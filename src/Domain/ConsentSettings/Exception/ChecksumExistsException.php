@@ -22,9 +22,6 @@ final class ChecksumExistsException extends DomainException
         $this->checksum = $checksum;
     }
 
-    /**
-     * @return static
-     */
     public static function create(ConsentSettingsId $consentSettingsId, Checksum $checksum): self
     {
         return new self($consentSettingsId, $checksum, sprintf(

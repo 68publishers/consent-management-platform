@@ -7,13 +7,10 @@ namespace App\ReadModel\Cookie;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractBatchedQuery;
 
 /**
- * Returns CookieApiView[]
+ * Returns `array<CookieApiView>`
  */
 final class FindCookiesForApiQuery extends AbstractBatchedQuery
 {
-    /**
-     * @return static
-     */
     public static function create(string $projectId, ?string $locale = null): self
     {
         return self::fromParameters([
@@ -23,9 +20,7 @@ final class FindCookiesForApiQuery extends AbstractBatchedQuery
     }
 
     /**
-     * @param string[] $categoryCodes
-     *
-     * @return $this
+     * @param array<string> $categoryCodes
      */
     public function withCategoryCodes(array $categoryCodes): self
     {
@@ -43,7 +38,7 @@ final class FindCookiesForApiQuery extends AbstractBatchedQuery
     }
 
     /**
-     * @return string[]|NULL
+     * @return array<string>|NULL
      */
     public function categoryCodes(): ?array
     {

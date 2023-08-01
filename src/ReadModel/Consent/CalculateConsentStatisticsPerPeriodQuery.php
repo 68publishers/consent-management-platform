@@ -8,13 +8,10 @@ use DateTimeInterface;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 /**
- * Returns ConsentStatisticsView
+ * Returns `ConsentStatisticsView`
  */
 final class CalculateConsentStatisticsPerPeriodQuery extends AbstractQuery
 {
-    /**
-     * @return static
-     */
     public static function create(string $projectId, DateTimeInterface $startDate, DateTimeInterface $endDate): self
     {
         return self::fromParameters([

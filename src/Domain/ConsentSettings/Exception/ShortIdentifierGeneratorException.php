@@ -9,9 +9,6 @@ use Throwable;
 
 final class ShortIdentifierGeneratorException extends DomainException
 {
-    /**
-     * @return static
-     */
     public static function from(Throwable $e): self
     {
         return new self(sprintf(

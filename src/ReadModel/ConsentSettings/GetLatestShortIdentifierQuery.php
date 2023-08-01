@@ -7,13 +7,10 @@ namespace App\ReadModel\ConsentSettings;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 /**
- * Returns integer
+ * Returns `int`
  */
 final class GetLatestShortIdentifierQuery extends AbstractQuery
 {
-    /**
-     * @return static
-     */
     public static function create(string $projectId): self
     {
         return self::fromParameters([

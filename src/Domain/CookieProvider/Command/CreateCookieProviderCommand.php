@@ -9,9 +9,7 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 final class CreateCookieProviderCommand extends AbstractCommand
 {
     /**
-     * @param string[] $purposes
-     *
-     * @return static
+     * @param array<string> $purposes
      */
     public static function create(string $code, string $type, string $name, string $link, array $purposes, bool $private, bool $active, ?string $cookieProviderId = null): self
     {
@@ -48,7 +46,7 @@ final class CreateCookieProviderCommand extends AbstractCommand
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function purposes(): array
     {

@@ -13,9 +13,6 @@ final class CodeUniquenessException extends DomainException
         parent::__construct($message);
     }
 
-    /**
-     * @return static
-     */
     public static function create(string $code): self
     {
         return new self(sprintf(

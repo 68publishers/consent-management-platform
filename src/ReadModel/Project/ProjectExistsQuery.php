@@ -7,13 +7,10 @@ namespace App\ReadModel\Project;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 /**
- * Returns ProjectId instance or FALSE
+ * Returns `ProjectId|false`
  */
 final class ProjectExistsQuery extends AbstractQuery
 {
-    /**
-     * @return static
-     */
     public static function byId(string $projectId): self
     {
         return self::fromParameters([
@@ -21,9 +18,6 @@ final class ProjectExistsQuery extends AbstractQuery
         ]);
     }
 
-    /**
-     * @return static
-     */
     public static function byCode(string $code): self
     {
         return self::fromParameters([

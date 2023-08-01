@@ -8,9 +8,6 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class UpdateCategoryCommand extends AbstractCommand
 {
-    /**
-     * @return static
-     */
     public static function create(string $categoryId): self
     {
         return self::fromParameters([
@@ -43,33 +40,21 @@ final class UpdateCategoryCommand extends AbstractCommand
         return $this->getParam('necessary');
     }
 
-    /**
-     * @return $this
-     */
     public function withCode(string $code): self
     {
         return $this->withParam('code', $code);
     }
 
-    /**
-     * @return $this
-     */
     public function withNames(array $names): self
     {
         return $this->withParam('names', $names);
     }
 
-    /**
-     * @return $this
-     */
     public function withActive(bool $active): self
     {
         return $this->withParam('active', $active);
     }
 
-    /**
-     * @return $this
-     */
     public function withNecessary(bool $necessary): self
     {
         return $this->withParam('necessary', $necessary);

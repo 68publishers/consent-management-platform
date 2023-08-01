@@ -15,7 +15,7 @@ final class Profiles
     private TranslatorLocalizerInterface $translatorLocalizer;
 
     /**
-     * @param Profile[] $profiles
+     * @param array<Profile> $profiles
      */
     public function __construct(array $profiles, TranslatorLocalizerInterface $translatorLocalizer)
     {
@@ -65,7 +65,7 @@ final class Profiles
     }
 
     /**
-     * @return Profile[]
+     * @return array<Profile>
      */
     public function all(): array
     {

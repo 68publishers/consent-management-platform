@@ -16,9 +16,6 @@ class FileDestination implements DestinationInterface
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(string $filename, array $options = []): self
     {
         $destination = new self();

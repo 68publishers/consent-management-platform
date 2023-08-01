@@ -102,7 +102,7 @@ final class StatisticsController extends AbstractInternalController
     }
 
     /**
-     * @param string[] $projectIdsByCodes
+     * @param array<string> $projectIdsByCodes
      */
     private function buildData(array $projectIdsByCodes, string $locale, DateTimeImmutable $startDate, DateTimeImmutable $endDate, DateTimeZone $userTz): array
     {

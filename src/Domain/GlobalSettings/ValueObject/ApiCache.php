@@ -12,9 +12,6 @@ final class ApiCache
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(array $cacheControlDirectives = [], bool $useEntityTag = false): self
     {
         $apiCache = new self();
@@ -39,9 +36,6 @@ final class ApiCache
         return $this->useEntityTag;
     }
 
-    /**
-     * @return $this
-     */
     public function withUseEntityTag(bool $useEntityTag = true): self
     {
         $apiCache = clone $this;
@@ -50,9 +44,6 @@ final class ApiCache
         return $apiCache;
     }
 
-    /**
-     * @return $this
-     */
     public function withCacheControlDirectives(string ...$directives): self
     {
         $apiCache = clone $this;

@@ -7,13 +7,10 @@ namespace App\ReadModel\Project;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 /**
- * Returns array of ProjectView
+ * Returns `array<ProjectView>`
  */
 final class FindUserProjectsQuery extends AbstractQuery
 {
-    /**
-     * @return static
-     */
     public static function create(string $userId): self
     {
         return self::fromParameters([

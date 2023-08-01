@@ -12,18 +12,16 @@ use Nette\Schema\Schema;
 
 final class StructureDescriptor implements DescriptorInterface
 {
-    /** @var DescriptorInterface[] */
+    /** @var array<DescriptorInterface> */
     private array $descriptors = [];
 
-    /** @var StructureDescriptorPropertyInterface[] */
+    /** @var array<StructureDescriptorPropertyInterface> */
     private array $properties = [];
 
     private function __construct() {}
 
     /**
-     * @param DescriptorInterface[] $descriptors
-     *
-     * @return static
+     * @param array<DescriptorInterface> $descriptors
      */
     public static function create(array $descriptors, StructureDescriptorPropertyInterface ...$properties): self
     {
@@ -36,9 +34,6 @@ final class StructureDescriptor implements DescriptorInterface
         return $structure;
     }
 
-    /**
-     * @return $this
-     */
     public function withDescriptor(string $name, DescriptorInterface $descriptor): self
     {
         $structure = clone $this;
@@ -47,9 +42,6 @@ final class StructureDescriptor implements DescriptorInterface
         return $structure;
     }
 
-    /**
-     * @return $this
-     */
     public function withProps(StructureDescriptorPropertyInterface ...$properties): self
     {
         $structure = clone $this;

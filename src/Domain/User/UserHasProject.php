@@ -17,9 +17,6 @@ final class UserHasProject
 
     private function __construct() {}
 
-    /**
-     * @return static
-     */
     public static function create(User $user, ProjectId $projectId): self
     {
         $association = new self();

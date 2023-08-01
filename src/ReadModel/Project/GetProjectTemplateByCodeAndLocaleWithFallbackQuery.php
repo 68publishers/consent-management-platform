@@ -8,9 +8,6 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 final class GetProjectTemplateByCodeAndLocaleWithFallbackQuery extends AbstractQuery
 {
-    /**
-     * @return static
-     */
     public static function create(string $code, ?string $locale = null): self
     {
         return self::fromParameters([

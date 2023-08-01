@@ -9,9 +9,7 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 final class FindProjectsByCodesQuery extends AbstractQuery
 {
     /**
-     * @param string[] $codes
-     *
-     * @return static
+     * @param array<string> $codes
      */
     public static function create(array $codes): self
     {
@@ -21,7 +19,7 @@ final class FindProjectsByCodesQuery extends AbstractQuery
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function codes(): array
     {

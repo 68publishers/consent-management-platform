@@ -99,9 +99,6 @@ final class CookieListControl extends Control
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function configureAclChecks(string $resource, ?string $updatePrivilege, ?string $deletePrivilege): self
     {
         $this->acl['resource'] = $resource;
@@ -111,9 +108,6 @@ final class CookieListControl extends Control
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function includeProjectsData(bool $includeProjectsData): self
     {
         $this->includeProjectsData = $includeProjectsData;
@@ -121,9 +115,6 @@ final class CookieListControl extends Control
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function projectOnly(ProjectId $projectId, bool $servicesOnly = false): self
     {
         $this->projectId = $projectId;
@@ -308,7 +299,7 @@ final class CookieListControl extends Control
     }
 
     /**
-     * @return CookieProviderSelectOptionView[]
+     * @return array<CookieProviderSelectOptionView>
      */
     private function getCookieProviders(): array
     {

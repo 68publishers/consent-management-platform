@@ -8,9 +8,6 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 final class FindProjectTemplatesQuery extends AbstractQuery
 {
-    /**
-     * @return static
-     */
     public static function create(string $projectId): self
     {
         return self::fromParameters([

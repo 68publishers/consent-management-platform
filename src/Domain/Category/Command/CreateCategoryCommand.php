@@ -8,9 +8,6 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class CreateCategoryCommand extends AbstractCommand
 {
-    /**
-     * @return static
-     */
     public static function create(string $code, array $names, bool $active, bool $necessary, ?string $categoryId = null): self
     {
         return self::fromParameters([

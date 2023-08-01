@@ -14,9 +14,6 @@ final class ApiCacheSettingsChanged extends AbstractDomainEvent
 
     private ApiCache $apiCache;
 
-    /**
-     * @return static
-     */
     public static function create(GlobalSettingsId $globalSettingsId, ApiCache $apiCache): self
     {
         $event = self::occur($globalSettingsId->toString(), [

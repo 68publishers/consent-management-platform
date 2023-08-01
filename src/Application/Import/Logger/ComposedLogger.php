@@ -9,7 +9,7 @@ use Psr\Log\LoggerInterface;
 
 final class ComposedLogger extends AbstractLogger
 {
-    /** @var LoggerInterface[] */
+    /** @var array<LoggerInterface> */
     private array $loggers;
 
     public function __construct(LoggerInterface ...$loggers)

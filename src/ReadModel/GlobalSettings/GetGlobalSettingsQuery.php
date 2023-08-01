@@ -7,13 +7,10 @@ namespace App\ReadModel\GlobalSettings;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
 
 /**
- * Returns GlobalSettingsView or NULL
+ * Returns `?GlobalSettingsView`
  */
 final class GetGlobalSettingsQuery extends AbstractQuery
 {
-    /**
-     * @return static
-     */
     public static function create(): self
     {
         return self::fromParameters([]);

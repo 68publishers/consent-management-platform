@@ -14,9 +14,6 @@ final class CookieProviderNameChanged extends AbstractDomainEvent
 
     private Name $name;
 
-    /**
-     * @return static
-     */
     public static function create(CookieProviderId $cookieProviderId, Name $name): self
     {
         $event = self::occur($cookieProviderId->toString(), [

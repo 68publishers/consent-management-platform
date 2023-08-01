@@ -16,9 +16,6 @@ final class ProjectLocalesChanged extends AbstractDomainEvent
 
     private LocalesConfig $locales;
 
-    /**
-     * @return static
-     */
     public static function create(ProjectId $projectId, LocalesConfig $locales): self
     {
         $event = self::occur($projectId->toString(), [

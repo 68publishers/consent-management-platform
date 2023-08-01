@@ -8,9 +8,6 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class DeleteCategoryCommand extends AbstractCommand
 {
-    /**
-     * @return static
-     */
     public static function create(string $categoryId): self
     {
         return self::fromParameters([

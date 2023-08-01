@@ -11,9 +11,6 @@ final class Code extends AbstractStringValueObject
 {
     public const MAX_LENGTH = 70;
 
-    /**
-     * @return static
-     */
     public static function fromValidCode(string $code): self
     {
         if (!preg_match('/^[a-z0-9_\-\.]+$/', $code)) {

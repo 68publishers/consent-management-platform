@@ -13,10 +13,8 @@ final class TemplateArguments
     private function __construct() {}
 
     /**
-     * @param object[] $providers
-     * @param object[] $cookies
-     *
-     * @return $this
+     * @param array<object> $providers
+     * @param array<object> $cookies
      */
     public static function create(array $providers, array $cookies): self
     {
@@ -28,7 +26,7 @@ final class TemplateArguments
     }
 
     /**
-     * @return object[]
+     * @return array<object>
      */
     public function providers(): array
     {
@@ -36,7 +34,7 @@ final class TemplateArguments
     }
 
     /**
-     * @return object[]
+     * @return array<object>
      */
     public function cookies(): array
     {

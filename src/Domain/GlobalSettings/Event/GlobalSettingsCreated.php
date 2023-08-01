@@ -11,9 +11,6 @@ final class GlobalSettingsCreated extends AbstractDomainEvent
 {
     private GlobalSettingsId $globalSettingsId;
 
-    /**
-     * @return static
-     */
     public static function create(GlobalSettingsId $globalSettingsId): self
     {
         $event = self::occur($globalSettingsId->toString());

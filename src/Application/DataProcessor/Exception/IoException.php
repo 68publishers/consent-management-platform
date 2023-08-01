@@ -13,9 +13,6 @@ final class IoException extends RuntimeException
         parent::__construct($message);
     }
 
-    /**
-     * @return static
-     */
     public static function fileNotFound(string $filename): self
     {
         return new self(sprintf(
@@ -24,9 +21,6 @@ final class IoException extends RuntimeException
         ));
     }
 
-    /**
-     * @return static
-     */
     public static function fileNotReadable(string $filename): self
     {
         return new self(sprintf(
@@ -35,9 +29,6 @@ final class IoException extends RuntimeException
         ));
     }
 
-    /**
-     * @return static
-     */
     public static function unableToCreateDirectory(string $directory): self
     {
         return new self(sprintf(
@@ -46,9 +37,6 @@ final class IoException extends RuntimeException
         ));
     }
 
-    /**
-     * @return static
-     */
     public static function unableToWriteFile(string $filename): self
     {
         return new self(sprintf(
@@ -57,9 +45,6 @@ final class IoException extends RuntimeException
         ));
     }
 
-    /**
-     * @return static
-     */
     public static function unableToChmodFile(string $filename, int $chmod): self
     {
         return new self(sprintf(
