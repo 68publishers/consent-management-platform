@@ -1,4 +1,5 @@
 APP_VERSION=$$(git describe --tags `git rev-list --tags --max-count=1` | cut -c 2- ) # Get latest tag without the "v" prefix
+IMAGE=68publishers/cmp
 
 start:
 	docker compose --profile web up -d
@@ -32,18 +33,45 @@ cache-clear:
 db-clear:
 	rm -rf var/postgres-data/*
 
-build:
-	@echo "Building version: $(APP_VERSION)\n-----------------------"
-	make install
-	make cache-clear
-	./vendor/bin/tracy-git-version export-repository --output-file ./var/git-version/repository.json -vv
-	make cache
-	make db-clear
-	docker build -f ./docker/app/prod/Dockerfile -t 68publishers/cmp:latest .
+build.local.%:
+	@echo "building a local image ${IMAGE}:app-$* ..."
+	@docker build -t ${IMAGE}:app-$* -f ./docker/build/Dockerfile --target app .
+	@echo "done"
+	@echo "building a local image ${IMAGE}:worker-$* ..."
+	@docker build -t ${IMAGE}:worker-$* -f ./docker/build/Dockerfile --target worker .
+	@echo "done"
 
-rebuild:
-	make build
-	make restart
+build.multiarch.%:
+	@docker buildx inspect multi_arch_builder > /dev/null 2>&1; \
+	if [ $$? -ne 0 ]; then \
+		echo "builder multi_arch_builder does not exist, initialization starting..."; \
+		docker buildx create --name multi_arch_builder --driver docker-container --bootstrap; \
+		echo "done"; \
+	else \
+		echo "builder multi_arch_builder does exist, skipping initialization."; \
+	fi
+	@echo "building multiplatform [linux/arm64/v8, linux/amd64] image ${IMAGE}:app-$* ..."
+	@docker buildx build \
+		-f ./docker/build/Dockerfile \
+		--pull \
+		--push \
+		--builder multi_arch_builder \
+		--platform linux/arm64/v8,linux/amd64 \
+		--target app \
+		-t ${IMAGE}:app-$* \
+		.
+	@echo "done"
+	@echo "building multiplatform [linux/arm64/v8, linux/amd64] image ${IMAGE}:worker-$* ..."
+	@docker buildx build \
+		-f ./docker/build/Dockerfile \
+		--pull \
+		--push \
+		--builder multi_arch_builder \
+		--platform linux/arm64/v8,linux/amd64 \
+		--target worker \
+		-t ${IMAGE}:worker-$* \
+		.
+	@echo "done"
 
 install:
 	make cache-clear
