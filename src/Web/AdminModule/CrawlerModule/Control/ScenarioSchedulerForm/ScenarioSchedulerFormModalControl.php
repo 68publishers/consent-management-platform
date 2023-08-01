@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerForm;
 
+use Closure;
 use App\Web\Ui\Modal\AbstractModalControl;
 use Nette\Application\BadRequestException;
 use App\Application\Crawler\CrawlerClientProvider;
@@ -20,6 +21,8 @@ final class ScenarioSchedulerFormModalControl extends AbstractModalControl
 
 	private ?string $scenarioSchedulerId;
 
+	private ?Closure $innerControlCreationCallback = NULL;
+
 	public function __construct(
 		CrawlerClientProvider $crawlerClientProvider,
 		ScenarioSchedulerFormControlFactoryInterface $runScenarioFormControlFactory,
@@ -30,9 +33,9 @@ final class ScenarioSchedulerFormModalControl extends AbstractModalControl
 		$this->scenarioSchedulerId = $scenarioSchedulerId;
 	}
 
-	public function getInnerControl(): ScenarioSchedulerFormControl
+	public function setInnerControlCreationCallback(?Closure $innerControlCreationCallback): void
 	{
-		return $this->getComponent('scenarioSchedulerForm');
+		$this->innerControlCreationCallback = $innerControlCreationCallback;
 	}
 
 	/**
@@ -70,6 +73,12 @@ final class ScenarioSchedulerFormModalControl extends AbstractModalControl
 			}
 		}
 
-		return $this->runScenarioFormControlFactory->create($response);
+		$control = $this->runScenarioFormControlFactory->create($response);
+
+		if (NULL !== $this->innerControlCreationCallback) {
+			($this->innerControlCreationCallback)($control);
+		}
+
+		return $control;
 	}
 }
