@@ -14,35 +14,20 @@ use SixtyEightPublishers\HealthCheck\HealthCheckerInterface;
  */
 final class HealthCheckController extends AbstractController
 {
-	private bool $debugMode;
+    public function __construct(
+        private readonly HealthCheckerInterface $healthChecker,
+    ) {}
 
-	private HealthCheckerInterface $healthChecker;
+    /**
+     * @Api\Path("/")
+     * @Api\Method("GET")
+     */
+    public function index(ApiRequest $request, ApiResponse $response): ApiResponse
+    {
+        $result = $this->healthChecker->check();
 
-	/**
-	 * @param bool                                                     $debugMode
-	 * @param \SixtyEightPublishers\HealthCheck\HealthCheckerInterface $healthChecker
-	 */
-	public function __construct(bool $debugMode, HealthCheckerInterface $healthChecker)
-	{
-		$this->debugMode = $debugMode;
-		$this->healthChecker = $healthChecker;
-	}
-
-	/**
-	 * @Api\Path("/")
-	 * @Api\Method("GET")
-	 *
-	 * @param \Apitte\Core\Http\ApiRequest  $request
-	 * @param \Apitte\Core\Http\ApiResponse $response
-	 *
-	 * @return ApiResponse
-	 */
-	public function index(ApiRequest $request, ApiResponse $response): ApiResponse
-	{
-		$result = $this->healthChecker->check([], $this->debugMode ? HealthCheckerInterface::ARRAY_EXPORT_MODE_FULL : HealthCheckerInterface::ARRAY_EXPORT_MODEL_SIMPLE);
-
-		return $response
-			->withStatus($result->isOk() ? ApiResponse::S200_OK : ApiResponse::S503_SERVICE_UNAVAILABLE)
-			->writeJsonObject($result);
-	}
+        return $response
+            ->withStatus($result->isOk() ? ApiResponse::S200_OK : ApiResponse::S503_SERVICE_UNAVAILABLE)
+            ->writeJsonObject($result);
+    }
 }
