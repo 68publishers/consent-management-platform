@@ -12,6 +12,7 @@ use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use SixtyEightPublishers\UserBundle\Application\Exception\IdentityException;
 use App\Web\AdminModule\CrawlerModule\Control\ScenarioList\ScenarioListControl;
+use App\Web\AdminModule\CrawlerModule\Control\RunScenarioForm\RunScenarioFormControl;
 use App\Web\AdminModule\CrawlerModule\Control\RunScenarioForm\Event\ScenarioRunningEvent;
 use App\Web\AdminModule\CrawlerModule\Control\RunScenarioForm\RunScenarioFormModalControl;
 use App\Web\AdminModule\CrawlerModule\Control\RunScenarioForm\Event\FailedToRunScenarioEvent;
@@ -62,16 +63,17 @@ final class ScenariosPresenter extends AdminPresenter
 		}
 
 		$control = $this->runScenarioFormModalControlFactory->create();
-		$inner = $control->getInnerControl();
 
-		$inner->addEventListener(ScenarioRunningEvent::class, function () {
-			$this->subscribeFlashMessage(FlashMessage::success('scenario_running'));
-			$this->redrawControl('scenario_list');
-			$this->closeModal();
-		});
+		$control->setInnerControlCreationCallback(function (RunScenarioFormControl $innerControl): void {
+			$innerControl->addEventListener(ScenarioRunningEvent::class, function () {
+				$this->subscribeFlashMessage(FlashMessage::success('scenario_running'));
+				$this->redrawControl('scenario_list');
+				$this->closeModal();
+			});
 
-		$inner->addEventListener(FailedToRunScenarioEvent::class, function () {
-			$this->subscribeFlashMessage(FlashMessage::error('failed_to_run_scenario'));
+			$innerControl->addEventListener(FailedToRunScenarioEvent::class, function () {
+				$this->subscribeFlashMessage(FlashMessage::error('failed_to_run_scenario'));
+			});
 		});
 
 		return $control;

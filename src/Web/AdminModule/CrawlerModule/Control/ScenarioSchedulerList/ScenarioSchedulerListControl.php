@@ -22,6 +22,7 @@ use App\Application\Acl\CrawlerScenarioSchedulersResource;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\CrawlerClient\Exception\NotFoundException;
+use App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerForm\ScenarioSchedulerFormControl;
 use SixtyEightPublishers\CrawlerClient\Controller\ScenarioScheduler\ScenarioSchedulersController;
 use App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerForm\ScenarioSchedulerFormModalControl;
 use App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerForm\Event\ScenarioSchedulerUpdatedEvent;
@@ -143,16 +144,17 @@ final class ScenarioSchedulerListControl extends Control
 		return new Multiplier(function (string $scenarioSchedulerHexId): ScenarioSchedulerFormModalControl {
 			$scenarioSchedulerId = Uuid::fromString($scenarioSchedulerHexId)->toString();
 			$control = $this->scenarioSchedulerFormModalControlFactory->create($scenarioSchedulerId);
-			$inner = $control->getInnerControl();
 
-			$inner->addEventListener(ScenarioSchedulerUpdatedEvent::class, function () use ($scenarioSchedulerId) {
-				$this->subscribeFlashMessage(FlashMessage::success('scenario_scheduler_updated'));
-				$this['grid']->redrawItem($scenarioSchedulerId);
-				$this->closeModal();
-			});
+			$control->setInnerControlCreationCallback(function (ScenarioSchedulerFormControl $innerControl) use ($scenarioSchedulerId): void {
+				$innerControl->addEventListener(ScenarioSchedulerUpdatedEvent::class, function () use ($scenarioSchedulerId) {
+					$this->subscribeFlashMessage(FlashMessage::success('scenario_scheduler_updated'));
+					$this['grid']->redrawItem($scenarioSchedulerId);
+					$this->closeModal();
+				});
 
-			$inner->addEventListener(FailedToUpdateScenarioSchedulerEvent::class, function () {
-				$this->subscribeFlashMessage(FlashMessage::error('failed_to_update_scenario_scheduler'));
+				$innerControl->addEventListener(FailedToUpdateScenarioSchedulerEvent::class, function () {
+					$this->subscribeFlashMessage(FlashMessage::error('failed_to_update_scenario_scheduler'));
+				});
 			});
 
 			return $control;

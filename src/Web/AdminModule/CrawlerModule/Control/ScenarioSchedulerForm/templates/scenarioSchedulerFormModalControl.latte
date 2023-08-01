@@ -14,7 +14,7 @@
         {elseif null !== $scenarioSchedulerResponse}
             {_title.update, [id => $scenarioSchedulerId, name => $scenarioSchedulerResponse->getBody()->name]|noescape}
         {else}
-            {_title.update_error, [id => $scenarioId]|noescape}
+            {_title.update_error, [id => $scenarioSchedulerId]|noescape}
         {/if}
     </span>
 {/block}

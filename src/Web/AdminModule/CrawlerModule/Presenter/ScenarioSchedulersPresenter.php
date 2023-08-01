@@ -11,6 +11,7 @@ use App\Application\Acl\CrawlerScenarioSchedulersResource;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use SixtyEightPublishers\SmartNetteComponent\Annotation\IsAllowed;
 use SixtyEightPublishers\UserBundle\Application\Exception\IdentityException;
+use App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerForm\ScenarioSchedulerFormControl;
 use App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerList\ScenarioSchedulerListControl;
 use App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerForm\ScenarioSchedulerFormModalControl;
 use App\Web\AdminModule\CrawlerModule\Control\ScenarioSchedulerForm\Event\ScenarioSchedulerCreatedEvent;
@@ -62,16 +63,17 @@ final class ScenarioSchedulersPresenter extends AdminPresenter
 		}
 
 		$control = $this->scenarioSchedulerFormModalControlFactory->create();
-		$inner = $control->getInnerControl();
 
-		$inner->addEventListener(ScenarioSchedulerCreatedEvent::class, function () {
-			$this->subscribeFlashMessage(FlashMessage::success('scenario_scheduler_created'));
-			$this->redrawControl('scenario_scheduler_list');
-			$this->closeModal();
-		});
+		$control->setInnerControlCreationCallback(function (ScenarioSchedulerFormControl $innerControl): void {
+			$innerControl->addEventListener(ScenarioSchedulerCreatedEvent::class, function () {
+				$this->subscribeFlashMessage(FlashMessage::success('scenario_scheduler_created'));
+				$this->redrawControl('scenario_scheduler_list');
+				$this->closeModal();
+			});
 
-		$inner->addEventListener(FailedToCreateScenarioSchedulerEvent::class, function () {
-			$this->subscribeFlashMessage(FlashMessage::error('failed_to_create_scenario_scheduler'));
+			$innerControl->addEventListener(FailedToCreateScenarioSchedulerEvent::class, function () {
+				$this->subscribeFlashMessage(FlashMessage::error('failed_to_create_scenario_scheduler'));
+			});
 		});
 
 		return $control;
