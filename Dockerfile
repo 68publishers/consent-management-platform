@@ -1,4 +1,4 @@
-FROM 68publishers/php:8.1-cli-dev-1.0.0 AS worker
+FROM 68publishers/php:8.1-cli-dev-1.1.0 AS worker
 
 USER root
 
