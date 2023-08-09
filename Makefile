@@ -1,5 +1,5 @@
-APP_VERSION=$$(git describe --tags `git rev-list --tags --max-count=1` | cut -c 2- ) # Get latest tag without the "v" prefix
-IMAGE=68publishers/cmp
+APP_VERSION = $$(git describe --tags `git rev-list --tags --max-count=1` | cut -c 2- ) # Get latest tag without the "v" prefix
+IMAGE ?= 68publishers/cmp
 
 start:
 	docker compose --profile web up -d
@@ -34,11 +34,11 @@ db-clear:
 	rm -rf var/postgres-data/*
 
 build.local.%:
-	@echo "building a local image ${IMAGE}:app-$* ..."
-	@docker build -t ${IMAGE}:app-$* -f ./docker/build/Dockerfile --target app .
+	@echo "building a local image $(IMAGE):app-$* ..."
+	@docker build -t $(IMAGE):app-$* -f ./docker/build/Dockerfile --target app .
 	@echo "done"
-	@echo "building a local image ${IMAGE}:worker-$* ..."
-	@docker build -t ${IMAGE}:worker-$* -f ./docker/build/Dockerfile --target worker .
+	@echo "building a local image $(IMAGE):worker-$* ..."
+	@docker build -t $(IMAGE):worker-$* -f ./docker/build/Dockerfile --target worker .
 	@echo "done"
 
 build.multiarch.%:
@@ -50,26 +50,28 @@ build.multiarch.%:
 	else \
 		echo "builder multi_arch_builder does exist, skipping initialization."; \
 	fi
-	@echo "building multiplatform [linux/arm64/v8, linux/amd64] image ${IMAGE}:app-$* ..."
+	@echo "building multiplatform [linux/arm64/v8, linux/amd64] image $(IMAGE):app-$* ..."
 	@docker buildx build \
 		-f ./docker/build/Dockerfile \
 		--pull \
 		--push \
 		--builder multi_arch_builder \
 		--platform linux/arm64/v8,linux/amd64 \
+		--provenance=false \
 		--target app \
 		-t ${IMAGE}:app-$* \
 		.
 	@echo "done"
-	@echo "building multiplatform [linux/arm64/v8, linux/amd64] image ${IMAGE}:worker-$* ..."
+	@echo "building multiplatform [linux/arm64/v8, linux/amd64] image $(IMAGE):worker-$* ..."
 	@docker buildx build \
 		-f ./docker/build/Dockerfile \
 		--pull \
 		--push \
 		--builder multi_arch_builder \
 		--platform linux/arm64/v8,linux/amd64 \
+		--provenance=false \
 		--target worker \
-		-t ${IMAGE}:worker-$* \
+		-t $(IMAGE):worker-$* \
 		.
 	@echo "done"
 
