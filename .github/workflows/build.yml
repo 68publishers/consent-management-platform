@@ -68,7 +68,6 @@ jobs:
 
       - name: Login to DockerHub registry
         uses: docker/login-action@v2
-        if: ${{ github.event.inputs.push_to_dockerhub == 'true' }}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -213,7 +212,6 @@ jobs:
 
       - name: Login to DockerHub registry
         uses: docker/login-action@v2
-        if: ${{ github.event.inputs.push_to_dockerhub == 'true' }}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
