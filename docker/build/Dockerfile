@@ -10,7 +10,7 @@ RUN set -ex \
     && apk add --no-cache yarn \
     # clear ./var
     && rm -rf var/cache \
-    && cd var/log/ && rm $(ls | grep -v .gitkeep) && cd ../.. \
+    && cd var/log/ && rm -rf $(ls | grep -v .gitkeep) && cd ../.. \
     && rm -rf var/mail-panel-latte \
     && rm -rf var/mail-panel-mails \
     && rm -rf var/postgres-data \

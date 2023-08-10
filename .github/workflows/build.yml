@@ -1,0 +1,235 @@
+name: Build and push Docker images
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        type: string
+        description: Git branch or tag
+        required: true
+        default: main
+      version:
+        type: string
+        description: The version in semver format (e.g. "1.2.3")
+        required: true
+      platforms:
+        type: string
+        description: Platforms (comma separated list)
+        required: true
+        default: linux/amd64
+      push_to_dockerhub:
+        type: boolean
+        description: Push to DockerHub registry
+        default: true
+      push_to_hpt:
+        type: boolean
+        description: Push to HPT registry
+        default: true
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      platforms: ${{ steps.vars.outputs.platforms }}
+    steps:
+      - name: Dump inputs
+        run: |
+          echo "branch: ${{ github.event.inputs.branch }}"
+          echo "version: ${{ github.event.inputs.version }}"
+          echo "platforms: ${{ github.event.inputs.platforms }}"
+          echo "push_to_dockerhub: ${{ github.event.inputs.push_to_dockerhub }}"
+          echo "push_to_hpt: ${{ github.event.inputs.push_to_hpt }}"
+
+      - name: Create an array of platforms
+        id: vars
+        run: echo "platforms=$(jq 'split(",")' -Rc <(echo '${{ github.event.inputs.platforms }}'))" >> $GITHUB_OUTPUT
+
+  build:
+    name: Build Docker images 68publishers/cmp:app-${{ github.event.inputs.version }} and 68publishers/cmp:worker-${{ github.event.inputs.version }} for platform ${{ matrix.platform }}
+    runs-on: ubuntu-latest
+    needs:
+      - setup
+    strategy:
+      matrix:
+        platform: ${{ fromJson(needs.setup.outputs.platforms) }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.branch }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to DockerHub registry
+        uses: docker/login-action@v2
+        if: ${{ github.event.inputs.push_to_dockerhub == 'true' }}
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to HPT registry
+        uses: docker/login-action@v2
+        if: ${{ github.event.inputs.push_to_hpt == 'true' }}
+        with:
+          registry: registry.hptronic.cz
+          username: ${{ secrets.HPT_REGISTRY_USERNAME }}
+          password: ${{ secrets.HPT_REGISTRY_TOKEN }}
+
+      - name: Docker meta (app, DockerHub)
+        id: docker_meta_app_dh
+        uses: docker/metadata-action@v4
+        if: ${{ github.event.inputs.push_to_dockerhub == 'true' }}
+        with:
+          images: |
+            name=68publishers/cmp
+          flavor: |
+            latest=false
+          tags: |
+            type=ref,event=pr
+            type=semver,pattern=app-{{version}},value=${{ github.event.inputs.version }}
+
+      - name: Docker meta (worker, DockerHub)
+        id: docker_meta_worker_dh
+        uses: docker/metadata-action@v4
+        if: ${{ github.event.inputs.push_to_dockerhub == 'true' }}
+        with:
+          images: |
+            name=68publishers/cmp
+          flavor: |
+            latest=false
+          tags: |
+            type=ref,event=pr
+            type=semver,pattern=worker-{{version}},value=${{ github.event.inputs.version }}
+
+      - name: Docker meta (app, HPT)
+        id: docker_meta_app_hpt
+        uses: docker/metadata-action@v4
+        if: ${{ github.event.inputs.push_to_hpt == 'true' }}
+        with:
+          images: |
+            name=registry.hptronic.cz/dev/cmp/cmp
+          flavor: |
+            latest=false
+          tags: |
+            type=ref,event=pr
+            type=semver,pattern={{version}},value=${{ github.event.inputs.version }}
+
+      - name: Docker meta (worker, HPT)
+        id: docker_meta_worker_hpt
+        uses: docker/metadata-action@v4
+        if: ${{ github.event.inputs.push_to_hpt == 'true' }}
+        with:
+          images: |
+            name=registry.hptronic.cz/dev/cmp/cmp/worker
+          flavor: |
+            latest=false
+          tags: |
+            type=ref,event=pr
+            type=semver,pattern={{version}},value=${{ github.event.inputs.version }}
+
+      - name: Build and push by digest (app)
+        id: build_app
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./docker/build/Dockerfile
+          target: app
+          platforms: ${{ matrix.platform }}
+          labels: ${{ github.event.inputs.push_to_dockerhub && steps.docker_meta_app_dh.outputs.labels || steps.docker_meta_app_hpt.outputs.labels }}
+          outputs: type=image,name=68publishers/cmp,push-by-digest=true,name-canonical=true,push=true
+          provenance: false
+
+      - name: Build and push by digest (worker)
+        id: build_worker
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./docker/build/Dockerfile
+          target: worker
+          platforms: ${{ matrix.platform }}
+          labels: ${{ github.event.inputs.push_to_dockerhub && steps.docker_meta_worker_dh.outputs.labels || steps.docker_meta_worker_hpt.outputs.labels }}
+          outputs: type=image,name=68publishers/cmp,push-by-digest=true,name-canonical=true,push=true
+          provenance: false
+
+      - name: Export digests (DockerHub)
+        if: ${{ github.event.inputs.push_to_dockerhub == 'true' }}
+        run: |
+          mkdir -p /tmp/digests/outputs
+          mkdir -p /tmp/digests/images/app_dh
+          mkdir -p /tmp/digests/images/worker_dh
+          digest_app="${{ steps.build_app.outputs.digest }}"
+          digest_worker="${{ steps.build_worker.outputs.digest }}"
+          touch "/tmp/digests/images/app_dh/${digest_app#sha256:}"
+          touch "/tmp/digests/images/worker_dh/${digest_worker#sha256:}"
+          echo "$APP_OUTPUT" > "/tmp/digests/outputs/app_dh"
+          echo "$WORKER_OUTPUT" > "/tmp/digests/outputs/worker_dh"
+        env:
+          APP_OUTPUT: ${{ steps.docker_meta_app_dh.outputs.json }}
+          WORKER_OUTPUT: ${{ steps.docker_meta_worker_dh.outputs.json }}
+
+      - name: Export digests (HPT)
+        if: ${{ github.event.inputs.push_to_hpt == 'true' }}
+        run: |
+          mkdir -p /tmp/digests/outputs
+          mkdir -p /tmp/digests/images/app_hpt
+          mkdir -p /tmp/digests/images/worker_hpt
+          digest_app="${{ steps.build_app.outputs.digest }}"
+          digest_worker="${{ steps.build_worker.outputs.digest }}"
+          touch "/tmp/digests/images/app_hpt/${digest_app#sha256:}"
+          touch "/tmp/digests/images/worker_hpt/${digest_worker#sha256:}"
+          echo "$APP_OUTPUT" > "/tmp/digests/outputs/app_hpt"
+          echo "$WORKER_OUTPUT" > "/tmp/digests/outputs/worker_hpt"
+        env:
+          APP_OUTPUT: ${{ steps.docker_meta_app_hpt.outputs.json }}
+          WORKER_OUTPUT: ${{ steps.docker_meta_worker_hpt.outputs.json }}
+
+      - name: Upload digest
+        uses: actions/upload-artifact@v3
+        with:
+          name: digests
+          path: /tmp/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  merge:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    steps:
+      - name: Download digests
+        uses: actions/download-artifact@v3
+        with:
+          name: digests
+          path: /tmp/digests
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to DockerHub registry
+        uses: docker/login-action@v2
+        if: ${{ github.event.inputs.push_to_dockerhub == 'true' }}
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to HPT registry
+        uses: docker/login-action@v2
+        if: ${{ github.event.inputs.push_to_hpt == 'true' }}
+        with:
+          registry: registry.hptronic.cz
+          username: ${{ secrets.HPT_REGISTRY_USERNAME }}
+          password: ${{ secrets.HPT_REGISTRY_TOKEN }}
+
+      - name: Create manifest list and push
+        working-directory: /tmp/digests/images
+        run: >
+          for DIR in *;
+          do
+            cd "$DIR" && docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< cat "/tmp/digests/outputs/$DIR") $(printf "68publishers/cmp@sha256:%s " *) && cd ..
+          done
