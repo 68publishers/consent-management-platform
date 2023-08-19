@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+- Changed `68publishers/php` Docker images to the latest versions.
+
+### Fixed
+- Fixed number formatting based on user's locale preferences.
+
 ## 0.9.0 - 2023-08-10
 
 ### Added
