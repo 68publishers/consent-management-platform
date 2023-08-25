@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fixed number formatting based on user's locale preferences.
+- Fixed OpenApi schema loading on the URL `/api/docs`.
 
 ## 0.9.0 - 2023-08-10
 

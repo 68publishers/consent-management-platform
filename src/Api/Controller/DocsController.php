@@ -51,7 +51,7 @@ final class DocsController extends AbstractController
             }
 
             $endpoints[] = [
-                'url' => (string) $uri->withPath($uri->getPath() . '/schema/' . $matches[1]),
+                'url' => rtrim($uri->getPath(), '/') . '/schema/' . $matches[1],
                 'name' => $matches[1],
             ];
         }
