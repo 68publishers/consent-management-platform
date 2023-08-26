@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ef45276bc6cfa36a25d66dd436797500",
+    "content-hash": "c89a1e85b1dd6778ef77298f89cb4a60",
     "packages": [
         {
             "name": "68publishers/asset",
@@ -537,16 +537,16 @@
         },
         {
             "name": "68publishers/tracy-git-version",
-            "version": "v1.1.0",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/68publishers/tracy-git-version.git",
-                "reference": "fa82db0dd82c6e1348510f4f4a8a25bfe8606fe7"
+                "reference": "d661168ca0b08283c39236e815b2c9cdba120b91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/68publishers/tracy-git-version/zipball/fa82db0dd82c6e1348510f4f4a8a25bfe8606fe7",
-                "reference": "fa82db0dd82c6e1348510f4f4a8a25bfe8606fe7",
+                "url": "https://api.github.com/repos/68publishers/tracy-git-version/zipball/d661168ca0b08283c39236e815b2c9cdba120b91",
+                "reference": "d661168ca0b08283c39236e815b2c9cdba120b91",
                 "shasum": ""
             },
             "require": {
@@ -560,6 +560,7 @@
                 "nette/utils": "<3.2.5"
             },
             "require-dev": {
+                "czproject/git-php": "^4.2",
                 "friendsofphp/php-cs-fixer": "^3.13",
                 "nette/application": "^3.1.0",
                 "nette/bootstrap": "^3.1",
@@ -603,9 +604,9 @@
             ],
             "support": {
                 "issues": "https://github.com/68publishers/tracy-git-version/issues",
-                "source": "https://github.com/68publishers/tracy-git-version/tree/v1.1.0"
+                "source": "https://github.com/68publishers/tracy-git-version/tree/v1.2.0"
             },
-            "time": "2022-12-12T03:58:31+00:00"
+            "time": "2023-08-26T03:02:43+00:00"
         },
         {
             "name": "68publishers/translation-bridge",
