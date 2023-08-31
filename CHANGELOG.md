@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 0.10.0 - 2023-08-31
+
+### Added
+- Added monthly statistics command `bin/console cmp:monthly-statistics <project-code> [--accepted-all] [--rejected-all] [--by-categories <categories>] [--unique] [--year <year>] [--format <format>]`.
+
 ### Changed
 - Changed `68publishers/php` Docker images to the latest versions.
 
