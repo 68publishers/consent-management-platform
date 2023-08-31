@@ -49,11 +49,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 final class MonthlyStatisticsCommand extends Command
 {
-    private const FORMAT_DEFAULT = 'default';
+    private const FORMAT_TABLE = 'table';
     private const FORMAT_CSV = 'csv';
 
     private const FORMATS = [
-        self::FORMAT_DEFAULT,
+        self::FORMAT_TABLE,
         self::FORMAT_CSV,
     ];
 
@@ -105,7 +105,7 @@ final class MonthlyStatisticsCommand extends Command
                     'Output format, allowed values are "%s".',
                     implode('", "', self::FORMATS),
                 ),
-                default: self::FORMAT_DEFAULT,
+                default: self::FORMAT_TABLE,
             );
     }
 
@@ -162,13 +162,12 @@ final class MonthlyStatisticsCommand extends Command
             return 1;
         }
 
-        $style->newLine();
         $this->addOutputHeader($style, $format);
 
         if ($acceptedAll) {
             $this->addOutput(
                 style: $style,
-                caption: $unique ? 'Number of unique users who have accepted all cookies' : 'Number of users who have accepted all cookies',
+                caption: $unique ? 'Unique users who have accepted all cookies' : 'Users who have accepted all cookies',
                 months: $this->calculateAcceptedAll(
                     projectId: $projectId,
                     year: $year,
@@ -181,7 +180,7 @@ final class MonthlyStatisticsCommand extends Command
         if ($rejectedAll) {
             $this->addOutput(
                 style: $style,
-                caption: $unique ? 'Number of unique users who have rejected all cookies' : 'Number of users who have rejected all cookies',
+                caption: $unique ? 'Unique users who have rejected all cookies' : 'Users who have rejected all cookies',
                 months: $this->calculateRejectedAll(
                     projectId: $projectId,
                     year: $year,
@@ -212,7 +211,7 @@ final class MonthlyStatisticsCommand extends Command
             $this->addOutput(
                 style: $style,
                 caption: sprintf(
-                    $unique ? 'Number of unique users who %s' : 'Number of users who %s',
+                    $unique ? 'Unique users who %s' : 'Users who %s',
                     implode(' and ', $captionParts),
                 ),
                 months: $this->calculateByCategories(
@@ -226,7 +225,7 @@ final class MonthlyStatisticsCommand extends Command
             );
         }
 
-        $style->success('Done');
+        $this->addOutputFooter($style, $format);
 
         return 0;
     }
@@ -234,8 +233,6 @@ final class MonthlyStatisticsCommand extends Command
     private function addOutputHeader(SymfonyStyle $style, string $format): void
     {
         if ($format === self::FORMAT_CSV) {
-            $style->section('CSV output');
-
             $style->writeln(implode(
                 ';',
                 array_merge(
@@ -247,6 +244,15 @@ final class MonthlyStatisticsCommand extends Command
                     ),
                 ),
             ));
+        } else {
+            $style->newLine();
+        }
+    }
+
+    private function addOutputFooter(SymfonyStyle $style, string $format): void
+    {
+        if ($format === self::FORMAT_TABLE) {
+            $style->success('Done');
         }
     }
 
@@ -256,7 +262,7 @@ final class MonthlyStatisticsCommand extends Command
     private function addOutput(SymfonyStyle $style, string $caption, array $months, string $format): void
     {
         switch ($format) {
-            case self::FORMAT_DEFAULT:
+            case self::FORMAT_TABLE:
                 $formatter = new NumberFormatter('cs_CZ', NumberFormatter::DEFAULT_STYLE);
 
                 $months = array_map(
