@@ -20,6 +20,7 @@ use App\Web\Ui\DataGrid\DataGrid;
 use App\Web\Ui\DataGrid\DataGridFactoryInterface;
 use Nette\Application\UI\Multiplier;
 use Nette\InvalidStateException;
+use Ramsey\Uuid\Uuid;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use Ublaboo\DataGrid\Exception\DataGridException;
 
@@ -43,16 +44,17 @@ final class ConsentListControl extends Control
         $grid->setSessionNamePostfix('p' . $this->projectId->toString());
         $grid->setTranslator($this->getPrefixedTranslator());
         $grid->setTemplateFile(__DIR__ . '/templates/datagrid.latte');
+        $grid->addTemplateVariable('paginatorMaxItemsCount', ConsentsDataGridQuery::COUNT_LIMIT);
 
         $grid->setDefaultSort([
             'last_update_at' => 'DESC',
         ]);
 
-        $grid->addColumnText('user_identifier', 'user_identifier', 'userIdentifier.value')
+        $grid->addColumnText('user_identifier', 'user_identifier', 'userIdentifier')
             ->setSortable('userIdentifier')
             ->setFilterText('userIdentifier');
 
-        $grid->addColumnText('settings_short_identifier', 'settings_short_identifier');
+        $grid->addColumnText('settings_short_identifier', 'settings_short_identifier', 'settingsShortIdentifier');
 
         $grid->addColumnDateTimeTz('created_at', 'created_at', 'createdAt')
             ->setFormat('j.n.Y H:i:s')
@@ -66,7 +68,7 @@ final class ConsentListControl extends Control
 
         $grid->addAction('edit', '')
             ->setTemplate(__DIR__ . '/templates/action.detail.latte', [
-                'createLink' => fn (ConsentListView $view): string => $this->link('openModal!', ['modal' => 'history-' . $view->id->id()->getHex()->toString()]),
+                'createLink' => fn (ConsentListView $view): string => $this->link('openModal!', ['modal' => 'history-' . Uuid::fromString($view->id)->getHex()->toString()]),
             ]);
 
         return $grid;

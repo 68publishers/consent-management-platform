@@ -33,6 +33,11 @@ trait DataGridQueryHandlerTrait
         $this->paginatedResultFactory = $paginatedResultFactory;
     }
 
+    protected function beforeCountQueryFetch(QueryBuilder|DbalQueryBuilder $qb): QueryBuilder|DbalQueryBuilder
+    {
+        return $qb;
+    }
+
     /**
      * @throws NonUniqueResultException
      * @throws NoResultException
@@ -47,6 +52,7 @@ trait DataGridQueryHandlerTrait
             $this->applyFilters($query, $qb, $filterDefinitions);
 
             $this->paramsCount = 0;
+            $qb = $this->beforeCountQueryFetch($qb);
 
             return (int) ($qb instanceof QueryBuilder ? $qb->getQuery()->getSingleScalarResult() : $qb->fetchOne());
         }

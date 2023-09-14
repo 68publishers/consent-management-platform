@@ -8,6 +8,8 @@ use App\ReadModel\AbstractDataGridQuery;
 
 final class ConsentsDataGridQuery extends AbstractDataGridQuery
 {
+    public const COUNT_LIMIT = 1_000_000;
+
     public static function create(string $projectId): self
     {
         return self::fromParameters([
