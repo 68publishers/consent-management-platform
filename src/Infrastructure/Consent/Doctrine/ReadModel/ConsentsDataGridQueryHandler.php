@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Consent\Doctrine\ReadModel;
 
-use App\Domain\Consent\Consent;
-use App\Domain\ConsentSettings\ConsentSettings;
 use App\Infrastructure\DataGridQueryHandlerTrait;
 use App\ReadModel\Consent\ConsentListView;
 use App\ReadModel\Consent\ConsentsDataGridQuery;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Query\QueryBuilder as DbalQueryBuilder;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Doctrine\ORM\Query\Expr\Join;
-use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\QueryHandlerInterface;
 
 final class ConsentsDataGridQueryHandler implements QueryHandlerInterface
@@ -29,32 +28,51 @@ final class ConsentsDataGridQueryHandler implements QueryHandlerInterface
     {
         return $this->processQuery(
             $query,
-            function () use ($query): QueryBuilder {
-                return $this->em->createQueryBuilder()
-                    ->select('COUNT_ROWS()')
-                    ->from(Consent::class, 'c')
-                    ->andWhere('c.projectId = :projectId')
+            function () use ($query): DbalQueryBuilder {
+                return $this->em->getConnection()->createQueryBuilder()
+                    ->select('1')
+                    ->from('consent', 'c')
+                    ->andWhere('c.project_id = :projectId')
+                    ->setMaxResults(ConsentsDataGridQuery::COUNT_LIMIT)
                     ->setParameter('projectId', $query->projectId());
             },
-            function () use ($query): QueryBuilder {
-                return $this->em->createQueryBuilder()
-                    ->select('c.id, c.createdAt, c.lastUpdateAt, c.userIdentifier, c.settingsChecksum, cs.shortIdentifier AS settingsShortIdentifier, cs.id AS settingsId')
-                    ->from(Consent::class, 'c')
-                    ->leftJoin(ConsentSettings::class, 'cs', Join::WITH, 'cs.projectId = c.projectId AND cs.checksum = c.settingsChecksum')
-                    ->andWhere('c.projectId = :projectId')
-                    ->setParameter('projectId', $query->projectId());
+            function () use ($query): DbalQueryBuilder {
+                return $this->em->getConnection()->createQueryBuilder()
+                    ->select('c.id, c.created_at, c.last_update_at, c.user_identifier, c.settings_checksum, cs.short_identifier AS settings_short_identifier, cs.id AS settings_id')
+                    ->from('consent', 'c')
+                    ->leftJoin('c', 'consent_settings', 'cs', 'cs.project_id = c.project_id AND cs.checksum = c.settings_checksum')
+                    ->andWhere('c.project_id = :projectId')
+                    ->setParameter('projectId', $query->projectId(), Types::GUID);
             },
-            ConsentListView::class,
+            fn (array $row): ConsentListView => new ConsentListView(
+                id: $row['id'],
+                createdAt: $this->em->getConnection()->convertToPHPValue($row['created_at'], Types::DATETIME_IMMUTABLE),
+                lastUpdateAt: $this->em->getConnection()->convertToPHPValue($row['last_update_at'], Types::DATETIME_IMMUTABLE),
+                userIdentifier: $row['user_identifier'],
+                settingsChecksum: $row['settings_checksum'],
+                settingsShortIdentifier: $row['settings_short_identifier'],
+                settingsId: $row['settings_id'],
+            ),
             [
-                'userIdentifier' => ['applyEquals', 'c.userIdentifier'],
-                'createdAt' => ['applyDate', 'c.createdAt'],
-                'lastUpdateAt' => ['applyDate', 'c.lastUpdateAt'],
+                'userIdentifier' => ['applyEquals', 'c.user_identifier'],
+                'createdAt' => ['applyDate', 'c.created_at'],
+                'lastUpdateAt' => ['applyDate', 'c.last_update_at'],
             ],
             [
-                'userIdentifier' => 'c.userIdentifier',
-                'createdAt' => 'c.createdAt',
-                'lastUpdateAt' => 'c.lastUpdateAt',
+                'userIdentifier' => 'c.user_identifier',
+                'createdAt' => 'c.created_at',
+                'lastUpdateAt' => 'c.last_update_at',
             ],
         );
+    }
+
+    protected function beforeCountQueryFetch(OrmQueryBuilder|DbalQueryBuilder $qb): DbalQueryBuilder
+    {
+        assert($qb instanceof DbalQueryBuilder);
+
+        return $this->em->getConnection()->createQueryBuilder()
+            ->select('COUNT(*)')
+            ->from('(' . $qb->getSQL() . ')', 't')
+            ->setParameters($qb->getParameters(), $qb->getParameterTypes());
     }
 }
