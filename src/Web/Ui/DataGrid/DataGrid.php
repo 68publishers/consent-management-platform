@@ -14,6 +14,7 @@ use Nette\Localization\Translator;
 use Ublaboo\DataGrid\Column\Column;
 use Ublaboo\DataGrid\Column\ColumnNumber;
 use Ublaboo\DataGrid\DataGrid as UblabooDataGrid;
+use Ublaboo\DataGrid\DataModel;
 use Ublaboo\DataGrid\Exception\DataGridException;
 use Ublaboo\DataGrid\Filter\FilterDate as UblabooFilterDate;
 use Ublaboo\DataGrid\Filter\FilterDateRange as UblabooFilterDateRange;
@@ -141,5 +142,10 @@ class DataGrid extends UblabooDataGrid
         $this->templateVariables[$name] = $value;
 
         return $this;
+    }
+
+    public function getDataModel(): ?DataModel
+    {
+        return $this->dataModel;
     }
 }
