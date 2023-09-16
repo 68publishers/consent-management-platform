@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace App\Web\Ui\DataGrid\DataSource;
 
 use App\ReadModel\DataGridQueryInterface;
+use Closure;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use Ublaboo\DataGrid\DataSource\IDataSource;
 use Ublaboo\DataGrid\Utils\Sorting;
 
 final class ReadModelDataSource implements IDataSource
 {
+    /** @var array<int, Closure(array $data, DataGridQueryInterface $query): array> */
+    public array $onData = [];
+
     public function __construct(
         private DataGridQueryInterface $query,
         private readonly QueryBusInterface $queryBus,
@@ -18,12 +22,20 @@ final class ReadModelDataSource implements IDataSource
 
     public function getCount(): int
     {
-        return $this->queryBus->dispatch($this->query->withCountMode());
+        return $this->queryBus->dispatch(
+            DataGridQueryInterface::MODE_ONE === $this->query->mode() ? $this->query : $this->query->withCountMode(),
+        );
     }
 
     public function getData(): array
     {
-        return $this->queryBus->dispatch($this->query->withDataMode());
+        $data = $this->queryBus->dispatch($this->query->withDataMode());
+
+        foreach ($this->onData as $onDataCb) {
+            $data = $onDataCb($data, $this->query);
+        }
+
+        return $data;
     }
 
     public function filter(array $filters): void

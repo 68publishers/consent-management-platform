@@ -61,7 +61,10 @@ trait DataGridQueryHandlerTrait
         assert($qb instanceof QueryBuilder || $qb instanceof DbalQueryBuilder);
 
         $this->applyFilters($query, $qb, $filterDefinitions);
-        $this->applySorting($query, $qb, $sortingDefinitions);
+
+        if ($query::MODE_ONE !== $query->mode()) {
+            $this->applySorting($query, $qb, $sortingDefinitions);
+        }
 
         $this->paramsCount = 0;
 

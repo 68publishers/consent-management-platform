@@ -11,6 +11,7 @@ use App\ReadModel\Consent\ConsentView;
 use App\ReadModel\Consent\GetConsentByIdAndProjectIdQuery;
 use App\ReadModel\ConsentSettings\ConsentSettingsView;
 use App\ReadModel\ConsentSettings\GetConsentSettingsByIdAndProjectIdQuery;
+use App\ReadModel\DataGridQueryInterface;
 use App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryModalControl;
 use App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryModalControlFactoryInterface;
 use App\Web\AdminModule\ProjectModule\Control\ConsentSettingsDetail\ConsentSettingsDetailModalControl;
@@ -18,6 +19,7 @@ use App\Web\AdminModule\ProjectModule\Control\ConsentSettingsDetail\ConsentSetti
 use App\Web\Ui\Control;
 use App\Web\Ui\DataGrid\DataGrid;
 use App\Web\Ui\DataGrid\DataGridFactoryInterface;
+use App\Web\Ui\DataGrid\DataSource\ReadModelDataSource;
 use Nette\Application\UI\Multiplier;
 use Nette\InvalidStateException;
 use Ramsey\Uuid\Uuid;
@@ -70,6 +72,37 @@ final class ConsentListControl extends Control
             ->setTemplate(__DIR__ . '/templates/action.detail.latte', [
                 'createLink' => fn (ConsentListView $view): string => $this->link('openModal!', ['modal' => 'history-' . Uuid::fromString($view->id)->getHex()->toString()]),
             ]);
+
+        $dataModel = $grid->getDataModel();
+
+        if (null !== $dataModel) {
+            $dataModel->onAfterPaginated[] = function (ReadModelDataSource $dataSource) use ($grid): void {
+                $paginator = $grid->getPaginator()?->getPaginator();
+
+                if (null === $paginator || $paginator->getItemCount() < ConsentsDataGridQuery::COUNT_LIMIT || !$paginator->isLast()) {
+                    return;
+                }
+
+                $additionalPages = $grid->page - $paginator->page + 1;
+                $itemCount = $paginator->getItemCount() + ($additionalPages * $paginator->getItemsPerPage());
+                $paginator->setItemCount($itemCount);
+
+                $dataSource->limit(
+                    $paginator->getOffset(),
+                    $paginator->getItemsPerPage(),
+                );
+
+                $dataSource->onData[] = function (array $data, DataGridQueryInterface $query) use ($paginator): array {
+                    if ($query::MODE_DATA !== $query->mode() || count($data) >= $paginator->getItemsPerPage()) {
+                        return $data;
+                    }
+
+                    $paginator->setItemCount($paginator->getItemCount() - $paginator->getItemsPerPage() - ($paginator->getItemsPerPage() - count($data)));
+
+                    return $data;
+                };
+            };
+        }
 
         return $grid;
     }
