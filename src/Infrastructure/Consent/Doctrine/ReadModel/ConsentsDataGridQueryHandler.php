@@ -33,7 +33,7 @@ final class ConsentsDataGridQueryHandler implements QueryHandlerInterface
                     ->select('1')
                     ->from('consent', 'c')
                     ->andWhere('c.project_id = :projectId')
-                    ->setMaxResults(ConsentsDataGridQuery::COUNT_LIMIT)
+                    ->setMaxResults($query->getCountLimit())
                     ->setParameter('projectId', $query->projectId());
             },
             function () use ($query): DbalQueryBuilder {

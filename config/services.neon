@@ -94,7 +94,11 @@ services:
     - App\Web\AdminModule\ImportModule\Control\ImportModal\ImportModalControlFactoryInterface
 
     # Web\AdminModule\ProjectModule
-    - App\Web\AdminModule\ProjectModule\Control\ConsentList\ConsentListControlFactoryInterface
+    -
+        implement: App\Web\AdminModule\ProjectModule\Control\ConsentList\ConsentListControlFactoryInterface
+        arguments:
+            countLimit: ::env(GRID_COUNT_LIMIT|int, 100000)
+
     - App\Web\AdminModule\ProjectModule\Control\ConsentSettingsList\ConsentSettingsListControlFactoryInterface
     - App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryControlFactoryInterface
     - App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryModalControlFactoryInterface

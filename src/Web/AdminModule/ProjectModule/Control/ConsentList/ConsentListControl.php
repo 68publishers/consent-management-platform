@@ -34,6 +34,7 @@ final class ConsentListControl extends Control
         private readonly ConsentHistoryModalControlFactoryInterface $consentHistoryModalControlFactory,
         private readonly ConsentSettingsDetailModalControlFactoryInterface $consentSettingsDetailModalControlFactory,
         private readonly QueryBusInterface $queryBus,
+        private readonly ?int $countLimit = null,
     ) {}
 
     /**
@@ -41,12 +42,16 @@ final class ConsentListControl extends Control
      */
     protected function createComponentGrid(): DataGrid
     {
-        $grid = $this->dataGridFactory->create(ConsentsDataGridQuery::create($this->projectId->toString()));
+        $query = ConsentsDataGridQuery::create(
+            projectId: $this->projectId->toString(),
+            countLimit: $this->countLimit,
+        );
+        $grid = $this->dataGridFactory->create($query);
 
         $grid->setSessionNamePostfix('p' . $this->projectId->toString());
         $grid->setTranslator($this->getPrefixedTranslator());
         $grid->setTemplateFile(__DIR__ . '/templates/datagrid.latte');
-        $grid->addTemplateVariable('paginatorMaxItemsCount', ConsentsDataGridQuery::COUNT_LIMIT);
+        $grid->addTemplateVariable('paginatorMaxItemsCount', $query->getCountLimit());
 
         $grid->setDefaultSort([
             'last_update_at' => 'DESC',
@@ -76,10 +81,10 @@ final class ConsentListControl extends Control
         $dataModel = $grid->getDataModel();
 
         if (null !== $dataModel) {
-            $dataModel->onAfterPaginated[] = function (ReadModelDataSource $dataSource) use ($grid): void {
+            $dataModel->onAfterPaginated[] = function (ReadModelDataSource $dataSource) use ($grid, $query): void {
                 $paginator = $grid->getPaginator()?->getPaginator();
 
-                if (null === $paginator || $paginator->getItemCount() < ConsentsDataGridQuery::COUNT_LIMIT || !$paginator->isLast()) {
+                if (null === $paginator || $paginator->getItemCount() < $query->getCountLimit() || !$paginator->isLast()) {
                     return;
                 }
 
