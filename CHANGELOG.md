@@ -6,9 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Added ENV variable `GRID_COUNT_LIMIT`.
+
 ### Changed
 
-- The maximum number of entries in the consent list is limited to one million due to performance issues.
+- The maximum number of entries in the consent list is limited to value of the ENV variable `GRID_COUNT_LIMIT` due to performance issues (default 100.000).
 
 ## 0.10.0 - 2023-08-31
 

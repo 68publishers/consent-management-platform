@@ -8,17 +8,25 @@ use App\ReadModel\AbstractDataGridQuery;
 
 final class ConsentsDataGridQuery extends AbstractDataGridQuery
 {
-    public const COUNT_LIMIT = 1_000_000;
+    private const DEFAULT_COUNT_LIMIT = 100_000;
 
-    public static function create(string $projectId): self
-    {
+    public static function create(
+        string $projectId,
+        ?int $countLimit = null,
+    ): self {
         return self::fromParameters([
             'project_id' => $projectId,
+            'count_limit' => $countLimit,
         ]);
     }
 
     public function projectId(): string
     {
         return $this->getParam('project_id');
+    }
+
+    public function getCountLimit(): int
+    {
+        return $this->getParam('count_limit') ?? self::DEFAULT_COUNT_LIMIT;
     }
 }
