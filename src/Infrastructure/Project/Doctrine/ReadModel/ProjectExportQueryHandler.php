@@ -25,7 +25,7 @@ final class ProjectExportQueryHandler implements QueryHandlerInterface
     public function __invoke(ProjectExportQuery $query): iterable
     {
         $q = $this->em->createQueryBuilder()
-            ->select('p.id, p.name, p.code, p.domain, p.color, p.description, p.active, p.locales.locales, p.locales.defaultLocale')
+            ->select('p.id, p.name, p.code, p.domain, p.color, p.description, p.active, p.locales.locales, p.locales.defaultLocale, p.environments')
             ->from(Project::class, 'p')
             ->where('p.deletedAt IS NULL')
             ->orderBy('p.name', 'ASC')

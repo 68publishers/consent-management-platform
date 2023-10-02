@@ -50,6 +50,9 @@ final class UpdateProjectCommand extends AbstractCommand
         return $this->getParam('active');
     }
 
+    /**
+     * @return array<int, string>|null
+     */
     public function locales(): ?array
     {
         return $this->getParam('locales');
@@ -58,6 +61,14 @@ final class UpdateProjectCommand extends AbstractCommand
     public function defaultLocale(): ?string
     {
         return $this->getParam('default_locale');
+    }
+
+    /**
+     * @return array<int, string>|null
+     */
+    public function environments(): ?array
+    {
+        return $this->getParam('environments');
     }
 
     /**
@@ -113,5 +124,13 @@ final class UpdateProjectCommand extends AbstractCommand
     public function withCookieProviderIds(array $cookieProviderIds): self
     {
         return $this->withParam('cookie_provider_ids', $cookieProviderIds);
+    }
+
+    /**
+     * @param array<int, string> $environments
+     */
+    public function withEnvironments(array $environments): self
+    {
+        return $this->withParam('environments', $environments);
     }
 }

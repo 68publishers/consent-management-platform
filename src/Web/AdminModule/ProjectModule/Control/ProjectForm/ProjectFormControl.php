@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Web\AdminModule\ProjectModule\Control\ProjectForm;
 
 use App\Application\GlobalSettings\GlobalSettingsInterface;
+use App\Domain\GlobalSettings\ValueObject\Environment;
 use App\Domain\Project\Command\CreateProjectCommand;
 use App\Domain\Project\Command\UpdateProjectCommand;
 use App\Domain\Project\Exception\CodeUniquenessException;
@@ -20,6 +21,7 @@ use App\Web\Ui\Form\FormFactoryOptionsTrait;
 use NasExt\Forms\Controls\DependentSelectBox;
 use NasExt\Forms\DependentData;
 use Nette\Application\UI\Form;
+use Nette\Forms\Controls\CheckboxList;
 use Nette\Forms\Controls\TextInput;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 use Throwable;
@@ -37,13 +39,27 @@ final class ProjectFormControl extends Control
 
     protected function createComponentForm(): Form
     {
-        $form = $this->formFactory->create($this->getFormFactoryOptions());
         $globalLocales = [];
+        $environments = [];
 
         foreach ($this->globalSettings->locales() as $locale) {
             $globalLocales[$locale->code()] = sprintf('%s - %s', $locale->name(), $locale->code());
         }
 
+        foreach ($this->globalSettings->environments()->all() as $environment) {
+            assert($environment instanceof Environment);
+            $environments[$environment->code] = $environment->name;
+        }
+
+        $form = $this->formFactory->create(array_merge(
+            $this->getFormFactoryOptions(),
+            [
+                FormFactoryInterface::OPTION_IMPORTS => __DIR__ . '/templates/form.imports.latte',
+                FormFactoryInterface::OPTION_TEMPLATE_VARIABLES => [
+                    'environments' => $this->globalSettings->environments(),
+                ],
+            ],
+        ));
         $translator = $this->getPrefixedTranslator();
 
         $form->setTranslator($translator);
@@ -64,7 +80,7 @@ final class ProjectFormControl extends Control
         $form->addText('color', 'color.field')
             ->setRequired('color.required')
             ->addRule($form::PATTERN, 'color.rule_pattern', '#([a-fA-F0-9]{3}){1,2}\b')
-            ->setOption('description', 'color.description');
+            ->setOption('type', 'color-picker');
 
         $form->addCheckbox('active', 'active.field')
             ->setDefaultValue(true);
@@ -103,6 +119,12 @@ final class ProjectFormControl extends Control
             'default_locale',
         );
 
+        $form->addCheckboxList('environments', 'environments.field')
+            ->checkDefaultValue(false)
+            ->setItems(['' => $translator->translate('//layout.default_environment')] + $environments)
+            ->setTranslator(null)
+            ->setDisabled(['']);
+
         $form->addTextArea('description', 'description.field', null, 4);
 
         $form->addProtection('//layout.form_protection');
@@ -119,6 +141,10 @@ final class ProjectFormControl extends Control
                 'locales' => $this->default->locales->locales()->toArray(),
                 'default_locale' => $this->default->locales->defaultLocale()->value(),
                 'description' => $this->default->description->value(),
+                'environments' => array_merge(
+                    [''],
+                    $this->default->environments->toArray(),
+                ),
             ]);
         }
 
@@ -136,15 +162,16 @@ final class ProjectFormControl extends Control
         if (null === $this->default) {
             $projectId = ProjectId::new();
             $command = CreateProjectCommand::create(
-                $values->name,
-                $values->code,
-                $values->domain,
-                $values->description,
-                $values->color,
-                $values->active,
-                $values->locales,
-                $values->default_locale,
-                $projectId->toString(),
+                name: $values->name,
+                code: $values->code,
+                domain: $values->domain,
+                description: $values->description,
+                color: $values->color,
+                active: $values->active,
+                locales: $values->locales,
+                defaultLocale: $values->default_locale,
+                environments: $values->environments,
+                projectId: $projectId->toString(),
             );
         } else {
             $projectId = $this->default->id;
@@ -155,7 +182,8 @@ final class ProjectFormControl extends Control
                 ->withDescription($values->description)
                 ->withColor($values->color)
                 ->withActive($values->active)
-                ->withLocales($values->locales, $values->default_locale);
+                ->withLocales($values->locales, $values->default_locale)
+                ->withEnvironments($values->environments);
         }
 
         try {
@@ -172,6 +200,15 @@ final class ProjectFormControl extends Control
             $this->dispatchEvent(new ProjectFormProcessingFailedEvent($e));
 
             return;
+        } finally {
+            $environments = $form->getComponent('environments');
+            assert($environments instanceof CheckboxList);
+
+            # Set default environment back because the option is disabled, and we lost the state when form submitted.
+            $environments->setValue(array_merge(
+                [''],
+                $environments->getValue(),
+            ));
         }
 
         $this->dispatchEvent(null === $this->default ? new ProjectCreatedEvent($projectId, $values->code) : new ProjectUpdatedEvent($projectId, $this->default->code->value(), $values->code));

@@ -107,6 +107,10 @@ nettrine.dbal:
                 class: App\Infrastructure\Project\Doctrine\DbalType\DomainType
                 commented: yes
 
+            App\Domain\Project\ValueObject\Environments:
+                class: App\Infrastructure\Project\Doctrine\DbalType\EnvironmentsType
+                commented: yes
+
             App\Domain\Project\ValueObject\Name:
                 class: App\Infrastructure\Project\Doctrine\DbalType\NameType
                 commented: yes

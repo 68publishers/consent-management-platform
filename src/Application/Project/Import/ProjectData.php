@@ -26,9 +26,11 @@ final class ProjectData extends AbstractDescribedObject
 
     public bool $active;
 
-    public array $locales;
+    public array $locales = [];
 
     public ?string $defaultLocale = null;
+
+    public array $environments = [];
 
     protected static function doDescribe(StructureDescriptor $descriptor): StructureDescriptor
     {
@@ -43,6 +45,9 @@ final class ProjectData extends AbstractDescribedObject
             ->withDescriptor('locales', Descriptor::listOf(
                 Descriptor::string(),
             ))
-            ->withDescriptor('defaultLocale', Descriptor::string(new Nullable()));
+            ->withDescriptor('defaultLocale', Descriptor::string(new Nullable()))
+            ->withDescriptor('environments', Descriptor::listOf(
+                Descriptor::string(),
+            ));
     }
 }

@@ -15,6 +15,7 @@ use App\Domain\Project\Event\ProjectCookieProviderRemoved;
 use App\Domain\Project\Event\ProjectCreated;
 use App\Domain\Project\Event\ProjectDescriptionChanged;
 use App\Domain\Project\Event\ProjectDomainChanged;
+use App\Domain\Project\Event\ProjectEnvironmentsChanged;
 use App\Domain\Project\Event\ProjectLocalesChanged;
 use App\Domain\Project\Event\ProjectNameChanged;
 use App\Domain\Project\Event\ProjectTemplateChanged;
@@ -22,6 +23,8 @@ use App\Domain\Project\ValueObject\Code;
 use App\Domain\Project\ValueObject\Color;
 use App\Domain\Project\ValueObject\Description;
 use App\Domain\Project\ValueObject\Domain;
+use App\Domain\Project\ValueObject\Environment;
+use App\Domain\Project\ValueObject\Environments;
 use App\Domain\Project\ValueObject\Name;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\Project\ValueObject\Template;
@@ -59,6 +62,8 @@ final class Project implements AggregateRootInterface
 
     private LocalesConfig $locales;
 
+    private Environments $environments;
+
     /** @var Collection<ProjectHasCookieProvider>  */
     private Collection $cookieProviders;
 
@@ -78,23 +83,29 @@ final class Project implements AggregateRootInterface
         $color = Color::fromValidColor($command->color());
         $locales = Locales::empty();
         $defaultLocale = Locale::fromValue($command->defaultLocale());
+        $environments = Environments::empty();
 
         foreach ($command->locales() as $locale) {
             $locales = $locales->with(Locale::fromValue($locale));
         }
 
+        foreach ($command->environments() as $environment) {
+            $environments = $environments->with(Environment::fromValue($environment));
+        }
+
         $checkCodeUniqueness($projectId, $code);
 
         $project->recordThat(ProjectCreated::create(
-            $projectId,
-            $cookieProviderId,
-            $name,
-            $code,
-            $domain,
-            $description,
-            $color,
-            $command->active(),
-            LocalesConfig::create($locales, $defaultLocale),
+            projectId: $projectId,
+            cookieProviderId: $cookieProviderId,
+            name: $name,
+            code: $code,
+            domain: $domain,
+            description: $description,
+            color: $color,
+            active: $command->active(),
+            locales: LocalesConfig::create($locales, $defaultLocale),
+            environments: $environments,
         ));
 
         $project->setCookieProviders(array_map(
@@ -140,6 +151,16 @@ final class Project implements AggregateRootInterface
             }
 
             $this->changeLocales(LocalesConfig::create($locales, $defaultLocale));
+        }
+
+        if (null !== $command->environments()) {
+            $environments = Environments::empty();
+
+            foreach ($command->environments() as $environment) {
+                $environments = $environments->with(Environment::fromValue($environment));
+            }
+
+            $this->changeEnvironments($environments);
         }
 
         if (null !== $command->cookieProviderIds()) {
@@ -206,6 +227,13 @@ final class Project implements AggregateRootInterface
         }
     }
 
+    public function changeEnvironments(Environments $environments): void
+    {
+        if (!$this->environments->equals($environments)) {
+            $this->recordThat(ProjectEnvironmentsChanged::create($this->id, $environments));
+        }
+    }
+
     /**
      * @param array<CookieProviderId> $cookieProviderIds
      */
@@ -259,6 +287,7 @@ final class Project implements AggregateRootInterface
         $this->description = $event->description();
         $this->active = $event->active();
         $this->locales = $event->locales();
+        $this->environments = $event->environments();
         $this->cookieProviders = new ArrayCollection();
         $this->translations = new ArrayCollection();
     }
@@ -296,6 +325,11 @@ final class Project implements AggregateRootInterface
     protected function whenProjectLocalesChanged(ProjectLocalesChanged $event): void
     {
         $this->locales = $event->locales();
+    }
+
+    protected function WhenProjectEnvironmentsChanged(ProjectEnvironmentsChanged $event): void
+    {
+        $this->environments = $event->environments();
     }
 
     protected function whenProjectCookieProviderAdded(ProjectCookieProviderAdded $event): void
