@@ -64,6 +64,12 @@ final class CookieImporter extends AbstractImporter
                 ));
 
                 $cookieView = $this->queryBus->dispatch(GetCookieByNameAndCookieProviderAndCategoryQuery::create($data->name, $cookieProviderView->id->toString(), $categoryView->id->toString()));
+                $environments = empty($data->environments)
+                    ? true
+                    : array_map(
+                        static fn (string $environment): ?string => 'default' === $environment ? null : $environment,
+                        $data->environments,
+                    );
 
                 if ($cookieView instanceof CookieView) {
                     $command = UpdateCookieCommand::create($cookieView->id->toString())
@@ -71,20 +77,22 @@ final class CookieImporter extends AbstractImporter
                         ->withActive($data->active)
                         ->withCategoryId($categoryView->id->toString())
                         ->withProcessingTime($data->processingTime)
-                        ->withPurposes($data->purpose);
+                        ->withPurposes($data->purpose)
+                        ->withEnvironments($environments);
 
                     if (!empty($data->domain)) {
                         $command = $command->withDomain($data->domain);
                     }
                 } else {
                     $command = CreateCookieCommand::create(
-                        $categoryView->id->toString(),
-                        $cookieProviderView->id->toString(),
-                        $data->name,
-                        $data->domain,
-                        $data->processingTime,
-                        $data->active,
-                        $data->purpose,
+                        categoryId: $categoryView->id->toString(),
+                        cookieProviderId: $cookieProviderView->id->toString(),
+                        name: $data->name,
+                        domain: $data->domain,
+                        processingTime: $data->processingTime,
+                        active: $data->active,
+                        purposes: $data->purpose,
+                        environments: $environments,
                     );
                 }
 

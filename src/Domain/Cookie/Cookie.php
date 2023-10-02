@@ -11,11 +11,14 @@ use App\Domain\Cookie\Event\CookieActiveStateChanged;
 use App\Domain\Cookie\Event\CookieCategoryChanged;
 use App\Domain\Cookie\Event\CookieCreated;
 use App\Domain\Cookie\Event\CookieDomainChanged;
+use App\Domain\Cookie\Event\CookieEnvironmentsChanged;
 use App\Domain\Cookie\Event\CookieNameChanged;
 use App\Domain\Cookie\Event\CookieProcessingTimeChanged;
 use App\Domain\Cookie\Event\CookiePurposeChanged;
 use App\Domain\Cookie\ValueObject\CookieId;
 use App\Domain\Cookie\ValueObject\Domain;
+use App\Domain\Cookie\ValueObject\Environment;
+use App\Domain\Cookie\ValueObject\Environments;
 use App\Domain\Cookie\ValueObject\Name;
 use App\Domain\Cookie\ValueObject\ProcessingTime;
 use App\Domain\Cookie\ValueObject\Purpose;
@@ -48,6 +51,10 @@ final class Cookie implements AggregateRootInterface
 
     private bool $active;
 
+    private bool $allEnvironments;
+
+    private Environments $environments;
+
     private Collection $translations;
 
     public static function create(CreateCookieCommand $command, CheckCategoryExistsInterface $checkCategoryExists, CheckCookieProviderExistsInterface $checkCookieProviderExists, CheckNameUniquenessInterface $checkNameUniqueness): self
@@ -62,12 +69,29 @@ final class Cookie implements AggregateRootInterface
         $processingTime = ProcessingTime::withValidation($command->processingTime());
         $active = $command->active();
         $purposes = array_map(static fn (string $purpose): Purpose => Purpose::fromValue($purpose), $command->purposes());
+        $allEnvironments = true === $command->environments();
+        $environments = Environments::empty();
+
+        foreach (is_array($command->environments()) ? $command->environments() : [] as $environment) {
+            $environments = $environments->with(Environment::fromNative($environment));
+        }
 
         $checkCategoryExists($categoryId);
         $checkCookieProviderExists($cookieProviderId);
         $checkNameUniqueness($id, $name, $cookieProviderId, $categoryId);
 
-        $cookie->recordThat(CookieCreated::create($id, $categoryId, $cookieProviderId, $name, $domain, $processingTime, $active, $purposes));
+        $cookie->recordThat(CookieCreated::create(
+            cookieId: $id,
+            categoryId: $categoryId,
+            cookieProviderId: $cookieProviderId,
+            name: $name,
+            domain: $domain,
+            processingTime: $processingTime,
+            active: $active,
+            purposes: $purposes,
+            allEnvironments: $allEnvironments,
+            environments: $environments,
+        ));
 
         return $cookie;
     }
@@ -110,6 +134,19 @@ final class Cookie implements AggregateRootInterface
         if (null !== $command->purposes()) {
             foreach ($command->purposes() as $locale => $purpose) {
                 $this->changePurpose(Locale::fromValue($locale), Purpose::fromValue($purpose));
+            }
+        }
+
+        if (null !== $command->environments()) {
+            $allEnvironments = true === $command->environments();
+            $environments = Environments::empty();
+
+            foreach (is_array($command->environments()) ? $command->environments() : [] as $environment) {
+                $environments = $environments->with(Environment::fromNative($environment));
+            }
+
+            if ($allEnvironments !== $this->allEnvironments || !$this->environments->equals($environments)) {
+                $this->recordThat(CookieEnvironmentsChanged::create($this->id, $allEnvironments, $environments));
             }
         }
     }
@@ -167,6 +204,8 @@ final class Cookie implements AggregateRootInterface
         $this->domain = $event->domain();
         $this->processingTime = $event->processingTime();
         $this->active = $event->active();
+        $this->allEnvironments = $event->allEnvironments();
+        $this->environments = $event->environments();
         $this->translations = new ArrayCollection();
 
         foreach ($event->purposes() as $locale => $purpose) {
@@ -210,6 +249,12 @@ final class Cookie implements AggregateRootInterface
         }
 
         $this->translations->add(CookieTranslation::create($this, $event->locale(), $event->purpose()));
+    }
+
+    protected function whenCookieEnvironmentsChanged(CookieEnvironmentsChanged $event): void
+    {
+        $this->allEnvironments = $event->allEnvironments();
+        $this->environments = $event->environments();
     }
 
     private function filterTranslation(Locale $locale): ?CookieTranslation

@@ -53,6 +53,14 @@ final class UpdateCookieCommand extends AbstractCommand
         return $this->getParam('active');
     }
 
+    /**
+     * @return bool|array<int, string|null>|null
+     */
+    public function environments(): bool|array|null
+    {
+        return $this->getParam('environments');
+    }
+
     public function withCategoryId(string $categoryId): self
     {
         return $this->withParam('category_id', $categoryId);
@@ -84,5 +92,13 @@ final class UpdateCookieCommand extends AbstractCommand
     public function withActive(bool $active): self
     {
         return $this->withParam('active', $active);
+    }
+
+    /**
+     * @param bool|array<int, string|null> $environments
+     */
+    public function withEnvironments(bool|array $environments): self
+    {
+        return $this->withParam('environments', $environments);
     }
 }

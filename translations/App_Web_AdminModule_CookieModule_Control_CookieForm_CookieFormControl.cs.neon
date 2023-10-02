@@ -16,6 +16,12 @@ category:
     field: Kategorie
     required: Zvolte prosím kategorii.
 
+all_environments:
+    field: Všechna prostředí
+
+environments:
+    field: Prostředí
+
 processing_time:
     field: Doba zpracování
     required: Zvolte prosím dobu zpracování.

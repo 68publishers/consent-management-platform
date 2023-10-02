@@ -13,7 +13,9 @@ use App\Api\V1\RequestBody\CookiesRequestBody;
 use App\Application\Cookie\Template;
 use App\Application\Cookie\TemplateArguments;
 use App\Application\Cookie\TemplateRendererInterface;
+use App\Application\GlobalSettings\EnabledEnvironmentsResolver;
 use App\Application\GlobalSettings\GlobalSettingsInterface;
+use App\Domain\Project\ValueObject\Environments;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\Shared\ValueObject\Locale;
 use App\ReadModel\Cookie\CookieApiView;
@@ -122,13 +124,19 @@ final class CookiesController extends AbstractV1Controller
                 ]);
         }
 
+        $errorResponse = $this->tryCreateErrorResponseOnInvalidEnvironment($project->environments, $requestEntity, $response);
+
+        if (null !== $errorResponse) {
+            return $errorResponse;
+        }
+
         $locale = null !== $requestEntity->locale && $project->locales->locales()->has(Locale::fromValue($requestEntity->locale))
             ? Locale::fromValue($requestEntity->locale)
             : $project->locales->defaultLocale();
 
         $responseBody = json_encode([
             'status' => 'success',
-            'data' => $this->getCookiesData($project->id, $locale, $project->locales->defaultLocale(), $requestEntity->category),
+            'data' => $this->getCookiesData($project->id, $locale, $project->locales->defaultLocale(), $requestEntity->category, $requestEntity->environment),
         ], JSON_THROW_ON_ERROR);
 
         $response = $response->withStatus(ApiResponse::S200_OK)
@@ -175,11 +183,17 @@ final class CookiesController extends AbstractV1Controller
                 ]);
         }
 
+        $errorResponse = $this->tryCreateErrorResponseOnInvalidEnvironment($projectTemplate->environments, $requestEntity, $response);
+
+        if (null !== $errorResponse) {
+            return $errorResponse;
+        }
+
         $locale = null !== $requestEntity->locale && $projectTemplate->projectLocalesConfig->locales()->has(Locale::fromValue($requestEntity->locale))
             ? Locale::fromValue($requestEntity->locale)
             : $projectTemplate->projectLocalesConfig->defaultLocale();
 
-        $data = $this->getCookiesData($projectTemplate->projectId, $locale, $projectTemplate->projectLocalesConfig->defaultLocale(), $requestEntity->category);
+        $data = $this->getCookiesData($projectTemplate->projectId, $locale, $projectTemplate->projectLocalesConfig->defaultLocale(), $requestEntity->category, $requestEntity->environment);
         $data = json_encode($data, JSON_THROW_ON_ERROR);
         $data = json_decode($data, false, 512, JSON_THROW_ON_ERROR);
 
@@ -231,7 +245,7 @@ final class CookiesController extends AbstractV1Controller
     /**
      * @param mixed $categories
      */
-    private function getCookiesData(ProjectId $projectId, Locale $locale, ?Locale $defaultLocale, string|array|null $categories = null): array
+    private function getCookiesData(ProjectId $projectId, Locale $locale, ?Locale $defaultLocale, string|array|null $categories = null, ?string $environment = null): array
     {
         $data = [
             'providers' => [],
@@ -243,6 +257,10 @@ final class CookiesController extends AbstractV1Controller
 
         if (null !== $categories) {
             $query = $query->withCategoryCodes((array) $categories);
+        }
+
+        if (null !== $environment) {
+            $query = $query->withEnvironment($environment);
         }
 
         foreach ($this->queryBus->dispatch($query) as $batch) {
@@ -276,5 +294,35 @@ final class CookiesController extends AbstractV1Controller
         $data['cookies'] = $cookies;
 
         return $data;
+    }
+
+    private function tryCreateErrorResponseOnInvalidEnvironment(Environments $projectEnvironments, CookiesRequestBody $body, ApiResponse $response): ?ApiResponse
+    {
+        if (null === $body->environment || '' === $body->environment) {
+            return null;
+        }
+
+        $environments = EnabledEnvironmentsResolver::resolveProjectEnvironments(
+            globalSettingsEnvironments: $this->globalSettings->environments(),
+            projectEnvironments: $projectEnvironments,
+        );
+
+        foreach ($environments as $environment) {
+            if ($environment->code === $body->environment) {
+                return null;
+            }
+        }
+
+        return $response->withStatus(ApiResponse::S400_BAD_REQUEST)
+            ->writeJsonBody([
+                'status' => 'error',
+                'data' => [
+                    'code' => ApiResponse::S400_BAD_REQUEST,
+                    'error' => sprintf(
+                        'Project does not have the "%s" environment.',
+                        $body->environment,
+                    ),
+                ],
+            ]);
     }
 }

@@ -27,6 +27,11 @@ final class FindCookiesForApiQuery extends AbstractBatchedQuery
         return $this->withParam('category_codes', $categoryCodes);
     }
 
+    public function withEnvironment(string $environment): self
+    {
+        return $this->withParam('environment', $environment);
+    }
+
     public function projectId(): string
     {
         return $this->getParam('project_id');
@@ -43,5 +48,10 @@ final class FindCookiesForApiQuery extends AbstractBatchedQuery
     public function categoryCodes(): ?array
     {
         return $this->getParam('category_codes');
+    }
+
+    public function environment(): ?string
+    {
+        return $this->getParam('environment');
     }
 }

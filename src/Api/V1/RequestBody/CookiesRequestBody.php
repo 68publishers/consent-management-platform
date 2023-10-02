@@ -22,4 +22,6 @@ final class CookiesRequestBody extends BasicEntity
      * @var string|array<string>|NULL
      */
     public string|array|null $category = null;
+
+    public ?string $environment = null;
 }

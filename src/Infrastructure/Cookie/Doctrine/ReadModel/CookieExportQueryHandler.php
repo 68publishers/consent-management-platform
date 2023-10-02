@@ -6,6 +6,7 @@ namespace App\Infrastructure\Cookie\Doctrine\ReadModel;
 
 use App\Domain\Category\Category;
 use App\Domain\Cookie\Cookie;
+use App\Domain\Cookie\ValueObject\Environment;
 use App\Domain\CookieProvider\CookieProvider;
 use App\ReadModel\Cookie\CookieExportQuery;
 use Doctrine\ORM\AbstractQuery;
@@ -72,6 +73,12 @@ final class CookieExportQueryHandler implements QueryHandlerInterface
             'processingTime' => $row['cookie']['processingTime'],
             'active' => $row['cookie']['active'],
             'purpose' => [],
+            'environments' => $row['cookie']['allEnvironments']
+                ? []
+                : array_map(
+                    static fn (Environment $environment): string => null === $environment->value() ? 'default' : $environment->value(),
+                    $row['cookie']['environments']->all(),
+                ),
         ];
 
         foreach ($row['cookie']['translations'] as $translation) {
