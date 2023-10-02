@@ -20,6 +20,9 @@ final class ConsentsPresenter extends SelectedProjectPresenter
 
     protected function createComponentList(): ConsentListControl
     {
-        return $this->consentListControlFactory->create($this->projectView->id);
+        return $this->consentListControlFactory->create(
+            projectId: $this->projectView->id,
+            projectEnvironments: $this->projectView->environments,
+        );
     }
 }

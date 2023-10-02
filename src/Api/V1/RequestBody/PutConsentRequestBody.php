@@ -20,4 +20,6 @@ final class PutConsentRequestBody extends BasicEntity
     public array $consents = [];
 
     public array $attributes = [];
+
+    public ?string $environment = null;
 }

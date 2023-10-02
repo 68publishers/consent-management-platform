@@ -13,6 +13,7 @@ final class ConsentListView
         public DateTimeImmutable $createdAt,
         public DateTimeImmutable $lastUpdateAt,
         public string $userIdentifier,
+        public ?string $environment,
         public ?string $settingsChecksum = null,
         public ?int $settingsShortIdentifier = null,
         public ?string $settingsId = null,

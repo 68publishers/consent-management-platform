@@ -43,34 +43,28 @@
     </span>
 {/define}
 
-{define title_App_Domain_Consent_Event_ConsentCreated, $event, $name}
-    {varType App\Domain\Consent\Event\ConsentCreated $event}
-
+{define title_App_Domain_Consent_Event_ConsentCreated, App\Domain\Consent\Event\ConsentCreated $event, string $name}
     <p class="text-sm text-gray-500">{_$name . '.title', [user_identifier => $event->userIdentifier()->value()]}</p>
 {/define}
 
-{define title_App_Domain_Consent_Event_ConsentUpdated, $event, $name}
-    {varType App\Domain\Consent\Event\ConsentUpdated $event}
-
+{define title_App_Domain_Consent_Event_ConsentUpdated, App\Domain\Consent\Event\ConsentUpdated $event, string $name}
     <p class="text-sm text-gray-500">{_$name . '.title'}</p>
 {/define}
 
-{define content_App_Domain_Consent_Event_ConsentCreated, $event}
-    {varType App\Domain\Consent\Event\ConsentCreated $event}
-
-    {include block consent_block_table, $event->consents(), $event->attributes(), $event->settingsChecksum()}
+{define content_App_Domain_Consent_Event_ConsentCreated, App\Domain\Consent\Event\ConsentCreated $event}
+    {include block consent_block_table, $event->consents(), $event->attributes(), $event->settingsChecksum(), $event->environment()}
 {/define}
 
-{define content_App_Domain_Consent_Event_ConsentUpdated, $event}
-    {varType App\Domain\Consent\Event\ConsentUpdated $event}
-
-    {include block consent_block_table, $event->consents(), $event->attributes(), $event->settingsChecksum()}
+{define content_App_Domain_Consent_Event_ConsentUpdated, App\Domain\Consent\Event\ConsentUpdated $event}
+    {include block consent_block_table, $event->consents(), $event->attributes(), $event->settingsChecksum(), $event->environment()}
 {/define}
 
-{define consent_block_table, $consents, $attributes, $settingsChecksum}
-    {varType App\Domain\Consent\ValueObject\Consents $consents}
-    {varType App\Domain\Consent\ValueObject\Attributes $attributes}
-    {varType App\Domain\Shared\ValueObject\Checksum|null $settingsChecksum}
+{define consent_block_table,
+    App\Domain\Consent\ValueObject\Consents $consents,
+    App\Domain\Consent\ValueObject\Attributes $attributes,
+    App\Domain\Shared\ValueObject\Checksum|null $settingsChecksum,
+    App\Domain\Consent\ValueObject\Environment|null $environment,
+}
     <div class="overflow-x-auto mt-8">
         <div class="inline-block min-w-full align-middle">
             <div class="overflow-hidden">
@@ -115,6 +109,25 @@
                                     <span x-data x-tooltip.interactive.html.raw="<span class='break-words'>{$settingsChecksum->value()}</span>" class="inline-flex items-center px-2.5 py-0.5 ml-2 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800">{$settingsChecksum->value()|substr:0, 8}</span>
                                 {else}
                                     -
+                                {/if}
+                            </td>
+                        </tr>
+                        <tr class="border-t border-gray-200">
+                            <th colspan="2" scope="colgroup" class="bg-gray-50 px-2 py-2 text-left text-sm font-medium text-gray-900">{_environment}</th>
+                        </tr>
+                        <tr class="border-t border-gray-200">
+                            <td colspan="2" class="whitespace-nowrap px-2 py-2 text-sm text-left">
+                                {if null === $environment}
+                                    <span class="inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-black">{_//layout.default_environment}</span>
+                                {elseif isset($environments[$environment->value()])}
+                                    <label
+                                            class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium"
+                                            style="background: {$environments[$environment->value()]->color->value()|noescape} !important; color: {App\Web\Utils\Color::resolveFontColor($environments[$environment->value()]->color->value())|noescape} !important;"
+                                    >
+                                        {$environments[$environment->value()]->name}
+                                    </label>
+                                {else}
+                                    <span class="inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-black">{$environment->value()}</span>
                                 {/if}
                             </td>
                         </tr>

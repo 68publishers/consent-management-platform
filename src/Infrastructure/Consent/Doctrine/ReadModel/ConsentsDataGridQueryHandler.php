@@ -19,6 +19,8 @@ final class ConsentsDataGridQueryHandler implements QueryHandlerInterface
 {
     use DataGridQueryHandlerTrait;
 
+    public const FILTER_ENVIRONMENT_DEFAULT_ENV_VALUE = '//default//';
+
     /**
      * @throws NoResultException
      * @throws NonUniqueResultException
@@ -38,7 +40,7 @@ final class ConsentsDataGridQueryHandler implements QueryHandlerInterface
             },
             function () use ($query): DbalQueryBuilder {
                 return $this->em->getConnection()->createQueryBuilder()
-                    ->select('c.id, c.created_at, c.last_update_at, c.user_identifier, c.settings_checksum, cs.short_identifier AS settings_short_identifier, cs.id AS settings_id')
+                    ->select('c.id, c.created_at, c.last_update_at, c.user_identifier, c.settings_checksum, c.environment, cs.short_identifier AS settings_short_identifier, cs.id AS settings_id')
                     ->from('consent', 'c')
                     ->leftJoin('c', 'consent_settings', 'cs', 'cs.project_id = c.project_id AND cs.checksum = c.settings_checksum')
                     ->andWhere('c.project_id = :projectId')
@@ -49,6 +51,7 @@ final class ConsentsDataGridQueryHandler implements QueryHandlerInterface
                 createdAt: $this->em->getConnection()->convertToPHPValue($row['created_at'], Types::DATETIME_IMMUTABLE),
                 lastUpdateAt: $this->em->getConnection()->convertToPHPValue($row['last_update_at'], Types::DATETIME_IMMUTABLE),
                 userIdentifier: $row['user_identifier'],
+                environment: $row['environment'],
                 settingsChecksum: $row['settings_checksum'],
                 settingsShortIdentifier: $row['settings_short_identifier'],
                 settingsId: $row['settings_id'],
@@ -57,6 +60,7 @@ final class ConsentsDataGridQueryHandler implements QueryHandlerInterface
                 'userIdentifier' => ['applyEquals', 'c.user_identifier'],
                 'createdAt' => ['applyDate', 'c.created_at'],
                 'lastUpdateAt' => ['applyDate', 'c.last_update_at'],
+                'environment' => ['applyEnvironment', 'c.environment'],
             ],
             [
                 'userIdentifier' => 'c.user_identifier',
@@ -64,6 +68,18 @@ final class ConsentsDataGridQueryHandler implements QueryHandlerInterface
                 'lastUpdateAt' => 'c.last_update_at',
             ],
         );
+    }
+
+    public function applyEnvironment(DbalQueryBuilder $qb, string $column, $value): void
+    {
+        if (self::FILTER_ENVIRONMENT_DEFAULT_ENV_VALUE !== $value) {
+            $p = $this->newParameterName();
+
+            $qb->andWhere(sprintf('%s = :%s', $column, $p))
+                ->setParameter($p, $value);
+        } else {
+            $qb->andWhere(sprintf('%s IS NULL', $column));
+        }
     }
 
     protected function beforeCountQueryFetch(OrmQueryBuilder|DbalQueryBuilder $qb): DbalQueryBuilder

@@ -7,5 +7,6 @@ App_Domain_Consent_Event_ConsentCreated:
 consents: Souhlasy
 attributes: Atributy
 settings_checksum: Cookie lišta
+environment: Prostředí
 
 settingsShortIdentifier: verze %shortIdentifier%

@@ -9,14 +9,21 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class StoreConsentCommand extends AbstractCommand
 {
-    public static function create(string $projectId, string $userIdentifier, ?string $settingsChecksum, array $consents, array $attributes): self
-    {
+    public static function create(
+        string $projectId,
+        string $userIdentifier,
+        ?string $settingsChecksum,
+        array $consents,
+        array $attributes,
+        ?string $environment = null,
+    ): self {
         return self::fromParameters([
             'project_id' => $projectId,
             'user_identifier' => $userIdentifier,
             'settings_checksum' => $settingsChecksum,
             'consents' => $consents,
             'attributes' => $attributes,
+            'environment' => $environment,
         ]);
     }
 
@@ -48,6 +55,11 @@ final class StoreConsentCommand extends AbstractCommand
     public function attributes(): array
     {
         return $this->getParam('attributes');
+    }
+
+    public function environment(): ?string
+    {
+        return $this->getParam('environment');
     }
 
     public function createdAt(): ?DateTimeImmutable
