@@ -34,6 +34,7 @@
     "tippy.js": "^6.3.7",
     "toastr": "^2.1.4",
     "ublaboo-datagrid": "^6.9.1",
+    "vanilla-picker": "^2.12.2",
     "webpack-require-http": "^0.4.3"
   },
   "devDependencies": {

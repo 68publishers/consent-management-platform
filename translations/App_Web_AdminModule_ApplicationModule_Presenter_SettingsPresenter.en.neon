@@ -1,5 +1,6 @@
 page_title: Settings
 heading_localization: Localization
+heading_environments: Environments
 heading_api_cache: Performance
 heading_crawler: Crawler
 
@@ -10,3 +11,5 @@ message:
     api_cache_settings_update_failed: An error occurred while saving the performance settings.
     crawler_settings_updated: The crawler settings have been saved.
     crawler_settings_update_failed: An error occurred while saving the crawler settings.
+    environments_updated: The environments settings have been saved.
+    environments_update_failed: An error occurred while saving the crawler settings.

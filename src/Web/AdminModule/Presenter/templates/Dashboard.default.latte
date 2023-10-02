@@ -56,7 +56,7 @@
                     <div class="flex items-center justify-between mb-2">
                         <div class="flex items-center flex-nowrap">
                             <div x-bind="collapseButton" class="flex items-center flex-nowrap cursor-pointer p-2 pl-0">
-                                <span :style="{'background-color': project.color}" x-text="project.name.slice(0,1).toUpperCase()" class="inline-flex items-center justify-center h-6 w-6 rounded-full mr-2 text-white text-sm"></span>
+                                <span :style="{'background-color': project.color, 'color': project.fontColor}" x-text="project.name.slice(0,1).toUpperCase()" class="inline-flex items-center justify-center h-6 w-6 rounded-full mr-2 text-sm"></span>
                                 <h3 x-text="project.name" class="text-lg leading-6 font-medium text-gray-900"></h3>
                             </div>
 

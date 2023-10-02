@@ -16,6 +16,7 @@ includes:
     - contributte.translation.neon
     - contributte.console.neon
     - contributte.events.neon
+    - contributte.form_multiplier.neon
     - contributte.mailing.neon
     - contributte.menu.neon
     - contributte.monolog.neon

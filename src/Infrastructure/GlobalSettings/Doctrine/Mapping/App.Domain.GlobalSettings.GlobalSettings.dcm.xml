@@ -21,6 +21,12 @@
             </options>
         </field>
 
+        <field name="environments" column="environments" type="App\Domain\GlobalSettings\ValueObject\Environments">
+            <options>
+                <option name="jsonb">true</option>
+            </options>
+        </field>
+
         <field name="version" column="version" type="integer" />
     </entity>
 

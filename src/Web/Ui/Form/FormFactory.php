@@ -30,7 +30,26 @@ final class FormFactory implements FormFactoryInterface
             };
         }
 
-        $form->setRenderer($this->templateRendererFactory->create());
+        $renderer = $this->templateRendererFactory->create();
+        $imports = $options[self::OPTION_IMPORTS] ?? null;
+        $templateVariables = $options[self::OPTION_TEMPLATE_VARIABLES] ?? null;
+
+        if (null !== $imports) {
+            foreach ((array) $imports as $import) {
+                assert(is_string($import));
+                $renderer->importTemplate($import);
+            }
+        }
+
+        if (null !== $templateVariables) {
+            $template = $renderer->getTemplate();
+
+            foreach ((array) $templateVariables as $variableName => $variableValue) {
+                $template->{$variableName} = $variableValue;
+            }
+        }
+
+        $form->setRenderer($renderer);
 
         return $form;
     }

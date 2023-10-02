@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c89a1e85b1dd6778ef77298f89cb4a60",
+    "content-hash": "0aaba82294f7a45722a43513d5022025",
     "packages": [
         {
             "name": "68publishers/asset",
@@ -409,12 +409,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/68publishers/omni.git",
-                "reference": "e29e3dd2146ad462340f189da7f139580d333373"
+                "reference": "d7c69070bb9be3cd89b1a6e2a9deaf9816dbdffd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/68publishers/omni/zipball/e29e3dd2146ad462340f189da7f139580d333373",
-                "reference": "e29e3dd2146ad462340f189da7f139580d333373",
+                "url": "https://api.github.com/repos/68publishers/omni/zipball/d7c69070bb9be3cd89b1a6e2a9deaf9816dbdffd",
+                "reference": "d7c69070bb9be3cd89b1a6e2a9deaf9816dbdffd",
                 "shasum": ""
             },
             "require": {
@@ -465,7 +465,7 @@
                 "issues": "https://github.com/68publishers/omni/issues",
                 "source": "https://github.com/68publishers/omni/tree/0.1.x"
             },
-            "time": "2023-08-01T00:39:18+00:00"
+            "time": "2023-10-02T03:30:43+00:00"
         },
         {
             "name": "68publishers/smart-nette-component",
@@ -1362,6 +1362,73 @@
                 }
             ],
             "time": "2022-02-10T11:18:58+00:00"
+        },
+        {
+            "name": "contributte/forms-multiplier",
+            "version": "v4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/contributte/forms-multiplier.git",
+                "reference": "138d84aec011483eef136d9d4b2acb0b695e9874"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/contributte/forms-multiplier/zipball/138d84aec011483eef136d9d4b2acb0b695e9874",
+                "reference": "138d84aec011483eef136d9d4b2acb0b695e9874",
+                "shasum": ""
+            },
+            "require": {
+                "nette/forms": "^3.1.0",
+                "php": ">=8.0"
+            },
+            "conflict": {
+                "latte/latte": "<3.0.0"
+            },
+            "require-dev": {
+                "codeception/codeception": "^4.1.9",
+                "codeception/module-asserts": "^1.3.1",
+                "codeception/module-phpbrowser": "^1.0.2",
+                "contributte/phpstan": "^0.1",
+                "contributte/qa": "^0.3",
+                "latte/latte": "^3.0.0",
+                "nette/application": "^3.1.11",
+                "nette/di": "^3.1.0",
+                "webchemistry/testing-helpers": "~2.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Contributte\\FormMultiplier\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Multiplier for nette forms",
+            "keywords": [
+                "Forms",
+                "contributte",
+                "multiplier",
+                "nette"
+            ],
+            "support": {
+                "issues": "https://github.com/contributte/forms-multiplier/issues",
+                "source": "https://github.com/contributte/forms-multiplier/tree/v4.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://contributte.org/partners.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/f3l1x",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-07-17T10:09:16+00:00"
         },
         {
             "name": "contributte/mailing",
@@ -7870,6 +7937,65 @@
                 }
             ],
             "time": "2022-06-21T06:40:45+00:00"
+        },
+        {
+            "name": "spatie/color",
+            "version": "1.5.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/color.git",
+                "reference": "49739265900cabce4640cd26c3266fd8d2cca390"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/color/zipball/49739265900cabce4640cd26c3266fd8d2cca390",
+                "reference": "49739265900cabce4640cd26c3266fd8d2cca390",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3|^8.0"
+            },
+            "require-dev": {
+                "pestphp/pest": "^1.22",
+                "phpunit/phpunit": "^6.5||^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Color\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian De Deyne",
+                    "email": "sebastian@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A little library to handle color conversions",
+            "homepage": "https://github.com/spatie/color",
+            "keywords": [
+                "color",
+                "conversion",
+                "rgb",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/color/issues",
+                "source": "https://github.com/spatie/color/tree/1.5.3"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-12-18T12:58:32+00:00"
         },
         {
             "name": "symfony/amqp-messenger",

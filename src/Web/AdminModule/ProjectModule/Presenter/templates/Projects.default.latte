@@ -42,11 +42,11 @@
             <li n:foreach="$projects as $project" x-show="'' === search || '{$project->name->value()}'.toLowerCase().includes(search.toLowerCase())" class="col-span-1 shadow-sm rounded-md">
                 <div class="flex h-full">
                     {if $user->isAllowed(App\Application\Acl\ProjectConsentResource::class, App\Application\Acl\ProjectConsentResource::READ)}
-                        <a n:href="Consents: project => $project->code->value()" id="project-brand-{$project->id->toString()}" data-spinner-for="project-name-{$project->id->toString()} project-brand-{$project->id->toString()}" class="spinner-white flex-shrink-0 flex items-center justify-center w-16 text-white text-lg font-medium rounded-l-md py-6 border border-gray-200" style="background-color: {$project->color->value()|noescape} !important;">
+                        <a n:href="Consents: project => $project->code->value()" id="project-brand-{$project->id->toString()}" data-spinner-for="project-name-{$project->id->toString()} project-brand-{$project->id->toString()}" class="spinner-white flex-shrink-0 flex items-center justify-center w-16 text-lg font-medium rounded-l-md py-6 border border-gray-200" style="background-color: {$project->color->value()|noescape} !important; color: {App\Web\Utils\Color::resolveFontColor($project->color->value())|noescape} !important;">
                             {$project->name->value()|substr: 0, 1|upper}
                         </a>
                     {else}
-                        <span class="flex-shrink-0 flex items-center justify-center w-16 text-white text-lg font-medium rounded-l-md py-6 border border-gray-200" style="background-color: {$project->color->value()|noescape} !important;">
+                        <span class="flex-shrink-0 flex items-center justify-center w-16 text-lg font-medium rounded-l-md py-6 border border-gray-200" style="background-color: {$project->color->value()|noescape} !important; color: {App\Web\Utils\Color::resolveFontColor($project->color->value())|noescape} !important;">
                             {$project->name->value()|substr: 0, 1|upper}
                         </span>
                     {/if}

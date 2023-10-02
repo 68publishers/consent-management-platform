@@ -1,0 +1,21 @@
+addEnvironment: Přidat prostředí
+removeEnvironment: Odstranit prostředí
+
+code:
+    placeholder: Kód
+    required: Vyplňte prosím kód.
+    rule:
+        values_are_not_unique: Kód je duplicitní.
+
+name:
+    placeholder: Název
+    required: Vyplňte prosím název.
+
+color:
+    placeholder: Barva
+    required: Zvolte prosím bravu.
+    rule:
+        pattern: Nevalidní formát.
+
+save:
+    field: Uložit

@@ -41,6 +41,8 @@ cookie_provider_type:
     1st_party: 1st party
     3rd_party: 3rd party
 
+default_environment: Default environment
+
 alert:
     missing_default_locale:
         text: The default locale for the application is not set.

@@ -1,0 +1,21 @@
+addEnvironment: Add environment
+removeEnvironment: Remove environment
+
+code:
+    placeholder: Code
+    required: Please enter a code.
+    rule:
+        values_are_not_unique: The code is duplicated.
+
+name:
+    placeholder: Name
+    required: Please enter a name.
+
+color:
+    placeholder: Color
+    required: Please select a color.
+    rule:
+        pattern: Invalid format.
+
+save:
+    field: Save

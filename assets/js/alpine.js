@@ -9,6 +9,7 @@ const Select = require('./plugin/select').default;
 const Toggle = require('./plugin/toggle').default;
 const Tags = require('./plugin/tags').default;
 const Codemirror = require('./plugin/codemirror').default;
+const ColorPicker = require('./plugin/color-picker').default;
 const $forceNextTick = require('./magic/force-next-tick').$forceNextTick;
 
 Alpine.plugin(Collapse);
@@ -21,6 +22,7 @@ Alpine.plugin(Select);
 Alpine.plugin(Toggle);
 Alpine.plugin(Tags);
 Alpine.plugin(Codemirror);
+Alpine.plugin(ColorPicker);
 
 Alpine.data('collapse', require('./components/collapse'));
 Alpine.data('dashboard', require('./components/dashboard'));

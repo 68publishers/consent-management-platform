@@ -6,6 +6,7 @@ namespace App\Application\GlobalSettings;
 
 use App\Domain\GlobalSettings\ValueObject\ApiCache;
 use App\Domain\GlobalSettings\ValueObject\CrawlerSettings;
+use App\Domain\GlobalSettings\ValueObject\Environments;
 
 interface GlobalSettingsInterface
 {
@@ -19,6 +20,8 @@ interface GlobalSettingsInterface
     public function apiCache(): ApiCache;
 
     public function crawlerSettings(): CrawlerSettings;
+
+    public function environments(): Environments;
 
     public function refresh(): void;
 }

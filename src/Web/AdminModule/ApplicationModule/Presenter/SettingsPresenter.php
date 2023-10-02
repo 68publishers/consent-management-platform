@@ -13,6 +13,10 @@ use App\Web\AdminModule\ApplicationModule\Control\CrawlerSettingsForm\CrawlerSet
 use App\Web\AdminModule\ApplicationModule\Control\CrawlerSettingsForm\CrawlerSettingsFormControlFactoryInterface;
 use App\Web\AdminModule\ApplicationModule\Control\CrawlerSettingsForm\Event\CrawlerSettingsUpdatedEvent;
 use App\Web\AdminModule\ApplicationModule\Control\CrawlerSettingsForm\Event\CrawlerSettingsUpdateFailedEvent;
+use App\Web\AdminModule\ApplicationModule\Control\EnvironmentsForm\EnvironmentsFormControl;
+use App\Web\AdminModule\ApplicationModule\Control\EnvironmentsForm\EnvironmentsFormControlFactoryInterface;
+use App\Web\AdminModule\ApplicationModule\Control\EnvironmentsForm\Event\EnvironmentsUpdatedEvent;
+use App\Web\AdminModule\ApplicationModule\Control\EnvironmentsForm\Event\EnvironmentsUpdateFailedEvent;
 use App\Web\AdminModule\ApplicationModule\Control\LocalizationSettingsForm\Event\LocalizationSettingsUpdatedEvent;
 use App\Web\AdminModule\ApplicationModule\Control\LocalizationSettingsForm\Event\LocalizationSettingsUpdateFailedEvent;
 use App\Web\AdminModule\ApplicationModule\Control\LocalizationSettingsForm\LocalizationSettingsFormControl;
@@ -29,6 +33,7 @@ final class SettingsPresenter extends AdminPresenter
         private readonly LocalizationSettingsFormControlFactoryInterface $localizationSettingsFormControlFactory,
         private readonly ApiCacheSettingsFormControlFactoryInterface $apiCacheSettingsFormControlFactory,
         private readonly CrawlerSettingsFormControlFactoryInterface $crawlerSettingsFormControlFactory,
+        private readonly EnvironmentsFormControlFactoryInterface $environmentsFormControlFactory,
     ) {
         parent::__construct();
     }
@@ -89,6 +94,26 @@ final class SettingsPresenter extends AdminPresenter
 
         $control->addEventListener(CrawlerSettingsUpdateFailedEvent::class, function (): void {
             $this->subscribeFlashMessage(FlashMessage::error('crawler_settings_update_failed'));
+        });
+
+        return $control;
+    }
+
+    protected function createComponentEnvironmentsForm(): EnvironmentsFormControl
+    {
+        $control = $this->environmentsFormControlFactory->create();
+
+        $control->setFormFactoryOptions([
+            FormFactoryInterface::OPTION_AJAX => true,
+        ]);
+
+        $control->addEventListener(EnvironmentsUpdatedEvent::class, function (): void {
+            $this->subscribeFlashMessage(FlashMessage::success('environments_updated'));
+            $this->redrawSidebar();
+        });
+
+        $control->addEventListener(EnvironmentsUpdateFailedEvent::class, function (): void {
+            $this->subscribeFlashMessage(FlashMessage::error('environments_update_failed'));
         });
 
         return $control;
