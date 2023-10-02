@@ -1,0 +1,853 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "CMP - Consent Management Platform",
+    "description": "Public API for Consent Management Platform",
+    "version": "1.1.0",
+    "contact": {
+      "name": "'68 Publishers",
+      "url": "http://www.68publishers.io",
+      "email": "support@68publishers.io"
+    }
+  },
+  "tags": [
+    {
+      "name": "Consent",
+      "description": "Consent API operations"
+    },
+    {
+      "name": "Consent settings",
+      "description": "Consent settings API operations"
+    },
+    {
+      "name": "Cookies",
+      "description": "Cookie and provider operations"
+    },
+    {
+      "name": "Another",
+      "description": "Another API operations"
+    }
+  ],
+  "security": [],
+  "paths": {
+    "/api/health-check": {
+      "get": {
+        "tags": [
+          "Another"
+        ],
+        "description": "Returns statuses of all monitored services.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/HealthCheckOk"
+          },
+          "503": {
+            "$ref": "#/components/responses/HealthCheckError"
+          }
+        }
+      }
+    },
+    "/api/crawler/receive-result": {
+      "post": {
+        "tags": [
+          "Another"
+        ],
+        "description": "Stores crawled cookies for suggestions.",
+        "security": [
+          {
+            "CrawlerResultAuth": []
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/CrawlerResult"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/CrawlerResultOk"
+          },
+          "400": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/consent/{project}/{userIdentifier}": {
+      "put": {
+        "tags": [
+          "Consent"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Project"
+          },
+          {
+            "$ref": "#/components/parameters/UserIdentifier"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Consent"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/ConsentApiOk"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntityError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "options": {
+        "tags": [
+          "Consent"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Project"
+          },
+          {
+            "$ref": "#/components/parameters/UserIdentifier"
+          }
+        ],
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/NoContent"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/consent-settings/{project}/{checksum}": {
+      "put": {
+        "tags": [
+          "Consent settings"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Project"
+          },
+          {
+            "$ref": "#/components/parameters/Checksum"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/ConsentSettings"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/ConsentSettingsApiOk"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntityError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "options": {
+        "tags": [
+          "Consent settings"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Project"
+          },
+          {
+            "$ref": "#/components/parameters/Checksum"
+          }
+        ],
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/NoContent"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/cookies/{project}": {
+      "get": {
+        "tags": [
+          "Cookies"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Project"
+          },
+          {
+            "$ref": "#/components/parameters/Locale"
+          },
+          {
+            "$ref": "#/components/parameters/Category"
+          },
+          {
+            "$ref": "#/components/parameters/Environment"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/CookiesApiOk"
+          },
+          "304": {
+            "$ref": "#/components/responses/NoContent"
+          },
+          "400": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "404": {
+            "$ref": "#/components/responses/ProjectNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "options": {
+        "tags": [
+          "Cookies"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Project"
+          },
+          {
+            "$ref": "#/components/parameters/Locale"
+          },
+          {
+            "$ref": "#/components/parameters/Category"
+          },
+          {
+            "$ref": "#/components/parameters/Environment"
+          }
+        ],
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/NoContent"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/cookies/{project}/template": {
+      "get": {
+        "tags": [
+          "Cookies"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Project"
+          },
+          {
+            "$ref": "#/components/parameters/Locale"
+          },
+          {
+            "$ref": "#/components/parameters/Category"
+          },
+          {
+            "$ref": "#/components/parameters/Environment"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/CookiesTemplateApiOk"
+          },
+          "304": {
+            "$ref": "#/components/responses/NoContent"
+          },
+          "400": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "404": {
+            "$ref": "#/components/responses/ProjectNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "options": {
+        "tags": [
+          "Cookies"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Project"
+          },
+          {
+            "$ref": "#/components/parameters/Locale"
+          },
+          {
+            "$ref": "#/components/parameters/Category"
+          }
+        ],
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/NoContent"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "Project": {
+        "name": "project",
+        "in": "path",
+        "description": "Project code.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "example": "demo"
+      },
+      "Checksum": {
+        "name": "checksum",
+        "in": "path",
+        "description": "Checksum of passed consent settings.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "UserIdentifier": {
+        "name": "userIdentifier",
+        "in": "path",
+        "description": "Unique user identifier e.g. uuid, session id.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "example": "test-user"
+      },
+      "Locale": {
+        "name": "locale",
+        "in": "query",
+        "description": "Locale for translations, by default the project's default locale is used if the parameter isn't declared.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "example": "cs"
+      },
+      "Category": {
+        "name": "category[]",
+        "in": "query",
+        "description": "Code of a category or array of codes. Cookies for all categories are returned if the parameter is omitted.",
+        "required": false,
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "example": "functionality_storage"
+          }
+        }
+      },
+      "Environment": {
+        "name": "environment",
+        "in": "query",
+        "description": "Code of an environment. The default environment is used if the parameter is not specified.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "example": "mobile"
+      }
+    },
+    "responses": {
+      "HealthCheckOk": {
+        "description": "All services are running.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/HealthCheckResponse"
+            }
+          }
+        }
+      },
+      "HealthCheckError": {
+        "description": "Some service is unavailable.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/HealthCheckResponse"
+            }
+          }
+        }
+      },
+      "CrawlerResultOk": {
+        "description": "Crawler result has been successfully processed.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CrawlerResultResponse"
+            }
+          }
+        }
+      },
+      "ConsentApiOk": {
+        "description": "Consent has been stored.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ConsentResponse"
+            }
+          }
+        }
+      },
+      "ConsentSettingsApiOk": {
+        "description": "Consent settings has been stored.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ConsentSettingsResponse"
+            }
+          }
+        }
+      },
+      "CookiesApiOk": {
+        "description": "Returns the list of cookies for the project.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CookiesResponse"
+            }
+          }
+        }
+      },
+      "CookiesTemplateApiOk": {
+        "description": "Returns HTML with cookies/cookie providers table.",
+        "content": {
+          "text/html": {}
+        }
+      },
+      "NoContent": {
+        "description": "No content."
+      },
+      "UnprocessableEntityError": {
+        "description": "Unprocessable entity.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/UnprocessableEntityResponse"
+            }
+          }
+        }
+      },
+      "ProjectNotFound": {
+        "description": "Project not found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ProjectNotFoundResponse"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "The user is not authorized.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/UnauthorizedErrorResponse"
+            }
+          }
+        }
+      },
+      "ClientError": {
+        "description": "Client error, for example invalid parameter in URL or request body.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ClientErrorResponse"
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Application encountered an internal error.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ServerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "Consent": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ConsentRequestBody"
+            }
+          }
+        }
+      },
+      "ConsentSettings": {
+        "description": "Settings exported from your cookie consent plugin.",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ConsentSettingsRequestBody"
+            }
+          }
+        }
+      },
+      "CrawlerResult": {
+        "required": true,
+        "description": "Crawler scenario result. The complete schema is available under the name `scenarioResponseBody` on [this URL](https://petstore3.swagger.io/?url=https://raw.githubusercontent.com/68publishers/crawler/main/public/openapi.json).",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ConsentRequestBody": {
+        "type": "object",
+        "properties": {
+          "settingsChecksum": {
+            "type": "string",
+            "nullable": true
+          },
+          "consents": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "boolean"
+            },
+            "example": {
+              "functionality_storage": true,
+              "ad_storage": true,
+              "analytics_storage": true
+            }
+          },
+          "attributes": {
+            "type": "object",
+            "example": {
+              "email": "email@example.com"
+            }
+          },
+          "environment": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "consents"
+        ]
+      },
+      "ConsentResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "consentSettingsExists": {
+                "type": "boolean",
+                "example": false,
+                "description": "True if a consent settings exists by checksum provided in a request."
+              }
+            }
+          }
+        }
+      },
+      "ConsentSettingsRequestBody": {
+        "type": "object",
+        "description": "Settings exported from your cookie consent plugin.",
+        "example": {}
+      },
+      "ConsentSettingsResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "default": {}
+          }
+        }
+      },
+      "CookiesResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "providers": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CookieProvider"
+                }
+              },
+              "cookies": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Cookie"
+                }
+              }
+            }
+          }
+        }
+      },
+      "CookieProvider": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "1st_party",
+              "3rd_party"
+            ]
+          },
+          "link": {
+            "type": "string"
+          },
+          "purpose": {
+            "type": "string"
+          }
+        }
+      },
+      "Cookie": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "purpose": {
+            "type": "string"
+          },
+          "processingTime": {
+            "type": "string"
+          },
+          "cookieProvider": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "1st_party",
+                  "3rd_party"
+                ]
+              },
+              "link": {
+                "type": "string"
+              }
+            }
+          },
+          "category": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "code": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "HealthCheckResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "is_ok": {
+            "type": "boolean"
+          },
+          "services": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "my-service"
+                },
+                "is_ok": {
+                  "type": "boolean"
+                },
+                "status": {
+                  "type": "string",
+                  "example": "running"
+                },
+                "error": {
+                  "type": "string",
+                  "nullable": true,
+                  "example": null
+                }
+              }
+            }
+          }
+        }
+      },
+      "CrawlerResultResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "type": "object",
+            "description": "An empty object."
+          }
+        }
+      },
+      "UnauthorizedErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "integer",
+                "default": 401
+              },
+              "error": {
+                "type": "string",
+                "example": "Unauthorized"
+              }
+            }
+          }
+        }
+      },
+      "ClientErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "integer",
+                "default": 400
+              },
+              "error": {
+                "type": "string",
+                "example": "Client error description."
+              }
+            }
+          }
+        }
+      },
+      "ServerErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error"
+          },
+          "message": {
+            "type": "string",
+            "example": "Application encountered an internal error. Please try again later."
+          }
+        }
+      },
+      "UnprocessableEntityResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "integer",
+                "default": 422
+              },
+              "error": {
+                "type": "string",
+                "example": "Unprocessable entity."
+              }
+            }
+          }
+        }
+      },
+      "ProjectNotFoundResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "integer",
+                "default": 404
+              },
+              "error": {
+                "type": "string",
+                "example": "Project not found."
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "CrawlerResultAuth": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "Http basic auth using `username` and `callbackUriToken` as the password."
+      }
+    }
+  }
+}
