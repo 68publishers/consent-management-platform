@@ -44,7 +44,7 @@ final class DocsController extends AbstractController
         foreach (Finder::findFiles('schema.*.json')->in($this->schemaDir) as $file) {
             assert($file instanceof SplFileInfo);
 
-            preg_match('/schema\.(v[\d\.]+)\.json/', 'schema.v1.0.0.json', $matches);
+            preg_match('/schema\.(v[\d\.]+)\.json/', $file->getFilename(), $matches);
 
             if (!isset($matches[1])) {
                 continue;
