@@ -16,6 +16,12 @@ category:
     field: Category
     required: Please select a category.
 
+all_environments:
+    field: All environments
+
+environments:
+    field: Environments
+
 processing_time:
     field: Processing time
     required: Please select a processing time.

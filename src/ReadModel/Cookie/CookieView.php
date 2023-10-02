@@ -7,6 +7,7 @@ namespace App\ReadModel\Cookie;
 use App\Domain\Category\ValueObject\CategoryId;
 use App\Domain\Cookie\ValueObject\CookieId;
 use App\Domain\Cookie\ValueObject\Domain;
+use App\Domain\Cookie\ValueObject\Environments;
 use App\Domain\Cookie\ValueObject\Name;
 use App\Domain\Cookie\ValueObject\ProcessingTime;
 use App\Domain\Cookie\ValueObject\Purpose;
@@ -38,6 +39,10 @@ final class CookieView extends AbstractView
     /** @var array<Purpose> */
     public array $purposes;
 
+    public bool $allEnvironments;
+
+    public Environments $environments;
+
     public function jsonSerialize(): array
     {
         return [
@@ -51,6 +56,8 @@ final class CookieView extends AbstractView
             'processingTime' => $this->processingTime->value(),
             'active' => $this->active,
             'purposes' => array_map(static fn (Purpose $purpose): string => $purpose->value(), $this->purposes),
+            'allEnvironments' => $this->allEnvironments,
+            'environments' => $this->environments->toArray(),
         ];
     }
 }

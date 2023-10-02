@@ -18,6 +18,11 @@
             <index name="idx_cookie_category_id" columns="category_id" />
             <index name="idx_cookie_cookie_provider_id" columns="cookie_provider_id" />
             <index name="idx_cookie_name_cookie_provider_id" columns="name,cookie_provider_id" />
+            <index name="idx_cookie_environments" columns="environments" flags="gin">
+                <options>
+                    <option name="jsonb_path_ops">environments</option>
+                </options>
+            </index>
         </indexes>
 
         <id name="id" column="id" type="App\Domain\Cookie\ValueObject\CookieId" unique="true" />
@@ -37,6 +42,14 @@
         <field name="processingTime" column="processing_time" type="App\Domain\Cookie\ValueObject\ProcessingTime" />
 
         <field name="active" column="active" type="boolean" />
+
+        <field name="allEnvironments" column="all_environments" type="boolean" />
+
+        <field name="environments" column="environments" type="App\Domain\Cookie\ValueObject\Environments">
+            <options>
+                <option name="jsonb">true</option>
+            </options>
+        </field>
 
         <field name="version" column="version" type="integer" />
 

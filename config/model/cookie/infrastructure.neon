@@ -68,6 +68,10 @@ nettrine.dbal:
                 class: App\Infrastructure\Cookie\Doctrine\DbalType\DomainType
                 commented: yes
 
+            App\Domain\Cookie\ValueObject\Environments:
+                class: App\Infrastructure\Cookie\Doctrine\DbalType\EnvironmentsType
+                commented: yes
+
             App\Domain\Cookie\ValueObject\Name:
                 class: App\Infrastructure\Cookie\Doctrine\DbalType\NameType
                 commented: yes

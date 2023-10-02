@@ -9,10 +9,20 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 final class CreateCookieCommand extends AbstractCommand
 {
     /**
-     * @param array<string> $purposes
+     * @param array<string, string>        $purposes
+     * @param bool|array<int, string|null> $environments
      */
-    public static function create(string $categoryId, string $cookieProviderId, string $name, string $domain, string $processingTime, bool $active, array $purposes, ?string $cookieId = null): self
-    {
+    public static function create(
+        string $categoryId,
+        string $cookieProviderId,
+        string $name,
+        string $domain,
+        string $processingTime,
+        bool $active,
+        array $purposes,
+        bool|array $environments,
+        ?string $cookieId = null,
+    ): self {
         return self::fromParameters([
             'category_id' => $categoryId,
             'cookie_provider_id' => $cookieProviderId,
@@ -22,6 +32,7 @@ final class CreateCookieCommand extends AbstractCommand
             'active' => $active,
             'purposes' => $purposes,
             'cookie_id' => $cookieId,
+            'environments' => $environments,
         ]);
     }
 
@@ -61,6 +72,14 @@ final class CreateCookieCommand extends AbstractCommand
     public function active(): bool
     {
         return $this->getParam('active');
+    }
+
+    /**
+     * @return bool|array<int, string|null>
+     */
+    public function environments(): bool|array
+    {
+        return $this->getParam('environments');
     }
 
     public function cookieId(): ?string

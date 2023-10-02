@@ -27,6 +27,8 @@ final class CookieData extends AbstractDescribedObject
 
     public array $purpose;
 
+    public array $environments = [];
+
     protected static function doDescribe(StructureDescriptor $descriptor): StructureDescriptor
     {
         return $descriptor
@@ -39,6 +41,9 @@ final class CookieData extends AbstractDescribedObject
             ->withDescriptor('active', Descriptor::boolean(new DefaultValue(true)))
             ->withDescriptor('purpose', Descriptor::arrayOf(
                 Descriptor::string(),
+                Descriptor::string(),
+            ))
+            ->withDescriptor('environments', Descriptor::listOf(
                 Descriptor::string(),
             ));
     }

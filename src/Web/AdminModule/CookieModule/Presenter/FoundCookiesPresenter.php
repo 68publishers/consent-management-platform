@@ -583,15 +583,23 @@ final class FoundCookiesPresenter extends AdminPresenter
         bool $uiActionsAllowed,
     ): bool {
         try {
+            $environments = !!$formValues['all_environments']
+                ? true
+                : array_map(
+                    static fn (string $environment): ?string => '' === $environment ? null : $environment,
+                    $formValues['environments'],
+                );
+
             $command = null === $existingCookieId
                 ? CreateCookieCommand::create(
-                    $formValues['category'],
-                    $formValues['provider'],
-                    $formValues['name'],
-                    $formValues['domain'],
-                    'expiration' === $formValues['processing_time'] ? $formValues['processing_time_mask'] : $formValues['processing_time'],
-                    (bool) $formValues['active'],
-                    $formValues['purposes'],
+                    categoryId: $formValues['category'],
+                    cookieProviderId: $formValues['provider'],
+                    name: $formValues['name'],
+                    domain: $formValues['domain'],
+                    processingTime: 'expiration' === $formValues['processing_time'] ? $formValues['processing_time_mask'] : $formValues['processing_time'],
+                    active: (bool) $formValues['active'],
+                    purposes: $formValues['purposes'],
+                    environments: $environments,
                 )
                 : UpdateCookieCommand::create($existingCookieId)
                     ->withCategoryId($formValues['category'])
@@ -599,7 +607,8 @@ final class FoundCookiesPresenter extends AdminPresenter
                     ->withDomain($formValues['domain'])
                     ->withProcessingTime('expiration' === $formValues['processing_time'] ? $formValues['processing_time_mask'] : $formValues['processing_time'])
                     ->withActive((bool) $formValues['active'])
-                    ->withPurposes($formValues['purposes']);
+                    ->withPurposes($formValues['purposes'])
+                    ->withEnvironments($environments);
 
             $this->commandBus->dispatch($command);
 

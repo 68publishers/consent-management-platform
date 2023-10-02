@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\CookieModule\Control\CookieForm;
 
+use App\Application\GlobalSettings\GlobalSettingsInterface;
 use App\Application\GlobalSettings\ValidLocalesProvider;
 use App\Domain\Cookie\Command\CreateCookieCommand;
 use App\Domain\Cookie\Command\UpdateCookieCommand;
 use App\Domain\Cookie\Exception\NameUniquenessException;
 use App\Domain\Cookie\ValueObject\CookieId;
+use App\Domain\Cookie\ValueObject\Environment as CookieEnvironment;
 use App\Domain\Cookie\ValueObject\ProcessingTime;
 use App\Domain\Cookie\ValueObject\Purpose;
 use App\Domain\CookieProvider\ValueObject\CookieProviderId;
+use App\Domain\GlobalSettings\ValueObject\Environment;
 use App\ReadModel\Category\AllCategoriesQuery;
 use App\ReadModel\Category\CategoryView;
 use App\ReadModel\Cookie\CookieView;
@@ -24,7 +27,6 @@ use App\Web\Ui\Control;
 use App\Web\Ui\Form\FormFactoryInterface;
 use App\Web\Ui\Form\FormFactoryOptionsTrait;
 use Closure;
-use Nepada\FormRenderer\TemplateRenderer;
 use Nette\Application\UI\Form;
 use Nette\Forms\Controls\TextInput;
 use Nette\Utils\Html;
@@ -49,6 +51,7 @@ final class CookieFormControl extends Control
         private readonly CommandBusInterface $commandBus,
         private readonly QueryBusInterface $queryBus,
         private readonly ValidLocalesProvider $validLocalesProvider,
+        private readonly GlobalSettingsInterface $globalSettings,
         private readonly ?CookieView $default = null,
     ) {}
 
@@ -79,16 +82,27 @@ final class CookieFormControl extends Control
 
     protected function createComponentForm(): Form
     {
-        $form = $this->formFactory->create($this->getFormFactoryOptions());
         $translator = $this->getPrefixedTranslator();
         $providers = $this->getCookieProviders();
-        $renderer = $form->getRenderer();
-        assert($renderer instanceof TemplateRenderer);
+        $environments = [];
+
+        foreach ($this->globalSettings->environments()->all() as $environment) {
+            assert($environment instanceof Environment);
+            $environments[$environment->code] = $environment->name;
+        }
+
+        $form = $this->formFactory->create(array_merge(
+            $this->getFormFactoryOptions(),
+            [
+                FormFactoryInterface::OPTION_IMPORTS => __DIR__ . '/templates/form.imports.latte',
+                FormFactoryInterface::OPTION_TEMPLATE_VARIABLES => [
+                    'providers' => $providers,
+                    'environments' => $this->globalSettings->environments(),
+                ],
+            ],
+        ));
 
         $form->setTranslator($translator);
-
-        $renderer->importTemplate(__DIR__ . '/templates/form.imports.latte');
-        $renderer->getTemplate()->providers = $providers;
 
         $form->addText('name', 'name.field')
             ->setRequired('name.required');
@@ -108,6 +122,18 @@ final class CookieFormControl extends Control
             ->setRequired('category.required')
             ->setTranslator(null)
             ->checkDefaultValue(false);
+
+        $form->addCheckbox('all_environments', 'all_environments.field')
+            ->setDefaultValue(true)
+            ->addCondition(Form::Equal, false)
+            ->toggle('#' . $this->getUniqueId() . '-environments-container');
+            ;
+
+        $form->addCheckboxList('environments', 'environments.field')
+            ->checkDefaultValue(false)
+            ->setItems(['' => $translator->translate('//layout.default_environment')] + $environments)
+            ->setTranslator(null)
+            ->setOption('id', $this->getUniqueId() . '-environments-container');
 
         $form->addRadioList('processing_time', 'processing_time.field')
             ->setItems([ProcessingTime::PERSISTENT, ProcessingTime::SESSION, 'expiration'], false)
@@ -144,6 +170,11 @@ final class CookieFormControl extends Control
                 'domain' => $this->default->domain->value(),
                 'provider' => $providerDefaultValue = $this->default->cookieProviderId->toString(),
                 'category' => $this->default->categoryId->toString(),
+                'all_environments' => $this->default->allEnvironments,
+                'environments' => array_map(
+                    static fn (CookieEnvironment $environment): string => null === $environment->value() ? '' : $environment->value(),
+                    $this->default->environments->all(),
+                ),
                 'processing_time' => !$isExpiration ? $this->default->processingTime->value() : 'expiration',
                 'processing_time_mask' => $isExpiration ? $this->default->processingTime->value() : '',
                 'active' => $this->default->active,
@@ -181,18 +212,25 @@ final class CookieFormControl extends Control
         }
 
         $values = $form->values;
+        $environments = $values->all_environments
+            ? true
+            : array_map(
+                static fn (string $environment): ?string => '' === $environment ? null : $environment,
+                $values->environments,
+            );
 
         if (null === $this->default) {
             $cookieId = CookieId::new();
             $command = CreateCookieCommand::create(
-                $values->category,
-                $values->provider,
-                $values->name,
-                $values->domain,
-                'expiration' === $values->processing_time ? $values->processing_time_mask : $values->processing_time,
-                $values->active,
-                (array) $values->purposes,
-                $cookieId->toString(),
+                categoryId: $values->category,
+                cookieProviderId: $values->provider,
+                name: $values->name,
+                domain: $values->domain,
+                processingTime: 'expiration' === $values->processing_time ? $values->processing_time_mask : $values->processing_time,
+                active: $values->active,
+                purposes: (array) $values->purposes,
+                environments: $environments,
+                cookieId: $cookieId->toString(),
             );
         } else {
             $cookieId = $this->default->id;
@@ -202,7 +240,8 @@ final class CookieFormControl extends Control
                 ->withDomain($values->domain)
                 ->withProcessingTime('expiration' === $values->processing_time ? $values->processing_time_mask : $values->processing_time)
                 ->withActive($values->active)
-                ->withPurposes((array) $values->purposes);
+                ->withPurposes((array) $values->purposes)
+                ->withEnvironments($environments);
         }
 
         try {

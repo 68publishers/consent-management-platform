@@ -1,4 +1,5 @@
 {varType App\ReadModel\CookieProvider\CookieProviderSelectOptionView[] $providers}
+{varType App\Domain\GlobalSettings\ValueObject\Environments $environments}
 
 {define #input-name-provider}
     {var $htmlData = []}
@@ -23,4 +24,42 @@
     {do $control->setOptionAttribute('data-html:', $htmlData)}
 
     {include #input-type-select, control => $control}
+{/define}
+
+{define #input-name-environments}
+    <div class="lfv-message-parent mt-3">
+        <div n:foreach="$control->items as $k => $v" n:class="$control->getSeparatorPrototype()->class, 'flex items-center flex-nowrap mb-3'">
+            {var $environment = $environments->getByCode($k)}
+
+            <div class="flex items-center h-5">
+                <input n:name="$control:$k" n:class="
+                    $control->getControlPrototype()->class,
+                    'show-hidden-error focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none'
+                " x-data x-toggle x-cloak>
+            </div>
+            <div class="ml-3 text-sm">
+                {if '' === $k}
+                    <label
+                            n:name="$control:$k"
+                            class="inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-black"
+                    >
+                        {=$control->translate($v)}
+                    </label>
+                {elseif null === $environment}
+                    <label n:name="$control:$k" n:class="
+                        $control->getLabelPrototype()->class,
+                        'font-medium text-gray-700'
+                    ">{=$control->translate($v)}</label>
+                {else}
+                    <label
+                            n:name="$control:$k"
+                            class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium"
+                            style="background: {$environment->color->value()|noescape} !important; color: {App\Web\Utils\Color::resolveFontColor($environment->color->value())|noescape} !important;"
+                    >
+                        {=$control->translate($v)}
+                    </label>
+                {/if}
+            </div>
+        </div>
+    </div>
 {/define}
