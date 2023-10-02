@@ -197,6 +197,7 @@ module.exports = () => ({
             domain: null,
             name: null,
             color: null,
+            fontColor: '#ffffff',
             status: this.STATUS_LOADING(),
             data: this.createEmptyProjectData(),
             visible: false,

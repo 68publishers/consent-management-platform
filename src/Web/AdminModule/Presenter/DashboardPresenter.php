@@ -12,6 +12,7 @@ use App\Application\Acl\ProjectCookieResource;
 use App\ReadModel\Project\FindUserProjectsQuery;
 use App\ReadModel\Project\ProjectView;
 use App\ReadModel\User\UserView;
+use App\Web\Utils\Color;
 use Nette\Application\UI\InvalidLinkException;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\UserBundle\Application\Exception\IdentityException;
@@ -42,6 +43,7 @@ final class DashboardPresenter extends AdminPresenter
             'domain' => filter_var('http://' . $project->domain->value(), FILTER_VALIDATE_URL) ?: null,
             'name' => $project->name->value(),
             'color' => $project->color->value(),
+            'fontColor' => Color::resolveFontColor($project->color->value()),
             'links' => [
                 'consents' => $this->getUser()->isAllowed(ProjectConsentResource::class, ProjectConsentResource::READ)
                     ? $this->link(':Admin:Project:Consents:', ['project' => $project->code->value()])

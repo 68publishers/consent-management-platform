@@ -4,6 +4,7 @@ function Toggle(Alpine) {
     Alpine.data('toggle', () => ({
         inputEl: null,
         checked: false,
+        disabled: false,
 
         doToggle() {
             this.checked = !this.checked;
@@ -23,6 +24,7 @@ function Toggle(Alpine) {
 
                 this.inputEl = input;
                 this.checked = input.checked;
+                this.disabled = input.disabled;
 
                 this.inputEl.addEventListener('change', e => {
                     this.checked = e.target.checked;
@@ -58,7 +60,7 @@ function Toggle(Alpine) {
     Alpine.directive('toggle', (el, {}, { cleanup }) => {
         const disabled = el.disabled;
         const toggleHtml = `
-            <button ${disabled ? 'disabled' : ''} x-data="toggle" x-bind="toggle" :class="checked ? 'bg-indigo-600' : 'bg-gray-200'" type="button" class="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${disabled ? 'cursor-not-allowed' : ''}" role="switch">
+            <button x-data="toggle" x-bind="toggle" :disabled="disabled" :class="{'bg-indigo-600': checked, 'bg-gray-200': !checked, 'cursor-not-allowed': disabled, 'opacity-75': disabled}" type="button" class="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" role="switch">
                 <span :class="checked ? 'translate-x-5' : 'translate-x-0'" aria-hidden="true" class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0"></span>
             </button>
         `;

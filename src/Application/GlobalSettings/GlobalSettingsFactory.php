@@ -38,10 +38,11 @@ final class GlobalSettingsFactory implements GlobalSettingsFactoryInterface
         $defaultLocaleValue = $globalSettingsView->locales->defaultLocale()->value();
 
         return new GlobalSettings(
-            $locales,
-            Locale::create($defaultLocaleValue, $list[$defaultLocaleValue] ?? $defaultLocaleValue),
-            $globalSettingsView->apiCache,
-            $globalSettingsView->crawlerSettings,
+            locales: $locales,
+            defaultLocale: Locale::create($defaultLocaleValue, $list[$defaultLocaleValue] ?? $defaultLocaleValue),
+            apiCache: $globalSettingsView->apiCache,
+            crawlerSettings: $globalSettingsView->crawlerSettings,
+            environments: $globalSettingsView->environments,
         );
     }
 }

@@ -6,10 +6,12 @@ namespace App\Domain\GlobalSettings;
 
 use App\Domain\GlobalSettings\Event\ApiCacheSettingsChanged;
 use App\Domain\GlobalSettings\Event\CrawlerSettingsChanged;
+use App\Domain\GlobalSettings\Event\EnvironmentsChanged;
 use App\Domain\GlobalSettings\Event\GlobalSettingsCreated;
 use App\Domain\GlobalSettings\Event\LocalizationSettingsChanged;
 use App\Domain\GlobalSettings\ValueObject\ApiCache;
 use App\Domain\GlobalSettings\ValueObject\CrawlerSettings;
+use App\Domain\GlobalSettings\ValueObject\Environments;
 use App\Domain\GlobalSettings\ValueObject\GlobalSettingsId;
 use App\Domain\Shared\ValueObject\Locale;
 use App\Domain\Shared\ValueObject\Locales;
@@ -34,6 +36,8 @@ final class GlobalSettings implements AggregateRootInterface
     private ApiCache $apiCache;
 
     private CrawlerSettings $crawlerSettings;
+
+    private Environments $environments;
 
     public static function createEmpty(): self
     {
@@ -65,6 +69,13 @@ final class GlobalSettings implements AggregateRootInterface
         }
     }
 
+    public function updateEnvironments(Environments $environments): void
+    {
+        if (!$this->environments->equals($environments)) {
+            $this->recordThat(EnvironmentsChanged::create($this->id, $environments));
+        }
+    }
+
     public function aggregateId(): AggregateId
     {
         return AggregateId::fromUuid($this->id->id());
@@ -78,6 +89,7 @@ final class GlobalSettings implements AggregateRootInterface
         $this->locales = LocalesConfig::create(Locales::reconstitute(['en']), Locale::fromValue('en')); // setup defaults to en
         $this->apiCache = ApiCache::create();
         $this->crawlerSettings = CrawlerSettings::fromValues(false, null, null, null, null);
+        $this->environments = Environments::empty();
     }
 
     protected function whenLocalizationSettingsChanged(LocalizationSettingsChanged $event): void
@@ -96,5 +108,11 @@ final class GlobalSettings implements AggregateRootInterface
     {
         $this->lastUpdateAt = $event->createdAt();
         $this->crawlerSettings = $event->crawlerSettings();
+    }
+
+    protected function whenEnvironmentsChanged(EnvironmentsChanged $event): void
+    {
+        $this->lastUpdateAt = $event->createdAt();
+        $this->environments = $event->environments();
     }
 }

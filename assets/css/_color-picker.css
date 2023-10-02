@@ -1,0 +1,24 @@
+.picker_wrapper.popup {
+    @apply ml-0 mr-0 mt-2 bg-white shadow-lg rounded border border-gray-300;
+}
+
+.popup.popup_bottom .picker_arrow {
+    @apply hidden;
+}
+
+.picker_hue,
+.picker_slider .picker_selector,
+.layout_default .picker_sl,
+.layout_default,
+.picker_editor input,
+.layout_default .picker_sample {
+    @apply rounded;
+}
+
+.layout_default .picker_sample {
+    @apply overflow-hidden;
+}
+
+.picker_wrapper button {
+    @apply bg-none focus:bg-none active:bg-none inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer
+}

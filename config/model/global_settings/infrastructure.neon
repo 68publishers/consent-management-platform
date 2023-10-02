@@ -23,6 +23,9 @@ nettrine.dbal:
             App\Domain\GlobalSettings\ValueObject\GlobalSettingsId:
                 class: App\Infrastructure\GlobalSettings\Doctrine\DbalType\GlobalSettingsIdType
                 commented: yes
+            App\Domain\GlobalSettings\ValueObject\Environments:
+                class: App\Infrastructure\GlobalSettings\Doctrine\DbalType\EnvironmentsType
+                commented: yes
             App\Domain\GlobalSettings\ValueObject\CrawlerSettings:
                 class: App\Infrastructure\GlobalSettings\Doctrine\DbalType\CrawlerSettingsType
                 commented: yes

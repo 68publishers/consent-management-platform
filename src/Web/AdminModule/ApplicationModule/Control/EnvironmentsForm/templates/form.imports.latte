@@ -1,0 +1,36 @@
+{define #container-name-environments}
+    <div class="px-4 sm:px-6">
+        <div class="border border-gray-200 px-2 sm:px-4 py-2 sm:py-4 rounded mb-4 shadow-sm">
+            <div class="flex flex-nowrap items-start space-x-3">
+                <div class="flex-1">
+                    <input disabled value="{_'//layout.default_environment'}" type="text" class="no-live-validation shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none">
+                </div>
+            </div>
+        </div>
+        <div n:multiplier="environments" class="border border-gray-200 px-2 sm:px-4 py-2 sm:py-4 rounded mb-4 shadow-sm">
+            <div class="flex flex-nowrap items-start space-x-1 sm:space-x-3">
+                <div class="flex-1">
+                    {include #helpers-override-split, blockNamePrefix => control, control => $formContainer->getComponent('code')}
+                </div>
+                <div class="flex-1">
+                    {include #helpers-override-split, blockNamePrefix => control, control => $formContainer->getComponent('name')}
+                </div>
+                <div class="flex-1">
+                    {include #helpers-override-split, blockNamePrefix => control, control => $formContainer->getComponent('color')}
+                </div>
+
+                {if $formContainer->getComponent(Contributte\FormMultiplier\Multiplier::SUBMIT_REMOVE_NAME, false)}
+                    <button
+                            n:name="Contributte\FormMultiplier\Multiplier::SUBMIT_REMOVE_NAME"
+                            data-spinner-for="self"
+                            class="rounded-full bg-white p-1.5 text-red-700 hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
+                    >
+                        {svg 'common/x-mark.svg', class: 'w-6 h-6'}
+                    </button>
+                {/if}
+            </div>
+        </div>
+
+        {multiplier:add environments data-spinner-for: 'self', class: 'spinner-white inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer'}
+    </div>
+{/define}

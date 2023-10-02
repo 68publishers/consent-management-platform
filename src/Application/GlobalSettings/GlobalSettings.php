@@ -6,6 +6,7 @@ namespace App\Application\GlobalSettings;
 
 use App\Domain\GlobalSettings\ValueObject\ApiCache;
 use App\Domain\GlobalSettings\ValueObject\CrawlerSettings;
+use App\Domain\GlobalSettings\ValueObject\Environments;
 
 final class GlobalSettings implements GlobalSettingsInterface
 {
@@ -17,6 +18,7 @@ final class GlobalSettings implements GlobalSettingsInterface
         private readonly Locale $defaultLocale,
         private readonly ApiCache $apiCache,
         private readonly CrawlerSettings $crawlerSettings,
+        private readonly Environments $environments,
     ) {}
 
     public static function default(): self
@@ -26,6 +28,7 @@ final class GlobalSettings implements GlobalSettingsInterface
             Locale::unknown(),
             ApiCache::create(),
             CrawlerSettings::fromValues(false, null, null, null, null),
+            Environments::empty(),
         );
     }
 
@@ -47,6 +50,11 @@ final class GlobalSettings implements GlobalSettingsInterface
     public function crawlerSettings(): CrawlerSettings
     {
         return $this->crawlerSettings;
+    }
+
+    public function environments(): Environments
+    {
+        return $this->environments;
     }
 
     public function refresh(): void

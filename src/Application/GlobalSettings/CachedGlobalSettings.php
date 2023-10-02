@@ -6,6 +6,7 @@ namespace App\Application\GlobalSettings;
 
 use App\Domain\GlobalSettings\ValueObject\ApiCache;
 use App\Domain\GlobalSettings\ValueObject\CrawlerSettings;
+use App\Domain\GlobalSettings\ValueObject\Environments;
 use Nette\Caching\Cache;
 use Nette\Caching\Storage;
 use SixtyEightPublishers\TranslationBridge\Localization\TranslatorLocalizerInterface;
@@ -57,6 +58,14 @@ final class CachedGlobalSettings implements GlobalSettingsInterface
     public function crawlerSettings(): CrawlerSettings
     {
         return $this->getInner()->crawlerSettings();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function environments(): Environments
+    {
+        return $this->getInner()->environments();
     }
 
     public function refresh(): void

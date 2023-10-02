@@ -1,0 +1,2 @@
+extensions:
+    contributte.form_multiplier: Contributte\FormMultiplier\DI\MultiplierExtension

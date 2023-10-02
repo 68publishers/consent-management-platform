@@ -47,6 +47,7 @@ services:
     - App\Web\AdminModule\ApplicationModule\Control\LocalizationSettingsForm\LocalizationSettingsFormControlFactoryInterface
     - App\Web\AdminModule\ApplicationModule\Control\ApiCacheSettingsForm\ApiCacheSettingsFormControlFactoryInterface
     - App\Web\AdminModule\ApplicationModule\Control\CrawlerSettingsForm\CrawlerSettingsFormControlFactoryInterface
+    - App\Web\AdminModule\ApplicationModule\Control\EnvironmentsForm\EnvironmentsFormControlFactoryInterface
 
     # Web\AdminModule\CrawlerModule
     - App\Web\AdminModule\CrawlerModule\Control\ScenarioList\ScenarioListControlFactoryInterface

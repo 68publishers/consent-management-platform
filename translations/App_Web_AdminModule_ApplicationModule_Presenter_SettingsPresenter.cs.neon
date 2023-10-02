@@ -1,5 +1,6 @@
 page_title: Nastavení
 heading_localization: Lokalizace
+heading_environments: Prostředí
 heading_api_cache: Výkon
 heading_crawler: Crawler
 
@@ -10,3 +11,5 @@ message:
     api_cache_settings_update_failed: Při ukládaní nastavení došlo k chybě.
     crawler_settings_updated: Nastavení Crawleru bylo uloženo.
     crawler_settings_update_failed: Při ukládaní nastavení došlo k chybě.
+    environments_updated: Nastavení prostředí bylo uloženo.
+    environments_update_failed: Při ukládaní nastavení došlo k chybě.

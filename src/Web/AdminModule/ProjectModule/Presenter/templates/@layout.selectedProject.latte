@@ -6,14 +6,14 @@
     <div class="flex place-items-center mb-1">
         <div id="project-select">
             <div x-data>
-                <span x-init="$el.style.display = 'none'" class="inline-block w-auto px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2" style="background-color: {$projectView->color->value()|noescape} !important;">
+                <span x-init="$el.style.display = 'none'" class="inline-block w-auto px-2.5 py-0.5 rounded-md text-sm font-medium mr-2" style="background-color: {$projectView->color->value()|noescape} !important; color: {App\Web\Utils\Color::resolveFontColor($projectView->color->value())|noescape} !important;">
                     {$projectView->name->value()}
                 </span>
             </div>
             <select x-data x-select.searchbar x-cloak x-on:change="window.location.href = $el.options[$el.selectedIndex].getAttribute('data-link')">
                 {foreach $userProjects as $userProject}
                     {capture $itemHtml}
-                        <span class="inline-block w-auto px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2" style="background-color: {$userProject->color->value()|noescape} !important;">
+                        <span class="inline-block w-auto px-2.5 py-0.5 rounded-md text-sm font-medium mr-2" style="background-color: {$userProject->color->value()|noescape} !important; color: {App\Web\Utils\Color::resolveFontColor($userProject->color->value())|noescape} !important;">
                             {$userProject->name->value()}
                         </span>
                     {/capture}
