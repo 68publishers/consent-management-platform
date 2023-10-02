@@ -59,6 +59,10 @@ nettrine.dbal:
                 class: App\Infrastructure\Consent\Doctrine\DbalType\ConsentsType
                 commented: yes
 
+            App\Domain\Consent\ValueObject\Environment:
+                class: App\Infrastructure\Consent\Doctrine\DbalType\EnvironmentType
+                commented: yes
+
             App\Domain\Consent\ValueObject\UserIdentifier:
                 class: App\Infrastructure\Consent\Doctrine\DbalType\UserIdentifierType
                 commented: yes

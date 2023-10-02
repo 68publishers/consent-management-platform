@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\ProjectModule\Control\ConsentHistory;
 
+use App\Application\GlobalSettings\EnabledEnvironmentsResolver;
+use App\Application\GlobalSettings\GlobalSettingsInterface;
 use App\Domain\Consent\Consent;
 use App\Domain\Consent\Event\ConsentCreated;
 use App\Domain\Consent\Event\ConsentUpdated;
 use App\Domain\Consent\ValueObject\ConsentId;
+use App\Domain\Project\ValueObject\Environments;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\ReadModel\ConsentSettings\ConsentSettingsView;
 use App\ReadModel\ConsentSettings\GetConsentSettingsByProjectIdAndChecksumQuery;
+use App\ReadModel\Project\GetProjectByIdQuery;
+use App\ReadModel\Project\ProjectView;
 use App\Web\Ui\Control;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AggregateId;
@@ -25,6 +30,7 @@ final class ConsentHistoryControl extends Control
         private readonly ProjectId $projectId,
         private readonly EventStoreInterface $eventStore,
         private readonly QueryBusInterface $queryBus,
+        private readonly GlobalSettingsInterface $globalSettings,
     ) {}
 
     /**
@@ -55,10 +61,19 @@ final class ConsentHistoryControl extends Control
             }
         }
 
+        $projectView = $this->queryBus->dispatch(GetProjectByIdQuery::create($this->projectId->toString()));
+        $projectEnvironments = $projectView instanceof ProjectView ? $projectView->environments : Environments::empty();
+
+        $environments = EnabledEnvironmentsResolver::resolveProjectEnvironments(
+            globalSettingsEnvironments: $this->globalSettings->environments(),
+            projectEnvironments: $projectEnvironments,
+        );
+
         $template = $this->getTemplate();
         assert($template instanceof ConsentHistoryTemplate);
 
         $template->events = $events;
         $template->consentSettingsShortIdentifiers = $consentSettingsShortIdentifiers;
+        $template->environments = $environments;
     }
 }

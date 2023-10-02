@@ -11,6 +11,7 @@
             <index name="idx_consent_created_at" columns="created_at" />
             <index name="idx_consent_last_update_at" columns="last_update_at" />
             <index name="idx_consent_last_update_at_project_id" columns="last_update_at,project_id" />
+            <index name="idx_consent_project_id_environment" columns="project_id,environment" />
         </indexes>
 
         <unique-constraints>
@@ -32,6 +33,8 @@
         <field name="consents" column="consents" type="App\Domain\Consent\ValueObject\Consents" />
 
         <field name="attributes" column="attributes" type="App\Domain\Consent\ValueObject\Attributes" />
+
+        <field name="environment" column="environment" type="App\Domain\Consent\ValueObject\Environment" nullable="true" />
 
         <field name="version" column="version" type="integer" />
     </entity>

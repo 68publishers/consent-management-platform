@@ -7,6 +7,7 @@ namespace App\Domain\Consent\Event;
 use App\Domain\Consent\ValueObject\Attributes;
 use App\Domain\Consent\ValueObject\ConsentId;
 use App\Domain\Consent\ValueObject\Consents;
+use App\Domain\Consent\ValueObject\Environment;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\Shared\ValueObject\Checksum;
 use DateTimeImmutable;
@@ -24,13 +25,23 @@ final class ConsentUpdated extends AbstractDomainEvent
 
     private Attributes $attributes;
 
-    public static function create(ConsentId $consentId, ProjectId $projectId, ?Checksum $settingsChecksum, Consents $consents, Attributes $attributes, ?DateTimeImmutable $createdAt = null): self
-    {
+    private ?Environment $environment = null;
+
+    public static function create(
+        ConsentId $consentId,
+        ProjectId $projectId,
+        ?Checksum $settingsChecksum,
+        Consents $consents,
+        Attributes $attributes,
+        ?Environment $environment,
+        ?DateTimeImmutable $createdAt = null,
+    ): self {
         $event = self::occur($consentId->toString(), [
             'project_id' => $projectId->toString(),
             'settings_checksum' => $settingsChecksum?->value(),
             'consents' => $consents->values(),
             'attributes' => $attributes->values(),
+            'environment' => $environment?->value(),
         ]);
 
         if (null !== $createdAt) {
@@ -42,6 +53,7 @@ final class ConsentUpdated extends AbstractDomainEvent
         $event->settingsChecksum = $settingsChecksum;
         $event->consents = $consents;
         $event->attributes = $attributes;
+        $event->environment = $environment;
 
         return $event;
     }
@@ -71,6 +83,11 @@ final class ConsentUpdated extends AbstractDomainEvent
         return $this->attributes;
     }
 
+    public function environment(): ?Environment
+    {
+        return $this->environment;
+    }
+
     protected function reconstituteState(array $parameters): void
     {
         $this->consentId = ConsentId::fromUuid($this->aggregateId()->id());
@@ -78,5 +95,6 @@ final class ConsentUpdated extends AbstractDomainEvent
         $this->settingsChecksum = isset($parameters['settings_checksum']) ? Checksum::fromValue($parameters['settings_checksum']) : null;
         $this->consents = Consents::fromArray($parameters['consents']);
         $this->attributes = Attributes::fromArray($parameters['attributes']);
+        $this->environment = isset($parameters['environment']) ? Environment::fromValue($parameters['environment']) : null;
     }
 }

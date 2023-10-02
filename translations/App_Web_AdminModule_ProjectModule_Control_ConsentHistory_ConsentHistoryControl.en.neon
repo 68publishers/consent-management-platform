@@ -7,5 +7,6 @@ App_Domain_Consent_Event_ConsentCreated:
 consents: Consents
 attributes: Attributes
 settings_checksum: Cookie widget
+environment: Environment
 
 settingsShortIdentifier: version %shortIdentifier%

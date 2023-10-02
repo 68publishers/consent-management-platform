@@ -1,6 +1,7 @@
 {extends $originalTemplate}
 
 {varType App\ReadModel\Consent\ConsentListView $item}
+{varType App\Domain\GlobalSettings\ValueObject\Environment[] $environments}
 
 {define col-user_identifier}
     <a href="{$linkFactory('openModal!', ['modal' => 'history-' . Ramsey\Uuid\Uuid::fromString($item->id)->getHex()->toString()])}" data-spinner-for="self" class="ajax font-semibold">
@@ -21,5 +22,20 @@
         {else}
             {_settingsShortIdentifierValue, ['shortIdentifier' => $item->settingsShortIdentifier]}
         {/if}
+    {/if}
+{/define}
+
+{define col-environment}
+    {if null === $item->environment}
+        <span class="inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-black">{_//layout.default_environment}</span>
+    {elseif isset($environments[$item->environment])}
+        <label
+            class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium"
+            style="background: {$environments[$item->environment]->color->value()|noescape} !important; color: {App\Web\Utils\Color::resolveFontColor($environments[$item->environment]->color->value())|noescape} !important;"
+        >
+            {$environments[$item->environment]->name}
+        </label>
+    {else}
+        <span class="inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-black">{$item->environment}</span>
     {/if}
 {/define}

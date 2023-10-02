@@ -8,6 +8,8 @@ use Apitte\Core\Annotation\Controller as Api;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use App\Api\V1\RequestBody\PutConsentRequestBody;
+use App\Application\GlobalSettings\EnabledEnvironmentsResolver;
+use App\Application\GlobalSettings\GlobalSettingsInterface;
 use App\Domain\Consent\Command\StoreConsentCommand;
 use App\ReadModel\ConsentSettings\ConsentSettingsView;
 use App\ReadModel\ConsentSettings\GetConsentSettingsByProjectIdAndChecksumQuery;
@@ -27,6 +29,7 @@ final class ConsentController extends AbstractV1Controller
         private readonly CommandBusInterface $commandBus,
         private readonly QueryBusInterface $queryBus,
         private readonly LockFactory $lockFactory,
+        private readonly GlobalSettingsInterface $globalSettings,
     ) {}
 
     /**
@@ -74,6 +77,36 @@ final class ConsentController extends AbstractV1Controller
                 ]);
         }
 
+        if (null !== $body->environment) {
+            $environments = EnabledEnvironmentsResolver::resolveProjectEnvironments(
+                globalSettingsEnvironments: $this->globalSettings->environments(),
+                projectEnvironments: $projectView->environments,
+            );
+            $environmentFound = false;
+
+            foreach ($environments as $environment) {
+                if ($environment->code === $body->environment) {
+                    $environmentFound = true;
+
+                    break;
+                }
+            }
+
+            if (!$environmentFound) {
+                return $response->withStatus(ApiResponse::S422_UNPROCESSABLE_ENTITY)
+                    ->writeJsonBody([
+                        'status' => 'error',
+                        'data' => [
+                            'code' => ApiResponse::S422_UNPROCESSABLE_ENTITY,
+                            'error' => sprintf(
+                                'Project does not have the "%s" environment.',
+                                $body->environment,
+                            ),
+                        ],
+                    ]);
+            }
+        }
+
         $userIdentifier = $request->getParameter('userIdentifier');
         $lock = $this->lockFactory->createLock(sprintf(
             'put-consent-%s-%s',
@@ -85,11 +118,12 @@ final class ConsentController extends AbstractV1Controller
 
         try {
             $this->commandBus->dispatch(StoreConsentCommand::create(
-                $projectView->id->toString(),
-                $userIdentifier,
-                $body->settingsChecksum,
-                $body->consents,
-                $body->attributes,
+                projectId: $projectView->id->toString(),
+                userIdentifier: $userIdentifier,
+                settingsChecksum: $body->settingsChecksum,
+                consents: $body->consents,
+                attributes: $body->attributes,
+                environment: $body->environment,
             ));
         } catch (DomainException $e) {
             return $response->withStatus(ApiResponse::S422_UNPROCESSABLE_ENTITY)

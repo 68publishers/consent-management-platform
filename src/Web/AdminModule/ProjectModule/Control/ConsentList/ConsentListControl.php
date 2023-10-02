@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\ProjectModule\Control\ConsentList;
 
+use App\Application\GlobalSettings\EnabledEnvironmentsResolver;
+use App\Application\GlobalSettings\GlobalSettingsInterface;
+use App\Domain\GlobalSettings\ValueObject\Environment;
+use App\Domain\Project\ValueObject\Environments;
 use App\Domain\Project\ValueObject\ProjectId;
+use App\Infrastructure\Consent\Doctrine\ReadModel\ConsentsDataGridQueryHandler;
 use App\ReadModel\Consent\ConsentListView;
 use App\ReadModel\Consent\ConsentsDataGridQuery;
 use App\ReadModel\Consent\ConsentView;
@@ -20,6 +25,7 @@ use App\Web\Ui\Control;
 use App\Web\Ui\DataGrid\DataGrid;
 use App\Web\Ui\DataGrid\DataGridFactoryInterface;
 use App\Web\Ui\DataGrid\DataSource\ReadModelDataSource;
+use App\Web\Ui\DataGrid\Helper\FilterHelper;
 use Nette\Application\UI\Multiplier;
 use Nette\InvalidStateException;
 use Ramsey\Uuid\Uuid;
@@ -30,10 +36,12 @@ final class ConsentListControl extends Control
 {
     public function __construct(
         private readonly ProjectId $projectId,
+        private readonly Environments $projectEnvironments,
         private readonly DataGridFactoryInterface $dataGridFactory,
         private readonly ConsentHistoryModalControlFactoryInterface $consentHistoryModalControlFactory,
         private readonly ConsentSettingsDetailModalControlFactoryInterface $consentSettingsDetailModalControlFactory,
         private readonly QueryBusInterface $queryBus,
+        private readonly GlobalSettingsInterface $globalSettings,
         private readonly ?int $countLimit = null,
     ) {}
 
@@ -46,12 +54,20 @@ final class ConsentListControl extends Control
             projectId: $this->projectId->toString(),
             countLimit: $this->countLimit,
         );
+        $environments = EnabledEnvironmentsResolver::resolveProjectEnvironments(
+            globalSettingsEnvironments: $this->globalSettings->environments(),
+            projectEnvironments: $this->projectEnvironments,
+        );
+
         $grid = $this->dataGridFactory->create($query);
 
         $grid->setSessionNamePostfix('p' . $this->projectId->toString());
         $grid->setTranslator($this->getPrefixedTranslator());
         $grid->setTemplateFile(__DIR__ . '/templates/datagrid.latte');
         $grid->addTemplateVariable('paginatorMaxItemsCount', $query->getCountLimit());
+        $grid->addTemplateVariable('environments', $environments);
+
+        $translator = $grid->getTranslator();
 
         $grid->setDefaultSort([
             'last_update_at' => 'DESC',
@@ -61,7 +77,20 @@ final class ConsentListControl extends Control
             ->setSortable('userIdentifier')
             ->setFilterText('userIdentifier');
 
-        $grid->addColumnText('settings_short_identifier', 'settings_short_identifier', 'settingsShortIdentifier');
+        $grid->addColumnText('settings_short_identifier', 'settings_short_identifier', 'settingsShortIdentifier')
+            ->setAlign('center');
+
+        $grid->addColumnText('environment', 'environment', 'environment')
+            ->setAlign('center')
+            ->setFilterSelect(
+                options: FilterHelper::all($translator)
+                + [ConsentsDataGridQueryHandler::FILTER_ENVIRONMENT_DEFAULT_ENV_VALUE => $this->getTranslator()->translate('//layout.default_environment')]
+                + array_map(
+                    static fn (Environment $environment): string => $environment->name,
+                    $environments,
+                ),
+                column: 'environment',
+            );
 
         $grid->addColumnDateTimeTz('created_at', 'created_at', 'createdAt')
             ->setFormat('j.n.Y H:i:s')
