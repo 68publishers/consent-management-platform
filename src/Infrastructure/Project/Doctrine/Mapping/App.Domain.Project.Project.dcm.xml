@@ -39,6 +39,12 @@
 
         <embedded name="locales" class="App\Domain\Shared\ValueObject\LocalesConfig" use-column-prefix="false" />
 
+        <field name="environments" column="environments" type="App\Domain\Project\ValueObject\Environments">
+            <options>
+                <option name="jsonb">true</option>
+            </options>
+        </field>
+
         <field name="version" column="version" type="integer" />
 
         <one-to-many field="cookieProviders" target-entity="App\Domain\Project\ProjectHasCookieProvider" mapped-by="project" orphan-removal="true">

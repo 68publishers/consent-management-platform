@@ -27,7 +27,7 @@ final class FindProjectTemplatesQueryHandler implements QueryHandlerInterface
     public function __invoke(FindProjectTemplatesQuery $query): array
     {
         $data = $this->em->createQueryBuilder()
-            ->select('p.id AS projectId, pt.template AS template, pt.locale AS templateLocale, p.locales.locales, p.locales.defaultLocale')
+            ->select('p.id AS projectId, pt.template AS template, pt.locale AS templateLocale, p.locales.locales, p.locales.defaultLocale, p.environments')
             ->from(ProjectTranslation::class, 'pt')
             ->join('pt.project', 'p', Join::WITH, 'p.id = :projectId AND p.deletedAt IS NULL')
             ->setParameter('projectId', $query->projectId())

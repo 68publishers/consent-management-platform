@@ -28,7 +28,7 @@ final class GetProjectTemplateByCodeAndLocaleWithFallbackQueryHandler implements
     public function __invoke(GetProjectTemplateByCodeAndLocaleWithFallbackQuery $query): ?ProjectTemplateView
     {
         $qb = $this->em->createQueryBuilder()
-            ->select('p.id AS projectId, p.locales.locales, p.locales.defaultLocale')
+            ->select('p.id AS projectId, p.locales.locales, p.locales.defaultLocale, p.environments')
             ->from(Project::class, 'p')
             ->where('LOWER(p.code) = LOWER(:code) AND p.deletedAt IS NULL')
             ->setParameter('code', $query->code());

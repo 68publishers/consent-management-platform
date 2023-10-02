@@ -9,6 +9,7 @@ use App\Domain\Project\ValueObject\Code;
 use App\Domain\Project\ValueObject\Color;
 use App\Domain\Project\ValueObject\Description;
 use App\Domain\Project\ValueObject\Domain;
+use App\Domain\Project\ValueObject\Environments;
 use App\Domain\Project\ValueObject\Name;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\Shared\ValueObject\LocalesConfig;
@@ -34,6 +35,8 @@ final class ProjectView extends AbstractView
 
     public LocalesConfig $locales;
 
+    public Environments $environments;
+
     public function jsonSerialize(): array
     {
         return [
@@ -47,6 +50,7 @@ final class ProjectView extends AbstractView
             'active' => $this->active,
             'locales' => $this->locales->locales()->toArray(),
             'defaultLocale' => $this->locales->defaultLocale()->value(),
+            'environments' => $this->environments->toArray(),
         ];
     }
 }

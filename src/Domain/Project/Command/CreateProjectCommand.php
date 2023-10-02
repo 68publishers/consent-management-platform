@@ -10,6 +10,7 @@ final class CreateProjectCommand extends AbstractCommand
 {
     /**
      * @param array<int, string> $locales
+     * @param array<int, string> $environments
      */
     public static function create(
         string $name,
@@ -20,6 +21,7 @@ final class CreateProjectCommand extends AbstractCommand
         bool $active,
         array $locales,
         string $defaultLocale,
+        array $environments,
         ?string $projectId = null,
         ?string $cookieProviderId = null,
     ): self {
@@ -32,6 +34,7 @@ final class CreateProjectCommand extends AbstractCommand
             'active' => $active,
             'locales' => $locales,
             'default_locale' => $defaultLocale,
+            'environments' => $environments,
             'project_id' => $projectId,
             'cookie_provider_id' => $cookieProviderId,
             'cookie_provider_ids' => [],
@@ -76,6 +79,9 @@ final class CreateProjectCommand extends AbstractCommand
         return $this->getParam('active');
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function locales(): array
     {
         return $this->getParam('locales');
@@ -84,6 +90,14 @@ final class CreateProjectCommand extends AbstractCommand
     public function defaultLocale(): string
     {
         return $this->getParam('default_locale');
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    public function environments(): array
+    {
+        return $this->getParam('environments');
     }
 
     /**

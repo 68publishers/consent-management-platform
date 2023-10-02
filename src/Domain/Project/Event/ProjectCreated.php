@@ -9,6 +9,7 @@ use App\Domain\Project\ValueObject\Code;
 use App\Domain\Project\ValueObject\Color;
 use App\Domain\Project\ValueObject\Description;
 use App\Domain\Project\ValueObject\Domain;
+use App\Domain\Project\ValueObject\Environments;
 use App\Domain\Project\ValueObject\Name;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\Shared\ValueObject\Locale;
@@ -36,6 +37,8 @@ final class ProjectCreated extends AbstractDomainEvent
 
     private LocalesConfig $locales;
 
+    private Environments $environments;
+
     public static function create(
         ProjectId $projectId,
         CookieProviderId $cookieProviderId,
@@ -46,6 +49,7 @@ final class ProjectCreated extends AbstractDomainEvent
         Color $color,
         bool $active,
         LocalesConfig $locales,
+        Environments $environments,
     ): self {
         $event = self::occur($projectId->toString(), [
             'cookie_provider_id' => $cookieProviderId->toString(),
@@ -57,6 +61,7 @@ final class ProjectCreated extends AbstractDomainEvent
             'active' => $active,
             'locales' => $locales->locales()->toArray(),
             'default_locale' => $locales->defaultLocale()->value(),
+            'environments' => $environments->toArray(),
         ]);
 
         $event->projectId = $projectId;
@@ -68,6 +73,7 @@ final class ProjectCreated extends AbstractDomainEvent
         $event->color = $color;
         $event->active = $active;
         $event->locales = $locales;
+        $event->environments = $environments;
 
         return $event;
     }
@@ -117,6 +123,11 @@ final class ProjectCreated extends AbstractDomainEvent
         return $this->locales;
     }
 
+    public function environments(): Environments
+    {
+        return $this->environments;
+    }
+
     protected function reconstituteState(array $parameters): void
     {
         $this->projectId = ProjectId::fromUuid($this->aggregateId()->id());
@@ -128,5 +139,6 @@ final class ProjectCreated extends AbstractDomainEvent
         $this->color = Color::fromValue($parameters['color']);
         $this->active = (bool) $parameters['active'];
         $this->locales = LocalesConfig::create(Locales::reconstitute($parameters['locales']), Locale::fromValue($parameters['default_locale']));
+        $this->environments = Environments::reconstitute($parameters['environments'] ?? []);
     }
 }

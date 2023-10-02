@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ReadModel\Project;
 
+use App\Domain\Project\ValueObject\Environments;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\Project\ValueObject\Template;
 use App\Domain\Shared\ValueObject\Locale;
@@ -19,6 +20,8 @@ final class ProjectTemplateView extends AbstractView
     public Locale $templateLocale;
 
     public LocalesConfig $projectLocalesConfig;
+
+    public Environments $environments;
 
     public function jsonSerialize(): array
     {

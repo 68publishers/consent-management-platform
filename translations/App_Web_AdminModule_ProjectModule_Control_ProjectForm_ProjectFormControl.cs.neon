@@ -18,9 +18,8 @@ domain:
 
 color:
     field: Barva
-    required: Vyplňte prosím barvu.
+    required: Zvolte prosím barvu.
     rule_pattern: Nevalidní formát.
-    description: 'Povolen je hexadecimální formát #xxx, či #xxxxxx.'
 
 active:
     field: Zapnuto
@@ -32,6 +31,9 @@ locales:
 default_locale:
     field: Výchozí jazyk
     required: Zvolte výchozí jazyk.
+
+environments:
+    field: Prostředí
 
 timezone:
     field: Časové pásmo

@@ -51,17 +51,19 @@ final class ProjectImporter extends AbstractImporter
                         ->withColor($data->color)
                         ->withDescription($data->description)
                         ->withActive($data->active)
-                        ->withLocales($locales, $defaultLocale);
+                        ->withLocales($locales, $defaultLocale)
+                        ->withEnvironments($data->environments);
                 } else {
                     $command = CreateProjectCommand::create(
-                        $data->name,
-                        $data->code,
-                        $data->domain,
-                        $data->description,
-                        $data->color,
-                        $data->active,
-                        $locales,
-                        $defaultLocale,
+                        name: $data->name,
+                        code: $data->code,
+                        domain: $data->domain,
+                        description: $data->description,
+                        color: $data->color,
+                        active: $data->active,
+                        locales: $locales,
+                        defaultLocale: $defaultLocale,
+                        environments: $data->environments,
                     );
                 }
 
