@@ -57,8 +57,10 @@ final class EnvironmentsFormControl extends Control
                 ->setRequired('name.required');
 
             $container->addText('color')
+                ->setDefaultValue('#ffffff')
                 ->setHtmlAttribute('placeholder', 'color.placeholder')
                 ->setOption('type', 'color-picker')
+                ->setOption('placement', 'bottom-right')
                 ->setRequired('color.required')
                 ->addRule(Form::Pattern, 'color.rule.pattern', '#([a-fA-F0-9]{3}){1,2}\b');
         }, 0);

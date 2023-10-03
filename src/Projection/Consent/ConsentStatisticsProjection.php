@@ -9,6 +9,7 @@ use App\Domain\Consent\Event\ConsentCreated;
 use App\Domain\Consent\Event\ConsentUpdated;
 use App\Domain\Consent\ValueObject\ConsentId;
 use App\Domain\Consent\ValueObject\Consents;
+use App\Domain\Consent\ValueObject\Environment;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\ReadModel\Category\FindAllOptionalCategoryCodesQuery;
 use DateTimeImmutable;
@@ -39,15 +40,15 @@ final class ConsentStatisticsProjection extends AbstractProjection
 
     public function whenConsentCreated(ConsentCreated $event): void
     {
-        $this->insertRow($event->projectId(), $event->consentId(), $event->createdAt(), $event->consents());
+        $this->insertRow($event->projectId(), $event->consentId(), $event->createdAt(), $event->consents(), $event->environment());
     }
 
     public function whenConsentUpdated(ConsentUpdated $event): void
     {
-        $this->insertRow($event->projectId(), $event->consentId(), $event->createdAt(), $event->consents());
+        $this->insertRow($event->projectId(), $event->consentId(), $event->createdAt(), $event->consents(), $event->environment());
     }
 
-    private function insertRow(ProjectId $projectId, ConsentId $consentId, DateTimeImmutable $createdAt, Consents $consents): void
+    private function insertRow(ProjectId $projectId, ConsentId $consentId, DateTimeImmutable $createdAt, Consents $consents, ?Environment $environment): void
     {
         $categoryCodes = $this->queryBus->dispatch(FindAllOptionalCategoryCodesQuery::create());
 
@@ -55,6 +56,7 @@ final class ConsentStatisticsProjection extends AbstractProjection
             'project_id' => $projectId->toString(),
             'consent_id' => $consentId->toString(),
             'created_at' => $createdAt,
+            'environment' => $environment?->value(),
             'positive_count' => $consents->positiveCount($categoryCodes),
             'negative_count' => $consents->negativeCount($categoryCodes),
         ]);

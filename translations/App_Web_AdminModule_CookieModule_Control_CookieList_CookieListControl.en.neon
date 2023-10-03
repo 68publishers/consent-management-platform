@@ -5,6 +5,7 @@ processing_time: Processing time
 provider_name: Provider
 provider_type: Type
 projects: Projects
+environments: Environments
 created_at: Created
 
 active_value: active
@@ -13,6 +14,7 @@ inactive_value: inactive
 session: Session
 persistent: Persistent
 
+all_environments: All environments
 and_more_projects: "and %count% more"
 
 tooltip:

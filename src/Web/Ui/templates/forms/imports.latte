@@ -124,11 +124,12 @@
 {/define}
 
 {define #input-type-color-picker}
-    <div class="lfv-message-parent">
-        <input x-data x-color-picker data-lfv-disable-blur readonly n:name="$control" n:class="
-            $control->getControlPrototype()->class,
-            'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none cursor-pointer'
-        ">
+    {var $placement = $control->getOption('placement') ?? 'bottom'}
+
+    <div class="lfv-message-parent flex flex-col justify-center h-10 w-10">
+        <button x-data x-color-picker.placement.{$placement} type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 bg-white shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+            <input n:name="$control->setHtmlType('hidden')">
+        </button>
     </div>
 {/define}
 

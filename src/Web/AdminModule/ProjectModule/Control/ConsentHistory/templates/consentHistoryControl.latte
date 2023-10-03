@@ -83,22 +83,6 @@
                                 {/if}
                             </td>
                         </tr>
-                        <tr n:if="0 < count($attributes->values())" class="border-t border-gray-200">
-                            <th colspan="2" scope="colgroup" class="bg-gray-50 px-2 py-2 text-left text-sm font-medium text-gray-900">{_attributes}</th>
-                        </tr>
-                        <tr n:foreach="$attributes->values() as $attr => $val" class="border-t border-gray-200">
-                            <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-500 w-px">{$attr}</td>
-                            <td class="whitespace-nowrap pl-8 pr-2 py-2 text-sm text-left">
-                                {if Nette\Utils\Validators::isUrl($val)}
-                                    <a href="{$val}" target="_blank" class="text-indigo-700 inline-flex items-center">
-                                        {$val}
-                                        {svg common/arrow-top-right-on-square.svg, class: 'h-5 w-5 ml-1'}
-                                    </a>
-                                {else}
-                                    {$val}
-                                {/if}
-                            </td>
-                        </tr>
                         <tr class="border-t border-gray-200">
                             <th colspan="2" scope="colgroup" class="bg-gray-50 px-2 py-2 text-left text-sm font-medium text-gray-900">{_settings_checksum}</th>
                         </tr>
@@ -118,7 +102,7 @@
                         <tr class="border-t border-gray-200">
                             <td colspan="2" class="whitespace-nowrap px-2 py-2 text-sm text-left">
                                 {if null === $environment}
-                                    <span class="inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-black">{_//layout.default_environment}</span>
+                                    <span class="inline-flex items-center rounded-md bg-gray-200 px-2 py-1 text-xs font-medium text-black">{_//layout.default_environment}</span>
                                 {elseif isset($environments[$environment->value()])}
                                     <label
                                             class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium"
@@ -127,7 +111,23 @@
                                         {$environments[$environment->value()]->name}
                                     </label>
                                 {else}
-                                    <span class="inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-black">{$environment->value()}</span>
+                                    <span class="inline-flex items-center rounded-md bg-gray-200 px-2 py-1 text-xs font-medium text-black">{$environment->value()}</span>
+                                {/if}
+                            </td>
+                        </tr>
+                        <tr n:if="0 < count($attributes->values())" class="border-t border-gray-200">
+                            <th colspan="2" scope="colgroup" class="bg-gray-50 px-2 py-2 text-left text-sm font-medium text-gray-900">{_attributes}</th>
+                        </tr>
+                        <tr n:foreach="$attributes->values() as $attr => $val" class="border-t border-gray-200">
+                            <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-500 w-px">{$attr}</td>
+                            <td class="whitespace-nowrap pl-8 pr-2 py-2 text-sm text-left">
+                                {if Nette\Utils\Validators::isUrl($val)}
+                                    <a href="{$val}" target="_blank" class="text-indigo-700 inline-flex items-center">
+                                        {$val}
+                                        {svg common/arrow-top-right-on-square.svg, class: 'h-5 w-5 ml-1'}
+                                    </a>
+                                {else}
+                                    {$val}
                                 {/if}
                             </td>
                         </tr>

@@ -22,11 +22,22 @@ final class ProjectStatisticsCalculator implements ProjectStatisticsCalculatorIn
         private readonly GlobalSettingsInterface $globalSettings,
     ) {}
 
-    public function calculateConsentStatistics(string $projectId, Period $currentPeriod, ?Period $previousPeriod = null): ConsentStatistics
+    public function calculateConsentStatistics(string $projectId, Period $currentPeriod, ?Period $previousPeriod = null, ?EnvironmentInterface $environment = null): ConsentStatistics
     {
         $previousPeriod = $previousPeriod ?? $currentPeriod->createPreviousPeriod();
-        $previousStatistics = $this->queryBus->dispatch(CalculateConsentStatisticsPerPeriodQuery::create($projectId, $previousPeriod->startDate(), $previousPeriod->endDate()));
-        $currentStatistics = $this->queryBus->dispatch(CalculateConsentStatisticsPerPeriodQuery::create($projectId, $currentPeriod->startDate(), $currentPeriod->endDate()));
+        $previousStatisticsQuery = CalculateConsentStatisticsPerPeriodQuery::create($projectId, $previousPeriod->startDate(), $previousPeriod->endDate());
+        $currentStatisticsQuery = CalculateConsentStatisticsPerPeriodQuery::create($projectId, $currentPeriod->startDate(), $currentPeriod->endDate());
+
+        if ($environment instanceof DefaultEnvironment) {
+            $previousStatisticsQuery = $previousStatisticsQuery->withDefaultEnvironment();
+            $currentStatisticsQuery = $currentStatisticsQuery->withDefaultEnvironment();
+        } elseif ($environment instanceof NamedEnvironment) {
+            $previousStatisticsQuery = $previousStatisticsQuery->withNamedEnvironment($environment->name);
+            $currentStatisticsQuery = $currentStatisticsQuery->withNamedEnvironment($environment->name);
+        }
+
+        $previousStatistics = $this->queryBus->dispatch($previousStatisticsQuery);
+        $currentStatistics = $this->queryBus->dispatch($currentStatisticsQuery);
 
         assert($previousStatistics instanceof ConsentStatisticsView);
         assert($currentStatistics instanceof ConsentStatisticsView);
@@ -51,9 +62,17 @@ final class ProjectStatisticsCalculator implements ProjectStatisticsCalculatorIn
         );
     }
 
-    public function calculateCookieStatistics(string $projectId, DateTimeImmutable $endDate): CookieStatistics
+    public function calculateCookieStatistics(string $projectId, DateTimeImmutable $endDate, ?EnvironmentInterface $environment = null): CookieStatistics
     {
-        $totals = $this->queryBus->dispatch(CalculateProjectCookieTotalsQuery::create($projectId, $endDate));
+        $query = CalculateProjectCookieTotalsQuery::create($projectId, $endDate);
+
+        if ($environment instanceof DefaultEnvironment) {
+            $query = $query->withDefaultEnvironment();
+        } elseif ($environment instanceof NamedEnvironment) {
+            $query = $query->withNamedEnvironment($environment->name);
+        }
+
+        $totals = $this->queryBus->dispatch($query);
         assert($totals instanceof ProjectCookieTotalsView);
 
         return CookieStatistics::create(
@@ -63,9 +82,17 @@ final class ProjectStatisticsCalculator implements ProjectStatisticsCalculatorIn
         );
     }
 
-    public function calculateLastConsentDate(string $projectId, DateTimeImmutable $endDate): ?DateTimeImmutable
+    public function calculateLastConsentDate(string $projectId, DateTimeImmutable $endDate, ?EnvironmentInterface $environment = null): ?DateTimeImmutable
     {
-        return $this->queryBus->dispatch(CalculateLastConsentDateQuery::create($projectId, $endDate));
+        $query = CalculateLastConsentDateQuery::create($projectId, $endDate);
+
+        if ($environment instanceof DefaultEnvironment) {
+            $query = $query->withDefaultEnvironment();
+        } elseif ($environment instanceof NamedEnvironment) {
+            $query = $query->withNamedEnvironment($environment->name);
+        }
+
+        return $this->queryBus->dispatch($query);
     }
 
     public function calculateCookieSuggestionStatistics(string $projectId): ?ProjectCookieSuggestionsStatistics

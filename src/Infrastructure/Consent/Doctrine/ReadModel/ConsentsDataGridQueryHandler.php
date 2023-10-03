@@ -70,7 +70,7 @@ final class ConsentsDataGridQueryHandler implements QueryHandlerInterface
         );
     }
 
-    public function applyEnvironment(DbalQueryBuilder $qb, string $column, $value): void
+    public function applyEnvironment(DbalQueryBuilder $qb, string $column, mixed $value): void
     {
         if (self::FILTER_ENVIRONMENT_DEFAULT_ENV_VALUE !== $value) {
             $p = $this->newParameterName();

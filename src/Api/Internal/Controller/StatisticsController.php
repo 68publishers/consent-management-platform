@@ -8,6 +8,8 @@ use Apitte\Core\Annotation\Controller as Api;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use App\Api\Internal\RequestBody\GetProjectStatisticsRequestBody;
+use App\Application\Statistics\DefaultEnvironment;
+use App\Application\Statistics\NamedEnvironment;
 use App\Application\Statistics\Period;
 use App\Application\Statistics\ProjectStatisticsCalculatorInterface;
 use App\ReadModel\Project\FindProjectsAccessibilityByCodeQuery;
@@ -92,14 +94,14 @@ final class StatisticsController extends AbstractInternalController
         return $response->withStatus(ApiResponse::S200_OK)
             ->writeJsonBody([
                 'status' => 'success',
-                'data' => $this->buildData($projectIds, $requestEntity->locale, $startDate, $endDate, $timezone),
+                'data' => $this->buildData($projectIds, $requestEntity->locale, $startDate, $endDate, $timezone, $requestEntity->environment),
             ]);
     }
 
     /**
      * @param array<string> $projectIdsByCodes
      */
-    private function buildData(array $projectIdsByCodes, string $locale, DateTimeImmutable $startDate, DateTimeImmutable $endDate, DateTimeZone $userTz): array
+    private function buildData(array $projectIdsByCodes, string $locale, DateTimeImmutable $startDate, DateTimeImmutable $endDate, DateTimeZone $userTz, ?string $environment): array
     {
         $data = [];
 
@@ -108,12 +110,27 @@ final class StatisticsController extends AbstractInternalController
         }
 
         $period = Period::create($startDate, $endDate);
+        $environmentImpl = '//default//' === $environment ? new DefaultEnvironment() : (is_string($environment) ? new NamedEnvironment($environment) : null);
 
         foreach ($projectIdsByCodes as $code => $projectId) {
-            $consentStatistics = $this->projectStatisticsCalculator->calculateConsentStatistics($projectId, $period);
-            $cookieStatistics = $this->projectStatisticsCalculator->calculateCookieStatistics($projectId, $endDate);
-            $lastConsentDate = $this->projectStatisticsCalculator->calculateLastConsentDate($projectId, $endDate);
-            $cookieSuggestionStatistics = $this->projectStatisticsCalculator->calculateCookieSuggestionStatistics($projectId);
+            $consentStatistics = $this->projectStatisticsCalculator->calculateConsentStatistics(
+                projectId: $projectId,
+                currentPeriod: $period,
+                environment: $environmentImpl,
+            );
+            $cookieStatistics = $this->projectStatisticsCalculator->calculateCookieStatistics(
+                projectId: $projectId,
+                endDate: $endDate,
+                environment: $environmentImpl,
+            );
+            $lastConsentDate = $this->projectStatisticsCalculator->calculateLastConsentDate(
+                projectId: $projectId,
+                endDate: $endDate,
+                environment: $environmentImpl,
+            );
+            $cookieSuggestionStatistics = $this->projectStatisticsCalculator->calculateCookieSuggestionStatistics(
+                projectId: $projectId,
+            );
 
             if (null !== $lastConsentDate) {
                 $lastConsentDate = $lastConsentDate->setTimezone($userTz);

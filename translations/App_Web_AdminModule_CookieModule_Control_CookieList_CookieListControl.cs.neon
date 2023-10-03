@@ -5,6 +5,7 @@ processing_time: Doba zpracování
 provider_name: Poskytovatel
 provider_type: Typ
 projects: Projekty
+environments: Prostředí
 created_at: Vytvořeno
 
 active_value: aktivní
@@ -13,6 +14,7 @@ inactive_value: neaktivní
 session: Session
 persistent: Persistent
 
+all_environments: Všechna prostředí
 and_more_projects: "[1,4] a %count% další|[5,Inf[ a %count% dalších"
 
 tooltip:

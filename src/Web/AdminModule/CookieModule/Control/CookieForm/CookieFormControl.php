@@ -127,7 +127,7 @@ final class CookieFormControl extends Control
             ->setDefaultValue(true)
             ->addCondition(Form::Equal, false)
             ->toggle('#' . $this->getUniqueId() . '-environments-container');
-            ;
+        ;
 
         $form->addCheckboxList('environments', 'environments.field')
             ->checkDefaultValue(false)

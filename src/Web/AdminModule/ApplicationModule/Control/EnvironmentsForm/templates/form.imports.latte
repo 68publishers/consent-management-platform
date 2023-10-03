@@ -15,7 +15,7 @@
                 <div class="flex-1">
                     {include #helpers-override-split, blockNamePrefix => control, control => $formContainer->getComponent('name')}
                 </div>
-                <div class="flex-1">
+                <div class="grow-0 shrink-0	basis-auto">
                     {include #helpers-override-split, blockNamePrefix => control, control => $formContainer->getComponent('color')}
                 </div>
 
@@ -23,7 +23,7 @@
                     <button
                             n:name="Contributte\FormMultiplier\Multiplier::SUBMIT_REMOVE_NAME"
                             data-spinner-for="self"
-                            class="rounded-full bg-white p-1.5 text-red-700 hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
+                            class="flex items-center justify-center h-10 w-10 rounded-full bg-white p-1.5 text-red-700 hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
                     >
                         {svg 'common/x-mark.svg', class: 'w-6 h-6'}
                     </button>

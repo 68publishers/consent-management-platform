@@ -78,6 +78,7 @@ final class ProjectFormControl extends Control
             ->setOption('description', 'domain.description');
 
         $form->addText('color', 'color.field')
+            ->setDefaultValue('#ffffff')
             ->setRequired('color.required')
             ->addRule($form::PATTERN, 'color.rule_pattern', '#([a-fA-F0-9]{3}){1,2}\b')
             ->setOption('type', 'color-picker');

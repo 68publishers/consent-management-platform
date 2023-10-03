@@ -39,6 +39,9 @@ final class ConsentStatisticsProjectionModel extends AbstractProjectionModel
         $table->addColumn('created_at', Types::DATETIME_IMMUTABLE)
             ->setNotnull(true);
 
+        $table->addColumn('environment', Types::STRING)
+            ->setNotnull(false);
+
         $table->addColumn('positive_count', Types::INTEGER)
             ->setNotnull(true);
 
@@ -48,20 +51,50 @@ final class ConsentStatisticsProjectionModel extends AbstractProjectionModel
         $table->setPrimaryKey(['id']);
 
         $table->addIndex(
-            ['consent_id'],
-            'idx_csp_consent_id',
+            columnNames: ['consent_id'],
+            indexName: 'idx_csp_consent_id',
         );
 
         $table->addIndex(
-            ['project_id', 'created_at'],
-            'idx_csp_project_id_created_at',
+            columnNames: ['project_id', 'created_at'],
+            indexName: 'idx_csp_project_id_created_at',
+        );
+        $table->addIndex(
+            columnNames: ['project_id', 'environment', 'created_at'],
+            indexName: 'idx_csp_project_id_environment_created_at',
+        );
+        $table->addIndex(
+            columnNames: ['project_id', 'environment', 'created_at'],
+            indexName: 'idx_csp_project_id_created_at_partial',
+            options: [
+                'where' => 'environment IS NULL',
+            ],
         );
 
         $table->addIndex(
-            ['project_id', 'consent_id', 'created_at'],
-            'idx_csp_project_id_consent_id_id',
-            [],
-            ['include' => ['positive_count', 'negative_count'], 'desc' => 'created_at'],
+            columnNames: ['project_id', 'consent_id', 'created_at'],
+            indexName: 'idx_csp_project_id_consent_id_created_at_include',
+            options: [
+                'include' => ['positive_count', 'negative_count'],
+                'desc' => 'created_at',
+            ],
+        );
+        $table->addIndex(
+            columnNames: ['project_id', 'environment', 'consent_id', 'created_at'],
+            indexName: 'idx_csp_project_id_environment_consent_id_created_at_include',
+            options: [
+                'include' => ['positive_count', 'negative_count'],
+                'desc' => 'created_at',
+            ],
+        );
+        $table->addIndex(
+            columnNames: ['project_id', 'consent_id', 'created_at'],
+            indexName: 'idx_csp_project_id_consent_id_created_at_include_partial',
+            options: [
+                'include' => ['positive_count', 'negative_count'],
+                'desc' => 'created_at',
+                'where' => 'environment IS NULL',
+            ],
         );
     }
 }

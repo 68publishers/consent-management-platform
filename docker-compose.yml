@@ -43,6 +43,7 @@ services:
         container_name: cmp-db
         profiles:
             - web
+            - worker
         shm_size: 256m
         ports:
             - "5432:5432"
@@ -71,6 +72,7 @@ services:
         container_name: cmp-redis
         profiles:
             - web
+            - worker
         command: redis-server --requirepass redis_pass
         ports:
             - "6379:6379"

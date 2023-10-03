@@ -1,9 +1,9 @@
-{varType App\ReadModel\Cookie\CookieDataGridItemView $item}
+{varType App\ReadModel\Cookie\CookieDataGridItem $item}
 {varType array $_acl}
 
 <a
     n:if="isset($_acl['resource'], $_acl['update']) && $user->isAllowed($_acl['resource'], $_acl['update'])"
-    href="{$linkFactory('openModal!', ['editModal-' . $item->id->id()->getHex()->toString()])}"
+    href="{$linkFactory('openModal!', ['editModal-' . Ramsey\Uuid\Uuid::fromString($item->id)->getHex()->toString()])}"
     x-data
     x-tooltip.placement.bottom.raw="{_tooltip.edit_action}"
     data-spinner-for="self"
