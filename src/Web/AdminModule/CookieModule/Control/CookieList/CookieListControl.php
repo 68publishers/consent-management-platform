@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\CookieModule\Control\CookieList;
 
+use App\Application\GlobalSettings\GlobalSettingsInterface;
 use App\Application\GlobalSettings\ValidLocalesProvider;
 use App\Domain\Cookie\Command\DeleteCookieCommand;
 use App\Domain\Cookie\ValueObject\CookieId;
 use App\Domain\CookieProvider\Exception\CookieProviderNotFoundException;
 use App\Domain\CookieProvider\ValueObject\CookieProviderId;
 use App\Domain\CookieProvider\ValueObject\ProviderType;
+use App\Domain\GlobalSettings\ValueObject\Environment;
 use App\Domain\Project\ValueObject\ProjectId;
+use App\Infrastructure\Cookie\Doctrine\ReadModel\CookiesDataGridQueryHandler;
 use App\ReadModel\Category\AllCategoriesQuery;
 use App\ReadModel\Category\CategoryView;
 use App\ReadModel\Cookie\CookiesDataGridQuery;
@@ -64,6 +67,7 @@ final class CookieListControl extends Control
         private readonly DataGridFactoryInterface $dataGridFactory,
         private readonly ConfirmModalControlFactoryInterface $confirmModalControlFactory,
         private readonly CookieFormModalControlFactoryInterface $cookieFormModalControlFactory,
+        private readonly GlobalSettingsInterface $globalSettings,
         private readonly ?CookieProviderId $cookieProviderId = null,
     ) {}
 
@@ -126,13 +130,14 @@ final class CookieListControl extends Control
         $grid->setTemplateVariables([
             '_locale' => $locale,
             '_acl' => $this->acl,
+            '_globalEnvironments' => $this->globalSettings->environments(),
         ]);
 
         $grid->setDefaultSort([
             'created_at' => 'DESC',
         ]);
 
-        $grid->addColumnText('name', 'name', 'cookieName.value')
+        $grid->addColumnText('name', 'name', 'cookieName')
             ->setSortable('cookieName')
             ->setFilterText('cookieName');
 
@@ -168,6 +173,23 @@ final class CookieListControl extends Control
             $grid->addColumnText('projects', 'projects')
                 ->setFilterMultiSelect($this->getProjects(), 'projects');
         }
+
+        $grid->addColumnText('environments', 'environments')
+            ->setFilterMultiSelect(
+                options: [CookiesDataGridQueryHandler::FILTER_ENVIRONMENTS_DEFAULT_VALUE => $this->getTranslator()->translate('//layout.default_environment')]
+                + array_combine(
+                    array_map(
+                        static fn (Environment $environment): string => $environment->code,
+                        $this->globalSettings->environments()->all(),
+                    ),
+                    array_map(
+                        static fn (Environment $environment): string => $environment->name,
+                        $this->globalSettings->environments()->all(),
+                    ),
+                ),
+                column: 'environments',
+            );
+        ;
 
         $grid->addColumnDateTimeTz('created_at', 'created_at', 'createdAt')
             ->setFormat('j.n.Y H:i:s')

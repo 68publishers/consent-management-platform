@@ -27,15 +27,15 @@
 
 {define col-environment}
     {if null === $item->environment}
-        <span class="inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-black">{_//layout.default_environment}</span>
+        <span class="inline-flex items-center rounded-md bg-gray-200 px-2 py-1 text-xs font-medium text-black">{_//layout.default_environment}</span>
     {elseif isset($environments[$item->environment])}
-        <label
+        <span
             class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium"
             style="background: {$environments[$item->environment]->color->value()|noescape} !important; color: {App\Web\Utils\Color::resolveFontColor($environments[$item->environment]->color->value())|noescape} !important;"
         >
             {$environments[$item->environment]->name}
-        </label>
+        </span>
     {else}
-        <span class="inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-black">{$item->environment}</span>
+        <span class="inline-flex items-center rounded-md bg-gray-200 px-2 py-1 text-xs font-medium text-black">{$item->environment}</span>
     {/if}
 {/define}

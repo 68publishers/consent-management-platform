@@ -9,6 +9,8 @@ use App\Application\Acl\FoundCookiesResource;
 use App\Application\Acl\ProjectConsentResource;
 use App\Application\Acl\ProjectCookieProviderResource;
 use App\Application\Acl\ProjectCookieResource;
+use App\Application\GlobalSettings\EnabledEnvironmentsResolver;
+use App\Domain\GlobalSettings\ValueObject\Environment;
 use App\ReadModel\Project\FindUserProjectsQuery;
 use App\ReadModel\Project\ProjectView;
 use App\ReadModel\User\UserView;
@@ -36,6 +38,7 @@ final class DashboardPresenter extends AdminPresenter
         $template = $this->getTemplate();
         assert($template instanceof DashboardTemplate);
 
+        $globalEnvironments = $this->globalSettings->environments();
         $projects = $this->queryBus->dispatch(FindUserProjectsQuery::create($this->getIdentity()->id()->toString()));
 
         $template->projectsData = array_map(fn (ProjectView $project) => [
@@ -44,6 +47,30 @@ final class DashboardPresenter extends AdminPresenter
             'name' => $project->name->value(),
             'color' => $project->color->value(),
             'fontColor' => Color::resolveFontColor($project->color->value()),
+            'environments' => array_merge(
+                [
+                    [
+                        'code' => '//default//',
+                        'name' => $this->getTranslator()->translate('//layout.default_environment'),
+                        'color' => '#e5e7eb',
+                        'fontColor' => '#000000',
+                    ],
+                ],
+                array_values(
+                    array_map(
+                        static fn (Environment $environment): array => [
+                            'code' => $environment->code,
+                            'name' => $environment->name,
+                            'color' => $environment->color->value(),
+                            'fontColor' => Color::resolveFontColor($environment->color->value()),
+                        ],
+                        EnabledEnvironmentsResolver::resolveProjectEnvironments(
+                            globalSettingsEnvironments: $globalEnvironments,
+                            projectEnvironments: $project->environments,
+                        ),
+                    ),
+                ),
+            ),
             'links' => [
                 'consents' => $this->getUser()->isAllowed(ProjectConsentResource::class, ProjectConsentResource::READ)
                     ? $this->link(':Admin:Project:Consents:', ['project' => $project->code->value()])

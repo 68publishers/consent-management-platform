@@ -22,5 +22,7 @@ last_consent: Last consent
 providers: Providers
 cookies: Cookies
 
+all_environments: All environments
+
 cookies_tooltip_message: '%common% service cookies, %private% project cookies'
 cookie_suggestions_tooltip_message: Cookie suggestions

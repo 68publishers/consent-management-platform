@@ -14,7 +14,7 @@ const mergeObjects = (target, source) => {
     Object.assign(target || {}, source);
 
     return target;
-}
+};
 
 module.exports = () => ({
     request: null,
@@ -54,7 +54,32 @@ module.exports = () => ({
             this.addProject(projects[i]);
         }
 
-        // setup the default range
+        const currentEnvironmentsState = JSON.parse(window.localStorage.getItem('cmp_dashboard_environments') || '{}');
+
+        for (let project of this.projects) {
+            if (!(project.code in currentEnvironmentsState)) {
+                continue;
+            }
+
+            let environmentFound = false;
+
+            for (let environment of project.environments) {
+                if (environment.code === currentEnvironmentsState[project.code]) {
+                    environmentFound = true;
+                    project.currentEnvironment = environment;
+
+                    break;
+                }
+            }
+
+            if (!environmentFound) {
+                delete currentEnvironmentsState[project.code];
+            }
+        }
+
+        window.localStorage.setItem('cmp_dashboard_environments', JSON.stringify(currentEnvironmentsState));
+
+        // set up the default range
         const range = this.createRangeFromDate(-6, 0);
         this.setRange(range[0], range[1]);
 
@@ -62,6 +87,42 @@ module.exports = () => ({
         this.$watch('range', (() => {
             this.reloadAllProjectsData();
         }));
+    },
+
+    changeProjectEnvironment(code, environment) {
+        for (let i in this.projects) {
+            const project = this.projects[i];
+
+            if (code !== project.code) {
+                continue;
+            }
+
+            if (
+                null === project.currentEnvironment && null === environment
+                || (null !== project.currentEnvironment && null !== environment && project.currentEnvironment.code === environment.code)
+            ) {
+               continue;
+            }
+
+            project.currentEnvironment = environment;
+            project.status = this.STATUS_LOADING();
+
+            const currentEnvironmentsState = JSON.parse(window.localStorage.getItem('cmp_dashboard_environments') || '{}');
+
+            if (null !== environment) {
+                currentEnvironmentsState[project.code] = environment.code;
+            } else if (project.code in currentEnvironmentsState) {
+                delete currentEnvironmentsState[project.code];
+            }
+
+            window.localStorage.setItem('cmp_dashboard_environments', JSON.stringify(currentEnvironmentsState));
+
+            this.loadProjectsData(this.range.startDate, this.range.endDate);
+
+            break;
+        }
+
+        return true;
     },
 
     reloadAllProjectsData() {
@@ -90,7 +151,7 @@ module.exports = () => ({
     },
 
     loadProjectsData(start, end) {
-        const doLoad = (codes) => {
+        const doLoad = (project) => {
             let query = [];
 
             for (let requestQueryName in this.request.query) {
@@ -99,9 +160,10 @@ module.exports = () => ({
 
             query.push(`startDate=${encodeURIComponent(start.format('YYYY-MM-DD'))}`);
             query.push(`endDate=${encodeURIComponent(end.format('YYYY-MM-DD'))}`);
+            query.push(`projects[]=${encodeURIComponent(project.code)}`);
 
-            for (let i in codes) {
-                query.push(`projects[]=${encodeURIComponent(codes[i])}`);
+            if (null !== project.currentEnvironment) {
+                query.push(`environment=${encodeURIComponent(project.currentEnvironment.code)}`);
             }
 
             const promise = fetch(this.request.endpoint + '?' + query.join('&'), {
@@ -117,37 +179,21 @@ module.exports = () => ({
                 }
 
                 const data = json.data;
+                const projectData = data[project.code];
 
-                for (let i in this.projects) {
-                    const project = this.projects[i];
+                if (!projectData) {
+                    project.status = this.STATUS_MISSING();
 
-                    if (-1 === codes.indexOf(project.code)) {
-                        continue;
-                    }
-
-                    const projectData = data[project.code];
-
-                    if (!projectData) {
-                        project.status = this.STATUS_MISSING();
-
-                        continue;
-                    }
-
-                    project.data = mergeObjects(project.data, projectData);
-                    project.status = this.STATUS_LOADED();
+                    return;
                 }
+
+                project.data = mergeObjects(project.data, projectData);
+                project.status = this.STATUS_LOADED();
             }).catch((e) => {
                 console.warn(e);
-
-                for (let i in this.projects) {
-                    if (-1 !== codes.indexOf(this.projects[i].code)) {
-                        this.projects[i].status = this.STATUS_ERROR();
-                    }
-                }
+                project.status = this.STATUS_ERROR();
             });
         };
-
-        let codes = [];
 
         for (let i in this.projects) {
             const project = this.projects[i];
@@ -156,17 +202,8 @@ module.exports = () => ({
                 continue;
             }
 
-            codes.push(project.code);
             project.status = this.STATUS_PROCESSING();
-
-            if (1 === codes.length) {
-                doLoad(codes);
-                codes = [];
-            }
-        }
-
-        if (0 < codes.length) {
-            doLoad(codes);
+            doLoad(project);
         }
     },
 
@@ -198,9 +235,11 @@ module.exports = () => ({
             name: null,
             color: null,
             fontColor: '#ffffff',
+            environments: [],
             status: this.STATUS_LOADING(),
             data: this.createEmptyProjectData(),
             visible: false,
+            currentEnvironment: null,
         };
 
         const project = mergeObjects(def, data);

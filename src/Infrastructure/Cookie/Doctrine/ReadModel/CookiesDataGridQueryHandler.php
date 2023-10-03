@@ -4,41 +4,42 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Cookie\Doctrine\ReadModel;
 
-use App\Domain\Category\Category;
-use App\Domain\Cookie\Cookie;
-use App\Domain\CookieProvider\CookieProvider;
-use App\Domain\Project\Project;
-use App\Domain\Project\ProjectHasCookieProvider;
 use App\Infrastructure\DataGridQueryHandlerTrait;
-use App\ReadModel\Cookie\CookieDataGridItemView;
+use App\ReadModel\Cookie\CookieDataGridItem;
+use App\ReadModel\Cookie\CookieProjectItem;
 use App\ReadModel\Cookie\CookiesDataGridQuery;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Query\QueryBuilder;
+use Doctrine\DBAL\Query\QueryBuilder as DbalQueryBuilder;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Doctrine\ORM\Query\Expr\Join;
-use Doctrine\ORM\QueryBuilder;
+use JsonException;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\QueryHandlerInterface;
 
 final class CookiesDataGridQueryHandler implements QueryHandlerInterface
 {
     use DataGridQueryHandlerTrait;
 
+    public const FILTER_ENVIRONMENTS_DEFAULT_VALUE = '//default//';
+
     /**
-     * @throws NoResultException
-     * @throws NonUniqueResultException
-     * @throws Exception
+     * @throws NonUniqueResultException|NoResultException|JsonException|Exception
      */
     public function __invoke(CookiesDataGridQuery $query): array|int
     {
+        $connection = $this->em->getConnection();
+
         return $this->processQuery(
             $query,
-            function (CookiesDataGridQuery $query): QueryBuilder {
-                $qb = $this->em->createQueryBuilder()
+            static function (CookiesDataGridQuery $query) use ($connection): QueryBuilder {
+                $qb = $connection->createQueryBuilder()
                     ->select('COUNT(c.id)')
-                    ->from(Cookie::class, 'c')
-                    ->leftJoin(Category::class, 'cat', Join::WITH, 'cat.id = c.categoryId AND cat.deletedAt IS NULL')
-                    ->join(CookieProvider::class, 'cp', Join::WITH, 'cp.id = c.cookieProviderId AND cp.deletedAt IS NULL')
-                    ->where('c.deletedAt IS NULL');
+                    ->from('cookie', 'c')
+                    ->leftJoin('c', 'category', 'cat', 'c.category_id = cat.id AND cat.deleted_at IS NULL')
+                    ->join('c', 'cookie_provider', 'cp', 'c.cookie_provider_id = cp.id AND cp.deleted_at IS NULL')
+                    ->where('c.deleted_at IS NULL');
 
                 if (null !== $query->cookieProviderId()) {
                     $qb->andWhere('cp.id = :cookieProviderId')
@@ -46,11 +47,11 @@ final class CookiesDataGridQueryHandler implements QueryHandlerInterface
                 }
 
                 if (null !== $query->projectId()) {
-                    $qb->leftJoin(ProjectHasCookieProvider::class, 'phcp', Join::WITH, 'phcp.cookieProviderId = cp.id')
-                        ->leftJoin('phcp.project', 'phcp_p', Join::WITH, 'phcp_p.deletedAt IS NULL');
+                    $qb->leftJoin('cp', 'project_has_cookie_provider', 'phcp', 'cp.id = phcp.cookie_provider_id')
+                        ->leftJoin('phcp', 'project', 'phcp_p', 'phcp.project_id = phcp_p.id AND phcp_p.deleted_at IS NULL');
 
                     if (false === $query->projectServicesOnly()) {
-                        $qb->leftJoin(Project::class, 'p', Join::WITH, 'p.cookieProviderId = cp.id AND p.deletedAt IS NULL');
+                        $qb->leftJoin('cp', 'project', 'p', 'cp.id = p.cookie_provider_id AND p.deleted_at IS NULL');
                     }
 
                     $qb->andWhere($query->projectServicesOnly() ? 'phcp_p.id = :projectId' : 'phcp_p.id = :projectId OR p.id = :projectId')
@@ -59,15 +60,15 @@ final class CookiesDataGridQueryHandler implements QueryHandlerInterface
 
                 return $qb;
             },
-            function (CookiesDataGridQuery $query): QueryBuilder {
-                $qb = $this->em->createQueryBuilder()
-                    ->select('c.id AS id, cat.id AS categoryId, c.name AS cookieName, c.processingTime AS processingTime, c.active AS active, cat_t.name AS categoryName, c.createdAt AS createdAt')
-                    ->addSelect('cp.id AS cookieProviderId, cp.name AS cookieProviderName, cp.type AS cookieProviderType, cp.private AS cookieProviderPrivate')
-                    ->from(Cookie::class, 'c')
-                    ->leftJoin(Category::class, 'cat', Join::WITH, 'cat.id = c.categoryId AND cat.deletedAt IS NULL')
-                    ->leftJoin('cat.translations', 'cat_t', Join::WITH, 'cat_t.locale = :locale')
-                    ->join(CookieProvider::class, 'cp', Join::WITH, 'cp.id = c.cookieProviderId AND cp.deletedAt IS NULL')
-                    ->where('c.deletedAt IS NULL')
+            static function (CookiesDataGridQuery $query) use ($connection): QueryBuilder {
+                $qb = $connection->createQueryBuilder()
+                    ->select('c.id AS id, cat.id AS category_id, c.name AS cookie_name, c.processing_time, c.active, cat_t.name AS category_name, c.created_at, c.all_environments, c.environments')
+                    ->addSelect('cp.id AS cookie_provider_id, cp.name AS cookie_provider_name, cp.type AS cookie_provider_type, cp.private AS cookie_provider_private')
+                    ->from('cookie', 'c')
+                    ->leftJoin('c', 'category', 'cat', 'c.category_id = cat.id AND cat.deleted_at IS NULL')
+                    ->leftJoin('cat', 'category_translation', 'cat_t', 'cat.id = cat_t.category_id AND cat_t.locale = :locale')
+                    ->join('c', 'cookie_provider', 'cp', 'c.cookie_provider_id = cp.id AND cp.deleted_at IS NULL')
+                    ->where('c.deleted_at IS NULL')
                     ->setParameters([
                         'locale' => $query->locale() ?? '_unknown_',
                     ]);
@@ -78,11 +79,11 @@ final class CookiesDataGridQueryHandler implements QueryHandlerInterface
                 }
 
                 if (null !== $query->projectId()) {
-                    $qb->leftJoin(ProjectHasCookieProvider::class, 'phcp', Join::WITH, 'phcp.cookieProviderId = cp.id')
-                        ->leftJoin('phcp.project', 'phcp_p', Join::WITH, 'phcp_p.deletedAt IS NULL');
+                    $qb->leftJoin('cp', 'project_has_cookie_provider', 'phcp', 'cp.id = phcp.cookie_provider_id')
+                        ->leftJoin('phcp', 'project', 'phcp_p', 'phcp.project_id = phcp_p.id AND phcp_p.deleted_at IS NULL');
 
                     if (false === $query->projectServicesOnly()) {
-                        $qb->leftJoin(Project::class, 'p', Join::WITH, 'p.cookieProviderId = cp.id AND p.deletedAt IS NULL');
+                        $qb->leftJoin('cp', 'project', 'p', 'cp.id = p.cookie_provider_id AND p.deleted_at IS NULL');
                     }
 
                     $qb->andWhere($query->projectServicesOnly() ? 'phcp_p.id = :projectId' : 'phcp_p.id = :projectId OR p.id = :projectId')
@@ -90,39 +91,57 @@ final class CookiesDataGridQueryHandler implements QueryHandlerInterface
                 }
 
                 if ($query->includeProjectsData()) {
-                    $projectsSubQuery = $this->em->createQueryBuilder()
-                        ->select('JSON_AGG(DISTINCT __p.name ORDER BY __p.name)')
-                        ->from(Project::class, '__p')
-                        ->leftJoin('__p.cookieProviders', '__phcp', Join::WITH)
-                        ->where('__p.deletedAt IS NULL')
-                        ->andWhere('__p.cookieProviderId = cp.id OR __phcp.cookieProviderId = cp.id')
-                        ->getQuery()
-                        ->getDQL();
+                    $projectsSubQuery1 = $connection->createQueryBuilder()
+                        ->select('DISTINCT __p.code, __p.name, __p.color')
+                        ->from('project', '__p')
+                        ->leftJoin('__p', 'project_has_cookie_provider', '__phcp', '__p.id = __phcp.project_id')
+                        ->where('__p.deleted_at IS NULL')
+                        ->andWhere('__p.cookie_provider_id = cp.id OR __phcp.cookie_provider_id = cp.id')
+                        ->getSQL();
+
+                    $projectsSubQuery2 = $connection->createQueryBuilder()
+                        ->select('json_agg(jsonb_build_object(\'name\', __p2.name, \'color\', __p2.color) ORDER BY __p2.name)')
+                        ->from('(' . $projectsSubQuery1 . ')', '__p2');
 
                     $qb->addSelect(sprintf(
                         '(%s) AS projects',
-                        $projectsSubQuery,
+                        $projectsSubQuery2,
                     ));
                 }
 
                 return $qb;
             },
-            CookieDataGridItemView::class,
+            fn (array $row): CookieDataGridItem => new CookieDataGridItem(
+                id: $row['id'],
+                cookieName: $row['cookie_name'],
+                processingTime: $row['processing_time'],
+                active: $row['active'],
+                categoryId: $row['category_id'],
+                categoryName: $row['category_name'],
+                cookieProviderId: $row['cookie_provider_id'],
+                cookieProviderName: $row['cookie_provider_name'],
+                cookieProviderType: $row['cookie_provider_type'],
+                cookieProviderPrivate: $row['cookie_provider_private'],
+                createdAt: $connection->convertToPHPValue($row['created_at'], Types::DATETIME_IMMUTABLE),
+                projects: $this->mapProjects($row['projects'] ?? null),
+                environments: $row['all_environments'] ? true : $connection->convertToPHPValue($row['environments'], Types::JSON),
+            ),
             [
                 'id' => ['applyEquals', 'c.id'],
                 'cookieName' => ['applyLike', 'c.name'],
                 'categoryId' => ['applyIn', 'cat.id'],
                 'providerId' => ['applyIn', 'cp.id'],
                 'providerType' => ['applyEquals', 'cp.type'],
-                'createdAt' => ['applyDate', 'c.createdAt'],
+                'createdAt' => ['applyDate', 'c.created_at'],
                 'active' => ['applyEquals', 'c.active'],
                 'projects' => ['applyProjects', '_'],
+                'environments' => ['applyEnvironments', '_'],
             ],
             [
                 'cookieName' => 'c.name',
                 'categoryName' => 'cat_t.name',
                 'providerName' => 'cp.name',
-                'createdAt' => 'c.createdAt',
+                'createdAt' => 'c.created_at',
             ],
         );
     }
@@ -136,14 +155,75 @@ final class CookiesDataGridQueryHandler implements QueryHandlerInterface
         }
 
         $paramName = $this->newParameterName();
+        $existsQuery1 = $this->em->getConnection()->createQueryBuilder()
+            ->select('1')
+            ->from('project_has_cookie_provider', 'project_filter1')
+            ->where('project_filter1.cookie_provider_id = cp.id')
+            ->andWhere(sprintf('project_filter1.project_id IN (:%s)', $paramName))
+            ->getSQL();
 
-        $qb->leftJoin(ProjectHasCookieProvider::class, 'phcp', Join::WITH, 'phcp.cookieProviderId = cp.id')
-            ->leftJoin(Project::class, 'p_private', Join::WITH, 'p_private.cookieProviderId = cp.id')
-            ->andWhere(sprintf(
-                'p_private.id IN (:%s) OR phcp.project IN (:%s)',
-                $paramName,
-                $paramName,
-            ))
-            ->setParameter($paramName, $value);
+        $existsQuery2 = $this->em->getConnection()->createQueryBuilder()
+            ->select('1')
+            ->from('project', 'project_filter2')
+            ->where('project_filter2.cookie_provider_id = cp.id')
+            ->andWhere(sprintf('project_filter2.id IN (:%s)', $paramName))
+            ->getSQL();
+
+        $qb->andWhere(sprintf(
+            '(EXISTS(%s) OR EXISTS(%s))',
+            $existsQuery1,
+            $existsQuery2,
+        ));
+        $qb->setParameter($paramName, $value, ArrayParameterType::STRING);
+    }
+
+    public function applyEnvironments(DbalQueryBuilder $qb, string $_, mixed $value): void
+    {
+        $conditions = [
+            'c.all_environments = true',
+        ];
+
+        foreach ((array) $value as $v) {
+            if (self::FILTER_ENVIRONMENTS_DEFAULT_VALUE === $v) {
+                $v = null;
+            }
+
+            $p = $this->newParameterName();
+            $conditions[] = sprintf(
+                'c.environments @> :%s',
+                $p,
+            );
+
+            $qb->setParameter($p, json_encode($v));
+        }
+
+        $qb->andWhere('(' . implode(' OR ', $conditions) . ')');
+    }
+
+    /**
+     * @return array<int, CookieProjectItem>
+     * @throws JsonException
+     */
+    private function mapProjects(mixed $projectsJson): array
+    {
+        if (!is_string($projectsJson)) {
+            return [];
+        }
+
+        $decoded = json_decode(
+            json: $projectsJson,
+            associative: true,
+            flags: JSON_THROW_ON_ERROR,
+        );
+        $projects = [];
+
+        foreach ($decoded as $item) {
+            $projects[] = new CookieProjectItem(
+                name: $item['name'],
+                color: $item['color'],
+            );
+        }
+
+        return $projects;
     }
 }

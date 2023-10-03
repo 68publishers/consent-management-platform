@@ -1,9 +1,9 @@
-{varType App\ReadModel\Cookie\CookieDataGridItemView $item}
+{varType App\ReadModel\Cookie\CookieDataGridItem $item}
 {varType array $_acl}
 
 <a
     n:if="!isset($_acl['resource'], $_acl['delete']) || $user->isAllowed($_acl['resource'], $_acl['delete'])"
-    href="{$linkFactory('openModal!', ['deleteConfirm-' . $item->id->id()->getHex()->toString()])}"
+    href="{$linkFactory('openModal!', ['deleteConfirm-' . Ramsey\Uuid\Uuid::fromString($item->id)->getHex()->toString()])}"
     x-data
     x-tooltip.placement.bottom.raw="{_tooltip.delete_action}"
     data-spinner-for="self"

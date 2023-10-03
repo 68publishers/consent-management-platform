@@ -28,14 +28,27 @@ final class CalculateConsentStatisticsPerPeriodQueryHandler implements QueryHand
      */
     public function __invoke(CalculateConsentStatisticsPerPeriodQuery $query): ConsentStatisticsView
     {
-        $totalStatisticsQuery = '
+        $environmentParameter = $query->namedEnvironment();
+
+        $environmentCondition = $query->defaultEnvironment() ? 'AND sp.environment IS NULL' : (null !== $query->namedEnvironment() ? 'AND sp.environment = :environment' : '');
+        $totalStatisticsQuery = <<<SQL
         SELECT
             count(*) AS "totalConsentsCount",
             coalesce(sum(sp.positive_count), 0) AS "totalPositiveCount",
             coalesce(sum(sp.negative_count), 0) AS "totalNegativeCount"
         FROM consent_statistics_projection sp
-        WHERE sp.project_id = :projectId AND sp.created_at BETWEEN :startDate AND :endDate
-        ';
+        WHERE sp.project_id = :projectId $environmentCondition AND sp.created_at BETWEEN :startDate AND :endDate
+        SQL;
+
+        $parameters = [
+            'projectId' => $query->projectId(),
+            'startDate' => $query->startDate(),
+            'endDate' => $query->endDate(),
+        ];
+
+        if (null !== $environmentParameter) {
+            $parameters['environment'] = $environmentParameter;
+        }
 
         $rsm = new ResultSetMappingBuilder($this->em);
         $rsm->addScalarResult('totalConsentsCount', 'totalConsentsCount', 'integer');
@@ -43,14 +56,11 @@ final class CalculateConsentStatisticsPerPeriodQueryHandler implements QueryHand
         $rsm->addScalarResult('totalNegativeCount', 'totalNegativeCount', 'integer');
 
         $totalData = $this->em->createNativeQuery($totalStatisticsQuery, $rsm)
-            ->setParameters([
-                'projectId' => $query->projectId(),
-                'startDate' => $query->startDate(),
-                'endDate' => $query->endDate(),
-            ])
+            ->setParameters($parameters)
             ->getSingleResult(AbstractQuery::HYDRATE_ARRAY);
 
-        $uniqueStatisticsQuery = '
+        $environmentCondition = $query->defaultEnvironment() ? 'AND _sp.environment IS NULL' : (null !== $query->namedEnvironment() ? 'AND _sp.environment = :environment' : '');
+        $uniqueStatisticsQuery = <<<SQL
         SELECT
             count(*) AS "uniqueConsentsCount",
             coalesce(sum(sp.positive_count), 0) AS "uniquePositiveCount",
@@ -58,10 +68,20 @@ final class CalculateConsentStatisticsPerPeriodQueryHandler implements QueryHand
         FROM (
             SELECT DISTINCT ON (_sp.consent_id) _sp.positive_count, _sp.negative_count
             FROM consent_statistics_projection _sp
-            WHERE _sp.project_id = :projectId AND _sp.created_at BETWEEN :startDate AND :endDate
+            WHERE _sp.project_id = :projectId $environmentCondition AND _sp.created_at BETWEEN :startDate AND :endDate
             ORDER BY _sp.consent_id, _sp.created_at DESC
         ) sp
-        ';
+        SQL;
+
+        $parameters = [
+            'projectId' => $query->projectId(),
+            'startDate' => $query->startDate(),
+            'endDate' => $query->endDate(),
+        ];
+
+        if (null !== $environmentParameter) {
+            $parameters['environment'] = $environmentParameter;
+        }
 
         $rsm = new ResultSetMappingBuilder($this->em);
         $rsm->addScalarResult('uniqueConsentsCount', 'uniqueConsentsCount', 'integer');
@@ -69,11 +89,7 @@ final class CalculateConsentStatisticsPerPeriodQueryHandler implements QueryHand
         $rsm->addScalarResult('uniqueNegativeCount', 'uniqueNegativeCount', 'integer');
 
         $uniqueData = $this->em->createNativeQuery($uniqueStatisticsQuery, $rsm)
-            ->setParameters([
-                'projectId' => $query->projectId(),
-                'startDate' => $query->startDate(),
-                'endDate' => $query->endDate(),
-            ])
+            ->setParameters($parameters)
             ->getSingleResult(AbstractQuery::HYDRATE_ARRAY);
 
         $data = array_merge($totalData, $uniqueData);

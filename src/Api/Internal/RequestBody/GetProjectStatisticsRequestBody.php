@@ -51,4 +51,6 @@ final class GetProjectStatisticsRequestBody extends BasicEntity
      * @var string|array<string>|NULL
      */
     public string|array|null $projects = null;
+
+    public ?string $environment = null;
 }

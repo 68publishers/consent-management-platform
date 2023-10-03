@@ -1,19 +1,20 @@
 {extends $originalTemplate}
 
-{varType App\ReadModel\Cookie\CookieDataGridItemView $item}
+{varType App\ReadModel\Cookie\CookieDataGridItem $item}
 {varType App\Application\GlobalSettings\Locale|null $_locale}
 {varType array $_acl}
 {varType App\ReadModel\CookieProvider\CookieProviderSelectOptionView[]|null $providers}
+{varType App\Domain\GlobalSettings\ValueObject\Environments $_globalEnvironments}
 
 {define col-name}
-    <a n:tag-if="isset($_acl['resource'], $_acl['update']) && $user->isAllowed($_acl['resource'], $_acl['update'])" href="{$linkFactory('openModal!', ['editModal-' . $item->id->id()->getHex()->toString()])}" data-spinner-for="self" class="ajax font-semibold">
-        {$item->cookieName->value()}
+    <a n:tag-if="isset($_acl['resource'], $_acl['update']) && $user->isAllowed($_acl['resource'], $_acl['update'])" href="{$linkFactory('openModal!', ['editModal-' . Ramsey\Uuid\Uuid::fromString($item->id)->getHex()->toString()])}" data-spinner-for="self" class="ajax font-semibold">
+        {$item->cookieName}
     </a>
 {/define}
 
 {define col-category_name}
     {if NULL !== $item->categoryName}
-        {$item->categoryName->value()}
+        {$item->categoryName}
     {else}
         -
     {/if}
@@ -21,7 +22,7 @@
 
 {define col-provider_name}
     <div class="inline-flex items-center">
-        {$item->cookieProviderName->value()}
+        {$item->cookieProviderName}
 
         {if $item->cookieProviderPrivate}
             {svg common/folder-open.svg, class: 'w-5 h-5 text-indigo-600 ml-2'}
@@ -56,19 +57,20 @@
 {/define}
 
 {define col-provider_type}
-    {_'//layout.cookie_provider_type.' . $item->cookieProviderType->value()}
+    {_'//layout.cookie_provider_type.' . $item->cookieProviderType}
 {/define}
 
 {define col-projects}
     <div class="min-w-[150px]">
-        {if NULL !== $item->projects && !empty($item->projects)}
+        {if !empty($item->projects)}
             {var $projects = $item->projects}
             {var $maxBadges = min([2, count($projects)])}
 
             <div class="whitespace-nowrap">
                 {for $i = 0; $i < $maxBadges; $i++}
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800 select-all">
-                        {array_shift($projects)}
+                    {var $project = array_shift($projects)}
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-md text-sm font-medium select-all" style="background: {$project->color|noescape} !important; color: {App\Web\Utils\Color::resolveFontColor($project->color)|noescape} !important;">
+                        {$project->name}
                     </span>
                 {/for}
 
@@ -76,8 +78,8 @@
                     {capture $tooltip}
                         <div>
                             <div n:foreach="$projects as $project" class="text-gray-800">
-                                <span class="block text-center px-2.5 py-0.5 my-1.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800 select-all">
-                                    {$project}
+                                <span class="block text-center px-2 py-0.5 my-1.5 rounded-md text-sm font-medium select-all" style="background: {$project->color|noescape} !important; color: {App\Web\Utils\Color::resolveFontColor($project->color)|noescape} !important;">
+                                    {$project->name}
                                 </span>
                             </div>
                         </div>
@@ -97,6 +99,42 @@
     </div>
 {/define}
 
+{define col-environments}
+    <div class="min-w-[150px]">
+        {if true === $item->environments}
+            <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-gray-900 ring-1 ring-inset ring-gray-200 bg-white select-all">
+                {_all_environments}
+            </span>
+        {else}
+            {var $environments = $item->environments}
+            {var $maxBadges = min([2, count($environments)])}
+
+            <div class="whitespace-nowrap">
+                {for $i = 0; $i < $maxBadges; $i++}
+                    {include #environment-badge, environment: array_shift($environments), vertical: false}
+                {/for}
+
+                {if 0 < count($environments)}
+                    {capture $tooltip}
+                        <div>
+                            <div n:foreach="$environments as $environment" class="text-gray-800">
+                                {include #environment-badge, environment: $environment, vertical: true}
+                            </div>
+                        </div>
+                    {/capture}
+
+                    {var $attrs = [
+                        'x-data' => TRUE,
+                        'x-tooltip.interactive.theme.light-border.placement.right.html.raw' => $tooltip
+                    ]}
+
+                    <span n:attr="$attrs">{_and_more_projects, count($environments)}</span>
+                {/if}
+            </div>
+        {/if}
+    </div>
+{/define}
+
 {define col-active}
     {if $item->active}
         <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">{_active_value}</span>
@@ -106,16 +144,28 @@
 {/define}
 
 {define col-processing_time}
-    {if NULL !== $item->processingTime && NULL !== $_locale}
-        {var $processingTime = $item->processingTime->print($_locale->code())}
+    {switch $item->processingTime}
+        {case App\Domain\Cookie\ValueObject\ProcessingTime::PERSISTENT}
+            {_persistent}
+        {case App\Domain\Cookie\ValueObject\ProcessingTime::SESSION}
+            {_session}
+        {default}
+            {App\Application\Helper\Estimate::fromMask($item->processingTime, $_locale->code(), 'en')}
+    {/switch}
+{/define}
 
-        {switch $processingTime}
-            {case App\Domain\Cookie\ValueObject\ProcessingTime::PERSISTENT}
-                {_persistent}
-            {case App\Domain\Cookie\ValueObject\ProcessingTime::SESSION}
-                {_session}
-            {default}
-                {$processingTime}
-        {/switch}
+{define #environment-badge, string|null $environment, bool $vertical = false}
+    {if null === $environment}
+        <span n:class="$vertical ? 'block text-center my-1.5' : 'inline-flex items-center', 'rounded-md bg-gray-200 px-2 py-1 text-xs font-medium text-black select-all'">{_//layout.default_environment}</span>
+    {elseif null !== $_globalEnvironments->getByCode($environment)}
+        {var $globalEnvironment = $_globalEnvironments->getByCode($environment)}
+        <span
+            n:class="$vertical ? 'block text-center my-1.5' : 'inline-flex items-center', 'rounded-md px-2 py-1 text-xs font-medium select-all'"
+            style="background: {$globalEnvironment->color->value()|noescape} !important; color: {App\Web\Utils\Color::resolveFontColor($globalEnvironment->color->value())|noescape} !important;"
+        >
+            {$globalEnvironment->name}
+        </span>
+    {else}
+        <span n:class="$vertical ? 'block text-center my-1.5' : 'inline-flex items-center', 'rounded-md bg-gray-200 px-2 py-1 text-xs font-medium text-black select-all'">{$environment}</span>
     {/if}
 {/define}

@@ -26,16 +26,24 @@ final class CalculateLastConsentDateQueryHandler implements QueryHandlerInterfac
      */
     public function __invoke(CalculateLastConsentDateQuery $query): ?DateTimeImmutable
     {
-        $result = $this->em->createQueryBuilder()
+        $qb = $this->em->createQueryBuilder()
             ->select('MAX(c.lastUpdateAt) AS last_consent_date')
             ->from(Consent::class, 'c')
             ->where('c.projectId = :projectId AND c.lastUpdateAt <= :maxDate')
             ->setParameters([
                 'projectId' => $query->projectId(),
                 'maxDate' => $query->maxDate(),
-            ])
-            ->getQuery()
-            ->getOneOrNullResult(AbstractQuery::HYDRATE_ARRAY);
+            ]);
+
+        if ($query->defaultEnvironment()) {
+            $qb->andWhere('c.environment IS NULL');
+        } elseif (null !== $query->namedEnvironment()) {
+            $qb->andWhere('c.environment = :environment')
+                ->setParameter('environment', $query->namedEnvironment());
+        }
+
+        $result = $qb->getQuery()->getOneOrNullResult(AbstractQuery::HYDRATE_ARRAY);
+        ;
 
         return null !== $result && isset($result['last_consent_date']) ? new DateTimeImmutable($result['last_consent_date'], new DateTimeZone('UTC')) : null;
     }

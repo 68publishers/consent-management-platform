@@ -75,9 +75,45 @@
                             </div>
                         </div>
 
-                        <button x-data x-tooltip.placement.left.raw="{{_reload_project_data}}" x-on:click="reloadProjectData(project.code)" class="cursor-pointer p-2">
-                            {{svg common/arrow-path.svg, 'class' => 'h-5 w-5 text-indigo-700', ':class' => "{'animate-spin': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}", 'stroke-width' => 2}}
-                        </button>
+                        <div class="flex items-center space-x-2">
+                            <div x-show="project.environments.length">
+                                <div x-data="dropdown" x-bind="dropdown" class="relative inline-block text-left">
+                                    <div>
+                                        <button x-bind="dropdownButton" type="button" class="inline-flex w-full justify-center">
+                                            <span x-show="null === project.currentEnvironment" class="inline-flex items-center w-full rounded-md px-2 py-2 text-xs font-medium bg-white color-black ring-1 ring-inset ring-gray-200">{{_all_environments}}</span>
+                                            <span
+                                                x-show="null !== project.currentEnvironment"
+                                                x-text="project.currentEnvironment ? project.currentEnvironment.name : ''"
+                                                :style="{ background: project.currentEnvironment ? project.currentEnvironment.color : '#fff', color: project.currentEnvironment ? project.currentEnvironment.fontColor : '#000' }"
+                                                class="inline-flex items-center w-full rounded-md px-2 py-2 text-xs font-medium"
+                                            ></span>
+                                        </button>
+                                    </div>
+
+                                    <div x-bind="dropdownPanel" x-cloak class="absolute right-0 z-10 mt-2 w-48 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" tabindex="-1">
+                                        <div>
+                                            <button @click="changeProjectEnvironment(project.code, null) && close()" class="block w-full p-1 hover:opacity-75" role="menuitem" tabindex="-1">
+                                                <span class="inline-flex items-center w-full rounded-md px-3 py-3 text-xs font-medium bg-white color-black ring-1 ring-inset ring-gray-200">{{_all_environments}}</span>
+                                            </button>
+                                        </div>
+                                        <template x-for="environment in project.environments" :key="environment.code">
+                                            <div>
+                                                <button @click="changeProjectEnvironment(project.code, environment) && close()" class="block w-full p-1 hover:opacity-75" role="menuitem" tabindex="-1">
+                                                    <span
+                                                        x-text="environment.name"
+                                                        :style="{ background: environment.color, color: environment.fontColor }"
+                                                        class="inline-flex items-center w-full rounded-md px-3 py-3 text-xs font-medium"
+                                                    ></span>
+                                                </button>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                            <button x-data x-tooltip.placement.left.raw="{{_reload_project_data}}" x-on:click="reloadProjectData(project.code)" class="cursor-pointer p-2">
+                                {{svg common/arrow-path.svg, 'class' => 'h-5 w-5 text-indigo-700', ':class' => "{'animate-spin': STATUS_LOADING() === project.status || STATUS_PROCESSING() === project.status}", 'stroke-width' => 2}}
+                            </button>
+                        </div>
                     </div>
                     <div x-bind="collapsePanel">
                         <div class="pb-8 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-7 gap-2">
