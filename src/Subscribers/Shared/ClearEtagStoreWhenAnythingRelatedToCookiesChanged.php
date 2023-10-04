@@ -13,6 +13,7 @@ use App\Domain\Cookie\Cookie;
 use App\Domain\Cookie\Event\CookieActiveStateChanged;
 use App\Domain\Cookie\Event\CookieCategoryChanged;
 use App\Domain\Cookie\Event\CookieCreated;
+use App\Domain\Cookie\Event\CookieEnvironmentsChanged;
 use App\Domain\Cookie\Event\CookieNameChanged;
 use App\Domain\Cookie\Event\CookieProcessingTimeChanged;
 use App\Domain\Cookie\Event\CookiePurposeChanged;
@@ -24,10 +25,12 @@ use App\Domain\CookieProvider\Event\CookieProviderNameChanged;
 use App\Domain\CookieProvider\Event\CookieProviderPurposeChanged;
 use App\Domain\CookieProvider\Event\CookieProviderTypeChanged;
 use App\Domain\GlobalSettings\Event\ApiCacheSettingsChanged;
+use App\Domain\GlobalSettings\Event\EnvironmentsChanged;
 use App\Domain\Project\Event\ProjectActiveStateChanged;
 use App\Domain\Project\Event\ProjectCodeChanged;
 use App\Domain\Project\Event\ProjectCookieProviderAdded;
 use App\Domain\Project\Event\ProjectCookieProviderRemoved;
+use App\Domain\Project\Event\ProjectEnvironmentsChanged;
 use App\Domain\Project\Event\ProjectLocalesChanged;
 use App\Domain\Project\Event\ProjectTemplateChanged;
 use App\Domain\Project\Project;
@@ -50,6 +53,7 @@ final class ClearEtagStoreWhenAnythingRelatedToCookiesChanged implements EventHa
         yield CookieNameChanged::class;
         yield CookieProcessingTimeChanged::class;
         yield CookiePurposeChanged::class;
+        yield CookieEnvironmentsChanged::class;
 
         # cookie provider updates
         yield CookieProviderActiveStateChanged::class;
@@ -71,9 +75,11 @@ final class ClearEtagStoreWhenAnythingRelatedToCookiesChanged implements EventHa
         yield ProjectCookieProviderRemoved::class;
         yield ProjectLocalesChanged::class;
         yield ProjectTemplateChanged::class;
+        yield ProjectEnvironmentsChanged::class;
 
         # global settings changes
         yield ApiCacheSettingsChanged::class;
+        yield EnvironmentsChanged::class;
 
         # deletes
         yield AggregateDeleted::class => [
