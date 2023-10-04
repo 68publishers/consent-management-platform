@@ -15,7 +15,61 @@
         <h3 class="text-lg leading-6 font-medium text-gray-900">{_heading_including}</h3>
     </div>
     <div class="max-w-2xl mx-auto px-4 py-8 sm:px-6">
-        <p class="mb-12">{_text_including}</p>
-        <textarea x-data x-codemirror.readonly.wrap="javascript" n:syntax="double"><script async id="cmp-cookies-table-script">!function(e,t,n=!0){var a=new XMLHttpRequest;a.onreadystatechange=(()=>{if(4===a.readyState&&0!==a.status){var e=a.responseText;200<=a.status&&300>a.status?document.getElementById("cmp-cookies-table-script").insertAdjacentHTML("beforebegin",e):console.warn(e)}}),a.onerror=(()=>{console.warn(a.statusText||"Can't load cookies table.")}),!0===n&&(n=document.documentElement.lang),a.open("get",e.replace(new RegExp("/$"),"")+"/api/v1/cookies/"+t+"/template"+(!1!==n?"?locale="+n:""),!0),a.send()}({{$appHost}}, {{$projectView->code->value()}});</script></textarea>
+        <p class="mb-6">{_text_including}</p>
+        <div
+            x-data="{
+                self: null,
+                environments: JSON.parse('{Nette\Utils\Json::encode($environments)}'),
+                currentEnvironment: null,
+                appHost: '{$appHost}',
+                projectCode: '{$projectView->code->value()}',
+                init() {
+                    this.self = this.$el;
+                    this.selectEnvironment(this.environments[0]);
+                },
+                selectEnvironment(environment) {
+                    this.currentEnvironment = environment;
+                    const textarea = this.self.querySelector('textarea');
+                    let script = this.$refs.scriptTemplate.innerHTML;
+
+                    script = script
+                        .replace('{{ APP_HOST }}', this.appHost)
+                        .replace('{{ PROJECT_CODE }}', this.projectCode)
+                        .replace('\'{{ ENVIRONMENT }}\'', '//default//' === environment.code ? 'null' : '\'' + environment.code + '\'');
+
+                    textarea.CodeMirror ? textarea.CodeMirror.setValue(script) : textarea.innerHTML = script;
+
+                    return true;
+                }
+            }"
+        >
+            <div x-data="dropdown" x-bind="dropdown" class="relative inline-block text-left mb-6">
+                <div>
+                    <button x-bind="dropdownButton" type="button" class="inline-flex w-full justify-center">
+                        <span
+                            x-text="currentEnvironment ? currentEnvironment.name : ''"
+                            :style="{ background: currentEnvironment ? currentEnvironment.color : '#fff', color: currentEnvironment ? currentEnvironment.fontColor : '#000' }"
+                            class="inline-flex items-center w-full rounded-md px-2 py-2 text-xs font-medium"
+                        ></span>
+                    </button>
+                </div>
+
+                <div x-bind="dropdownPanel" x-cloak class="absolute left-0 z-10 mt-2 w-48 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" tabindex="-1">
+                    <template x-for="environment in environments" :key="environment.code" hidden>
+                        <div>
+                            <button @click="selectEnvironment(environment) && close()" class="block w-full p-1 hover:opacity-75" role="menuitem" tabindex="-1">
+                                <span
+                                        x-text="environment.name"
+                                        :style="{ background: environment.color, color: environment.fontColor }"
+                                        class="inline-flex items-center w-full rounded-md px-3 py-3 text-xs font-medium"
+                                ></span>
+                            </button>
+                        </div>
+                    </template>
+                </div>
+            </div>
+            <template n:syntax="off" x-ref="scriptTemplate"><script async id="cmp-cookies-table-script">!function(e,t,n=null,o=null){var a=new XMLHttpRequest,l=[];a.onreadystatechange=()=>{if(4===a.readyState&&0!==a.status){var e=a.responseText;200<=a.status&&300>a.status?document.getElementById("cmp-cookies-table-script").insertAdjacentHTML("beforebegin",e):console.warn(e)}},a.onerror=()=>{console.warn(a.statusText||"Can't load cookies table.")},null===o&&(o=document.documentElement.lang),null!==o&&l.push("locale="+o),null!==n&&l.push("environment="+n),a.open("get",e.replace(new RegExp("/$"),"")+"/api/v1/cookies/"+t+"/template"+(l.length?"?"+l.join("&"):""),!0),a.send()}('{{ APP_HOST }}', '{{ PROJECT_CODE }}', '{{ ENVIRONMENT }}');</script></template>
+            <textarea x-data x-codemirror.readonly.wrap="javascript"></textarea>
+        </div>
     </div>
 </div>

@@ -212,7 +212,7 @@ final class CookiesController extends AbstractV1Controller
         $template = Template::create(
             $projectTemplate->projectId->toString(),
             $projectTemplate->template->value(),
-            TemplateArguments::create($data->providers, $data->cookies),
+            TemplateArguments::create($data->providers, $data->cookies, $requestEntity->environment),
         );
 
         $responseBody = $this->templateRenderer->render($template);

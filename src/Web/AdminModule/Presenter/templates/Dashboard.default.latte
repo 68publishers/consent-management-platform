@@ -96,7 +96,7 @@
                                                 <span class="inline-flex items-center w-full rounded-md px-3 py-3 text-xs font-medium bg-white color-black ring-1 ring-inset ring-gray-200">{{_all_environments}}</span>
                                             </button>
                                         </div>
-                                        <template x-for="environment in project.environments" :key="environment.code">
+                                        <template x-for="environment in project.environments" :key="environment.code" hidden>
                                             <div>
                                                 <button @click="changeProjectEnvironment(project.code, environment) && close()" class="block w-full p-1 hover:opacity-75" role="menuitem" tabindex="-1">
                                                     <span

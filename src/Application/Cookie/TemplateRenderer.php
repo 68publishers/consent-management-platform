@@ -39,6 +39,7 @@ final class TemplateRenderer implements TemplateRendererInterface
             return $latte->renderToString($template->projectId(), [
                 'providers' => $template->arguments()->providers(),
                 'cookies' => $template->arguments()->cookies(),
+                'environment' => $template->arguments()->environment(),
             ]);
         });
     }

@@ -43,6 +43,8 @@ function Codemirror(Alpine) {
 
         const editor = codemirror.fromTextArea(el, options);
 
+        el.CodeMirror = editor;
+
         editor.on('change', function() {
             editor.save();
         });
