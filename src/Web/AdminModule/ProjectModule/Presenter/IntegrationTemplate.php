@@ -7,4 +7,7 @@ namespace App\Web\AdminModule\ProjectModule\Presenter;
 final class IntegrationTemplate extends SelectedProjectTemplate
 {
     public string $appHost;
+
+    /** @var array<string, array<string, mixed>> */
+    public array $environments;
 }
