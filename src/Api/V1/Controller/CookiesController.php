@@ -105,7 +105,13 @@ final class CookiesController extends AbstractV1Controller
         $requestEntity = $request->getEntity();
         assert($requestEntity instanceof CookiesRequestBody);
 
-        $etagKey = sprintf('%s/%s/[%s]/json', $projectCode, $requestEntity->locale ?? '_', implode(',', (array) $requestEntity->category));
+        $etagKey = sprintf(
+            '%s/%s/%s/[%s]/json',
+            $projectCode,
+            $requestEntity->locale ?? '_',
+            $requestEntity->environment ?? '__default__',
+            implode(',', (array) $requestEntity->category),
+        );
 
         if ($this->isNotModified($etagKey, $request)) {
             return $response->withStatus(ApiResponse::S304_NOT_MODIFIED);
@@ -164,7 +170,13 @@ final class CookiesController extends AbstractV1Controller
         $requestEntity = $request->getEntity();
         assert($requestEntity instanceof CookiesRequestBody);
 
-        $etagKey = sprintf('%s/%s/[%s]/html', $projectCode, $requestEntity->locale ?? '_', implode(',', (array) $requestEntity->category));
+        $etagKey = sprintf(
+            '%s/%s/%s/[%s]/html',
+            $projectCode,
+            $requestEntity->locale ?? '_',
+            $requestEntity->environment ?? '__default__',
+            implode(',', (array) $requestEntity->category),
+        );
 
         if ($this->isNotModified($etagKey, $request)) {
             return $response->withStatus(ApiResponse::S304_NOT_MODIFIED);
