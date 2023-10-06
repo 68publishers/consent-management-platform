@@ -124,7 +124,8 @@ final class ProjectFormControl extends Control
             ->checkDefaultValue(false)
             ->setItems(['' => $translator->translate('//layout.default_environment')] + $environments)
             ->setTranslator(null)
-            ->setDisabled(['']);
+            ->setDisabled([''])
+            ->setDefaultValue(['']);
 
         $form->addTextArea('description', 'description.field', null, 4);
 
