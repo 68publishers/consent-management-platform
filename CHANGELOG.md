@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added ENV variable `GRID_COUNT_LIMIT`.
+- Added environment integration. In addition to the "Default environment", other custom environments can be defined in the application settings. These environments can be assigned to projects and cookies and can be filtered on them in the consent list or on the dashboard.
+- Added optional query parameter `environment` in the Cookies API.
+- Added optional body parameter `environment` in the Consent API.
+- Added new OpenApi schema `v1.1.0`.
 
 ### Changed
 
