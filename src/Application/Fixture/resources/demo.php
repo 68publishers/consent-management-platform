@@ -129,6 +129,7 @@ $fixtures['cookie'] = [
             'cs' => 'Session ID zákazníka.',
             'en' => 'Customer\'s session ID.',
         ],
+        'environments' => true,
     ],
     [
         'cookie_id' => CookieId::new()->toString(),
@@ -142,6 +143,7 @@ $fixtures['cookie'] = [
             'cs' => 'Facebook ID zákazníka.',
             'en' => 'Customer\'s Facebook ID.',
         ],
+        'environments' => true,
     ],
     [
         'cookie_id' => CookieId::new()->toString(),
@@ -155,6 +157,7 @@ $fixtures['cookie'] = [
             'cs' => 'Reklama.',
             'en' => 'Advertising.',
         ],
+        'environments' => true,
     ],
 ];
 
@@ -169,6 +172,7 @@ $fixtures['project'] = [
         'active' => true,
         'locales' => ['en', 'cs'],
         'default_locale' => 'en',
+        'environments' => [],
         'cookie_provider_id' => $fixtures['cookie_provider']['demo']['cookie_provider_id'],
         'cookie_provider_ids' => [
             $fixtures['cookie_provider']['facebook_login']['cookie_provider_id'],
