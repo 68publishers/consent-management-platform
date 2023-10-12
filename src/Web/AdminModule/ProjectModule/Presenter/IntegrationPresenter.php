@@ -12,7 +12,6 @@ use App\Web\AdminModule\ProjectModule\Control\TemplatesForm\Event\TemplatesUpdat
 use App\Web\AdminModule\ProjectModule\Control\TemplatesForm\TemplatesFormControl;
 use App\Web\AdminModule\ProjectModule\Control\TemplatesForm\TemplatesFormControlFactoryInterface;
 use App\Web\Ui\Form\FormFactoryInterface;
-use App\Web\Utils\Color;
 use Nette\InvalidStateException;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
@@ -39,13 +38,12 @@ final class IntegrationPresenter extends SelectedProjectPresenter
         assert($template instanceof IntegrationTemplate);
 
         $template->appHost = $this->getHttpRequest()->getUrl()->getHostUrl();
-        $template->environments = array_merge(
+        $template->environments = 0 < count($environments) ? array_merge(
             [
                 [
                     'code' => '//default//',
                     'name' => $this->getTranslator()->translate('//layout.default_environment'),
-                    'color' => '#e5e7eb',
-                    'fontColor' => '#000000',
+                    'color' => '#ffffff',
                 ],
             ],
             array_values(
@@ -54,12 +52,11 @@ final class IntegrationPresenter extends SelectedProjectPresenter
                         'code' => $environment->code,
                         'name' => $environment->name,
                         'color' => $environment->color->value(),
-                        'fontColor' => Color::resolveFontColor($environment->color->value()),
                     ],
                     $environments,
                 ),
             ),
-        );
+        ) : [];
     }
 
     protected function createComponentTemplatesForm(): TemplatesFormControl

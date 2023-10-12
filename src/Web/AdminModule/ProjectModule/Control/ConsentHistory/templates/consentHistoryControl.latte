@@ -96,23 +96,29 @@
                                 {/if}
                             </td>
                         </tr>
-                        <tr class="border-t border-gray-200">
+                        <tr n:if="0 < count($environments)" class="border-t border-gray-200">
                             <th colspan="2" scope="colgroup" class="bg-gray-50 px-2 py-2 text-left text-sm font-medium text-gray-900">{_environment}</th>
                         </tr>
-                        <tr class="border-t border-gray-200">
+                        <tr n:if="0 < count($environments)" class="border-t border-gray-200">
                             <td colspan="2" class="whitespace-nowrap px-2 py-2 text-sm text-left">
-                                {if null === $environment}
-                                    <span class="inline-flex items-center rounded-md bg-gray-200 px-2 py-1 text-xs font-medium text-black">{_//layout.default_environment}</span>
-                                {elseif isset($environments[$environment->value()])}
-                                    <label
-                                            class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium"
-                                            style="background: {$environments[$environment->value()]->color->value()|noescape} !important; color: {App\Web\Utils\Color::resolveFontColor($environments[$environment->value()]->color->value())|noescape} !important;"
-                                    >
+                                <span class="inline-flex items-center gap-x-1.5 rounded-md">
+                                    {if null === $environment}
+                                        {*<svg class="h-1.5 w-1.5 fill-white" viewBox="0 0 6 6" aria-hidden="true">
+                                            <circle cx="3" cy="3" r="3" />
+                                        </svg>*}
+                                        {_//layout.default_environment}
+                                    {elseif isset($environments[$environment->value()])}
+                                       <svg class="h-1.5 w-1.5 fill-white" viewBox="0 0 6 6" aria-hidden="true" style="fill: {$environments[$environment->value()]->color->value()|noescape}">
+                                            <circle cx="3" cy="3" r="3" />
+                                        </svg>
                                         {$environments[$environment->value()]->name}
-                                    </label>
-                                {else}
-                                    <span class="inline-flex items-center rounded-md bg-gray-200 px-2 py-1 text-xs font-medium text-black">{$environment->value()}</span>
-                                {/if}
+                                    {else}
+                                        {*<svg class="h-1.5 w-1.5 fill-white" viewBox="0 0 6 6" aria-hidden="true">
+                                            <circle cx="3" cy="3" r="3" />
+                                        </svg>*}
+                                        {$environment->value()}
+                                    {/if}
+                                </span>
                             </td>
                         </tr>
                         <tr n:if="0 < count($attributes->values())" class="border-t border-gray-200">

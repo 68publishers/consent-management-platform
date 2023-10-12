@@ -39,23 +39,17 @@
             </div>
             <div class="ml-3 text-sm">
                 {if '' === $k}
-                    <label
-                            n:name="$control:$k"
-                            class="inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-black"
-                    >
+                    <label n:name="$control:$k" class="inline-flex items-center gap-x-1.5 rounded-md px-2 py-0.5">
+                        <svg class="h-1.5 w-1.5 fill-white" viewBox="0 0 6 6" aria-hidden="true">
+                            <circle cx="3" cy="3" r="3" />
+                        </svg>
                         {=$control->translate($v)}
                     </label>
-                {elseif null === $environment}
-                    <label n:name="$control:$k" n:class="
-                        $control->getLabelPrototype()->class,
-                        'font-medium text-gray-700'
-                    ">{=$control->translate($v)}</label>
-                {else}
-                    <label
-                            n:name="$control:$k"
-                            class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium"
-                            style="background: {$environment->color->value()|noescape} !important; color: {App\Web\Utils\Color::resolveFontColor($environment->color->value())|noescape} !important;"
-                    >
+                {elseif null !== $environment}
+                    <label n:name="$control:$k" class="inline-flex items-center gap-x-1.5 rounded-md px-2 py-0.5">
+                        <svg class="h-1.5 w-1.5" viewBox="0 0 6 6" aria-hidden="true" style="fill: {$environment->color->value()|noescape}">
+                            <circle cx="3" cy="3" r="3" />
+                        </svg>
                         {=$control->translate($v)}
                     </label>
                 {/if}

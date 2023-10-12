@@ -26,16 +26,26 @@
 {/define}
 
 {define col-environment}
-    {if null === $item->environment}
-        <span class="inline-flex items-center rounded-md bg-gray-200 px-2 py-1 text-xs font-medium text-black">{_//layout.default_environment}</span>
-    {elseif isset($environments[$item->environment])}
-        <span
-            class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium"
-            style="background: {$environments[$item->environment]->color->value()|noescape} !important; color: {App\Web\Utils\Color::resolveFontColor($environments[$item->environment]->color->value())|noescape} !important;"
-        >
-            {$environments[$item->environment]->name}
-        </span>
-    {else}
-        <span class="inline-flex items-center rounded-md bg-gray-200 px-2 py-1 text-xs font-medium text-black">{$item->environment}</span>
-    {/if}
+    {include #environment-badge, code: $item->environment}
+{/define}
+
+{define #environment-badge, string|null $code}
+    <span class="inline-flex items-center gap-x-1.5 rounded-md px-2 py-1">
+        {if null === $code}
+            <svg class="h-1.5 w-1.5 fill-white" viewBox="0 0 6 6" aria-hidden="true">
+                <circle cx="3" cy="3" r="3" />
+            </svg>
+            {_//layout.default_environment}
+        {elseif isset($environments[$code])}
+           <svg class="h-1.5 w-1.5 fill-white" viewBox="0 0 6 6" aria-hidden="true" style="fill: {$environments[$code]->color->value()|noescape}">
+                <circle cx="3" cy="3" r="3" />
+            </svg>
+            {$environments[$code]->name}
+        {else}
+            <svg class="h-1.5 w-1.5 fill-white" viewBox="0 0 6 6" aria-hidden="true">
+                <circle cx="3" cy="3" r="3" />
+            </svg>
+            {$code}
+        {/if}
+    </span>
 {/define}

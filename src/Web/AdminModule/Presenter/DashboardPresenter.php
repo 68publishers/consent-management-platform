@@ -47,13 +47,12 @@ final class DashboardPresenter extends AdminPresenter
             'name' => $project->name->value(),
             'color' => $project->color->value(),
             'fontColor' => Color::resolveFontColor($project->color->value()),
-            'environments' => array_merge(
+            'environments' => 1 < count($projectEnvironments = array_merge(
                 [
                     [
                         'code' => '//default//',
                         'name' => $this->getTranslator()->translate('//layout.default_environment'),
-                        'color' => '#e5e7eb',
-                        'fontColor' => '#000000',
+                        'color' => '#ffffff',
                     ],
                 ],
                 array_values(
@@ -62,7 +61,6 @@ final class DashboardPresenter extends AdminPresenter
                             'code' => $environment->code,
                             'name' => $environment->name,
                             'color' => $environment->color->value(),
-                            'fontColor' => Color::resolveFontColor($environment->color->value()),
                         ],
                         EnabledEnvironmentsResolver::resolveProjectEnvironments(
                             globalSettingsEnvironments: $globalEnvironments,
@@ -70,7 +68,7 @@ final class DashboardPresenter extends AdminPresenter
                         ),
                     ),
                 ),
-            ),
+            )) ? $projectEnvironments : [],
             'links' => [
                 'consents' => $this->getUser()->isAllowed(ProjectConsentResource::class, ProjectConsentResource::READ)
                     ? $this->link(':Admin:Project:Consents:', ['project' => $project->code->value()])
