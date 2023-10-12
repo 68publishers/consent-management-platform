@@ -15,7 +15,7 @@
         <h3 class="text-lg leading-6 font-medium text-gray-900">{_heading_including}</h3>
     </div>
     <div class="max-w-2xl mx-auto px-4 py-8 sm:px-6">
-        <p class="mb-6">{_text_including}</p>
+        <p class="mb-4">{_text_including}</p>
         <div
             x-data="{
                 self: null,
@@ -25,7 +25,7 @@
                 projectCode: '{$projectView->code->value()}',
                 init() {
                     this.self = this.$el;
-                    this.selectEnvironment(this.environments[0]);
+                    this.selectEnvironment(this.environments[0] || null);
                 },
                 selectEnvironment(environment) {
                     this.currentEnvironment = environment;
@@ -35,7 +35,7 @@
                     script = script
                         .replace('{{ APP_HOST }}', this.appHost)
                         .replace('{{ PROJECT_CODE }}', this.projectCode)
-                        .replace('\'{{ ENVIRONMENT }}\'', '//default//' === environment.code ? 'null' : '\'' + environment.code + '\'');
+                        .replace('\'{{ ENVIRONMENT }}\'', null === environment || '//default//' === environment.code ? 'null' : '\'' + environment.code + '\'');
 
                     textarea.CodeMirror ? textarea.CodeMirror.setValue(script) : textarea.innerHTML = script;
 
@@ -43,29 +43,33 @@
                 }
             }"
         >
-            <div x-data="dropdown" x-bind="dropdown" class="relative inline-block text-left mb-6">
-                <div>
-                    <button x-bind="dropdownButton" type="button" class="inline-flex w-full justify-center">
-                        <span
-                            x-text="currentEnvironment ? currentEnvironment.name : ''"
-                            :style="{ background: currentEnvironment ? currentEnvironment.color : '#fff', color: currentEnvironment ? currentEnvironment.fontColor : '#000' }"
-                            class="inline-flex items-center w-full rounded-md px-2 py-2 text-xs font-medium"
-                        ></span>
-                    </button>
-                </div>
+            <div x-show="environments.length">
+                <div x-data="dropdown" x-bind="dropdown" class="relative inline-block text-left mb-2">
+                    <div>
+                        <button x-bind="dropdownButton" type="button" class="inline-flex items-center pl-4 pr-6 py-2 border border-transparent rounded-md text-sm font-medium bg-gray-50 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200">
+                            <span class="flex w-full items-center gap-x-1.5 rounded-md text-xs font-medium text-gray-900">
+                                <svg :style="{ fill: currentEnvironment ? currentEnvironment.color : '#ffffff' }" class="h-1.5 w-1.5" viewBox="0 0 6 6" aria-hidden="true">
+                                    <circle cx="3" cy="3" r="3" />
+                                </svg>
+                                <span x-text="currentEnvironment ? currentEnvironment.name : ''"></span>
+                            </span>
+                        </button>
+                    </div>
 
-                <div x-bind="dropdownPanel" x-cloak class="absolute left-0 z-10 mt-2 w-48 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" tabindex="-1">
-                    <template x-for="environment in environments" :key="environment.code" hidden>
-                        <div>
-                            <button @click="selectEnvironment(environment) && close()" class="block w-full p-1 hover:opacity-75" role="menuitem" tabindex="-1">
-                                <span
-                                        x-text="environment.name"
-                                        :style="{ background: environment.color, color: environment.fontColor }"
-                                        class="inline-flex items-center w-full rounded-md px-3 py-3 text-xs font-medium"
-                                ></span>
-                            </button>
-                        </div>
-                    </template>
+                    <div x-bind="dropdownPanel" x-cloak class="absolute left-0 z-10 mt-2 w-48 origin-top-left rounded-md bg-white shadow-lg py-1 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" tabindex="-1">
+                        <template x-for="environment in environments" :key="environment.code" hidden>
+                            <div class="px-1">
+                                <button @click="selectEnvironment(environment) && close()" type="button" class="flex w-full items-center px-3 py-2 text-sm text-gray-700 rounded hover:bg-gray-100 active:bg-gray-100 focus:bg-gray-100 border-none" role="menuitem" tabindex="-1">
+                                    <span class="flex w-full items-center gap-x-1.5 rounded-md text-xs font-medium text-gray-900">
+                                        <svg :style="{ fill: environment.color }" class="h-1.5 w-1.5" viewBox="0 0 6 6" aria-hidden="true">
+                                            <circle cx="3" cy="3" r="3" />
+                                        </svg>
+                                        <span x-text="environment.name"></span>
+                                    </span>
+                                </button>
+                            </div>
+                        </template>
+                    </div>
                 </div>
             </div>
             <template n:syntax="off" x-ref="scriptTemplate"><script async id="cmp-cookies-table-script">!function(e,t,n=null,o=null){var a=new XMLHttpRequest,l=[];a.onreadystatechange=()=>{if(4===a.readyState&&0!==a.status){var e=a.responseText;200<=a.status&&300>a.status?document.getElementById("cmp-cookies-table-script").insertAdjacentHTML("beforebegin",e):console.warn(e)}},a.onerror=()=>{console.warn(a.statusText||"Can't load cookies table.")},null===o&&(o=document.documentElement.lang),null!==o&&l.push("locale="+o),null!==n&&l.push("environment="+n),a.open("get",e.replace(new RegExp("/$"),"")+"/api/v1/cookies/"+t+"/template"+(l.length?"?"+l.join("&"):""),!0),a.send()}('{{ APP_HOST }}', '{{ PROJECT_CODE }}', '{{ ENVIRONMENT }}');</script></template>

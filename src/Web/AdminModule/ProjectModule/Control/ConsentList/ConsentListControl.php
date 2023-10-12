@@ -80,17 +80,19 @@ final class ConsentListControl extends Control
         $grid->addColumnText('settings_short_identifier', 'settings_short_identifier', 'settingsShortIdentifier')
             ->setAlign('center');
 
-        $grid->addColumnText('environment', 'environment', 'environment')
-            ->setAlign('center')
-            ->setFilterSelect(
-                options: FilterHelper::all($translator)
-                + [ConsentsDataGridQueryHandler::FILTER_ENVIRONMENT_DEFAULT_ENV_VALUE => $this->getTranslator()->translate('//layout.default_environment')]
-                + array_map(
-                    static fn (Environment $environment): string => $environment->name,
-                    $environments,
-                ),
-                column: 'environment',
-            );
+        if (0 < count($environments)) {
+            $grid->addColumnText('environment', 'environment', 'environment')
+                ->setAlign('center')
+                ->setFilterSelect(
+                    options: FilterHelper::all($translator)
+                    + [ConsentsDataGridQueryHandler::FILTER_ENVIRONMENT_DEFAULT_ENV_VALUE => $this->getTranslator()->translate('//layout.default_environment')]
+                    + array_map(
+                        static fn (Environment $environment): string => $environment->name,
+                        $environments,
+                    ),
+                    column: 'environment',
+                );
+        }
 
         $grid->addColumnDateTimeTz('created_at', 'created_at', 'createdAt')
             ->setFormat('j.n.Y H:i:s')
