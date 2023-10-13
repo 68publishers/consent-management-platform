@@ -5,6 +5,7 @@ code:
     placeholder: Code
     required: Please enter a code.
     rule:
+        pattern: 'Code can only contain lowercase letters (a-z), numbers, and the characters "_", "-" and ".".'
         values_are_not_unique: The code is duplicated.
 
 name:

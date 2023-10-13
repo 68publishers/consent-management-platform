@@ -11,10 +11,14 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractBatchedQuery
  */
 final class FindCookiesForApiQuery extends AbstractBatchedQuery
 {
-    public static function create(string $projectId, ?string $locale = null): self
+    /**
+     * @param non-empty-list<string|null> $environments
+     */
+    public static function create(string $projectId, array $environments, ?string $locale = null): self
     {
         return self::fromParameters([
             'project_id' => $projectId,
+            'environments' => $environments,
             'locale' => $locale,
         ]);
     }
@@ -25,11 +29,6 @@ final class FindCookiesForApiQuery extends AbstractBatchedQuery
     public function withCategoryCodes(array $categoryCodes): self
     {
         return $this->withParam('category_codes', $categoryCodes);
-    }
-
-    public function withEnvironment(string $environment): self
-    {
-        return $this->withParam('environment', $environment);
     }
 
     public function projectId(): string
@@ -50,8 +49,11 @@ final class FindCookiesForApiQuery extends AbstractBatchedQuery
         return $this->getParam('category_codes');
     }
 
-    public function environment(): ?string
+    /**
+     * @return non-empty-list<string|null>
+     */
+    public function environments(): array
     {
-        return $this->getParam('environment');
+        return $this->getParam('environments');
     }
 }

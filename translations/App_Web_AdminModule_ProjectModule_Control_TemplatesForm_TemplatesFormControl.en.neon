@@ -4,4 +4,5 @@ update:
     field: Save
 
 open_template: View template
+open_template_for: View template for
 more_about_syntax: More info about the syntax at

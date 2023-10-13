@@ -22,7 +22,5 @@ last_consent: Poslední souhlas
 providers: Poskytovatelé
 cookies: Cookies
 
-all_environments: Všechna prostředí
-
 cookies_tooltip_message: '%common% cookies služeb, %private% projektových'
 cookie_suggestions_tooltip_message: Návrhy cookies

@@ -97,10 +97,7 @@ module.exports = () => ({
                 continue;
             }
 
-            if (
-                null === project.currentEnvironment && null === environment
-                || (null !== project.currentEnvironment && null !== environment && project.currentEnvironment.code === environment.code)
-            ) {
+            if (null !== project.currentEnvironment && project.currentEnvironment.code === environment.code) {
                continue;
             }
 
@@ -162,8 +159,12 @@ module.exports = () => ({
             query.push(`endDate=${encodeURIComponent(end.format('YYYY-MM-DD'))}`);
             query.push(`projects[]=${encodeURIComponent(project.code)}`);
 
-            if (null !== project.currentEnvironment) {
-                query.push(`environment=${encodeURIComponent(project.currentEnvironment.code)}`);
+            if (project.environments.length) {
+                if (null !== project.currentEnvironment && null !== project.currentEnvironment.code) {
+                    query.push(`environment=${encodeURIComponent(project.currentEnvironment.code)}`);
+                }
+            } else {
+                query.push('environment=*');
             }
 
             const promise = fetch(this.request.endpoint + '?' + query.join('&'), {
@@ -246,6 +247,10 @@ module.exports = () => ({
 
         if (!project.hasOwnProperty('code') || !project.hasOwnProperty('name') || !project.hasOwnProperty('color')) {
             throw new Error('Invalid project data, the required keys are "code", "name" and "color".');
+        }
+
+        if (project.environments.length) {
+            project.currentEnvironment = project.environments[0];
         }
 
         this.projects.push(project);

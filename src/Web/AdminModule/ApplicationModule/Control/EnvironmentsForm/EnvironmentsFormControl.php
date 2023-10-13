@@ -50,6 +50,7 @@ final class EnvironmentsFormControl extends Control
             $container->addText('code')
                 ->setHtmlAttribute('placeholder', 'code.placeholder')
                 ->setRequired('code.required')
+                ->addRule(Form::Pattern, 'code.rule.pattern', '[a-z0-9_\-\.]+')
                 ->addRule(UniqueMultiplierValuesValidator::Validator, 'code.rule.values_are_not_unique');
 
             $container->addText('name')

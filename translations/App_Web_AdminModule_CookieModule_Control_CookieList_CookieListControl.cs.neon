@@ -14,7 +14,6 @@ inactive_value: neaktivní
 session: Session
 persistent: Persistent
 
-all_environments: Všechna prostředí
 and_more_projects: "[1,4] a %count% další|[5,Inf[ a %count% dalších"
 
 tooltip:

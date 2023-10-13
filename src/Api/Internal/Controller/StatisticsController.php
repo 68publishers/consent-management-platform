@@ -110,7 +110,7 @@ final class StatisticsController extends AbstractInternalController
         }
 
         $period = Period::create($startDate, $endDate);
-        $environmentImpl = '//default//' === $environment ? new DefaultEnvironment() : (is_string($environment) ? new NamedEnvironment($environment) : null);
+        $environmentImpl = empty($environment) ? new DefaultEnvironment() : ('*' !== $environment ? new NamedEnvironment($environment) : null);
 
         foreach ($projectIdsByCodes as $code => $projectId) {
             $consentStatistics = $this->projectStatisticsCalculator->calculateConsentStatistics(

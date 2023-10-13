@@ -25,17 +25,38 @@
                 projectCode: '{$projectView->code->value()}',
                 init() {
                     this.self = this.$el;
-                    this.selectEnvironment(this.environments[0] || null);
+                    var storedEnvironmentCode = window.localStorage.getItem('cmp_integration_cookie_table_environment');
+                    var storedEnvironment = undefined;
+                    var defaultEnvironment = undefined;
+
+                    for (var environment of this.environments) {
+                        if (storedEnvironmentCode === environment.code) {
+                            storedEnvironment = environment;
+                        }
+
+                        if (null === environment.code) {
+                            defaultEnvironment = environment;
+                        }
+                    }
+
+                    this.selectEnvironment(storedEnvironment || defaultEnvironment || this.environments[0] || null);
                 },
                 selectEnvironment(environment) {
                     this.currentEnvironment = environment;
-                    const textarea = this.self.querySelector('textarea');
-                    let script = this.$refs.scriptTemplate.innerHTML;
+
+                    if (null === environment || null === environment.code) {
+                        window.localStorage.removeItem('cmp_integration_cookie_table_environment');
+                    } else {
+                        window.localStorage.setItem('cmp_integration_cookie_table_environment', environment.code);
+                    }
+
+                    var textarea = this.self.querySelector('textarea');
+                    var script = this.$refs.scriptTemplate.innerHTML;
 
                     script = script
                         .replace('{{ APP_HOST }}', this.appHost)
                         .replace('{{ PROJECT_CODE }}', this.projectCode)
-                        .replace('\'{{ ENVIRONMENT }}\'', null === environment || '//default//' === environment.code ? 'null' : '\'' + environment.code + '\'');
+                        .replace('\'{{ ENVIRONMENT }}\'', null === environment || null === environment.code ? 'null' : '\'' + environment.code + '\'');
 
                     textarea.CodeMirror ? textarea.CodeMirror.setValue(script) : textarea.innerHTML = script;
 
@@ -46,9 +67,15 @@
             <div x-show="environments.length">
                 <div x-data="dropdown" x-bind="dropdown" class="relative inline-block text-left mb-2">
                     <div>
-                        <button x-bind="dropdownButton" type="button" class="inline-flex items-center pl-4 pr-6 py-2 border border-transparent rounded-md text-sm font-medium bg-gray-50 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200">
-                            <span class="flex w-full items-center gap-x-1.5 rounded-md text-xs font-medium text-gray-900">
-                                <svg :style="{ fill: currentEnvironment ? currentEnvironment.color : '#ffffff' }" class="h-1.5 w-1.5" viewBox="0 0 6 6" aria-hidden="true">
+                        <button x-bind="dropdownButton" type="button" class="inline-flex items-center pl-4 pr-6 py-2 border border-transparent rounded-md text-sm text-gray-700 bg-gray-50 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200">
+                            <span class="flex w-full items-center gap-x-1.5 rounded-md">
+                                <svg
+                                    :style="{ fill: currentEnvironment ? currentEnvironment.color : '#ffffff' }"
+                                    :class="currentEnvironment && ['#ffffff', '#fff'].includes(currentEnvironment.color) ? 'rounded border border-black' : ''"
+                                    class="h-1.5 w-1.5"
+                                    viewBox="0 0 6 6"
+                                    aria-hidden="true"
+                                >
                                     <circle cx="3" cy="3" r="3" />
                                 </svg>
                                 <span x-text="currentEnvironment ? currentEnvironment.name : ''"></span>
@@ -57,11 +84,17 @@
                     </div>
 
                     <div x-bind="dropdownPanel" x-cloak class="absolute left-0 z-10 mt-2 w-48 origin-top-left rounded-md bg-white shadow-lg py-1 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" tabindex="-1">
-                        <template x-for="environment in environments" :key="environment.code" hidden>
+                        <template x-for="environment in environments" :key="environment.code || ''" hidden>
                             <div class="px-1">
                                 <button @click="selectEnvironment(environment) && close()" type="button" class="flex w-full items-center px-3 py-2 text-sm text-gray-700 rounded hover:bg-gray-100 active:bg-gray-100 focus:bg-gray-100 border-none" role="menuitem" tabindex="-1">
-                                    <span class="flex w-full items-center gap-x-1.5 rounded-md text-xs font-medium text-gray-900">
-                                        <svg :style="{ fill: environment.color }" class="h-1.5 w-1.5" viewBox="0 0 6 6" aria-hidden="true">
+                                    <span class="flex w-full items-center gap-x-1.5 rounded-md">
+                                        <svg
+                                            :style="{ fill: environment.color }"
+                                            :class="['#ffffff', '#fff'].includes(environment.color) ? 'rounded border border-black' : ''"
+                                            class="h-1.5 w-1.5"
+                                            viewBox="0 0 6 6"
+                                            aria-hidden="true"
+                                        >
                                             <circle cx="3" cy="3" r="3" />
                                         </svg>
                                         <span x-text="environment.name"></span>

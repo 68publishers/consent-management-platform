@@ -42,6 +42,7 @@ cookie_provider_type:
     3rd_party: 3rd party
 
 default_environment: Default environment
+all_environments: All environments
 
 alert:
     missing_default_locale:
