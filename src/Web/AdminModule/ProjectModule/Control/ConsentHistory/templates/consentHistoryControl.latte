@@ -103,19 +103,19 @@
                             <td colspan="2" class="whitespace-nowrap px-2 py-2 text-sm text-left">
                                 <span class="inline-flex items-center gap-x-1.5 rounded-md">
                                     {if null === $environment}
-                                        {*<svg class="h-1.5 w-1.5 fill-white" viewBox="0 0 6 6" aria-hidden="true">
+                                        <svg class="h-1.5 w-1.5 fill-white rounded border border-black" viewBox="0 0 6 6" aria-hidden="true">
                                             <circle cx="3" cy="3" r="3" />
-                                        </svg>*}
+                                        </svg>
                                         {_//layout.default_environment}
                                     {elseif isset($environments[$environment->value()])}
-                                       <svg class="h-1.5 w-1.5 fill-white" viewBox="0 0 6 6" aria-hidden="true" style="fill: {$environments[$environment->value()]->color->value()|noescape}">
+                                       <svg class="h-1.5 w-1.5" viewBox="0 0 6 6" aria-hidden="true" style="fill: {$environments[$environment->value()]->color->value()|noescape}">
                                             <circle cx="3" cy="3" r="3" />
                                         </svg>
                                         {$environments[$environment->value()]->name}
                                     {else}
-                                        {*<svg class="h-1.5 w-1.5 fill-white" viewBox="0 0 6 6" aria-hidden="true">
+                                        <svg class="h-1.5 w-1.5 fill-white rounded border border-black" viewBox="0 0 6 6" aria-hidden="true">
                                             <circle cx="3" cy="3" r="3" />
-                                        </svg>*}
+                                        </svg>
                                         {$environment->value()}
                                     {/if}
                                 </span>

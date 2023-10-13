@@ -6,7 +6,7 @@
             error: true,
             warning: true,
             isVisible(el) {
-                const dt = el.getAttribute('data-type');
+                var dt = el.getAttribute('data-type');
 
                 return dt === 'unknown' || (dt === 'success' && this.success) || (dt === 'error' && this.error) || (dt === 'warning' && this.warning);
             }

@@ -13,6 +13,7 @@ use App\ReadModel\Cookie\CookieApiView;
 use App\ReadModel\Cookie\FindCookiesForApiQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Expr\Orx;
 use Generator;
 use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\ReadModel\BatchGeneratorFactory;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\QueryHandlerInterface;
@@ -37,11 +38,20 @@ final class FindCookiesForApiQueryHandler implements QueryHandlerInterface
             ->leftJoin(ProjectHasCookieProvider::class, 'phc', Join::WITH, 'phc.cookieProviderId = cp.id AND phc.project = p')
             ->where('c.deletedAt IS NULL')
             ->andWhere('c.active = true')
-            ->andWhere('(c.allEnvironments = true OR JSONB_CONTAINS(c.environments, :environment) = true)')
             ->andWhere('(phc.id IS NOT NULL OR cp.id = p.cookieProviderId)')
             ->orderBy('c.createdAt', 'ASC')
-            ->setParameter('projectId', $query->projectId())
-            ->setParameter('environment', json_encode([$query->environment()]));
+            ->setParameter('projectId', $query->projectId());
+
+        $environmentsConditions = [
+            'c.allEnvironments = true',
+        ];
+
+        foreach ($query->environments() as $index => $environment) {
+            $environmentsConditions[] = "JSONB_CONTAINS(c.environments, :environment_$index) = true";
+            $qb->setParameter('environment_' . $index, json_encode([$environment]));
+        }
+
+        $qb->andWhere(new Orx($environmentsConditions));
 
         $qb->leftJoin('c.translations', 'ct_default', Join::WITH, 'ct_default.locale = p.locales.defaultLocale')
             ->leftJoin('cat.translations', 'catt_default', Join::WITH, 'catt_default.locale = p.locales.defaultLocale')

@@ -42,6 +42,10 @@ final class Environment implements ComparableValueObjectInterface
             }
         }
 
+        if (!preg_match('/^[a-z0-9_\-\.]+$/', $native['code'])) {
+            throw UnableToCreateEnvironmentFromNativeValue::invalidNativeValueType($key, 'a string that matches the pattern "^[a-z0-9_\-\.]+$".');
+        }
+
         return new Environment(
             code: $native['code'],
             name: $native['name'],

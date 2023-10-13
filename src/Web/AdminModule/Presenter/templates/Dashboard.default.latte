@@ -79,22 +79,15 @@
                             <div x-show="project.environments.length">
                                 <div x-data="dropdown" x-bind="dropdown" class="relative inline-block text-left">
                                     <div>
-                                        <button x-bind="dropdownButton" type="button" class="inline-flex items-center pl-4 pr-6 py-2 border border-transparent rounded-md text-sm font-medium bg-gray-50 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200">
-                                            <span
-                                                x-show="null === project.currentEnvironment"
-                                                class="flex w-full items-center gap-x-1.5 rounded-md text-xs font-medium text-gray-900"
-                                            >
-                                                <svg class="h-1.5 w-1.5 fill-white" viewBox="0 0 6 6" aria-hidden="true">
-                                                    <circle cx="3" cy="3" r="3" />
-                                                </svg>
-                                                {{_all_environments}}
-                                            </span>
-
-                                            <span
-                                                x-show="null !== project.currentEnvironment"
-                                                class="flex w-full items-center gap-x-1.5 rounded-md text-xs font-medium text-gray-900"
-                                            >
-                                                <svg :style="{ fill: project.currentEnvironment ? project.currentEnvironment.color : '#ffffff' }" class="h-1.5 w-1.5" viewBox="0 0 6 6" aria-hidden="true">
+                                        <button x-bind="dropdownButton" type="button" class="inline-flex items-center pl-4 pr-6 py-2 border border-transparent rounded-md text-sm text-gray-700 bg-gray-50 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200">
+                                            <span class="flex w-full items-center gap-x-1.5 rounded-md">
+                                                <svg
+                                                    :style="{ fill: project.currentEnvironment ? project.currentEnvironment.color : '#ffffff' }"
+                                                    :class="project.currentEnvironment && ['#ffffff', '#fff'].includes(project.currentEnvironment.color) ? 'rounded border border-black' : ''"
+                                                    class="h-1.5 w-1.5"
+                                                    viewBox="0 0 6 6"
+                                                    aria-hidden="true"
+                                                >
                                                     <circle cx="3" cy="3" r="3" />
                                                 </svg>
                                                 <span x-text="project.currentEnvironment ? project.currentEnvironment.name : ''"></span>
@@ -103,21 +96,17 @@
                                     </div>
 
                                     <div x-bind="dropdownPanel" x-cloak class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg py-1 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" tabindex="-1">
-                                        <div class="px-1">
-                                            <button @click="changeProjectEnvironment(project.code, null) && close()" type="button" class="flex w-full items-center px-3 py-2 text-sm text-gray-700 rounded hover:bg-gray-100 active:bg-gray-100 focus:bg-gray-100 border-none" role="menuitem" tabindex="-1">
-                                                <span class="flex w-full items-center gap-x-1.5 rounded-md text-xs font-medium text-gray-900">
-                                                    <svg class="h-1.5 w-1.5 fill-white" viewBox="0 0 6 6" aria-hidden="true">
-                                                        <circle cx="3" cy="3" r="3" />
-                                                    </svg>
-                                                    {{_all_environments}}
-                                                </span>
-                                            </button>
-                                        </div>
-                                        <template x-for="environment in project.environments" :key="environment.code" hidden>
+                                        <template x-for="environment in project.environments" :key="environment.code || ''" hidden>
                                             <div class="px-1">
                                                 <button @click="changeProjectEnvironment(project.code, environment) && close()" type="button" class="flex w-full items-center px-3 py-2 text-sm text-gray-700 rounded hover:bg-gray-100 active:bg-gray-100 focus:bg-gray-100 border-none" role="menuitem" tabindex="-1">
-                                                    <span class="flex w-full items-center gap-x-1.5 rounded-md text-xs font-medium text-gray-900">
-                                                        <svg :style="{ fill: environment.color }" class="h-1.5 w-1.5" viewBox="0 0 6 6" aria-hidden="true">
+                                                    <span class="flex w-full items-center gap-x-1.5 rounded-md">
+                                                        <svg
+                                                            :style="{ fill: environment.color }"
+                                                            :class="['#ffffff', '#fff'].includes(environment.color) ? 'rounded border border-black' : ''"
+                                                            class="h-1.5 w-1.5"
+                                                            viewBox="0 0 6 6"
+                                                            aria-hidden="true"
+                                                        >
                                                             <circle cx="3" cy="3" r="3" />
                                                         </svg>
                                                         <span x-text="environment.name"></span>

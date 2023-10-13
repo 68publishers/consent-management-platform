@@ -12,13 +12,10 @@
 {define col-settings_short_identifier}
     {if NULL !== $item->settingsShortIdentifier}
         {if NULL !== $item->settingsId}
-            <div class="flex justify-between">
-                <a id="show-consent-settings-{$item->id}" href="{$linkFactory('openModal!', ['consentSettingsDetail-' . Ramsey\Uuid\Uuid::fromString($item->settingsId)->getHex()->toString()])}" class="ajax text-indigo-700 inline-flex items-center mr-1">
-                    {_settingsShortIdentifierValue, ['shortIdentifier' => $item->settingsShortIdentifier]}
-                    {svg common/eye.svg, class: 'h-5 w-5 ml-1'}
-                </a>
-                <div data-spinner-for="show-consent-settings-{$item->id}" class="h-6 w-6"></div>
-            </div>
+            <a href="{$linkFactory('openModal!', ['consentSettingsDetail-' . Ramsey\Uuid\Uuid::fromString($item->settingsId)->getHex()->toString()])}" data-spinner-for="self" class="ajax text-indigo-700 inline-flex items-center mr-1 !overflow-visible">
+                {_settingsShortIdentifierValue, ['shortIdentifier' => $item->settingsShortIdentifier]}
+                {svg common/eye.svg, class: 'h-5 w-5 ml-1'}
+            </a>
         {else}
             {_settingsShortIdentifierValue, ['shortIdentifier' => $item->settingsShortIdentifier]}
         {/if}
@@ -32,17 +29,17 @@
 {define #environment-badge, string|null $code}
     <span class="inline-flex items-center gap-x-1.5 rounded-md px-2 py-1">
         {if null === $code}
-            <svg class="h-1.5 w-1.5 fill-white" viewBox="0 0 6 6" aria-hidden="true">
+            <svg class="h-1.5 w-1.5 fill-white rounded border border-black" viewBox="0 0 6 6" aria-hidden="true">
                 <circle cx="3" cy="3" r="3" />
             </svg>
             {_//layout.default_environment}
         {elseif isset($environments[$code])}
-           <svg class="h-1.5 w-1.5 fill-white" viewBox="0 0 6 6" aria-hidden="true" style="fill: {$environments[$code]->color->value()|noescape}">
+           <svg class="h-1.5 w-1.5" viewBox="0 0 6 6" aria-hidden="true" style="fill: {$environments[$code]->color->value()|noescape}">
                 <circle cx="3" cy="3" r="3" />
             </svg>
             {$environments[$code]->name}
         {else}
-            <svg class="h-1.5 w-1.5 fill-white" viewBox="0 0 6 6" aria-hidden="true">
+            <svg class="h-1.5 w-1.5 fill-white rounded border border-black" viewBox="0 0 6 6" aria-hidden="true">
                 <circle cx="3" cy="3" r="3" />
             </svg>
             {$code}

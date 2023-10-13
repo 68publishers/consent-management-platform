@@ -15,6 +15,7 @@ use App\Application\Cookie\TemplateArguments;
 use App\Application\Cookie\TemplateRendererInterface;
 use App\Application\GlobalSettings\EnabledEnvironmentsResolver;
 use App\Application\GlobalSettings\GlobalSettingsInterface;
+use App\Domain\GlobalSettings\ValueObject\Environment;
 use App\Domain\Project\ValueObject\Environments;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\Shared\ValueObject\Locale;
@@ -40,12 +41,17 @@ final class CookiesController extends AbstractV1Controller
         private readonly EtagStoreInterface $etagStore,
     ) {}
 
-    public static function getTemplateUrl(string $projectCode, ?string $locale = null): string
+    public static function getTemplateUrl(string $projectCode, ?string $locale = null, ?string $environment = null): string
     {
+        $query = http_build_query([
+            'locale' => $locale,
+            'environment' => $environment,
+        ]);
+
         return sprintf(
             '/api/v1/cookies/%s/template%s',
             $projectCode,
-            null !== $locale ? '?locale=' . $locale : '',
+            '' !== $query ? ('?' . $query) : '',
         );
     }
 
@@ -104,12 +110,13 @@ final class CookiesController extends AbstractV1Controller
         $projectCode = $request->getParameter('project');
         $requestEntity = $request->getEntity();
         assert($requestEntity instanceof CookiesRequestBody);
+        $environment = empty($requestEntity->environment) ? null : $requestEntity->environment;
 
         $etagKey = sprintf(
             '%s/%s/%s/[%s]/json',
             $projectCode,
             $requestEntity->locale ?? '_',
-            $requestEntity->environment ?? '__default__',
+            $environment ?? '#default',
             implode(',', (array) $requestEntity->category),
         );
 
@@ -130,7 +137,7 @@ final class CookiesController extends AbstractV1Controller
                 ]);
         }
 
-        $errorResponse = $this->tryCreateErrorResponseOnInvalidEnvironment($project->environments, $requestEntity, $response);
+        $errorResponse = $this->tryCreateErrorResponseOnInvalidEnvironment($project->environments, $environment, $response);
 
         if (null !== $errorResponse) {
             return $errorResponse;
@@ -142,7 +149,13 @@ final class CookiesController extends AbstractV1Controller
 
         $responseBody = json_encode([
             'status' => 'success',
-            'data' => $this->getCookiesData($project->id, $locale, $project->locales->defaultLocale(), $requestEntity->category, $requestEntity->environment),
+            'data' => $this->getCookiesData(
+                projectId: $project->id,
+                locale: $locale,
+                defaultLocale: $project->locales->defaultLocale(),
+                environments: $this->createEnvironmentsForQuery($environment, $project->environments),
+                categories: $requestEntity->category,
+            ),
         ], JSON_THROW_ON_ERROR);
 
         $response = $response->withStatus(ApiResponse::S200_OK)
@@ -169,12 +182,13 @@ final class CookiesController extends AbstractV1Controller
         $projectCode = $request->getParameter('project');
         $requestEntity = $request->getEntity();
         assert($requestEntity instanceof CookiesRequestBody);
+        $environment = empty($requestEntity->environment) ? null : $requestEntity->environment;
 
         $etagKey = sprintf(
             '%s/%s/%s/[%s]/html',
             $projectCode,
             $requestEntity->locale ?? '_',
-            $requestEntity->environment ?? '__default__',
+            $environment ?? '#default',
             implode(',', (array) $requestEntity->category),
         );
 
@@ -195,7 +209,7 @@ final class CookiesController extends AbstractV1Controller
                 ]);
         }
 
-        $errorResponse = $this->tryCreateErrorResponseOnInvalidEnvironment($projectTemplate->environments, $requestEntity, $response);
+        $errorResponse = $this->tryCreateErrorResponseOnInvalidEnvironment($projectTemplate->environments, $environment, $response);
 
         if (null !== $errorResponse) {
             return $errorResponse;
@@ -205,14 +219,20 @@ final class CookiesController extends AbstractV1Controller
             ? Locale::fromValue($requestEntity->locale)
             : $projectTemplate->projectLocalesConfig->defaultLocale();
 
-        $data = $this->getCookiesData($projectTemplate->projectId, $locale, $projectTemplate->projectLocalesConfig->defaultLocale(), $requestEntity->category, $requestEntity->environment);
+        $data = $this->getCookiesData(
+            projectId: $projectTemplate->projectId,
+            locale: $locale,
+            defaultLocale: $projectTemplate->projectLocalesConfig->defaultLocale(),
+            environments: $this->createEnvironmentsForQuery($environment, $projectTemplate->environments),
+            categories: $requestEntity->category,
+        );
         $data = json_encode($data, JSON_THROW_ON_ERROR);
         $data = json_decode($data, false, 512, JSON_THROW_ON_ERROR);
 
         $template = Template::create(
             $projectTemplate->projectId->toString(),
             $projectTemplate->template->value(),
-            TemplateArguments::create($data->providers, $data->cookies, $requestEntity->environment),
+            TemplateArguments::create($data->providers, $data->cookies, $environment),
         );
 
         $responseBody = $this->templateRenderer->render($template);
@@ -257,22 +277,23 @@ final class CookiesController extends AbstractV1Controller
     /**
      * @param mixed $categories
      */
-    private function getCookiesData(ProjectId $projectId, Locale $locale, ?Locale $defaultLocale, string|array|null $categories = null, ?string $environment = null): array
+    private function getCookiesData(ProjectId $projectId, Locale $locale, ?Locale $defaultLocale, array $environments, string|array|null $categories = null): array
     {
         $data = [
             'providers' => [],
             'cookies' => [],
         ];
 
-        $query = FindCookiesForApiQuery::create($projectId->toString(), null !== $defaultLocale && $defaultLocale->equals($locale) ? null : $locale->value())
-            ->withBatchSize(100);
+        $query = FindCookiesForApiQuery::create(
+            projectId: $projectId->toString(),
+            environments: $environments,
+            locale: null !== $defaultLocale && $defaultLocale->equals($locale) ? null : $locale->value(),
+        );
+
+        $query = $query->withBatchSize(100);
 
         if (null !== $categories) {
             $query = $query->withCategoryCodes((array) $categories);
-        }
-
-        if (null !== $environment) {
-            $query = $query->withEnvironment($environment);
         }
 
         foreach ($this->queryBus->dispatch($query) as $batch) {
@@ -308,9 +329,29 @@ final class CookiesController extends AbstractV1Controller
         return $data;
     }
 
-    private function tryCreateErrorResponseOnInvalidEnvironment(Environments $projectEnvironments, CookiesRequestBody $body, ApiResponse $response): ?ApiResponse
+    /**
+     * @return array<string|null>
+     */
+    private function createEnvironmentsForQuery(?string $environment, Environments $projectEnvironments): array
     {
-        if (null === $body->environment || '' === $body->environment) {
+        if ('*' !== $environment) {
+            return [$environment];
+        }
+
+        $environments = array_map(
+            static fn (Environment $environment): string => $environment->code,
+            EnabledEnvironmentsResolver::resolveProjectEnvironments(
+                globalSettingsEnvironments: $this->globalSettings->environments(),
+                projectEnvironments: $projectEnvironments,
+            ),
+        );
+
+        return [null, ...$environments];
+    }
+
+    private function tryCreateErrorResponseOnInvalidEnvironment(Environments $projectEnvironments, ?string $environment, ApiResponse $response): ?ApiResponse
+    {
+        if (null === $environment || '*' === $environment) {
             return null;
         }
 
@@ -319,8 +360,8 @@ final class CookiesController extends AbstractV1Controller
             projectEnvironments: $projectEnvironments,
         );
 
-        foreach ($environments as $environment) {
-            if ($environment->code === $body->environment) {
+        foreach ($environments as $env) {
+            if ($env->code === $environment) {
                 return null;
             }
         }
@@ -332,7 +373,7 @@ final class CookiesController extends AbstractV1Controller
                     'code' => ApiResponse::S400_BAD_REQUEST,
                     'error' => sprintf(
                         'Project does not have the "%s" environment.',
-                        $body->environment,
+                        $environment,
                     ),
                 ],
             ]);

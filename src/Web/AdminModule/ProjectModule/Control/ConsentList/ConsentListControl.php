@@ -25,7 +25,6 @@ use App\Web\Ui\Control;
 use App\Web\Ui\DataGrid\DataGrid;
 use App\Web\Ui\DataGrid\DataGridFactoryInterface;
 use App\Web\Ui\DataGrid\DataSource\ReadModelDataSource;
-use App\Web\Ui\DataGrid\Helper\FilterHelper;
 use Nette\Application\UI\Multiplier;
 use Nette\InvalidStateException;
 use Ramsey\Uuid\Uuid;
@@ -84,8 +83,10 @@ final class ConsentListControl extends Control
             $grid->addColumnText('environment', 'environment', 'environment')
                 ->setAlign('center')
                 ->setFilterSelect(
-                    options: FilterHelper::all($translator)
-                    + [ConsentsDataGridQueryHandler::FILTER_ENVIRONMENT_DEFAULT_ENV_VALUE => $this->getTranslator()->translate('//layout.default_environment')]
+                    options: [
+                        '' => $translator->translate('//layout.all_environments'),
+                        ConsentsDataGridQueryHandler::FILTER_ENVIRONMENT_DEFAULT_ENV_VALUE => $translator->translate('//layout.default_environment'),
+                    ]
                     + array_map(
                         static fn (Environment $environment): string => $environment->name,
                         $environments,

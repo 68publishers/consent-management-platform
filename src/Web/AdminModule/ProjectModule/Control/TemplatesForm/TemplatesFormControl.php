@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\ProjectModule\Control\TemplatesForm;
 
+use App\Api\V1\Controller\CookiesController;
+use App\Application\GlobalSettings\GlobalSettingsInterface;
 use App\Application\GlobalSettings\ValidLocalesProvider;
 use App\Domain\Project\Command\UpdateProjectTemplatesCommand;
 use App\Domain\Project\Exception\InvalidTemplateException;
@@ -15,7 +17,7 @@ use App\Web\AdminModule\ProjectModule\Control\TemplatesForm\Event\TemplatesUpdat
 use App\Web\Ui\Control;
 use App\Web\Ui\Form\FormFactoryInterface;
 use App\Web\Ui\Form\FormFactoryOptionsTrait;
-use Nepada\FormRenderer\TemplateRenderer;
+use App\Web\Utils\ProjectEnvironmentOptions;
 use Nette\Application\UI\Form;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
@@ -31,25 +33,44 @@ final class TemplatesFormControl extends Control
         private readonly FormFactoryInterface $formFactory,
         private readonly CommandBusInterface $commandBus,
         private readonly QueryBusInterface $queryBus,
+        private readonly GlobalSettingsInterface $globalSettings,
     ) {}
 
     protected function createComponentForm(): Form
     {
-        $form = $this->formFactory->create($this->getFormFactoryOptions());
         $translator = $this->getPrefixedTranslator();
-        $renderer = $form->getRenderer();
         $locales = [];
-
-        assert($renderer instanceof TemplateRenderer);
 
         foreach ($this->validLocalesProvider->getValidLocales() as $locale) {
             $locales[$localeCode = $locale->code()] = $translator->translate('locale_tab', ['code' => $localeCode, 'name' => $locale->name()]);
         }
 
+        $form = $this->formFactory->create(array_merge(
+            $this->getFormFactoryOptions(),
+            [
+                FormFactoryInterface::OPTION_IMPORTS => __DIR__ . '/templates/form.imports.latte',
+                FormFactoryInterface::OPTION_TEMPLATE_VARIABLES => [
+                    'locales' => $locales,
+                    'projectCode' => $this->projectView->code->value(),
+                    'environments' => ProjectEnvironmentOptions::create(
+                        globalSettingsEnvironments: $this->globalSettings->environments(),
+                        projectEnvironments: $this->projectView->environments,
+                        translator: $translator,
+                        additionalMapper: function (object $environment): object {
+                            $environment->link = CookiesController::getTemplateUrl(
+                                projectCode: $this->projectView->code->value(),
+                                locale: '__LOCALE__',
+                                environment: $environment->code,
+                            );
+
+                            return $environment;
+                        },
+                    ),
+                ],
+            ],
+        ));
+
         $form->setTranslator($translator);
-        $renderer->importTemplate(__DIR__ . '/templates/form.imports.latte');
-        $renderer->getTemplate()->locales = $locales;
-        $renderer->getTemplate()->projectCode = $this->projectView->code->value();
 
         $templatesContainer = $form->addContainer('templates');
 

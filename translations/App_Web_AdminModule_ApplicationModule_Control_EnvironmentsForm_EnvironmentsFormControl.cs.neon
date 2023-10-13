@@ -5,6 +5,7 @@ code:
     placeholder: Kód
     required: Vyplňte prosím kód.
     rule:
+        pattern: 'Kód smí obsahovat pouze malá písmena (a-z), číslice a znaky "_", "-" a ".".'
         values_are_not_unique: Kód je duplicitní.
 
 name:

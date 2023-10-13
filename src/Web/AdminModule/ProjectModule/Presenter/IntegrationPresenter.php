@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Web\AdminModule\ProjectModule\Presenter;
 
 use App\Application\Acl\ProjectIntegrationResource;
-use App\Application\GlobalSettings\EnabledEnvironmentsResolver;
-use App\Domain\GlobalSettings\ValueObject\Environment;
 use App\Web\AdminModule\ProjectModule\Control\TemplatesForm\Event\TemplatesFormProcessingFailedEvent;
 use App\Web\AdminModule\ProjectModule\Control\TemplatesForm\Event\TemplatesUpdatedEvent;
 use App\Web\AdminModule\ProjectModule\Control\TemplatesForm\TemplatesFormControl;
 use App\Web\AdminModule\ProjectModule\Control\TemplatesForm\TemplatesFormControlFactoryInterface;
 use App\Web\Ui\Form\FormFactoryInterface;
+use App\Web\Utils\ProjectEnvironmentOptions;
 use Nette\InvalidStateException;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use SixtyEightPublishers\SmartNetteComponent\Attribute\Allowed;
@@ -29,34 +28,15 @@ final class IntegrationPresenter extends SelectedProjectPresenter
     {
         parent::beforeRender();
 
-        $environments = EnabledEnvironmentsResolver::resolveProjectEnvironments(
-            globalSettingsEnvironments: $this->globalSettings->environments(),
-            projectEnvironments: $this->projectView->environments,
-        );
-
         $template = $this->getTemplate();
         assert($template instanceof IntegrationTemplate);
 
         $template->appHost = $this->getHttpRequest()->getUrl()->getHostUrl();
-        $template->environments = 0 < count($environments) ? array_merge(
-            [
-                [
-                    'code' => '//default//',
-                    'name' => $this->getTranslator()->translate('//layout.default_environment'),
-                    'color' => '#ffffff',
-                ],
-            ],
-            array_values(
-                array_map(
-                    static fn (Environment $environment): array => [
-                        'code' => $environment->code,
-                        'name' => $environment->name,
-                        'color' => $environment->color->value(),
-                    ],
-                    $environments,
-                ),
-            ),
-        ) : [];
+        $template->environments = ProjectEnvironmentOptions::create(
+            globalSettingsEnvironments: $this->globalSettings->environments(),
+            projectEnvironments: $this->projectView->environments,
+            translator: $this->getTranslator(),
+        );
     }
 
     protected function createComponentTemplatesForm(): TemplatesFormControl

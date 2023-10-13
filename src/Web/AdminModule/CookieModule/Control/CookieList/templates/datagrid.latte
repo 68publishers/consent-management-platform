@@ -103,10 +103,10 @@
     <div class="min-w-[150px]">
         {if true === $item->environments}
             <span class="inline-flex items-center gap-x-1.5 rounded-md px-1 py-1 select-all">
-                <svg class="h-1.5 w-1.5 fill-white" viewBox="0 0 6 6" aria-hidden="true">
+                <svg class="h-1.5 w-1.5 fill-black" viewBox="0 0 6 6" aria-hidden="true">
                     <circle cx="3" cy="3" r="3" />
                 </svg>
-                {_all_environments}
+                {_//layout.all_environments}
             </span>
         {else}
             {var $environments = $item->environments}
@@ -132,7 +132,7 @@
                         'x-tooltip.interactive.theme.light-border.placement.right.html.raw' => $tooltip
                     ]}
 
-                    <span n:attr="$attrs">&nbsp;{_and_more_projects, count($environments)}</span>
+                    <span n:attr="$attrs">{_and_more_projects, count($environments)}</span>
                 {/if}
             </div>
         {/if}
@@ -161,7 +161,7 @@
 {define #environment-badge, string|null $environment, bool $vertical = false}
     {if null === $environment}
         <span n:class="$vertical ? 'flex my-1.5' : 'inline-flex', 'items-center gap-x-1.5 rounded-md px-1 py-1 select-all'">
-            <svg class="h-1.5 w-1.5 fill-white" viewBox="0 0 6 6" aria-hidden="true">
+            <svg class="h-1.5 w-1.5 fill-white rounded border border-black" viewBox="0 0 6 6" aria-hidden="true">
                 <circle cx="3" cy="3" r="3" />
             </svg>
             {_//layout.default_environment}
@@ -169,14 +169,14 @@
     {elseif null !== $_globalEnvironments->getByCode($environment)}
         {var $globalEnvironment = $_globalEnvironments->getByCode($environment)}
         <span n:class="$vertical ? 'flex my-1.5' : 'inline-flex', 'items-center gap-x-1.5 rounded-md px-1 py-1 select-all'">
-            <svg class="h-1.5 w-1.5 fill-white" viewBox="0 0 6 6" aria-hidden="true" style="fill: {$globalEnvironment->color->value()|noescape}">
+            <svg class="h-1.5 w-1.5" viewBox="0 0 6 6" aria-hidden="true" style="fill: {$globalEnvironment->color->value()|noescape}">
                 <circle cx="3" cy="3" r="3" />
             </svg>
             {$globalEnvironment->name}
         </span>
     {else}
         <span n:class="$vertical ? 'flex my-1.5' : 'inline-flex', 'items-center gap-x-1.5 rounded-md px-1 py-1 select-all'">
-            <svg class="h-1.5 w-1.5 fill-white" viewBox="0 0 6 6" aria-hidden="true">
+            <svg class="h-1.5 w-1.5 fill-white rounded border border-black" viewBox="0 0 6 6" aria-hidden="true">
                 <circle cx="3" cy="3" r="3" />
             </svg>
             {$environment}
