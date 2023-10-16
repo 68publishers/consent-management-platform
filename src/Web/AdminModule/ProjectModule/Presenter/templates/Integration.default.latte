@@ -30,11 +30,13 @@
                     var defaultEnvironment = undefined;
 
                     for (var environment of this.environments) {
-                        if (storedEnvironmentCode === environment.code) {
+                        var code = null === environment.code ? '#null' : environment.code;
+
+                        if (storedEnvironmentCode === code) {
                             storedEnvironment = environment;
                         }
 
-                        if (null === environment.code) {
+                        if ('default' === code) {
                             defaultEnvironment = environment;
                         }
                     }
@@ -43,11 +45,12 @@
                 },
                 selectEnvironment(environment) {
                     this.currentEnvironment = environment;
+                    var code = null === environment || null === environment.code ? '#null' : environment.code;
 
-                    if (null === environment || null === environment.code) {
+                    if ('default' === code) {
                         window.localStorage.removeItem('cmp_integration_cookie_table_environment');
                     } else {
-                        window.localStorage.setItem('cmp_integration_cookie_table_environment', environment.code);
+                        window.localStorage.setItem('cmp_integration_cookie_table_environment', code);
                     }
 
                     var textarea = this.self.querySelector('textarea');
@@ -56,7 +59,7 @@
                     script = script
                         .replace('{{ APP_HOST }}', this.appHost)
                         .replace('{{ PROJECT_CODE }}', this.projectCode)
-                        .replace('\'{{ ENVIRONMENT }}\'', null === environment || null === environment.code ? 'null' : '\'' + environment.code + '\'');
+                        .replace('\'{{ ENVIRONMENT }}\'', '#null' === code ? 'null' : '\'' + environment.code + '\'');
 
                     textarea.CodeMirror ? textarea.CodeMirror.setValue(script) : textarea.innerHTML = script;
 

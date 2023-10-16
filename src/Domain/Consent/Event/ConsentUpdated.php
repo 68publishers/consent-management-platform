@@ -8,6 +8,7 @@ use App\Domain\Consent\ValueObject\Attributes;
 use App\Domain\Consent\ValueObject\ConsentId;
 use App\Domain\Consent\ValueObject\Consents;
 use App\Domain\Consent\ValueObject\Environment;
+use App\Domain\GlobalSettings\ValueObject\EnvironmentSettings;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\Shared\ValueObject\Checksum;
 use DateTimeImmutable;
@@ -25,7 +26,7 @@ final class ConsentUpdated extends AbstractDomainEvent
 
     private Attributes $attributes;
 
-    private ?Environment $environment = null;
+    private Environment $environment;
 
     public static function create(
         ConsentId $consentId,
@@ -33,7 +34,7 @@ final class ConsentUpdated extends AbstractDomainEvent
         ?Checksum $settingsChecksum,
         Consents $consents,
         Attributes $attributes,
-        ?Environment $environment,
+        Environment $environment,
         ?DateTimeImmutable $createdAt = null,
     ): self {
         $event = self::occur($consentId->toString(), [
@@ -41,7 +42,7 @@ final class ConsentUpdated extends AbstractDomainEvent
             'settings_checksum' => $settingsChecksum?->value(),
             'consents' => $consents->values(),
             'attributes' => $attributes->values(),
-            'environment' => $environment?->value(),
+            'environment' => $environment->value(),
         ]);
 
         if (null !== $createdAt) {
@@ -83,7 +84,7 @@ final class ConsentUpdated extends AbstractDomainEvent
         return $this->attributes;
     }
 
-    public function environment(): ?Environment
+    public function environment(): Environment
     {
         return $this->environment;
     }
@@ -95,6 +96,6 @@ final class ConsentUpdated extends AbstractDomainEvent
         $this->settingsChecksum = isset($parameters['settings_checksum']) ? Checksum::fromValue($parameters['settings_checksum']) : null;
         $this->consents = Consents::fromArray($parameters['consents']);
         $this->attributes = Attributes::fromArray($parameters['attributes']);
-        $this->environment = isset($parameters['environment']) ? Environment::fromValue($parameters['environment']) : null;
+        $this->environment = Environment::fromValue($parameters['environment'] ?? EnvironmentSettings::DEFAULT_ENVIRONMENT_CODE);
     }
 }

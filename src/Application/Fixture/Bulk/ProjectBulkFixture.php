@@ -55,11 +55,13 @@ final class ProjectBulkFixture extends AbstractFixture
                 'project_id' => ProjectId::new()->toString(),
                 'name' => $projectName,
                 'code' => $projectCode,
+                'domain' => $fakerEn->domainName(),
                 'description' => $fakerEn->realText(300),
                 'color' => $fakerEn->hexColor(),
                 'active' => true,
                 'locales' => ['en', 'cs'],
                 'default_locale' => 'en',
+                'environments' => [],
                 'cookie_provider_id' => $projectCookieProvider['cookie_provider_id'],
                 'cookie_provider_ids' => array_map(
                     static fn (array $cpRow): string => $cpRow['cookie_provider_id'],
@@ -168,6 +170,7 @@ final class ProjectBulkFixture extends AbstractFixture
                 'cs' => $fakerCs->realText(150),
                 'en' => $fakerEn->realText(150),
             ],
+            'environments' => true,
         ];
     }
 
@@ -196,6 +199,7 @@ final class ProjectBulkFixture extends AbstractFixture
                 'trackingId' => $faker->numerify('track-##########'),
                 'email' => $faker->email(),
             ],
+            'environment' => 'default',
         ];
     }
 

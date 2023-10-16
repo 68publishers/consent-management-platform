@@ -22,19 +22,21 @@ final class ProjectStatisticsCalculator implements ProjectStatisticsCalculatorIn
         private readonly GlobalSettingsInterface $globalSettings,
     ) {}
 
-    public function calculateConsentStatistics(string $projectId, Period $currentPeriod, ?Period $previousPeriod = null, ?EnvironmentInterface $environment = null): ConsentStatistics
+    public function calculateConsentStatistics(string $projectId, Period $currentPeriod, ?Period $previousPeriod = null, ?string $environment = null): ConsentStatistics
     {
         $previousPeriod = $previousPeriod ?? $currentPeriod->createPreviousPeriod();
-        $previousStatisticsQuery = CalculateConsentStatisticsPerPeriodQuery::create($projectId, $previousPeriod->startDate(), $previousPeriod->endDate());
-        $currentStatisticsQuery = CalculateConsentStatisticsPerPeriodQuery::create($projectId, $currentPeriod->startDate(), $currentPeriod->endDate());
-
-        if ($environment instanceof DefaultEnvironment) {
-            $previousStatisticsQuery = $previousStatisticsQuery->withDefaultEnvironment();
-            $currentStatisticsQuery = $currentStatisticsQuery->withDefaultEnvironment();
-        } elseif ($environment instanceof NamedEnvironment) {
-            $previousStatisticsQuery = $previousStatisticsQuery->withNamedEnvironment($environment->name);
-            $currentStatisticsQuery = $currentStatisticsQuery->withNamedEnvironment($environment->name);
-        }
+        $previousStatisticsQuery = CalculateConsentStatisticsPerPeriodQuery::create(
+            projectId: $projectId,
+            startDate: $previousPeriod->startDate(),
+            endDate: $previousPeriod->endDate(),
+            environment: $environment,
+        );
+        $currentStatisticsQuery = CalculateConsentStatisticsPerPeriodQuery::create(
+            projectId: $projectId,
+            startDate: $currentPeriod->startDate(),
+            endDate: $currentPeriod->endDate(),
+            environment: $environment,
+        );
 
         $previousStatistics = $this->queryBus->dispatch($previousStatisticsQuery);
         $currentStatistics = $this->queryBus->dispatch($currentStatisticsQuery);
@@ -62,15 +64,13 @@ final class ProjectStatisticsCalculator implements ProjectStatisticsCalculatorIn
         );
     }
 
-    public function calculateCookieStatistics(string $projectId, DateTimeImmutable $endDate, ?EnvironmentInterface $environment = null): CookieStatistics
+    public function calculateCookieStatistics(string $projectId, DateTimeImmutable $endDate, ?string $environment = null): CookieStatistics
     {
-        $query = CalculateProjectCookieTotalsQuery::create($projectId, $endDate);
-
-        if ($environment instanceof DefaultEnvironment) {
-            $query = $query->withDefaultEnvironment();
-        } elseif ($environment instanceof NamedEnvironment) {
-            $query = $query->withNamedEnvironment($environment->name);
-        }
+        $query = CalculateProjectCookieTotalsQuery::create(
+            projectId: $projectId,
+            maxDate: $endDate,
+            environment: $environment,
+        );
 
         $totals = $this->queryBus->dispatch($query);
         assert($totals instanceof ProjectCookieTotalsView);
@@ -82,15 +82,13 @@ final class ProjectStatisticsCalculator implements ProjectStatisticsCalculatorIn
         );
     }
 
-    public function calculateLastConsentDate(string $projectId, DateTimeImmutable $endDate, ?EnvironmentInterface $environment = null): ?DateTimeImmutable
+    public function calculateLastConsentDate(string $projectId, DateTimeImmutable $endDate, ?string $environment = null): ?DateTimeImmutable
     {
-        $query = CalculateLastConsentDateQuery::create($projectId, $endDate);
-
-        if ($environment instanceof DefaultEnvironment) {
-            $query = $query->withDefaultEnvironment();
-        } elseif ($environment instanceof NamedEnvironment) {
-            $query = $query->withNamedEnvironment($environment->name);
-        }
+        $query = CalculateLastConsentDateQuery::create(
+            projectId: $projectId,
+            maxDate: $endDate,
+            environment: $environment,
+        );
 
         return $this->queryBus->dispatch($query);
     }

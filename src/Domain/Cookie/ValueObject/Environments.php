@@ -15,7 +15,7 @@ final class Environments extends AbstractValueObjectSet
      */
     protected static function reconstituteItem($value): Environment
     {
-        return Environment::fromSafeNative($value);
+        return Environment::fromValue($value);
     }
 
     /**

@@ -6,12 +6,12 @@ namespace App\Domain\GlobalSettings;
 
 use App\Domain\GlobalSettings\Event\ApiCacheSettingsChanged;
 use App\Domain\GlobalSettings\Event\CrawlerSettingsChanged;
-use App\Domain\GlobalSettings\Event\EnvironmentsChanged;
+use App\Domain\GlobalSettings\Event\EnvironmentSettingsChanged;
 use App\Domain\GlobalSettings\Event\GlobalSettingsCreated;
 use App\Domain\GlobalSettings\Event\LocalizationSettingsChanged;
 use App\Domain\GlobalSettings\ValueObject\ApiCache;
 use App\Domain\GlobalSettings\ValueObject\CrawlerSettings;
-use App\Domain\GlobalSettings\ValueObject\Environments;
+use App\Domain\GlobalSettings\ValueObject\EnvironmentSettings;
 use App\Domain\GlobalSettings\ValueObject\GlobalSettingsId;
 use App\Domain\Shared\ValueObject\Locale;
 use App\Domain\Shared\ValueObject\Locales;
@@ -37,7 +37,7 @@ final class GlobalSettings implements AggregateRootInterface
 
     private CrawlerSettings $crawlerSettings;
 
-    private Environments $environments;
+    private EnvironmentSettings $environmentSettings;
 
     public static function createEmpty(): self
     {
@@ -69,10 +69,10 @@ final class GlobalSettings implements AggregateRootInterface
         }
     }
 
-    public function updateEnvironments(Environments $environments): void
+    public function updateEnvironmentSettings(EnvironmentSettings $environmentSettings): void
     {
-        if (!$this->environments->equals($environments)) {
-            $this->recordThat(EnvironmentsChanged::create($this->id, $environments));
+        if (!$this->environmentSettings->equals($environmentSettings)) {
+            $this->recordThat(EnvironmentSettingsChanged::create($this->id, $environmentSettings));
         }
     }
 
@@ -89,7 +89,7 @@ final class GlobalSettings implements AggregateRootInterface
         $this->locales = LocalesConfig::create(Locales::reconstitute(['en']), Locale::fromValue('en')); // setup defaults to en
         $this->apiCache = ApiCache::create();
         $this->crawlerSettings = CrawlerSettings::fromValues(false, null, null, null, null);
-        $this->environments = Environments::empty();
+        $this->environmentSettings = EnvironmentSettings::createDefault();
     }
 
     protected function whenLocalizationSettingsChanged(LocalizationSettingsChanged $event): void
@@ -110,9 +110,9 @@ final class GlobalSettings implements AggregateRootInterface
         $this->crawlerSettings = $event->crawlerSettings();
     }
 
-    protected function whenEnvironmentsChanged(EnvironmentsChanged $event): void
+    protected function whenEnvironmentSettingsChanged(EnvironmentSettingsChanged $event): void
     {
         $this->lastUpdateAt = $event->createdAt();
-        $this->environments = $event->environments();
+        $this->environmentSettings = $event->environmentSettings();
     }
 }

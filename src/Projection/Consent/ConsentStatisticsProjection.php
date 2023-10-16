@@ -48,7 +48,7 @@ final class ConsentStatisticsProjection extends AbstractProjection
         $this->insertRow($event->projectId(), $event->consentId(), $event->createdAt(), $event->consents(), $event->environment());
     }
 
-    private function insertRow(ProjectId $projectId, ConsentId $consentId, DateTimeImmutable $createdAt, Consents $consents, ?Environment $environment): void
+    private function insertRow(ProjectId $projectId, ConsentId $consentId, DateTimeImmutable $createdAt, Consents $consents, Environment $environment): void
     {
         $categoryCodes = $this->queryBus->dispatch(FindAllOptionalCategoryCodesQuery::create());
 
@@ -56,7 +56,7 @@ final class ConsentStatisticsProjection extends AbstractProjection
             'project_id' => $projectId->toString(),
             'consent_id' => $consentId->toString(),
             'created_at' => $createdAt,
-            'environment' => $environment?->value(),
+            'environment' => $environment->value(),
             'positive_count' => $consents->positiveCount($categoryCodes),
             'negative_count' => $consents->negativeCount($categoryCodes),
         ]);

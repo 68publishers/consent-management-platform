@@ -116,7 +116,7 @@ final class CookiesController extends AbstractV1Controller
             '%s/%s/%s/[%s]/json',
             $projectCode,
             $requestEntity->locale ?? '_',
-            $environment ?? '#default',
+            $environment ?? '#all',
             implode(',', (array) $requestEntity->category),
         );
 
@@ -153,7 +153,7 @@ final class CookiesController extends AbstractV1Controller
                 projectId: $project->id,
                 locale: $locale,
                 defaultLocale: $project->locales->defaultLocale(),
-                environments: $this->createEnvironmentsForQuery($environment, $project->environments),
+                environments: $this->getEnvironmentsForQuery($environment, $project->environments),
                 categories: $requestEntity->category,
             ),
         ], JSON_THROW_ON_ERROR);
@@ -188,7 +188,7 @@ final class CookiesController extends AbstractV1Controller
             '%s/%s/%s/[%s]/html',
             $projectCode,
             $requestEntity->locale ?? '_',
-            $environment ?? '#default',
+            $environment ?? '#all',
             implode(',', (array) $requestEntity->category),
         );
 
@@ -223,7 +223,7 @@ final class CookiesController extends AbstractV1Controller
             projectId: $projectTemplate->projectId,
             locale: $locale,
             defaultLocale: $projectTemplate->projectLocalesConfig->defaultLocale(),
-            environments: $this->createEnvironmentsForQuery($environment, $projectTemplate->environments),
+            environments: $this->getEnvironmentsForQuery($environment, $projectTemplate->environments),
             categories: $requestEntity->category,
         );
         $data = json_encode($data, JSON_THROW_ON_ERROR);
@@ -332,36 +332,34 @@ final class CookiesController extends AbstractV1Controller
     /**
      * @return array<string|null>
      */
-    private function createEnvironmentsForQuery(?string $environment, Environments $projectEnvironments): array
+    private function getEnvironmentsForQuery(?string $environment, Environments $projectEnvironments): array
     {
-        if ('*' !== $environment) {
+        if (null !== $environment) {
             return [$environment];
         }
 
-        $environments = array_map(
-            static fn (Environment $environment): string => $environment->code,
+        return array_map(
+            static fn (Environment $environment): string => $environment->code->value(),
             EnabledEnvironmentsResolver::resolveProjectEnvironments(
-                globalSettingsEnvironments: $this->globalSettings->environments(),
+                environmentSettings: $this->globalSettings->environmentSettings(),
                 projectEnvironments: $projectEnvironments,
             ),
         );
-
-        return [null, ...$environments];
     }
 
     private function tryCreateErrorResponseOnInvalidEnvironment(Environments $projectEnvironments, ?string $environment, ApiResponse $response): ?ApiResponse
     {
-        if (null === $environment || '*' === $environment) {
+        if (null === $environment) {
             return null;
         }
 
         $environments = EnabledEnvironmentsResolver::resolveProjectEnvironments(
-            globalSettingsEnvironments: $this->globalSettings->environments(),
+            environmentSettings: $this->globalSettings->environmentSettings(),
             projectEnvironments: $projectEnvironments,
         );
 
         foreach ($environments as $env) {
-            if ($env->code === $environment) {
+            if ($env->code->value() === $environment) {
                 return null;
             }
         }

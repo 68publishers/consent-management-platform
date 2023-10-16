@@ -54,7 +54,7 @@ final class UpdateCookieCommand extends AbstractCommand
     }
 
     /**
-     * @return bool|array<int, string|null>|null
+     * @return bool|array<int, string>|null
      */
     public function environments(): bool|array|null
     {
@@ -95,7 +95,7 @@ final class UpdateCookieCommand extends AbstractCommand
     }
 
     /**
-     * @param bool|array<int, string|null> $environments
+     * @param bool|array<int, string> $environments
      */
     public function withEnvironments(bool|array $environments): self
     {

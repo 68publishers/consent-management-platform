@@ -159,12 +159,8 @@ module.exports = () => ({
             query.push(`endDate=${encodeURIComponent(end.format('YYYY-MM-DD'))}`);
             query.push(`projects[]=${encodeURIComponent(project.code)}`);
 
-            if (project.environments.length) {
-                if (null !== project.currentEnvironment && null !== project.currentEnvironment.code) {
-                    query.push(`environment=${encodeURIComponent(project.currentEnvironment.code)}`);
-                }
-            } else {
-                query.push('environment=*');
+            if (null !== project.currentEnvironment && null !== project.currentEnvironment.code) {
+                query.push(`environment=${encodeURIComponent(project.currentEnvironment.code)}`);
             }
 
             const promise = fetch(this.request.endpoint + '?' + query.join('&'), {

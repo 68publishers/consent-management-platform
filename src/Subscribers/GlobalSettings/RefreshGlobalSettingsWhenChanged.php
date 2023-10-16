@@ -7,7 +7,7 @@ namespace App\Subscribers\GlobalSettings;
 use App\Application\GlobalSettings\GlobalSettingsInterface;
 use App\Domain\GlobalSettings\Event\ApiCacheSettingsChanged;
 use App\Domain\GlobalSettings\Event\CrawlerSettingsChanged;
-use App\Domain\GlobalSettings\Event\EnvironmentsChanged;
+use App\Domain\GlobalSettings\Event\EnvironmentSettingsChanged;
 use App\Domain\GlobalSettings\Event\GlobalSettingsCreated;
 use App\Domain\GlobalSettings\Event\LocalizationSettingsChanged;
 use SixtyEightPublishers\ArchitectureBundle\Event\EventHandlerInterface;
@@ -25,7 +25,7 @@ final class RefreshGlobalSettingsWhenChanged implements EventHandlerInterface, M
         yield LocalizationSettingsChanged::class;
         yield ApiCacheSettingsChanged::class;
         yield CrawlerSettingsChanged::class;
-        yield EnvironmentsChanged::class;
+        yield EnvironmentSettingsChanged::class;
     }
 
     public function __invoke(): void

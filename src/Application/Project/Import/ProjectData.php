@@ -26,10 +26,12 @@ final class ProjectData extends AbstractDescribedObject
 
     public bool $active;
 
+    /** @var array<string> */
     public array $locales = [];
 
     public ?string $defaultLocale = null;
 
+    /** @var array<string> */
     public array $environments = [];
 
     protected static function doDescribe(StructureDescriptor $descriptor): StructureDescriptor

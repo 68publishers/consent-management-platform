@@ -6,7 +6,7 @@ namespace App\Web\Utils;
 
 use App\Application\GlobalSettings\EnabledEnvironmentsResolver;
 use App\Domain\GlobalSettings\ValueObject\Environment;
-use App\Domain\GlobalSettings\ValueObject\Environments as GlobalSettingsEnvironments;
+use App\Domain\GlobalSettings\ValueObject\EnvironmentSettings;
 use App\Domain\Project\ValueObject\Environments as ProjectEnvironments;
 use Closure;
 use Nette\Localization\Translator;
@@ -28,17 +28,17 @@ final class ProjectEnvironmentOptions
      * @return array<int, EnvironmentOption>
      */
     public static function create(
-        GlobalSettingsEnvironments $globalSettingsEnvironments,
+        EnvironmentSettings $environmentSettings,
         ProjectEnvironments $projectEnvironments,
         Translator $translator,
         ?Closure $additionalMapper = null,
     ): array {
         $environments = EnabledEnvironmentsResolver::resolveProjectEnvironments(
-            globalSettingsEnvironments: $globalSettingsEnvironments,
+            environmentSettings: $environmentSettings,
             projectEnvironments: $projectEnvironments,
         );
 
-        if (0 >= count($environments)) {
+        if (1 >= count($environments)) {
             return [];
         }
 
@@ -47,23 +47,16 @@ final class ProjectEnvironmentOptions
         return array_merge(
             [
                 $additionalMapper((object) [
-                    'code' => '*',
+                    'code' => null,
                     'name' => $translator->translate('//layout.all_environments'),
                     'color' => '#000000',
-                ]),
-            ],
-            [
-                $additionalMapper((object) [
-                    'code' => null,
-                    'name' => $translator->translate('//layout.default_environment'),
-                    'color' => '#ffffff',
                 ]),
             ],
             array_values(
                 array_map(
                     static fn (Environment $environment): object => $additionalMapper((object) [
-                        'code' => $environment->code,
-                        'name' => $environment->name,
+                        'code' => $environment->code->value(),
+                        'name' => $environment->name->value(),
                         'color' => $environment->color->value(),
                     ]),
                     $environments,

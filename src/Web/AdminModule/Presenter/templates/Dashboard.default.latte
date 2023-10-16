@@ -79,7 +79,7 @@
                             <div x-show="project.environments.length">
                                 <div x-data="dropdown" x-bind="dropdown" class="relative inline-block text-left">
                                     <div>
-                                        <button x-bind="dropdownButton" type="button" class="inline-flex items-center pl-4 pr-6 py-2 border border-transparent rounded-md text-sm text-gray-700 bg-gray-50 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200">
+                                        <button x-bind="dropdownButton" type="button" class="inline-flex items-center pl-4 pr-6 py-2 border border-transparent rounded-md text-sm text-gray-700 bg-transparent focus:outline-none">
                                             <span class="flex w-full items-center gap-x-1.5 rounded-md">
                                                 <svg
                                                     :style="{ fill: project.currentEnvironment ? project.currentEnvironment.color : '#ffffff' }"

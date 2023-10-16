@@ -39,7 +39,7 @@ final class Consent implements AggregateRootInterface
 
     private Attributes $attributes;
 
-    private ?Environment $environment = null;
+    private Environment $environment;
 
     public static function create(StoreConsentCommand $command, CheckUserIdentifierNotExistsInterface $checkUserIdentifierNotExists): self
     {
@@ -49,7 +49,7 @@ final class Consent implements AggregateRootInterface
         $settingsChecksum = null !== $command->settingsChecksum() ? Checksum::fromValue($command->settingsChecksum()) : null;
         $consents = Consents::fromArray($command->consents());
         $attributes = Attributes::fromArray($command->attributes());
-        $environment = null !== $command->environment() ? Environment::fromValue($command->environment()) : null;
+        $environment = Environment::fromValue($command->environment());
 
         $checkUserIdentifierNotExists($userIdentifier, $projectId);
 
@@ -74,12 +74,12 @@ final class Consent implements AggregateRootInterface
         $consents = Consents::fromArray($command->consents());
         $attributes = Attributes::fromArray($command->attributes());
         $settingsChecksum = null !== $command->settingsChecksum() ? Checksum::fromValue($command->settingsChecksum()) : null;
-        $environment = null !== $command->environment() ? Environment::fromValue($command->environment()) : null;
+        $environment = Environment::fromValue($command->environment());
 
         if (!$this->consents->equals($consents)
             || !$this->attributes->equals($attributes)
             || !$this->areChecksumsEquals($settingsChecksum)
-            || !$this->areEnvironmentsEquals($environment)
+            || !$this->environment->equals($environment)
         ) {
             $this->recordThat(ConsentUpdated::create(
                 consentId: $this->id,
@@ -131,18 +131,5 @@ final class Consent implements AggregateRootInterface
         }
 
         return $this->settingsChecksum->equals($checksum);
-    }
-
-    private function areEnvironmentsEquals(?Environment $environment): bool
-    {
-        if (null === $this->environment && null === $environment) {
-            return true;
-        }
-
-        if (null === $this->environment || null === $environment) {
-            return false;
-        }
-
-        return $this->environment->equals($environment);
     }
 }

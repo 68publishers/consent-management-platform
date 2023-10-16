@@ -9,7 +9,6 @@ use App\Application\GlobalSettings\GlobalSettingsInterface;
 use App\Domain\GlobalSettings\ValueObject\Environment;
 use App\Domain\Project\ValueObject\Environments;
 use App\Domain\Project\ValueObject\ProjectId;
-use App\Infrastructure\Consent\Doctrine\ReadModel\ConsentsDataGridQueryHandler;
 use App\ReadModel\Consent\ConsentListView;
 use App\ReadModel\Consent\ConsentsDataGridQuery;
 use App\ReadModel\Consent\ConsentView;
@@ -54,7 +53,7 @@ final class ConsentListControl extends Control
             countLimit: $this->countLimit,
         );
         $environments = EnabledEnvironmentsResolver::resolveProjectEnvironments(
-            globalSettingsEnvironments: $this->globalSettings->environments(),
+            environmentSettings: $this->globalSettings->environmentSettings(),
             projectEnvironments: $this->projectEnvironments,
         );
 
@@ -65,8 +64,6 @@ final class ConsentListControl extends Control
         $grid->setTemplateFile(__DIR__ . '/templates/datagrid.latte');
         $grid->addTemplateVariable('paginatorMaxItemsCount', $query->getCountLimit());
         $grid->addTemplateVariable('environments', $environments);
-
-        $translator = $grid->getTranslator();
 
         $grid->setDefaultSort([
             'last_update_at' => 'DESC',
@@ -79,16 +76,12 @@ final class ConsentListControl extends Control
         $grid->addColumnText('settings_short_identifier', 'settings_short_identifier', 'settingsShortIdentifier')
             ->setAlign('center');
 
-        if (0 < count($environments)) {
+        if (1 < count($environments)) {
             $grid->addColumnText('environment', 'environment', 'environment')
                 ->setAlign('center')
-                ->setFilterSelect(
-                    options: [
-                        '' => $translator->translate('//layout.all_environments'),
-                        ConsentsDataGridQueryHandler::FILTER_ENVIRONMENT_DEFAULT_ENV_VALUE => $translator->translate('//layout.default_environment'),
-                    ]
-                    + array_map(
-                        static fn (Environment $environment): string => $environment->name,
+                ->setFilterMultiSelect(
+                    options: array_map(
+                        static fn (Environment $environment): string => $environment->name->value(),
                         $environments,
                     ),
                     column: 'environment',

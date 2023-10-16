@@ -4,7 +4,7 @@
 {varType App\Application\GlobalSettings\Locale|null $_locale}
 {varType array $_acl}
 {varType App\ReadModel\CookieProvider\CookieProviderSelectOptionView[]|null $providers}
-{varType App\Domain\GlobalSettings\ValueObject\Environments $_globalEnvironments}
+{varType App\Domain\GlobalSettings\ValueObject\Environment[] $_environments}
 
 {define col-name}
     <a n:tag-if="isset($_acl['resource'], $_acl['update']) && $user->isAllowed($_acl['resource'], $_acl['update'])" href="{$linkFactory('openModal!', ['editModal-' . Ramsey\Uuid\Uuid::fromString($item->id)->getHex()->toString()])}" data-spinner-for="self" class="ajax font-semibold">
@@ -158,21 +158,13 @@
     {/switch}
 {/define}
 
-{define #environment-badge, string|null $environment, bool $vertical = false}
-    {if null === $environment}
+{define #environment-badge, string $environment, bool $vertical = false}
+    {if isset($_environments[$environment])}
         <span n:class="$vertical ? 'flex my-1.5' : 'inline-flex', 'items-center gap-x-1.5 rounded-md px-1 py-1 select-all'">
-            <svg class="h-1.5 w-1.5 fill-white rounded border border-black" viewBox="0 0 6 6" aria-hidden="true">
+            <svg n:class="'h-1.5 w-1.5', $_environments[$environment]->color->isWhite() ? 'rounded border border-black' : ''" viewBox="0 0 6 6" aria-hidden="true" style="fill: {$_environments[$environment]->color->value()|noescape}">
                 <circle cx="3" cy="3" r="3" />
             </svg>
-            {_//layout.default_environment}
-        </span>
-    {elseif null !== $_globalEnvironments->getByCode($environment)}
-        {var $globalEnvironment = $_globalEnvironments->getByCode($environment)}
-        <span n:class="$vertical ? 'flex my-1.5' : 'inline-flex', 'items-center gap-x-1.5 rounded-md px-1 py-1 select-all'">
-            <svg class="h-1.5 w-1.5" viewBox="0 0 6 6" aria-hidden="true" style="fill: {$globalEnvironment->color->value()|noescape}">
-                <circle cx="3" cy="3" r="3" />
-            </svg>
-            {$globalEnvironment->name}
+            {$_environments[$environment]->name->value()}
         </span>
     {else}
         <span n:class="$vertical ? 'flex my-1.5' : 'inline-flex', 'items-center gap-x-1.5 rounded-md px-1 py-1 select-all'">

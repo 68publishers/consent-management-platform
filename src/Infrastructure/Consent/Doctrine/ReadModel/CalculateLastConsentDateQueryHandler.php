@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Consent\Doctrine\ReadModel;
 
-use App\Domain\Consent\Consent;
 use App\ReadModel\Consent\CalculateLastConsentDateQuery;
 use DateTimeImmutable;
 use DateTimeZone;
-use Doctrine\ORM\AbstractQuery;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NonUniqueResultException;
 use Exception;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\QueryHandlerInterface;
 
@@ -21,30 +19,32 @@ final class CalculateLastConsentDateQueryHandler implements QueryHandlerInterfac
     ) {}
 
     /**
-     * @throws NonUniqueResultException
      * @throws Exception
      */
     public function __invoke(CalculateLastConsentDateQuery $query): ?DateTimeImmutable
     {
-        $qb = $this->em->createQueryBuilder()
-            ->select('MAX(c.lastUpdateAt) AS last_consent_date')
-            ->from(Consent::class, 'c')
-            ->where('c.projectId = :projectId AND c.lastUpdateAt <= :maxDate')
-            ->setParameters([
-                'projectId' => $query->projectId(),
-                'maxDate' => $query->maxDate(),
-            ]);
+        $qb = $this->em->getConnection()->createQueryBuilder()
+            ->select('MAX(sp.created_at) AS last_consent_date')
+            ->from('consent_statistics_projection', 'sp')
+            ->where('sp.project_id = :projectId AND sp.created_at <= :maxDate')
+            ->setParameters(
+                params: [
+                    'projectId' => $query->projectId(),
+                    'maxDate' => $query->maxDate(),
+                ],
+                types: [
+                    'projectId' => Types::GUID,
+                    'maxDate' => Types::DATETIME_IMMUTABLE,
+                ],
+            );
 
-        if ($query->defaultEnvironment()) {
-            $qb->andWhere('c.environment IS NULL');
-        } elseif (null !== $query->namedEnvironment()) {
-            $qb->andWhere('c.environment = :environment')
-                ->setParameter('environment', $query->namedEnvironment());
+        if (null !== $query->environment()) {
+            $qb->andWhere('sp.environment = :environment')
+                ->setParameter('environment', $query->environment());
         }
 
-        $result = $qb->getQuery()->getOneOrNullResult(AbstractQuery::HYDRATE_ARRAY);
-        ;
+        $result = $qb->fetchOne();
 
-        return null !== $result && isset($result['last_consent_date']) ? new DateTimeImmutable($result['last_consent_date'], new DateTimeZone('UTC')) : null;
+        return $result ? new DateTimeImmutable($result, new DateTimeZone('UTC')) : null;
     }
 }

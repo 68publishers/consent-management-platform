@@ -26,18 +26,13 @@
     {include #environment-badge, code: $item->environment}
 {/define}
 
-{define #environment-badge, string|null $code}
+{define #environment-badge, string $code}
     <span class="inline-flex items-center gap-x-1.5 rounded-md px-2 py-1">
-        {if null === $code}
-            <svg class="h-1.5 w-1.5 fill-white rounded border border-black" viewBox="0 0 6 6" aria-hidden="true">
+        {if isset($environments[$code])}
+           <svg n:class="'h-1.5 w-1.5', $environments[$code]->color->isWhite() ? 'rounded border border-black' : ''" viewBox="0 0 6 6" aria-hidden="true" style="fill: {$environments[$code]->color->value()|noescape}">
                 <circle cx="3" cy="3" r="3" />
             </svg>
-            {_//layout.default_environment}
-        {elseif isset($environments[$code])}
-           <svg class="h-1.5 w-1.5" viewBox="0 0 6 6" aria-hidden="true" style="fill: {$environments[$code]->color->value()|noescape}">
-                <circle cx="3" cy="3" r="3" />
-            </svg>
-            {$environments[$code]->name}
+            {$environments[$code]->name->value()}
         {else}
             <svg class="h-1.5 w-1.5 fill-white rounded border border-black" viewBox="0 0 6 6" aria-hidden="true">
                 <circle cx="3" cy="3" r="3" />

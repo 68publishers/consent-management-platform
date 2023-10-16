@@ -9,8 +9,8 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 final class CreateCookieCommand extends AbstractCommand
 {
     /**
-     * @param array<string, string>        $purposes
-     * @param bool|array<int, string|null> $environments
+     * @param array<string, string>   $purposes
+     * @param bool|array<int, string> $environments
      */
     public static function create(
         string $categoryId,
@@ -75,7 +75,7 @@ final class CreateCookieCommand extends AbstractCommand
     }
 
     /**
-     * @return bool|array<int, string|null>
+     * @return bool|array<int, string>
      */
     public function environments(): bool|array
     {

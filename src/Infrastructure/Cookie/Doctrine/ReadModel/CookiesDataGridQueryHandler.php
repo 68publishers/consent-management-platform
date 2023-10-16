@@ -15,6 +15,7 @@ use Doctrine\DBAL\Query\QueryBuilder as DbalQueryBuilder;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query\Expr\Orx;
 use JsonException;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\QueryHandlerInterface;
 
@@ -22,7 +23,7 @@ final class CookiesDataGridQueryHandler implements QueryHandlerInterface
 {
     use DataGridQueryHandlerTrait;
 
-    public const FILTER_ENVIRONMENTS_DEFAULT_VALUE = '//default//';
+    public const FILTER_ENVIRONMENTS_ALL = '//all//';
 
     /**
      * @throws NonUniqueResultException|NoResultException|JsonException|Exception
@@ -179,17 +180,18 @@ final class CookiesDataGridQueryHandler implements QueryHandlerInterface
 
     public function applyEnvironments(DbalQueryBuilder $qb, string $_, mixed $value): void
     {
-        $conditions = [
-            'c.all_environments = true',
-        ];
+        $hasAllCondition = false;
+        $environmentConditions = [];
 
         foreach ((array) $value as $v) {
-            if (self::FILTER_ENVIRONMENTS_DEFAULT_VALUE === $v) {
-                $v = null;
+            if (self::FILTER_ENVIRONMENTS_ALL === $v) {
+                $hasAllCondition = true;
+
+                continue;
             }
 
             $p = $this->newParameterName();
-            $conditions[] = sprintf(
+            $environmentConditions[] = sprintf(
                 'c.environments @> :%s',
                 $p,
             );
@@ -197,7 +199,12 @@ final class CookiesDataGridQueryHandler implements QueryHandlerInterface
             $qb->setParameter($p, json_encode($v));
         }
 
-        $qb->andWhere('(' . implode(' OR ', $conditions) . ')');
+        $mainConditions = $hasAllCondition ? ['c.all_environments = true'] : [];
+        $mainConditions = array_merge($mainConditions, $environmentConditions);
+
+        if (0 < count($mainConditions)) {
+            $qb->andWhere(new Orx($mainConditions));
+        }
     }
 
     /**

@@ -6,7 +6,7 @@ namespace App\ReadModel\GlobalSettings;
 
 use App\Domain\GlobalSettings\ValueObject\ApiCache;
 use App\Domain\GlobalSettings\ValueObject\CrawlerSettings;
-use App\Domain\GlobalSettings\ValueObject\Environments;
+use App\Domain\GlobalSettings\ValueObject\EnvironmentSettings;
 use App\Domain\GlobalSettings\ValueObject\GlobalSettingsId;
 use App\Domain\Shared\ValueObject\LocalesConfig;
 use DateTimeImmutable;
@@ -27,7 +27,7 @@ final class GlobalSettingsView extends AbstractView
 
     public CrawlerSettings $crawlerSettings;
 
-    public Environments $environments;
+    public EnvironmentSettings $environmentSettings;
 
     public function jsonSerialize(): array
     {
@@ -44,7 +44,7 @@ final class GlobalSettingsView extends AbstractView
                 'useEntityTag' => $this->apiCache->useEntityTag(),
             ],
             'crawlerSettings' => $this->crawlerSettings->values(),
-            'environments' => $this->environments->toArray(),
+            'environmentSettings' => $this->environmentSettings->toNative(),
         ];
     }
 }

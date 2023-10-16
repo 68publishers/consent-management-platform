@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace App\Domain\GlobalSettings\Event;
 
-use App\Domain\GlobalSettings\ValueObject\Environments;
+use App\Domain\GlobalSettings\ValueObject\EnvironmentSettings;
 use App\Domain\GlobalSettings\ValueObject\GlobalSettingsId;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Event\AbstractDomainEvent;
 
-final class EnvironmentsChanged extends AbstractDomainEvent
+final class EnvironmentSettingsChanged extends AbstractDomainEvent
 {
     private GlobalSettingsId $globalSettingsId;
 
-    private Environments $environments;
+    private EnvironmentSettings $environmentSettings;
 
-    public static function create(GlobalSettingsId $globalSettingsId, Environments $environments): self
+    public static function create(GlobalSettingsId $globalSettingsId, EnvironmentSettings $environmentSettings): self
     {
         $event = self::occur($globalSettingsId->toString(), [
-            'environments' => $environments->toArray(),
+            'environment_settings' => $environmentSettings->toNative(),
         ]);
 
         $event->globalSettingsId = $globalSettingsId;
-        $event->environments = $environments;
+        $event->environmentSettings = $environmentSettings;
 
         return $event;
     }
@@ -31,14 +31,14 @@ final class EnvironmentsChanged extends AbstractDomainEvent
         return $this->globalSettingsId;
     }
 
-    public function environments(): Environments
+    public function environmentSettings(): EnvironmentSettings
     {
-        return $this->environments;
+        return $this->environmentSettings;
     }
 
     protected function reconstituteState(array $parameters): void
     {
         $this->globalSettingsId = GlobalSettingsId::fromUuid($this->aggregateId()->id());
-        $this->environments = Environments::reconstitute($parameters['environments']);
+        $this->environmentSettings = EnvironmentSettings::fromSafeNative($parameters['environment_settings']);
     }
 }

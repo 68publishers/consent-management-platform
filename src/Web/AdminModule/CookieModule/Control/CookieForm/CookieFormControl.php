@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\CookieModule\Control\CookieForm;
 
+use App\Application\GlobalSettings\EnabledEnvironmentsResolver;
 use App\Application\GlobalSettings\GlobalSettingsInterface;
 use App\Application\GlobalSettings\ValidLocalesProvider;
 use App\Domain\Cookie\Command\CreateCookieCommand;
@@ -84,12 +85,7 @@ final class CookieFormControl extends Control
     {
         $translator = $this->getPrefixedTranslator();
         $providers = $this->getCookieProviders();
-        $environments = [];
-
-        foreach ($this->globalSettings->environments()->all() as $environment) {
-            assert($environment instanceof Environment);
-            $environments[$environment->code] = $environment->name;
-        }
+        $environments = EnabledEnvironmentsResolver::resolveAllEnvironments($this->globalSettings->environmentSettings());
 
         $form = $this->formFactory->create(array_merge(
             $this->getFormFactoryOptions(),
@@ -97,7 +93,7 @@ final class CookieFormControl extends Control
                 FormFactoryInterface::OPTION_IMPORTS => __DIR__ . '/templates/form.imports.latte',
                 FormFactoryInterface::OPTION_TEMPLATE_VARIABLES => [
                     'providers' => $providers,
-                    'environments' => $this->globalSettings->environments(),
+                    'environments' => $environments,
                 ],
             ],
         ));
@@ -127,11 +123,13 @@ final class CookieFormControl extends Control
             ->setDefaultValue(true)
             ->addCondition(Form::Equal, false)
             ->toggle('#' . $this->getUniqueId() . '-environments-container');
-        ;
 
         $form->addCheckboxList('environments', 'environments.field')
             ->checkDefaultValue(false)
-            ->setItems(['' => $translator->translate('//layout.default_environment')] + $environments)
+            ->setItems(array_map(
+                static fn (Environment $environment): string => $environment->name->value(),
+                $environments,
+            ))
             ->setTranslator(null)
             ->setOption('id', $this->getUniqueId() . '-environments-container');
 
@@ -172,7 +170,7 @@ final class CookieFormControl extends Control
                 'category' => $this->default->categoryId->toString(),
                 'all_environments' => $this->default->allEnvironments,
                 'environments' => array_map(
-                    static fn (CookieEnvironment $environment): string => null === $environment->value() ? '' : $environment->value(),
+                    static fn (CookieEnvironment $environment): string => $environment->value(),
                     $this->default->environments->all(),
                 ),
                 'processing_time' => !$isExpiration ? $this->default->processingTime->value() : 'expiration',
@@ -212,12 +210,7 @@ final class CookieFormControl extends Control
         }
 
         $values = $form->values;
-        $environments = $values->all_environments
-            ? true
-            : array_map(
-                static fn (string $environment): ?string => '' === $environment ? null : $environment,
-                $values->environments,
-            );
+        $environments = $values->all_environments ? true : $values->environments;
 
         if (null === $this->default) {
             $cookieId = CookieId::new();

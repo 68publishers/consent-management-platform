@@ -33,7 +33,7 @@ final class IntegrationPresenter extends SelectedProjectPresenter
 
         $template->appHost = $this->getHttpRequest()->getUrl()->getHostUrl();
         $template->environments = ProjectEnvironmentOptions::create(
-            globalSettingsEnvironments: $this->globalSettings->environments(),
+            environmentSettings: $this->globalSettings->environmentSettings(),
             projectEnvironments: $this->projectView->environments,
             translator: $this->getTranslator(),
         );
