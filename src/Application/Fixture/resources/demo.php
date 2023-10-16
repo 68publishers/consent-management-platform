@@ -237,6 +237,7 @@ for ($i = 0; $i < 30; $i++) {
         'attributes' => [
             'trackingId' => Random::generate(10, '0-9'),
         ],
+        'environment' => 'default',
     ];
 
     # update consent

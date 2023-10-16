@@ -66,10 +66,7 @@ final class CookieImporter extends AbstractImporter
                 $cookieView = $this->queryBus->dispatch(GetCookieByNameAndCookieProviderAndCategoryQuery::create($data->name, $cookieProviderView->id->toString(), $categoryView->id->toString()));
                 $environments = empty($data->environments)
                     ? true
-                    : array_map(
-                        static fn (string $environment): ?string => 'default' === $environment ? null : $environment,
-                        $data->environments,
-                    );
+                    : $data->environments;
 
                 if ($cookieView instanceof CookieView) {
                     $command = UpdateCookieCommand::create($cookieView->id->toString())

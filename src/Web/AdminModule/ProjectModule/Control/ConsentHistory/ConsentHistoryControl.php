@@ -65,7 +65,7 @@ final class ConsentHistoryControl extends Control
         $projectEnvironments = $projectView instanceof ProjectView ? $projectView->environments : Environments::empty();
 
         $environments = EnabledEnvironmentsResolver::resolveProjectEnvironments(
-            globalSettingsEnvironments: $this->globalSettings->environments(),
+            environmentSettings: $this->globalSettings->environmentSettings(),
             projectEnvironments: $projectEnvironments,
         );
 

@@ -174,8 +174,9 @@ trait DataGridQueryHandlerTrait
             ->setParameter($p2, $to->format('Y-m-d H:i:s'));
     }
 
-    protected function applyIn(QueryBuilder|DbalQueryBuilder $qb, string $column, array $value): void
+    protected function applyIn(QueryBuilder|DbalQueryBuilder $qb, string $column, mixed $value): void
     {
+        $value = (array) $value;
         $p = $this->newParameterName();
         $type = null;
 

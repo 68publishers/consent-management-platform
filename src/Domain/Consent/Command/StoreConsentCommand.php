@@ -15,7 +15,7 @@ final class StoreConsentCommand extends AbstractCommand
         ?string $settingsChecksum,
         array $consents,
         array $attributes,
-        ?string $environment = null,
+        string $environment,
     ): self {
         return self::fromParameters([
             'project_id' => $projectId,
@@ -57,7 +57,7 @@ final class StoreConsentCommand extends AbstractCommand
         return $this->getParam('attributes');
     }
 
-    public function environment(): ?string
+    public function environment(): string
     {
         return $this->getParam('environment');
     }

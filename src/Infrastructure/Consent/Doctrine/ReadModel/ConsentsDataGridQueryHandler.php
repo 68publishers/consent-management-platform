@@ -19,8 +19,6 @@ final class ConsentsDataGridQueryHandler implements QueryHandlerInterface
 {
     use DataGridQueryHandlerTrait;
 
-    public const FILTER_ENVIRONMENT_DEFAULT_ENV_VALUE = '//default//';
-
     /**
      * @throws NoResultException
      * @throws NonUniqueResultException
@@ -60,7 +58,7 @@ final class ConsentsDataGridQueryHandler implements QueryHandlerInterface
                 'userIdentifier' => ['applyEquals', 'c.user_identifier'],
                 'createdAt' => ['applyDate', 'c.created_at'],
                 'lastUpdateAt' => ['applyDate', 'c.last_update_at'],
-                'environment' => ['applyEnvironment', 'c.environment'],
+                'environment' => ['applyIn', 'c.environment'],
             ],
             [
                 'userIdentifier' => 'c.user_identifier',
@@ -68,18 +66,6 @@ final class ConsentsDataGridQueryHandler implements QueryHandlerInterface
                 'lastUpdateAt' => 'c.last_update_at',
             ],
         );
-    }
-
-    public function applyEnvironment(DbalQueryBuilder $qb, string $column, mixed $value): void
-    {
-        if (self::FILTER_ENVIRONMENT_DEFAULT_ENV_VALUE !== $value) {
-            $p = $this->newParameterName();
-
-            $qb->andWhere(sprintf('%s = :%s', $column, $p))
-                ->setParameter($p, $value);
-        } else {
-            $qb->andWhere(sprintf('%s IS NULL', $column));
-        }
     }
 
     protected function beforeCountQueryFetch(OrmQueryBuilder|DbalQueryBuilder $qb): DbalQueryBuilder

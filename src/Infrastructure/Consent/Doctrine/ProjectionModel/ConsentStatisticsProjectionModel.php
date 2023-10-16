@@ -40,7 +40,7 @@ final class ConsentStatisticsProjectionModel extends AbstractProjectionModel
             ->setNotnull(true);
 
         $table->addColumn('environment', Types::STRING)
-            ->setNotnull(false);
+            ->setNotnull(true);
 
         $table->addColumn('positive_count', Types::INTEGER)
             ->setNotnull(true);
@@ -63,13 +63,6 @@ final class ConsentStatisticsProjectionModel extends AbstractProjectionModel
             columnNames: ['project_id', 'environment', 'created_at'],
             indexName: 'idx_csp_project_id_environment_created_at',
         );
-        $table->addIndex(
-            columnNames: ['project_id', 'environment', 'created_at'],
-            indexName: 'idx_csp_project_id_created_at_partial',
-            options: [
-                'where' => 'environment IS NULL',
-            ],
-        );
 
         $table->addIndex(
             columnNames: ['project_id', 'consent_id', 'created_at'],
@@ -85,15 +78,6 @@ final class ConsentStatisticsProjectionModel extends AbstractProjectionModel
             options: [
                 'include' => ['positive_count', 'negative_count'],
                 'desc' => 'created_at',
-            ],
-        );
-        $table->addIndex(
-            columnNames: ['project_id', 'consent_id', 'created_at'],
-            indexName: 'idx_csp_project_id_consent_id_created_at_include_partial',
-            options: [
-                'include' => ['positive_count', 'negative_count'],
-                'desc' => 'created_at',
-                'where' => 'environment IS NULL',
             ],
         );
     }

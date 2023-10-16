@@ -12,12 +12,17 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
  */
 final class CalculateConsentStatisticsPerPeriodQuery extends AbstractQuery
 {
-    public static function create(string $projectId, DateTimeInterface $startDate, DateTimeInterface $endDate): self
-    {
+    public static function create(
+        string $projectId,
+        DateTimeInterface $startDate,
+        DateTimeInterface $endDate,
+        ?string $environment = null,
+    ): self {
         return self::fromParameters([
             'project_id' => $projectId,
             'start_date' => $startDate,
             'end_date' => $endDate,
+            'environment' => $environment,
         ]);
     }
 
@@ -36,25 +41,8 @@ final class CalculateConsentStatisticsPerPeriodQuery extends AbstractQuery
         return $this->getParam('end_date');
     }
 
-    public function namedEnvironment(): ?string
+    public function environment(): ?string
     {
-        return $this->getParam('named_environment');
-    }
-
-    public function defaultEnvironment(): bool
-    {
-        return $this->getParam('default_environment') ?? false;
-    }
-
-    public function withNamedEnvironment(string $environment): self
-    {
-        return $this->withParam('named_environment', $environment)
-            ->withParam('default_environment', false);
-    }
-
-    public function withDefaultEnvironment(): self
-    {
-        return $this->withParam('default_environment', true)
-            ->withParam('named_environment', null);
+        return $this->getParam('environment');
     }
 }

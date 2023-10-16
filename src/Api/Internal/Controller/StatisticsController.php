@@ -8,8 +8,6 @@ use Apitte\Core\Annotation\Controller as Api;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use App\Api\Internal\RequestBody\GetProjectStatisticsRequestBody;
-use App\Application\Statistics\DefaultEnvironment;
-use App\Application\Statistics\NamedEnvironment;
 use App\Application\Statistics\Period;
 use App\Application\Statistics\ProjectStatisticsCalculatorInterface;
 use App\ReadModel\Project\FindProjectsAccessibilityByCodeQuery;
@@ -110,23 +108,22 @@ final class StatisticsController extends AbstractInternalController
         }
 
         $period = Period::create($startDate, $endDate);
-        $environmentImpl = empty($environment) ? new DefaultEnvironment() : ('*' !== $environment ? new NamedEnvironment($environment) : null);
 
         foreach ($projectIdsByCodes as $code => $projectId) {
             $consentStatistics = $this->projectStatisticsCalculator->calculateConsentStatistics(
                 projectId: $projectId,
                 currentPeriod: $period,
-                environment: $environmentImpl,
+                environment: $environment,
             );
             $cookieStatistics = $this->projectStatisticsCalculator->calculateCookieStatistics(
                 projectId: $projectId,
                 endDate: $endDate,
-                environment: $environmentImpl,
+                environment: $environment,
             );
             $lastConsentDate = $this->projectStatisticsCalculator->calculateLastConsentDate(
                 projectId: $projectId,
                 endDate: $endDate,
-                environment: $environmentImpl,
+                environment: $environment,
             );
             $cookieSuggestionStatistics = $this->projectStatisticsCalculator->calculateCookieSuggestionStatistics(
                 projectId: $projectId,

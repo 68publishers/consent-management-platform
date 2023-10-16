@@ -9,44 +9,19 @@
         x-data="{
             activeTab: '{$active}',
             environments: JSON.parse('{Nette\Utils\Json::encode($environments)}'),
-            currentEnvironment: null,
             init() {
                 var activeTab = window.localStorage.getItem('cmp_integration_templates_active_tab');
 
                 if (activeTab && this.$el.querySelector('[data-tab=\'' + activeTab + '\']')) {
                     this.activeTab = activeTab;
                 }
-
-                var storedEnvironmentCode = window.localStorage.getItem('cmp_integration_templates_active_environment');
-                var storedEnvironment = undefined;
-                var defaultEnvironment = undefined;
-
-                for (var environment of this.environments) {
-                    if (storedEnvironmentCode === environment.code) {
-                        storedEnvironment = environment;
-                    }
-
-                    if (null === environment.code) {
-                        defaultEnvironment = environment;
-                    }
-
-                    environment.link = environment.link.replace('__LOCALE__', this.activeTab);
-                }
-
-                this.selectEnvironment(storedEnvironment || defaultEnvironment || this.environments[0] || null);
             },
             changeTab(tab) {
                 this.activeTab = tab;
                 window.localStorage.setItem('cmp_integration_templates_active_tab', tab);
             },
-            selectEnvironment(environment) {
-                this.currentEnvironment = environment;
-
-                if (null === environment || null === environment.code) {
-                    window.localStorage.removeItem('cmp_integration_templates_active_environment');
-                } else {
-                    window.localStorage.setItem('cmp_integration_templates_active_environment', environment.code);
-                }
+            openTable(environment) {
+                window.open(environment.link.replace('__LOCALE__', this.activeTab), '_blank');
 
                 return true;
             }
@@ -69,50 +44,34 @@
                                     {svg common/arrow-top-right-on-square.svg, class: 'h-5 w-5 ml-1'}
                                 </a>
                             {else}
-                                <div :href="currentEnvironment.link" class="inline-flex items-center">
-                                    <a :href="currentEnvironment.link" target="_blank" class="text-indigo-700">{$container[$locale]->translate(open_template_for)}</a>
-                                    <div x-data="dropdown" x-bind="dropdown" class="relative inline-block text-left mx-2">
-                                        <div>
-                                            <button x-bind="dropdownButton" type="button" class="inline-flex items-center pl-4 pr-6 py-2 border border-transparent rounded-md text-sm text-gray-700 bg-gray-50 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200">
-                                                <span class="flex w-full items-center gap-x-1.5 rounded-md">
-                                                    <svg
-                                                            :style="{ fill: currentEnvironment ? currentEnvironment.color : '#ffffff' }"
-                                                            :class="currentEnvironment && ['#ffffff', '#fff'].includes(currentEnvironment.color) ? 'rounded border border-black' : ''"
-                                                            class="h-1.5 w-1.5"
-                                                            viewBox="0 0 6 6"
-                                                            aria-hidden="true"
-                                                    >
-                                                        <circle cx="3" cy="3" r="3" />
-                                                    </svg>
-                                                    <span x-text="currentEnvironment ? currentEnvironment.name : ''"></span>
-                                                </span>
-                                            </button>
-                                        </div>
-
-                                        <div x-bind="dropdownPanel" x-cloak class="absolute left-0 z-10 mt-2 w-48 origin-top-left rounded-md bg-white shadow-lg py-1 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" tabindex="-1">
-                                            <template x-for="environment in environments" :key="environment.code || ''" hidden>
-                                                <div class="px-1">
-                                                    <button @click="selectEnvironment(environment) && window.open(environment.link, '_blank') && close()" type="button" class="flex w-full items-center px-3 py-2 text-sm text-gray-700 rounded hover:bg-gray-100 active:bg-gray-100 focus:bg-gray-100 border-none" role="menuitem" tabindex="-1">
-                                                        <span class="flex w-full items-center gap-x-1.5 rounded-md">
-                                                            <svg
-                                                                    :style="{ fill: environment.color }"
-                                                                    :class="['#ffffff', '#fff'].includes(environment.color) ? 'rounded border border-black' : ''"
-                                                                    class="h-1.5 w-1.5"
-                                                                    viewBox="0 0 6 6"
-                                                                    aria-hidden="true"
-                                                            >
-                                                                <circle cx="3" cy="3" r="3" />
-                                                            </svg>
-                                                            <span x-text="environment.name"></span>
-                                                        </span>
-                                                    </button>
-                                                </div>
-                                            </template>
-                                        </div>
+                                <div x-data="dropdown" x-bind="dropdown" class="relative inline-block text-left">
+                                    <div>
+                                        <button x-bind="dropdownButton" type="button" class="text-indigo-700 inline-flex items-center">
+                                            {$container[$locale]->translate(open_template)}
+                                            {svg common/arrow-top-right-on-square.svg, class: 'h-5 w-5 ml-1'}
+                                        </button>
                                     </div>
-                                    <a :href="currentEnvironment.link" target="_blank" class="text-indigo-700">
-                                        {svg common/arrow-top-right-on-square.svg, class: 'h-5 w-5'}
-                                    </a>
+
+                                    <div x-bind="dropdownPanel" x-cloak class="absolute left-0 z-10 mt-2 w-48 origin-top-left rounded-md bg-white shadow-lg py-1 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" tabindex="-1">
+                                        <template x-for="environment in environments" :key="environment.code || ''" hidden>
+                                            <div class="px-1">
+                                                <button @click="openTable(environment) && close()" type="button" class="flex w-full items-center px-3 py-2 text-sm text-gray-700 rounded hover:bg-gray-100 active:bg-gray-100 focus:bg-gray-100 border-none" role="menuitem" tabindex="-1">
+                                                    <span class="flex w-full items-center gap-x-1.5 rounded-md">
+                                                        <svg
+                                                                :style="{ fill: environment.color }"
+                                                                :class="['#ffffff', '#fff'].includes(environment.color) ? 'rounded border border-black' : ''"
+                                                                class="h-1.5 w-1.5"
+                                                                viewBox="0 0 6 6"
+                                                                aria-hidden="true"
+                                                        >
+                                                            <circle cx="3" cy="3" r="3" />
+                                                        </svg>
+                                                        <span x-text="environment.name"></span>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </template>
+                                    </div>
                                 </div>
                             {/if}
                         </div>

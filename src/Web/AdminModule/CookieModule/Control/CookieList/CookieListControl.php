@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\AdminModule\CookieModule\Control\CookieList;
 
+use App\Application\GlobalSettings\EnabledEnvironmentsResolver;
 use App\Application\GlobalSettings\GlobalSettingsInterface;
 use App\Application\GlobalSettings\ValidLocalesProvider;
 use App\Domain\Cookie\Command\DeleteCookieCommand;
@@ -110,6 +111,7 @@ final class CookieListControl extends Control
      */
     protected function createComponentGrid(): DataGrid
     {
+        $environments = EnabledEnvironmentsResolver::resolveAllEnvironments($this->globalSettings->environmentSettings());
         $locale = $this->validLocalesProvider->getValidDefaultLocale();
         $query = CookiesDataGridQuery::create($locale?->code())
             ->withProjectsData($this->includeProjectsData);
@@ -130,7 +132,7 @@ final class CookieListControl extends Control
         $grid->setTemplateVariables([
             '_locale' => $locale,
             '_acl' => $this->acl,
-            '_globalEnvironments' => $this->globalSettings->environments(),
+            '_environments' => $environments,
         ]);
 
         $grid->setDefaultSort([
@@ -176,20 +178,13 @@ final class CookieListControl extends Control
 
         $grid->addColumnText('environments', 'environments')
             ->setFilterMultiSelect(
-                options: [CookiesDataGridQueryHandler::FILTER_ENVIRONMENTS_DEFAULT_VALUE => $this->getTranslator()->translate('//layout.default_environment')]
-                + array_combine(
-                    array_map(
-                        static fn (Environment $environment): string => $environment->code,
-                        $this->globalSettings->environments()->all(),
+                options: [CookiesDataGridQueryHandler::FILTER_ENVIRONMENTS_ALL => $this->getTranslator()->translate('//layout.all_environments')]
+                    + array_map(
+                        static fn (Environment $environment): string => $environment->name->value(),
+                        $environments,
                     ),
-                    array_map(
-                        static fn (Environment $environment): string => $environment->name,
-                        $this->globalSettings->environments()->all(),
-                    ),
-                ),
                 column: 'environments',
             );
-        ;
 
         $grid->addColumnDateTimeTz('created_at', 'created_at', 'createdAt')
             ->setFormat('j.n.Y H:i:s')

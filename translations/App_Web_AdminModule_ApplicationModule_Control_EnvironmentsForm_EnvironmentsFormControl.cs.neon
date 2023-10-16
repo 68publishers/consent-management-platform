@@ -1,12 +1,23 @@
 addEnvironment: Přidat prostředí
 removeEnvironment: Odstranit prostředí
 
+defaultName:
+    placeholder: Název
+    required: Vyplňte prosím název.
+
+defaultColor:
+    placeholder: Barva
+    required: Zvolte prosím bravu.
+    rule:
+        pattern: Nevalidní formát.
+
 code:
     placeholder: Kód
     required: Vyplňte prosím kód.
     rule:
         pattern: 'Kód smí obsahovat pouze malá písmena (a-z), číslice a znaky "_", "-" a ".".'
-        values_are_not_unique: Kód je duplicitní.
+        notEqualDefault: 'Kód "default" není povolen.'
+        valuesAreNotUnique: Kód je duplicitní.
 
 name:
     placeholder: Název

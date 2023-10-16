@@ -53,7 +53,7 @@ final class TemplatesFormControl extends Control
                     'locales' => $locales,
                     'projectCode' => $this->projectView->code->value(),
                     'environments' => ProjectEnvironmentOptions::create(
-                        globalSettingsEnvironments: $this->globalSettings->environments(),
+                        environmentSettings: $this->globalSettings->environmentSettings(),
                         projectEnvironments: $this->projectView->environments,
                         translator: $translator,
                         additionalMapper: function (object $environment): object {

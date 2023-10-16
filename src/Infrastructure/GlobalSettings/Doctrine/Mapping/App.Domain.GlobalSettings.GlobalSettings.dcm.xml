@@ -21,7 +21,7 @@
             </options>
         </field>
 
-        <field name="environments" column="environments" type="App\Domain\GlobalSettings\ValueObject\Environments">
+        <field name="environmentSettings" column="environment_settings" type="App\Domain\GlobalSettings\ValueObject\EnvironmentSettings">
             <options>
                 <option name="jsonb">true</option>
             </options>

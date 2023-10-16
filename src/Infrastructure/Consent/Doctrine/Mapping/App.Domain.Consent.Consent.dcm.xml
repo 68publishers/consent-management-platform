@@ -34,7 +34,7 @@
 
         <field name="attributes" column="attributes" type="App\Domain\Consent\ValueObject\Attributes" />
 
-        <field name="environment" column="environment" type="App\Domain\Consent\ValueObject\Environment" nullable="true" />
+        <field name="environment" column="environment" type="App\Domain\Consent\ValueObject\Environment" />
 
         <field name="version" column="version" type="integer" />
     </entity>

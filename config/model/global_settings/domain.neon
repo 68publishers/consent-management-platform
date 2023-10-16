@@ -10,4 +10,4 @@ services:
         factory: App\Domain\GlobalSettings\CommandHandler\PutCrawlerSettingsCommandHandler
     -
         autowired: no
-        factory: App\Domain\GlobalSettings\CommandHandler\PutEnvironmentsCommandHandler
+        factory: App\Domain\GlobalSettings\CommandHandler\PutEnvironmentSettingsCommandHandler

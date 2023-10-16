@@ -42,7 +42,7 @@ final class GlobalSettingsFactory implements GlobalSettingsFactoryInterface
             defaultLocale: Locale::create($defaultLocaleValue, $list[$defaultLocaleValue] ?? $defaultLocaleValue),
             apiCache: $globalSettingsView->apiCache,
             crawlerSettings: $globalSettingsView->crawlerSettings,
-            environments: $globalSettingsView->environments,
+            environmentSettings: $globalSettingsView->environmentSettings,
         );
     }
 }

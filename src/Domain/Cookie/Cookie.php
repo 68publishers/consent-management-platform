@@ -73,7 +73,7 @@ final class Cookie implements AggregateRootInterface
         $environments = Environments::empty();
 
         foreach (is_array($command->environments()) ? $command->environments() : [] as $environment) {
-            $environments = $environments->with(Environment::fromNative($environment));
+            $environments = $environments->with(Environment::fromValue($environment));
         }
 
         $checkCategoryExists($categoryId);
@@ -142,7 +142,7 @@ final class Cookie implements AggregateRootInterface
             $environments = Environments::empty();
 
             foreach (is_array($command->environments()) ? $command->environments() : [] as $environment) {
-                $environments = $environments->with(Environment::fromNative($environment));
+                $environments = $environments->with(Environment::fromValue($environment));
             }
 
             if ($allEnvironments !== $this->allEnvironments || !$this->environments->equals($environments)) {

@@ -28,9 +28,8 @@ final class CalculateConsentStatisticsPerPeriodQueryHandler implements QueryHand
      */
     public function __invoke(CalculateConsentStatisticsPerPeriodQuery $query): ConsentStatisticsView
     {
-        $environmentParameter = $query->namedEnvironment();
-
-        $environmentCondition = $query->defaultEnvironment() ? 'AND sp.environment IS NULL' : (null !== $query->namedEnvironment() ? 'AND sp.environment = :environment' : '');
+        $environmentParameter = $query->environment();
+        $environmentCondition = null !== $environmentParameter ? 'AND sp.environment = :environment' : '';
         $totalStatisticsQuery = <<<SQL
         SELECT
             count(*) AS "totalConsentsCount",
@@ -59,7 +58,7 @@ final class CalculateConsentStatisticsPerPeriodQueryHandler implements QueryHand
             ->setParameters($parameters)
             ->getSingleResult(AbstractQuery::HYDRATE_ARRAY);
 
-        $environmentCondition = $query->defaultEnvironment() ? 'AND _sp.environment IS NULL' : (null !== $query->namedEnvironment() ? 'AND _sp.environment = :environment' : '');
+        $environmentCondition = null !== $environmentParameter ? 'AND _sp.environment = :environment' : '';
         $uniqueStatisticsQuery = <<<SQL
         SELECT
             count(*) AS "uniqueConsentsCount",

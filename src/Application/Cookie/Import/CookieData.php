@@ -25,8 +25,10 @@ final class CookieData extends AbstractDescribedObject
 
     public bool $active;
 
+    /** @var array<string, string> */
     public array $purpose;
 
+    /** @var array<string> */
     public array $environments = [];
 
     protected static function doDescribe(StructureDescriptor $descriptor): StructureDescriptor

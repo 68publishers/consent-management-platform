@@ -6,7 +6,7 @@ namespace App\Web\AdminModule\ApplicationModule\Control\EnvironmentsForm;
 
 use App\Application\GlobalSettings\GlobalSettingsInterface;
 use App\Domain\GlobalSettings\Command\Environment as CommandEnvironment;
-use App\Domain\GlobalSettings\Command\PutEnvironmentsCommand;
+use App\Domain\GlobalSettings\Command\PutEnvironmentSettingsCommand;
 use App\Web\AdminModule\ApplicationModule\Control\EnvironmentsForm\Event\EnvironmentsUpdatedEvent;
 use App\Web\AdminModule\ApplicationModule\Control\EnvironmentsForm\Event\EnvironmentsUpdateFailedEvent;
 use App\Web\Ui\Control;
@@ -42,6 +42,20 @@ final class EnvironmentsFormControl extends Control
 
         $form->setTranslator($translator);
 
+        $defaultEnvironmentContainer = $form->addContainer('defaultEnvironment');
+
+        $defaultEnvironmentContainer->addText('defaultName')
+            ->setHtmlAttribute('placeholder', 'defaultName.placeholder')
+            ->setRequired('defaultName.required');
+
+        $defaultEnvironmentContainer->addText('defaultColor')
+            ->setDefaultValue('#ffffff')
+            ->setHtmlAttribute('placeholder', 'defaultColor.placeholder')
+            ->setOption('type', 'color-picker')
+            ->setOption('placement', 'bottom-left')
+            ->setRequired('defaultColor.required')
+            ->addRule(Form::Pattern, 'defaultColor.rule.pattern', '#([a-fA-F0-9]{3}){1,2}\b');
+
         assert(is_callable([$form, 'addMultiplier']));
 
         $multiplier = $form->addMultiplier('environments', function (Container $container) {
@@ -51,7 +65,8 @@ final class EnvironmentsFormControl extends Control
                 ->setHtmlAttribute('placeholder', 'code.placeholder')
                 ->setRequired('code.required')
                 ->addRule(Form::Pattern, 'code.rule.pattern', '[a-z0-9_\-\.]+')
-                ->addRule(UniqueMultiplierValuesValidator::Validator, 'code.rule.values_are_not_unique');
+                ->addRule(Form::NotEqual, 'code.rule.notEqualDefault', 'default')
+                ->addRule(UniqueMultiplierValuesValidator::Validator, 'code.rule.valuesAreNotUnique');
 
             $container->addText('name')
                 ->setHtmlAttribute('placeholder', 'name.placeholder')
@@ -92,8 +107,14 @@ final class EnvironmentsFormControl extends Control
             $this->saveGlobalSettings($form);
         };
 
+        $environmentSettings = $this->globalSettings->environmentSettings();
+
         $form->setDefaults([
-            'environments' => $this->globalSettings->environments()->toArray(),
+            'defaultEnvironment' => [
+                'defaultName' => $environmentSettings->defaultEnvironment->name->value(),
+                'defaultColor' => $environmentSettings->defaultEnvironment->color->value(),
+            ],
+            'environments' => $environmentSettings->environments->toArray(),
         ]);
 
         $form->addProtection('//layout.form_protection');
@@ -107,7 +128,9 @@ final class EnvironmentsFormControl extends Control
     {
         $values = $form->getValues();
 
-        $command = PutEnvironmentsCommand::create(
+        $command = PutEnvironmentSettingsCommand::create(
+            defaultEnvironmentName: $values->defaultEnvironment->defaultName,
+            defaultEnvironmentColor: $values->defaultEnvironment->defaultColor,
             environments: $values->environments,
         );
 

@@ -76,7 +76,7 @@ final class CookieExportQueryHandler implements QueryHandlerInterface
             'environments' => $row['cookie']['allEnvironments']
                 ? []
                 : array_map(
-                    static fn (Environment $environment): string => null === $environment->value() ? 'default' : $environment->value(),
+                    static fn (Environment $environment): string => $environment->value(),
                     $row['cookie']['environments']->all(),
                 ),
         ];

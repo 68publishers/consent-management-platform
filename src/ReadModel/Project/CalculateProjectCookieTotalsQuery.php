@@ -12,11 +12,15 @@ use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\AbstractQuery;
  */
 final class CalculateProjectCookieTotalsQuery extends AbstractQuery
 {
-    public static function create(string $projectId, DateTimeImmutable $maxDate): self
-    {
+    public static function create(
+        string $projectId,
+        DateTimeImmutable $maxDate,
+        ?string $environment = null,
+    ): self {
         return self::fromParameters([
             'project_id' => $projectId,
             'max_date' => $maxDate,
+            'environment' => $environment,
         ]);
     }
 
@@ -30,25 +34,8 @@ final class CalculateProjectCookieTotalsQuery extends AbstractQuery
         return $this->getParam('max_date');
     }
 
-    public function namedEnvironment(): ?string
+    public function environment(): ?string
     {
-        return $this->getParam('named_environment');
-    }
-
-    public function defaultEnvironment(): bool
-    {
-        return $this->getParam('default_environment') ?? false;
-    }
-
-    public function withNamedEnvironment(string $environment): self
-    {
-        return $this->withParam('named_environment', $environment)
-            ->withParam('default_environment', false);
-    }
-
-    public function withDefaultEnvironment(): self
-    {
-        return $this->withParam('default_environment', true)
-            ->withParam('named_environment', null);
+        return $this->getParam('environment');
     }
 }

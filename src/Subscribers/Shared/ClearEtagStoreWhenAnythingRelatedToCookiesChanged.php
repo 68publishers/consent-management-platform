@@ -25,7 +25,7 @@ use App\Domain\CookieProvider\Event\CookieProviderNameChanged;
 use App\Domain\CookieProvider\Event\CookieProviderPurposeChanged;
 use App\Domain\CookieProvider\Event\CookieProviderTypeChanged;
 use App\Domain\GlobalSettings\Event\ApiCacheSettingsChanged;
-use App\Domain\GlobalSettings\Event\EnvironmentsChanged;
+use App\Domain\GlobalSettings\Event\EnvironmentSettingsChanged;
 use App\Domain\Project\Event\ProjectActiveStateChanged;
 use App\Domain\Project\Event\ProjectCodeChanged;
 use App\Domain\Project\Event\ProjectCookieProviderAdded;
@@ -79,7 +79,7 @@ final class ClearEtagStoreWhenAnythingRelatedToCookiesChanged implements EventHa
 
         # global settings changes
         yield ApiCacheSettingsChanged::class;
-        yield EnvironmentsChanged::class;
+        yield EnvironmentSettingsChanged::class;
 
         # deletes
         yield AggregateDeleted::class => [

@@ -1,22 +1,23 @@
 addEnvironment: Add environment
 removeEnvironment: Remove environment
 
+defaultName:
+    placeholder: Name
+    required: Please enter a name.
+
+defaultColor:
+    placeholder: Color
+    required: Please select a color.
+    rule:
+        pattern: Invalid format.
+
 code:
     placeholder: Code
     required: Please enter a code.
     rule:
         pattern: 'Code can only contain lowercase letters (a-z), numbers, and the characters "_", "-" and ".".'
-        values_are_not_unique: The code is duplicated.
-
-name:
-    placeholder: Name
-    required: Please enter a name.
-
-color:
-    placeholder: Color
-    required: Please select a color.
-    rule:
-        pattern: Invalid format.
+        notEqualDefault: 'The code "default" is not allowed.'
+        valuesAreNotUnique: The code is duplicated.
 
 save:
     field: Save

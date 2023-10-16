@@ -11,6 +11,7 @@ use App\Api\V1\RequestBody\PutConsentRequestBody;
 use App\Application\GlobalSettings\EnabledEnvironmentsResolver;
 use App\Application\GlobalSettings\GlobalSettingsInterface;
 use App\Domain\Consent\Command\StoreConsentCommand;
+use App\Domain\GlobalSettings\ValueObject\EnvironmentSettings;
 use App\ReadModel\ConsentSettings\ConsentSettingsView;
 use App\ReadModel\ConsentSettings\GetConsentSettingsByProjectIdAndChecksumQuery;
 use App\ReadModel\Project\GetProjectByCodeQuery;
@@ -79,13 +80,13 @@ final class ConsentController extends AbstractV1Controller
 
         if (null !== $body->environment) {
             $environments = EnabledEnvironmentsResolver::resolveProjectEnvironments(
-                globalSettingsEnvironments: $this->globalSettings->environments(),
+                environmentSettings: $this->globalSettings->environmentSettings(),
                 projectEnvironments: $projectView->environments,
             );
             $environmentFound = false;
 
             foreach ($environments as $environment) {
-                if ($environment->code === $body->environment) {
+                if ($environment->code->value() === $body->environment) {
                     $environmentFound = true;
 
                     break;
@@ -123,7 +124,7 @@ final class ConsentController extends AbstractV1Controller
                 settingsChecksum: $body->settingsChecksum,
                 consents: $body->consents,
                 attributes: $body->attributes,
-                environment: $body->environment,
+                environment: $body->environment ?? EnvironmentSettings::DEFAULT_ENVIRONMENT_CODE,
             ));
         } catch (DomainException $e) {
             return $response->withStatus(ApiResponse::S422_UNPROCESSABLE_ENTITY)

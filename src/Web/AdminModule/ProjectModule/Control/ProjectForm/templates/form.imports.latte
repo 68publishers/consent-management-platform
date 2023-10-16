@@ -1,9 +1,9 @@
-{varType App\Domain\GlobalSettings\ValueObject\Environments $environments}
+{varType App\Domain\GlobalSettings\ValueObject\EnvironmentSettings $environmentSettings}
 
 {define #input-name-environments}
     <div class="lfv-message-parent mt-3">
         <div n:foreach="$control->items as $k => $v" n:class="$control->getSeparatorPrototype()->class, 'flex items-center flex-nowrap mb-3'">
-            {var $environment = $environments->getByCode($k)}
+            {var $environment = $environmentSettings->environments->getByCode($k)}
 
             <div class="flex items-center h-5">
                 <input n:name="$control:$k" n:class="
@@ -14,14 +14,14 @@
             <div class="ml-3 text-sm">
                 {if '' === $k}
                     <label n:name="$control:$k" class="inline-flex items-center gap-x-1.5 rounded-md px-2 py-0.5">
-                        <svg class="h-1.5 w-1.5 fill-white rounded border border-black" viewBox="0 0 6 6" aria-hidden="true">
+                        <svg n:class="'h-1.5 w-1.5', $environmentSettings->defaultEnvironment->color->isWhite() ? 'rounded border border-black' : ''" viewBox="0 0 6 6" aria-hidden="true" style="fill: {$environmentSettings->defaultEnvironment->color->value()|noescape}">
                             <circle cx="3" cy="3" r="3" />
                         </svg>
                         {=$control->translate($v)}
                     </label>
                 {elseif null !== $environment}
                     <label n:name="$control:$k" class="inline-flex items-center gap-x-1.5 rounded-md px-2 py-0.5">
-                        <svg class="h-1.5 w-1.5" viewBox="0 0 6 6" aria-hidden="true" style="fill: {$environment->color->value()|noescape}">
+                        <svg n:class="'h-1.5 w-1.5', $environment->color->isWhite() ? 'rounded border border-black' : ''" viewBox="0 0 6 6" aria-hidden="true" style="fill: {$environment->color->value()|noescape}">
                             <circle cx="3" cy="3" r="3" />
                         </svg>
                         {=$control->translate($v)}

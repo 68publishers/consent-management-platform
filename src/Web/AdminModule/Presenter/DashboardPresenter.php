@@ -37,7 +37,6 @@ final class DashboardPresenter extends AdminPresenter
         $template = $this->getTemplate();
         assert($template instanceof DashboardTemplate);
 
-        $globalEnvironments = $this->globalSettings->environments();
         $projects = $this->queryBus->dispatch(FindUserProjectsQuery::create($this->getIdentity()->id()->toString()));
 
         $template->projectsData = array_map(
@@ -48,7 +47,7 @@ final class DashboardPresenter extends AdminPresenter
                 'color' => $project->color->value(),
                 'fontColor' => Color::resolveFontColor($project->color->value()),
                 'environments' => ProjectEnvironmentOptions::create(
-                    globalSettingsEnvironments: $globalEnvironments,
+                    environmentSettings: $this->globalSettings->environmentSettings(),
                     projectEnvironments: $project->environments,
                     translator: $this->getTranslator(),
                 ),

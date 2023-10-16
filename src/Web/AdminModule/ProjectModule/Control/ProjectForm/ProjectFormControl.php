@@ -46,9 +46,9 @@ final class ProjectFormControl extends Control
             $globalLocales[$locale->code()] = sprintf('%s - %s', $locale->name(), $locale->code());
         }
 
-        foreach ($this->globalSettings->environments()->all() as $environment) {
+        foreach ($this->globalSettings->environmentSettings()->environments->all() as $environment) {
             assert($environment instanceof Environment);
-            $environments[$environment->code] = $environment->name;
+            $environments[$environment->code->value()] = $environment->name->value();
         }
 
         $form = $this->formFactory->create(array_merge(
@@ -56,7 +56,7 @@ final class ProjectFormControl extends Control
             [
                 FormFactoryInterface::OPTION_IMPORTS => __DIR__ . '/templates/form.imports.latte',
                 FormFactoryInterface::OPTION_TEMPLATE_VARIABLES => [
-                    'environments' => $this->globalSettings->environments(),
+                    'environmentSettings' => $this->globalSettings->environmentSettings(),
                 ],
             ],
         ));
@@ -122,7 +122,7 @@ final class ProjectFormControl extends Control
 
         $form->addCheckboxList('environments', 'environments.field')
             ->checkDefaultValue(false)
-            ->setItems(['' => $translator->translate('//layout.default_environment')] + $environments)
+            ->setItems(['' => $this->globalSettings->environmentSettings()->defaultEnvironment->name->value()] + $environments)
             ->setTranslator(null)
             ->setDisabled([''])
             ->setDefaultValue(['']);
