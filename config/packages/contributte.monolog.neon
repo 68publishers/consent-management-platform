@@ -7,6 +7,7 @@ services:
         type: Sentry\Client
         factory: Sentry\ClientBuilder::create([
             dsn: ::env(SENTRY_DSN)
+            max_request_body_size: always
         ])::getClient()
 
     sentry_hub:

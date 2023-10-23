@@ -1,8 +1,8 @@
 name: Název
 code: Kód
 active: Aktivní
-private: Privátní
-private_description: 'Privátní poskytovatel je "hlavní" poskytovatel vázaný na daný projekt.'
+private: Projektový
+private_description: 'Projektový poskytovatel je "hlavní" poskytovatel vázaný na daný projekt.'
 type: Typ
 link: Odkaz
 number_of_cookies: Cookies

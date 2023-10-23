@@ -34,7 +34,7 @@ final class FindCookieDataForSuggestionQueryHandler implements QueryHandlerInter
             ->from('cookie', 'c')
             ->join('c', 'category', 'cat', 'c.category_id = cat.id AND cat.deleted_at IS NULL')
             ->join('c', 'cookie_provider', 'cp', 'c.cookie_provider_id = cp.id AND cp.deleted_at IS NULL')
-            ->leftJoin('c', 'project', 'p', 'p.id = :projectId AND p.deleted_at IS NULL')
+            ->join('c', 'project', 'p', 'p.id = :projectId AND p.deleted_at IS NULL')
             ->leftJoin('cp', 'project_has_cookie_provider', 'p_has_cp', 'p_has_cp.cookie_provider_id = cp.id AND p_has_cp.project_id = p.id')
             ->where('c.deleted_at IS NULL')
             ->andWhere('cp.private = false OR cp.id = p.cookie_provider_id')

@@ -35,11 +35,13 @@ use App\ReadModel\CookieSuggestion\CookieSuggestion;
 use App\ReadModel\CookieSuggestion\CookieSuggestionForResolving;
 use App\ReadModel\CookieSuggestion\FindCookieSuggestionsForResolvingQuery;
 use App\ReadModel\CookieSuggestion\GetCookieSuggestionByProjectIdAndNameAndDomainQuery;
+use App\ReadModel\Project\GetProjectByIdQuery;
 use Closure;
 use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
 use Exception;
+use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
@@ -64,6 +66,15 @@ final class CookieSuggestionsStore implements CookieSuggestionsStoreInterface
      */
     public function storeCrawledCookies(string $scenarioName, string $projectId, array $acceptedCategories, DateTimeImmutable $finishedAt, array $cookies): void
     {
+        $projectView = $this->queryBus->dispatch(GetProjectByIdQuery::create($projectId));
+
+        if (null === $projectView) {
+            throw new InvalidArgumentException(sprintf(
+                'The project with ID %s not found.',
+                $projectId,
+            ));
+        }
+
         $cookiesData = null;
         $getCookiesData = function () use (&$cookiesData, $projectId): array {
             if (null !== $cookiesData) {

@@ -1,8 +1,8 @@
 name: Name
 code: Code
 active: Active
-private: Private
-private_description: 'A private provider is the "main" provider associated with the project.'
+private: Project provider
+private_description: 'A project provider is the "main" provider associated with the project.'
 type: Type
 link: Link
 number_of_cookies: Cookies
