@@ -77,13 +77,21 @@ final class ReceiveResultController extends AbstractCrawlerController
             }
         }
 
-        $this->cookieSuggestionsStore->storeCrawledCookies(
-            $scenarioResponseBody->name,
-            $scenarioResponseBody->flags['projectId'],
-            $acceptedCategories,
-            $scenarioResponseBody->finishedAt ?? new DateTimeImmutable('now'),
-            $scenarioResponseBody->results->cookies,
-        );
+        try {
+            $this->cookieSuggestionsStore->storeCrawledCookies(
+                $scenarioResponseBody->name,
+                $scenarioResponseBody->flags['projectId'],
+                $acceptedCategories,
+                $scenarioResponseBody->finishedAt ?? new DateTimeImmutable('now'),
+                $scenarioResponseBody->results->cookies,
+            );
+        } catch (Throwable $e) {
+            $error = new ClientErrorException('Unable to process received crawler result: ' . $e->getMessage(), ApiResponse::S400_BAD_REQUEST, $e);
+
+            $this->logger->error((string) $error);
+
+            throw $error;
+        }
 
         return $response->withStatus(ApiResponse::S200_OK)
             ->writeJsonBody([

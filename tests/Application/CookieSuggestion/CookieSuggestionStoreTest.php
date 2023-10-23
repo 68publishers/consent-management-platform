@@ -35,6 +35,8 @@ use App\ReadModel\CookieSuggestion\CookieSuggestion;
 use App\ReadModel\CookieSuggestion\CookieSuggestionForResolving;
 use App\ReadModel\CookieSuggestion\FindCookieSuggestionsForResolvingQuery;
 use App\ReadModel\CookieSuggestion\GetCookieSuggestionByProjectIdAndNameAndDomainQuery;
+use App\ReadModel\Project\GetProjectByIdQuery;
+use App\ReadModel\Project\ProjectView;
 use Closure;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -43,6 +45,7 @@ use Hamcrest\Core\IsEqual;
 use Mockery;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
+use SixtyEightPublishers\ArchitectureBundle\ReadModel\View\ArrayViewData;
 use SixtyEightPublishers\CrawlerClient\Controller\Scenario\ValueObject\Cookie as CrawlerClientCookie;
 use Tester\Assert;
 use Tester\TestCase;
@@ -63,6 +66,10 @@ final class CookieSuggestionStoreTest extends TestCase
         $finishedAtString = $finishedAt->format(DateTimeInterface::ATOM);
         $store = $this->createStore(
             [
+                [
+                    GetProjectByIdQuery::create($projectId),
+                    ProjectView::fromData(new ArrayViewData([])),
+                ],
                 [
                     FindCookieDataForSuggestionQuery::create($projectId),
                     [

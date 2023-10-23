@@ -55,6 +55,6 @@
 {define col-duration}
     {App\Application\Helper\DurationFormatter::formatDiff(
         $item->createdAt->setTimezone(App\Application\Localization\ApplicationDateTimeZone::get()),
-        ($item->finishedAt ?? new \DateTimeImmutable('now'))->setTimezone(App\Application\Localization\ApplicationDateTimeZone::get())
+        ($item->finishedAt ?? new \DateTimeImmutable('now', new DateTimeZone('UTC')))->setTimezone(App\Application\Localization\ApplicationDateTimeZone::get())
     )}
 {/define}
