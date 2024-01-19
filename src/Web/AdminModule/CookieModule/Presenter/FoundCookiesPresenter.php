@@ -22,6 +22,7 @@ use App\Domain\CookieSuggestion\Command\CreateCookieSuggestionCommand;
 use App\Domain\CookieSuggestion\Command\DoNotIgnoreCookieSuggestionCommand;
 use App\Domain\CookieSuggestion\Command\IgnoreCookieSuggestionPermanentlyCommand;
 use App\Domain\CookieSuggestion\Command\IgnoreCookieSuggestionUntilNextOccurrenceCommand;
+use App\Domain\CookieSuggestion\ValueObject\CookieSuggestionId;
 use App\Domain\Project\Command\AddCookieProvidersToProjectCommand;
 use App\Domain\Project\ValueObject\ProjectId;
 use App\ReadModel\Cookie\CookieView;
@@ -453,8 +454,12 @@ final class FoundCookiesPresenter extends AdminPresenter
         bool $uiActionsAllowed,
         bool $virtualSuggestion,
     ): bool {
-        if ($virtualSuggestion && !$this->createCookieSuggestionFromVirtualId($cookieSuggestionId, $uiActionsAllowed)) {
-            return false;
+        if ($virtualSuggestion) {
+            $cookieSuggestionId = $this->createVirtualCookieSuggestion($cookieSuggestionId, $uiActionsAllowed);
+
+            if (null === $cookieSuggestionId) {
+                return false;
+            }
         }
 
         try {
@@ -667,11 +672,11 @@ final class FoundCookiesPresenter extends AdminPresenter
     /**
      * @throws AbortException
      */
-    private function createCookieSuggestionFromVirtualId(
-        string $virtualId,
+    private function createVirtualCookieSuggestion(
+        string $cookieId,
         bool $uiActionsAllowed,
-    ): bool {
-        $cookieView = $this->queryBus->dispatch(GetCookieByIdQuery::create($virtualId));
+    ): ?string {
+        $cookieView = $this->queryBus->dispatch(GetCookieByIdQuery::create($cookieId));
 
         if (!$cookieView instanceof CookieView) {
             if ($uiActionsAllowed) {
@@ -680,19 +685,21 @@ final class FoundCookiesPresenter extends AdminPresenter
                 $this->redirectIfNotAjax();
             }
 
-            return false;
+            return null;
         }
 
         try {
+            $cookieSuggestionId = CookieSuggestionId::new()->toString();
+
             $this->commandBus->dispatch(CreateCookieSuggestionCommand::create(
                 $this->projectView->id->toString(),
                 $cookieView->name->value(),
                 $cookieView->domain->value() ?: $this->projectView->domain->value(),
                 [],
-                $virtualId,
+                $cookieSuggestionId,
             ));
 
-            return true;
+            return $cookieSuggestionId;
         } catch (Throwable $e) {
             if (!$e instanceof DomainException) {
                 $this->logger->error((string) $e);
@@ -704,7 +711,7 @@ final class FoundCookiesPresenter extends AdminPresenter
                 $this->redirectIfNotAjax();
             }
 
-            return false;
+            return null;
         }
     }
 }
