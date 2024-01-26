@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Bridge\SixtyEightPublishers\OAuth\Azure;
 
+use App\Application\Localization\ApplicationDateTimeZone;
+use App\Application\Localization\Profiles;
 use App\Domain\User\Command\StoreExternalAuthenticationCommand;
 use App\Domain\User\RolesEnum;
 use App\ReadModel\User\UserView;
@@ -30,6 +32,7 @@ final class AzureAuthenticator implements AuthenticatorInterface
         private readonly CommandBusInterface $commandBus,
         private readonly QueryBusInterface $queryBus,
         private readonly LoggerInterface $logger,
+        private readonly Profiles $profiles,
     ) {}
 
     public function authenticate(string $flowName, AuthorizationResult $authorizationResult): IIdentity
@@ -90,7 +93,7 @@ final class AzureAuthenticator implements AuthenticatorInterface
         );
 
         $identity = IdentityDecorator::newInstance()->wakeupIdentity(
-            identity: Identity::createSleeping($userId),
+            identity: Identity::createSleeping(UserId::fromString($userId)),
             queryBus: $this->queryBus,
         );
 
@@ -114,7 +117,7 @@ final class AzureAuthenticator implements AuthenticatorInterface
         $userData = $resourceOwner->toArray();
 
         try {
-            $this->commandBus->dispatch(CreateUserCommand::create(
+            $command = CreateUserCommand::create(
                 username: $username,
                 password: null,
                 emailAddress: $username,
@@ -122,7 +125,13 @@ final class AzureAuthenticator implements AuthenticatorInterface
                 surname: $userData['family_name'] ?? '',
                 roles: $roles,
                 userId: $userId,
-            ));
+            );
+
+            $command = $command
+                ->withParam('profile', $this->profiles->active()->locale())
+                ->withParam('timezone', ApplicationDateTimeZone::get()->getName());
+
+            $this->commandBus->dispatch($command);
         } catch (Throwable $e) {
             $this->logger->error(sprintf(
                 'Unable to create the user with oid %s via %s. %s',

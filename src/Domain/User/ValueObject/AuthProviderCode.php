@@ -8,4 +8,8 @@ use SixtyEightPublishers\ArchitectureBundle\Domain\ValueObject\AbstractStringVal
 
 final class AuthProviderCode extends AbstractStringValueObject
 {
+    public function __toString(): string
+    {
+        return $this->value();
+    }
 }
