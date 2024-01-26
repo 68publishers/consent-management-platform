@@ -9,6 +9,8 @@ use App\Web\FrontModule\Control\SignIn\Event\LoggedInEvent;
 use App\Web\FrontModule\Control\SignIn\SignInControl;
 use App\Web\FrontModule\Control\SignIn\SignInControlFactoryInterface;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
+use SixtyEightPublishers\OAuth\OAuthFlowInterface;
+use SixtyEightPublishers\OAuth\OAuthFlowProviderInterface;
 
 final class SignInPresenter extends FrontPresenter
 {
@@ -17,8 +19,26 @@ final class SignInPresenter extends FrontPresenter
 
     public function __construct(
         private readonly SignInControlFactoryInterface $signInControlFactory,
+        private readonly OAuthFlowProviderInterface $oauthFlowProvider,
     ) {
         parent::__construct();
+    }
+
+    protected function beforeRender(): void
+    {
+        parent::beforeRender();
+
+        $template = $this->getTemplate();
+        assert($template instanceof SignInTemplate);
+
+        $template->backLink = !empty($this->backLink) ? $this->backLink : null;
+        $template->enabledOauthTypes = array_map(
+            static fn (OAuthFlowInterface $flow): string => $flow->getName(),
+            array_filter(
+                $this->oauthFlowProvider->all(),
+                static fn (OauthFlowInterface $flow): bool => $flow->isEnabled(),
+            ),
+        );
     }
 
     protected function createComponentSignIn(): SignInControl

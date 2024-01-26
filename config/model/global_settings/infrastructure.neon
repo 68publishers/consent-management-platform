@@ -20,12 +20,18 @@ nettrine.orm.xml:
 nettrine.dbal:
     connection:
         types:
+            App\Domain\GlobalSettings\ValueObject\AzureAuthSettings:
+                class: App\Infrastructure\GlobalSettings\Doctrine\DbalType\AzureAuthSettingsType
+                commented: yes
+
             App\Domain\GlobalSettings\ValueObject\GlobalSettingsId:
                 class: App\Infrastructure\GlobalSettings\Doctrine\DbalType\GlobalSettingsIdType
                 commented: yes
+
             App\Domain\GlobalSettings\ValueObject\EnvironmentSettings:
                 class: App\Infrastructure\GlobalSettings\Doctrine\DbalType\EnvironmentSettingsType
                 commented: yes
+
             App\Domain\GlobalSettings\ValueObject\CrawlerSettings:
                 class: App\Infrastructure\GlobalSettings\Doctrine\DbalType\CrawlerSettingsType
                 commented: yes

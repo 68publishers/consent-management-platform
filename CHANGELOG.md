@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Added authentication via Azure AD.
+
 ### Fixed
 
 - Fixed resolving of cookie suggestions that were not already created by crawler.

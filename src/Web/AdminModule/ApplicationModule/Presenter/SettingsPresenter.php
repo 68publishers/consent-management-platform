@@ -9,6 +9,10 @@ use App\Web\AdminModule\ApplicationModule\Control\ApiCacheSettingsForm\ApiCacheS
 use App\Web\AdminModule\ApplicationModule\Control\ApiCacheSettingsForm\ApiCacheSettingsFormControlFactoryInterface;
 use App\Web\AdminModule\ApplicationModule\Control\ApiCacheSettingsForm\Event\ApiCacheSettingsUpdatedEvent;
 use App\Web\AdminModule\ApplicationModule\Control\ApiCacheSettingsForm\Event\ApiCacheSettingsUpdateFailedEvent;
+use App\Web\AdminModule\ApplicationModule\Control\AzureAuthSettingsForm\AzureAuthSettingsFormControl;
+use App\Web\AdminModule\ApplicationModule\Control\AzureAuthSettingsForm\AzureAuthSettingsFormControlFactoryInterface;
+use App\Web\AdminModule\ApplicationModule\Control\AzureAuthSettingsForm\Event\AzureAuthSettingsUpdatedEvent;
+use App\Web\AdminModule\ApplicationModule\Control\AzureAuthSettingsForm\Event\AzureAuthSettingsUpdateFailedEvent;
 use App\Web\AdminModule\ApplicationModule\Control\CrawlerSettingsForm\CrawlerSettingsFormControl;
 use App\Web\AdminModule\ApplicationModule\Control\CrawlerSettingsForm\CrawlerSettingsFormControlFactoryInterface;
 use App\Web\AdminModule\ApplicationModule\Control\CrawlerSettingsForm\Event\CrawlerSettingsUpdatedEvent;
@@ -34,6 +38,7 @@ final class SettingsPresenter extends AdminPresenter
         private readonly ApiCacheSettingsFormControlFactoryInterface $apiCacheSettingsFormControlFactory,
         private readonly CrawlerSettingsFormControlFactoryInterface $crawlerSettingsFormControlFactory,
         private readonly EnvironmentsFormControlFactoryInterface $environmentsFormControlFactory,
+        private readonly AzureAuthSettingsFormControlFactoryInterface $azureAuthSettingsFormControlFactory,
     ) {
         parent::__construct();
     }
@@ -114,6 +119,26 @@ final class SettingsPresenter extends AdminPresenter
 
         $control->addEventListener(EnvironmentsUpdateFailedEvent::class, function (): void {
             $this->subscribeFlashMessage(FlashMessage::error('environments_update_failed'));
+        });
+
+        return $control;
+    }
+
+    protected function createComponentAzureAuthForm(): AzureAuthSettingsFormControl
+    {
+        $control = $this->azureAuthSettingsFormControlFactory->create();
+
+        $control->setFormFactoryOptions([
+            FormFactoryInterface::OPTION_AJAX => true,
+        ]);
+
+        $control->addEventListener(AzureAuthSettingsUpdatedEvent::class, function (): void {
+            $this->subscribeFlashMessage(FlashMessage::success('azure_auth_updated'));
+            $this->redrawSidebar();
+        });
+
+        $control->addEventListener(AzureAuthSettingsUpdateFailedEvent::class, function (): void {
+            $this->subscribeFlashMessage(FlashMessage::error('azure_auth_update_failed'));
         });
 
         return $control;

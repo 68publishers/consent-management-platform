@@ -48,6 +48,7 @@ services:
     - App\Web\AdminModule\ApplicationModule\Control\ApiCacheSettingsForm\ApiCacheSettingsFormControlFactoryInterface
     - App\Web\AdminModule\ApplicationModule\Control\CrawlerSettingsForm\CrawlerSettingsFormControlFactoryInterface
     - App\Web\AdminModule\ApplicationModule\Control\EnvironmentsForm\EnvironmentsFormControlFactoryInterface
+    - App\Web\AdminModule\ApplicationModule\Control\AzureAuthSettingsForm\AzureAuthSettingsFormControlFactoryInterface
 
     # Web\AdminModule\CrawlerModule
     - App\Web\AdminModule\CrawlerModule\Control\ScenarioList\ScenarioListControlFactoryInterface

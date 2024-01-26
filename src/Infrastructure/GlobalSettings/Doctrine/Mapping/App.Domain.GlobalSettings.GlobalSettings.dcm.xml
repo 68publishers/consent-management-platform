@@ -27,6 +27,12 @@
             </options>
         </field>
 
+        <field name="azureAuthSettings" column="azure_auth_settings" type="App\Domain\GlobalSettings\ValueObject\AzureAuthSettings">
+            <options>
+                <option name="jsonb">true</option>
+            </options>
+        </field>
+
         <field name="version" column="version" type="integer" />
     </entity>
 

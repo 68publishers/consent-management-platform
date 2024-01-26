@@ -1,5 +1,8 @@
 page_title: Přihlášení
 forgot_your_password: Zapomenuté heslo?
 
+login_with:
+    azure: Přihlásit se přes Azure
+
 message:
     user_authentication_failed: Nesprávné přihlašovací údaje.

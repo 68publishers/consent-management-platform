@@ -3,6 +3,7 @@ heading_localization: Localization
 heading_environments: Environments
 heading_api_cache: Performance
 heading_crawler: Crawler
+heading_azure_auth: Authentication with Azure AD
 
 message:
     localization_settings_updated: The localization settings have been saved.

@@ -1,0 +1,17 @@
+enabled:
+    field: Zapnuto
+
+client_id:
+    field: 'ID aplikace (klienta)'
+    required: Vyplňte prosím ID aplikace.
+
+client_secret:
+    field: Tajný kód klienta
+    required: Vyplňte prosím tajný kód klienta.
+
+callback_uri:
+    field: Callback URI
+    description: 'V nastavení aplikace na webu Azure nastavte jako "Identifikátor URI pro přesměrování".'
+
+save:
+    field: Uložit

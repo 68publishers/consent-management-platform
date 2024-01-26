@@ -1,0 +1,3 @@
+message:
+    authentication_failure:
+        azure: Přihlášení skrze Azure AD se nezdařilo.

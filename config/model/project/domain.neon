@@ -17,6 +17,3 @@ services:
     -
         autowired: no
         factory: App\Domain\Project\CommandHandler\UpdateProjectTemplatesCommandHandler
-    -
-        autowired: no
-        factory: App\Domain\User\CommandHandler\ChangeNotificationPreferencesCommandHandler

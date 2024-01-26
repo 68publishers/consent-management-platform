@@ -51,5 +51,9 @@ alert:
         text: The default locale for this project is not set.
         link_text: Please set it in the app settings.
 
+clipboard:
+    success_copy: Copied
+    error_copy: Copying failed
+
 message:
     locale_change_failed: The language could not be changed.

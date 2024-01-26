@@ -43,6 +43,7 @@ final class GlobalSettingsFactory implements GlobalSettingsFactoryInterface
             apiCache: $globalSettingsView->apiCache,
             crawlerSettings: $globalSettingsView->crawlerSettings,
             environmentSettings: $globalSettingsView->environmentSettings,
+            azureAuthSettings: $globalSettingsView->azureAuthSettings,
         );
     }
 }

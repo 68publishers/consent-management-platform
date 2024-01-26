@@ -6,6 +6,7 @@ namespace App\Subscribers\GlobalSettings;
 
 use App\Application\GlobalSettings\GlobalSettingsInterface;
 use App\Domain\GlobalSettings\Event\ApiCacheSettingsChanged;
+use App\Domain\GlobalSettings\Event\AzureAuthSettingsChanged;
 use App\Domain\GlobalSettings\Event\CrawlerSettingsChanged;
 use App\Domain\GlobalSettings\Event\EnvironmentSettingsChanged;
 use App\Domain\GlobalSettings\Event\GlobalSettingsCreated;
@@ -26,6 +27,7 @@ final class RefreshGlobalSettingsWhenChanged implements EventHandlerInterface, M
         yield ApiCacheSettingsChanged::class;
         yield CrawlerSettingsChanged::class;
         yield EnvironmentSettingsChanged::class;
+        yield AzureAuthSettingsChanged::class;
     }
 
     public function __invoke(): void

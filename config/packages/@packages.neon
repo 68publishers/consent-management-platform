@@ -11,6 +11,7 @@ includes:
     - 68publishers.user_bundle.neon
     - 68publishers.webpack_encore_bundle.neon
     - 68publishers.health_check.neon
+    - 68publishers.oauth.neon
     - 68publishers.projection_bundle.neon
     - contributte.apitte.neon
     - contributte.translation.neon

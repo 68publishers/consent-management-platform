@@ -6,10 +6,15 @@ namespace App\Domain\User;
 
 use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\Shared\ValueObject\Locale;
+use App\Domain\User\Command\StoreExternalAuthenticationCommand;
+use App\Domain\User\Event\UserExternallyAuthenticated;
 use App\Domain\User\Event\UserNotificationPreferencesChanged;
 use App\Domain\User\Event\UserProfileChanged;
 use App\Domain\User\Event\UserProjectsChanged;
 use App\Domain\User\Event\UserTimezoneChanged;
+use App\Domain\User\ValueObject\AuthProviderCode;
+use App\Domain\User\ValueObject\AuthResourceOwnerId;
+use App\Domain\User\ValueObject\AuthToken;
 use App\Domain\User\ValueObject\NotificationPreferences;
 use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -21,7 +26,9 @@ use SixtyEightPublishers\UserBundle\Domain\CheckUsernameUniquenessInterface;
 use SixtyEightPublishers\UserBundle\Domain\Command\CreateUserCommand;
 use SixtyEightPublishers\UserBundle\Domain\Command\UpdateUserCommand;
 use SixtyEightPublishers\UserBundle\Domain\Event\UserCreated;
+use SixtyEightPublishers\UserBundle\Domain\Event\UserRolesChanged;
 use SixtyEightPublishers\UserBundle\Domain\PasswordHashAlgorithmInterface;
+use SixtyEightPublishers\UserBundle\Domain\ValueObject\Roles;
 
 final class User extends BaseUser
 {
@@ -31,6 +38,9 @@ final class User extends BaseUser
 
     /** @var Collection<UserHasProject> */
     private Collection $projects;
+
+    /** @var Collection<string, ExternalAuth> */
+    private Collection $externalAuths;
 
     private NotificationPreferences $notificationPreferences;
 
@@ -74,6 +84,38 @@ final class User extends BaseUser
 
         if ($command->hasParam('project_ids')) {
             $this->changeProjects(array_map(static fn (string $projectId): ProjectId => ProjectId::fromString($projectId), $command->getParam('project_ids')));
+        }
+    }
+
+    public function storeExternalAuthentication(StoreExternalAuthenticationCommand $command): void
+    {
+        $providerCode = AuthProviderCode::fromValue($command->providerCode());
+        $resourceOwnerId = AuthResourceOwnerId::fromValue($command->resourceOwnerId());
+        $token = AuthToken::fromValue($command->token());
+        $refreshToken = AuthToken::fromValue($command->refreshToken());
+        $roles = Roles::reconstitute($command->roles());
+
+        $externalAuth = $this->externalAuths->get($providerCode->value());
+
+        if (null === $externalAuth
+            || !$externalAuth->getResourceOwnerId()->equals($resourceOwnerId)
+            || !$externalAuth->getToken()->equals($token)
+            || !$externalAuth->getRefreshToken()->equals($refreshToken)
+        ) {
+            $this->recordThat(UserExternallyAuthenticated::create(
+                userId: $this->id,
+                providerCode: $providerCode,
+                resourceOwnerId: $resourceOwnerId,
+                token: $token,
+                refreshToken: $refreshToken,
+            ));
+        }
+
+        if (!$this->roles->equals($roles)) {
+            $this->recordThat(UserRolesChanged::create(
+                userId: $this->id,
+                roles: $roles,
+            ));
         }
     }
 
@@ -138,6 +180,7 @@ final class User extends BaseUser
 
         $this->timezone = new DateTimeZone('UTC');
         $this->projects = new ArrayCollection();
+        $this->externalAuths = new ArrayCollection();
         $this->notificationPreferences = NotificationPreferences::empty();
     }
 
@@ -175,6 +218,33 @@ final class User extends BaseUser
     protected function whenUserNotificationPreferencesChanged(UserNotificationPreferencesChanged $event): void
     {
         $this->notificationPreferences = $event->notificationPreferences();
+    }
+
+    protected function whenUserExternallyAuthenticated(UserExternallyAuthenticated $event): void
+    {
+        $externalAuth = $this->externalAuths->get($event->providerCode()->value());
+
+        if (null !== $externalAuth) {
+            $externalAuth->updateTokens(
+                resourceOwnerId: $event->resourceOwnerId(),
+                token: $event->token(),
+                refreshToken: $event->refreshToken(),
+            );
+
+            return;
+        }
+
+        $this->externalAuths->set(
+            key: $event->providerCode()->value(),
+            value: new ExternalAuth(
+                user: $this,
+                providerCode: $event->providerCode(),
+                createdAt: $event->createdAt(),
+                resourceOwnerId: $event->resourceOwnerId(),
+                token: $event->token(),
+                refreshToken: $event->refreshToken(),
+            ),
+        );
     }
 
     /**

@@ -117,10 +117,35 @@
 {/define}
 
 {define #input-type-text}
-    <input n:name="$control" n:class="
-        $control->getControlPrototype()->class,
-        'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none'
-    ">
+    {if null === $control->getOption('clipboard')}
+        <input n:name="$control" n:class="
+            $control->getControlPrototype()->class,
+            'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none'
+        ">
+    {else}
+        {var $clipboardAction = $control->isDisabled() ? 'copy' : $control->getOption('clipboard')}
+
+        <div class="lfv-message-parent">
+            <div class="flex flex-nowrap space-x-1">
+                <input n:name="$control" n:class="
+                    $control->getControlPrototype()->class,
+                    'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none'
+                ">
+                <button type="button"
+                        class="relative -ml-px inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                        data-clipboard=""
+                        data-clipboard-action="{$clipboardAction}"
+                        data-clipboard-success-tooltip="{_'//layout.clipboard.success_' . $clipboardAction}"
+                        data-clipboard-error-tooltip="{_'//layout.clipboard.error_' . $clipboardAction}"
+                        n:attr="
+                            'data-clipboard-text' => $control->isDisabled() ? $control->getValue() : null,
+                            'data-clipboard-target' => $control->isDisabled() ? null : ('#' . $control->getHtmlId()),
+                        ">
+                    {svg 'common/document-duplicate.svg', class: 'h-5 w-5'}
+                </button>
+            </div>
+        </div>
+    {/if}
 {/define}
 
 {define #input-type-color-picker}

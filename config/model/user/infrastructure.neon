@@ -20,6 +20,18 @@ nettrine.orm.xml:
 nettrine.dbal:
     connection:
         types:
+            App\Domain\User\ValueObject\AuthProviderCode:
+                class: App\Infrastructure\User\Doctrine\DbalType\AuthProviderCodeType
+                commented: yes
+
+            App\Domain\User\ValueObject\AuthResourceOwnerId:
+                class: App\Infrastructure\User\Doctrine\DbalType\AuthResourceOwnerIdType
+                commented: yes
+
+            App\Domain\User\ValueObject\AuthToken:
+                class: App\Infrastructure\User\Doctrine\DbalType\AuthTokenType
+                commented: yes
+
             App\Domain\User\ValueObject\NotificationPreferences:
                 class: App\Infrastructure\User\Doctrine\DbalType\NotificationPreferencesType
                 commented: yes

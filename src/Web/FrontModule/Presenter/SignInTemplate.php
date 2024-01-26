@@ -8,4 +8,8 @@ use App\Web\Ui\DefaultPresenterTemplate;
 
 final class SignInTemplate extends DefaultPresenterTemplate
 {
+    public ?string $backLink = null;
+
+    /** @var array<int, string> */
+    public array $enabledOauthTypes;
 }
