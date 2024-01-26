@@ -44,6 +44,11 @@ final class RouterFactory
                 'locale' => $this->profiles->default()->locale(),
             ]);
 
+        $router->addRoute('oauth/<type>/<action>', [
+            'module' => 'Front',
+            'presenter' => 'OAuth',
+        ]);
+
         $router->addRoute('project/<project>/[<module>/]<presenter>[/<id>]', [
             'module' => 'Admin:Project',
             'action' => 'default',

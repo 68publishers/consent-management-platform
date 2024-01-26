@@ -12,5 +12,6 @@ import './js/alpine';
 import './js/live-form-validation';
 import './js/modal/modal';
 import './js/toastr';
+import './js/clipboard';
 
 import './css/style.css';

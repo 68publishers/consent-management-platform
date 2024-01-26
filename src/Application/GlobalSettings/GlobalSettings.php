@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\GlobalSettings;
 
 use App\Domain\GlobalSettings\ValueObject\ApiCache;
+use App\Domain\GlobalSettings\ValueObject\AzureAuthSettings;
 use App\Domain\GlobalSettings\ValueObject\CrawlerSettings;
 use App\Domain\GlobalSettings\ValueObject\EnvironmentSettings;
 
@@ -19,6 +20,7 @@ final class GlobalSettings implements GlobalSettingsInterface
         private readonly ApiCache $apiCache,
         private readonly CrawlerSettings $crawlerSettings,
         private readonly EnvironmentSettings $environmentSettings,
+        private readonly AzureAuthSettings $azureAuthSettings,
     ) {}
 
     public static function default(): self
@@ -29,6 +31,7 @@ final class GlobalSettings implements GlobalSettingsInterface
             ApiCache::create(),
             CrawlerSettings::fromValues(false, null, null, null, null),
             EnvironmentSettings::createDefault(),
+            AzureAuthSettings::fromValues(false, null, null),
         );
     }
 
@@ -55,6 +58,11 @@ final class GlobalSettings implements GlobalSettingsInterface
     public function environmentSettings(): EnvironmentSettings
     {
         return $this->environmentSettings;
+    }
+
+    public function azureAuthSettings(): AzureAuthSettings
+    {
+        return $this->azureAuthSettings;
     }
 
     public function refresh(): void

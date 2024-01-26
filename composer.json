@@ -22,6 +22,7 @@
 		"68publishers/environment": "^1.0.1",
 		"68publishers/event-dispatcher-extra": "^1.1",
 		"68publishers/health-check": "^1.0.1",
+		"68publishers/oauth": "dev-main",
 		"68publishers/omni": "0.1.x-dev",
 		"68publishers/smart-nette-component": "^1.0",
 		"68publishers/tracy-git-version": "^1.2",
@@ -74,6 +75,7 @@
 		"spatie/color": "^1.5",
 		"symfony/lock": "^6.3",
 		"symfony/validator": "^6.3",
+		"thenetworg/oauth2-azure": "^2.2",
 		"ublaboo/datagrid": "^6.9.5",
 		"umpirsky/locale-list": "^1.0"
 	},

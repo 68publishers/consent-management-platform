@@ -51,5 +51,9 @@ alert:
         text: Výchozí jazyk pro tento projekt není nastaven.
         link_text: Nastavte jej prosím v editaci projektu.
 
+clipboard:
+    success_copy: Zkopírováno
+    error_copy: Kopírování se nezdařilo
+
 message:
     locale_change_failed: Jazyk se nepovedlo změnit.

@@ -3,6 +3,7 @@ heading_localization: Lokalizace
 heading_environments: Prostředí
 heading_api_cache: Výkon
 heading_crawler: Crawler
+heading_azure_auth: Autentizace pomocí Azure AD
 
 message:
     localization_settings_updated: Nastavení lokalizace bylo uloženo.
@@ -13,3 +14,5 @@ message:
     crawler_settings_update_failed: Při ukládaní nastavení došlo k chybě.
     environments_updated: Nastavení prostředí bylo uloženo.
     environments_update_failed: Při ukládaní nastavení došlo k chybě.
+    azure_auth_updated: Nastavení Azure AD bylo uloženo.
+    azure_auth_update_failed: Při ukládaní nastavení došlo k chybě.

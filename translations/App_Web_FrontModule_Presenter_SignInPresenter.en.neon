@@ -1,5 +1,8 @@
 page_title: Sign in
 forgot_your_password: Forgot Password?
 
+login_with:
+    azure: Sign in with Azure
+
 message:
     user_authentication_failed: Incorrect credentials.

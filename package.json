@@ -15,6 +15,7 @@
     "alpinejs": "^3.10.2",
     "autoprefixer": "^10.4.5",
     "chart.js": "^3.8.0",
+    "clipboard": "^2.0.11",
     "codemirror": "^5.65.1",
     "core-js": "^3.22.2",
     "dayjs": "^1.11.3",

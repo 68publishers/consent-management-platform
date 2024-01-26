@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Domain\GlobalSettings;
 
 use App\Domain\GlobalSettings\Event\ApiCacheSettingsChanged;
+use App\Domain\GlobalSettings\Event\AzureAuthSettingsChanged;
 use App\Domain\GlobalSettings\Event\CrawlerSettingsChanged;
 use App\Domain\GlobalSettings\Event\EnvironmentSettingsChanged;
 use App\Domain\GlobalSettings\Event\GlobalSettingsCreated;
 use App\Domain\GlobalSettings\Event\LocalizationSettingsChanged;
 use App\Domain\GlobalSettings\ValueObject\ApiCache;
+use App\Domain\GlobalSettings\ValueObject\AzureAuthSettings;
 use App\Domain\GlobalSettings\ValueObject\CrawlerSettings;
 use App\Domain\GlobalSettings\ValueObject\EnvironmentSettings;
 use App\Domain\GlobalSettings\ValueObject\GlobalSettingsId;
@@ -38,6 +40,8 @@ final class GlobalSettings implements AggregateRootInterface
     private CrawlerSettings $crawlerSettings;
 
     private EnvironmentSettings $environmentSettings;
+
+    private AzureAuthSettings $azureAuthSettings;
 
     public static function createEmpty(): self
     {
@@ -76,6 +80,13 @@ final class GlobalSettings implements AggregateRootInterface
         }
     }
 
+    public function updateAzureAuthSettings(AzureAuthSettings $azureAuthSettings): void
+    {
+        if (!$this->azureAuthSettings->equals($azureAuthSettings)) {
+            $this->recordThat(AzureAuthSettingsChanged::create($this->id, $azureAuthSettings));
+        }
+    }
+
     public function aggregateId(): AggregateId
     {
         return AggregateId::fromUuid($this->id->id());
@@ -90,6 +101,7 @@ final class GlobalSettings implements AggregateRootInterface
         $this->apiCache = ApiCache::create();
         $this->crawlerSettings = CrawlerSettings::fromValues(false, null, null, null, null);
         $this->environmentSettings = EnvironmentSettings::createDefault();
+        $this->azureAuthSettings = AzureAuthSettings::fromValues(false, null, null);
     }
 
     protected function whenLocalizationSettingsChanged(LocalizationSettingsChanged $event): void
@@ -114,5 +126,11 @@ final class GlobalSettings implements AggregateRootInterface
     {
         $this->lastUpdateAt = $event->createdAt();
         $this->environmentSettings = $event->environmentSettings();
+    }
+
+    protected function whenAzureAuthSettingsChanged(AzureAuthSettingsChanged $event): void
+    {
+        $this->lastUpdateAt = $event->createdAt();
+        $this->azureAuthSettings = $event->azureAuthSettings();
     }
 }

@@ -1,0 +1,17 @@
+enabled:
+    field: Enabled
+
+client_id:
+    field: 'Application ID (client)'
+    required: Please enter a application ID.
+
+client_secret:
+    field: Client secret code
+    required: Please enter a client secret code.
+
+callback_uri:
+    field: Callback URI
+    description: 'In the application settings on the Azure site, set as the "Redirect URI".'
+
+save:
+    field: Save

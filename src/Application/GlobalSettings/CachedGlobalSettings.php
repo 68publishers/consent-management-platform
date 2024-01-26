@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\GlobalSettings;
 
 use App\Domain\GlobalSettings\ValueObject\ApiCache;
+use App\Domain\GlobalSettings\ValueObject\AzureAuthSettings;
 use App\Domain\GlobalSettings\ValueObject\CrawlerSettings;
 use App\Domain\GlobalSettings\ValueObject\EnvironmentSettings;
 use Nette\Caching\Cache;
@@ -66,6 +67,14 @@ final class CachedGlobalSettings implements GlobalSettingsInterface
     public function environmentSettings(): EnvironmentSettings
     {
         return $this->getInner()->environmentSettings();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function azureAuthSettings(): AzureAuthSettings
+    {
+        return $this->getInner()->azureAuthSettings();
     }
 
     public function refresh(): void

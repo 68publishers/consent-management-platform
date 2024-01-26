@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ReadModel\GlobalSettings;
 
 use App\Domain\GlobalSettings\ValueObject\ApiCache;
+use App\Domain\GlobalSettings\ValueObject\AzureAuthSettings;
 use App\Domain\GlobalSettings\ValueObject\CrawlerSettings;
 use App\Domain\GlobalSettings\ValueObject\EnvironmentSettings;
 use App\Domain\GlobalSettings\ValueObject\GlobalSettingsId;
@@ -29,6 +30,8 @@ final class GlobalSettingsView extends AbstractView
 
     public EnvironmentSettings $environmentSettings;
 
+    public AzureAuthSettings $azureAuthSettings;
+
     public function jsonSerialize(): array
     {
         return [
@@ -43,7 +46,6 @@ final class GlobalSettingsView extends AbstractView
                 'cacheControlDirectives' => $this->apiCache->cacheControlDirectives(),
                 'useEntityTag' => $this->apiCache->useEntityTag(),
             ],
-            'crawlerSettings' => $this->crawlerSettings->values(),
             'environmentSettings' => $this->environmentSettings->toNative(),
         ];
     }

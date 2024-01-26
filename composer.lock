@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0aaba82294f7a45722a43513d5022025",
+    "content-hash": "d27ce67fe12fe6b9d18d516514787da9",
     "packages": [
         {
             "name": "68publishers/asset",
@@ -402,6 +402,67 @@
                 "source": "https://github.com/68publishers/health-check/tree/v1.0.1"
             },
             "time": "2023-01-05T00:44:47+00:00"
+        },
+        {
+            "name": "68publishers/oauth",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/68publishers/oauth.git",
+                "reference": "7dd061dc877a0b517eac4fe041e8b98d6105f14c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/68publishers/oauth/zipball/7dd061dc877a0b517eac4fe041e8b98d6105f14c",
+                "reference": "7dd061dc877a0b517eac4fe041e8b98d6105f14c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "league/oauth2-client": "^2.7",
+                "nette/application": "^3.1",
+                "nette/di": "^3.0",
+                "nette/http": "^3.2",
+                "nette/security": "^3.1",
+                "php": "^8.1"
+            },
+            "conflict": {
+                "nette/component-model": "<3.0.2"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.48",
+                "kubawerlos/php-cs-fixer-custom-fixers": "^3.19",
+                "league/oauth2-facebook": "^2.2",
+                "mockery/mockery": "^1.6",
+                "nette/bootstrap": "^3.1",
+                "nette/tester": "^2.5",
+                "phpstan/phpstan": "^1.10",
+                "roave/security-advisories": "dev-latest",
+                "thenetworg/oauth2-azure": "^2.2"
+            },
+            "default-branch": true,
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "SixtyEightPublishers\\OAuth\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "OAuth integration into Nette Framework",
+            "keywords": [
+                "68publishers",
+                "azure",
+                "nette",
+                "oauth"
+            ],
+            "support": {
+                "issues": "https://github.com/68publishers/oauth/issues",
+                "source": "https://github.com/68publishers/oauth/tree/main"
+            },
+            "time": "2024-01-25T23:44:03+00:00"
         },
         {
             "name": "68publishers/omni",
@@ -3297,6 +3358,69 @@
             "time": "2023-05-17T18:32:04+00:00"
         },
         {
+            "name": "firebase/php-jwt",
+            "version": "v6.10.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/firebase/php-jwt.git",
+                "reference": "a49db6f0a5033aef5143295342f1c95521b075ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/a49db6f0a5033aef5143295342f1c95521b075ff",
+                "reference": "a49db6f0a5033aef5143295342f1c95521b075ff",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4||^8.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^6.5||^7.4",
+                "phpspec/prophecy-phpunit": "^2.0",
+                "phpunit/phpunit": "^9.5",
+                "psr/cache": "^1.0||^2.0",
+                "psr/http-client": "^1.0",
+                "psr/http-factory": "^1.0"
+            },
+            "suggest": {
+                "ext-sodium": "Support EdDSA (Ed25519) signatures",
+                "paragonie/sodium_compat": "Support EdDSA (Ed25519) signatures when libsodium is not present"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Firebase\\JWT\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Neuman Vong",
+                    "email": "neuman+pear@twilio.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Anant Narayanan",
+                    "email": "anant@php.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
+            "homepage": "https://github.com/firebase/php-jwt",
+            "keywords": [
+                "jwt",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/firebase/php-jwt/issues",
+                "source": "https://github.com/firebase/php-jwt/tree/v6.10.0"
+            },
+            "time": "2023-12-01T16:26:39+00:00"
+        },
+        {
             "name": "fmasa/messenger",
             "version": "dev-feature/handler-options",
             "source": {
@@ -4344,6 +4468,76 @@
                 }
             ],
             "time": "2023-03-11T15:57:12+00:00"
+        },
+        {
+            "name": "league/oauth2-client",
+            "version": "2.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/oauth2-client.git",
+                "reference": "160d6274b03562ebeb55ed18399281d8118b76c8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/oauth2-client/zipball/160d6274b03562ebeb55ed18399281d8118b76c8",
+                "reference": "160d6274b03562ebeb55ed18399281d8118b76c8",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.0 || ^7.0",
+                "paragonie/random_compat": "^1 || ^2 || ^9.99",
+                "php": "^5.6 || ^7.0 || ^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.3.5",
+                "php-parallel-lint/php-parallel-lint": "^1.3.1",
+                "phpunit/phpunit": "^5.7 || ^6.0 || ^9.5",
+                "squizlabs/php_codesniffer": "^2.3 || ^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\OAuth2\\Client\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alex Bilbie",
+                    "email": "hello@alexbilbie.com",
+                    "homepage": "http://www.alexbilbie.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Woody Gilk",
+                    "homepage": "https://github.com/shadowhand",
+                    "role": "Contributor"
+                }
+            ],
+            "description": "OAuth 2.0 Client Library",
+            "keywords": [
+                "Authentication",
+                "SSO",
+                "authorization",
+                "identity",
+                "idp",
+                "oauth",
+                "oauth2",
+                "single sign on"
+            ],
+            "support": {
+                "issues": "https://github.com/thephpleague/oauth2-client/issues",
+                "source": "https://github.com/thephpleague/oauth2-client/tree/2.7.0"
+            },
+            "time": "2023-04-16T18:19:15+00:00"
         },
         {
             "name": "milo/embedded-svg",
@@ -6631,6 +6825,56 @@
                 "source": "https://github.com/oroinc/doctrine-extensions/tree/2.0.2"
             },
             "time": "2022-05-10T14:09:20+00:00"
+        },
+        {
+            "name": "paragonie/random_compat",
+            "version": "v9.99.100",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paragonie/random_compat.git",
+                "reference": "996434e5492cb4c3edcb9168db6fbb1359ef965a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/996434e5492cb4c3edcb9168db6fbb1359ef965a",
+                "reference": "996434e5492cb4c3edcb9168db6fbb1359ef965a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">= 7"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*|5.*",
+                "vimeo/psalm": "^1"
+            },
+            "suggest": {
+                "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Paragon Initiative Enterprises",
+                    "email": "security@paragonie.com",
+                    "homepage": "https://paragonie.com"
+                }
+            ],
+            "description": "PHP 5.x polyfill for random_bytes() and random_int() from PHP 7",
+            "keywords": [
+                "csprng",
+                "polyfill",
+                "pseudorandom",
+                "random"
+            ],
+            "support": {
+                "email": "info@paragonie.com",
+                "issues": "https://github.com/paragonie/random_compat/issues",
+                "source": "https://github.com/paragonie/random_compat"
+            },
+            "time": "2020-10-15T08:29:30+00:00"
         },
         {
             "name": "php-http/client-common",
@@ -10907,6 +11151,66 @@
             "time": "2023-04-23T19:33:36+00:00"
         },
         {
+            "name": "thenetworg/oauth2-azure",
+            "version": "v2.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TheNetworg/oauth2-azure.git",
+                "reference": "be204a5135f016470a9c33e82ab48785bbc11af2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TheNetworg/oauth2-azure/zipball/be204a5135f016470a9c33e82ab48785bbc11af2",
+                "reference": "be204a5135f016470a9c33e82ab48785bbc11af2",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-openssl": "*",
+                "firebase/php-jwt": "~3.0||~4.0||~5.0||~6.0",
+                "league/oauth2-client": "~2.0",
+                "php": "^7.1|^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TheNetworg\\OAuth2\\Client\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jan Hajek",
+                    "email": "jan.hajek@thenetw.org",
+                    "homepage": "https://thenetw.org"
+                }
+            ],
+            "description": "Azure Active Directory OAuth 2.0 Client Provider for The PHP League OAuth2-Client",
+            "keywords": [
+                "SSO",
+                "aad",
+                "authorization",
+                "azure",
+                "azure active directory",
+                "client",
+                "microsoft",
+                "oauth",
+                "oauth2",
+                "windows azure"
+            ],
+            "support": {
+                "issues": "https://github.com/TheNetworg/oauth2-azure/issues",
+                "source": "https://github.com/TheNetworg/oauth2-azure/tree/v2.2.2"
+            },
+            "time": "2023-12-19T12:10:48+00:00"
+        },
+        {
             "name": "tracy/tracy",
             "version": "v2.10.3",
             "source": {
@@ -12666,6 +12970,7 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
+        "68publishers/oauth": 20,
         "68publishers/omni": 20,
         "contributte/mailing": 20,
         "fmasa/messenger": 20,

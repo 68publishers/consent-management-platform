@@ -1,0 +1,7 @@
+extensions:
+    68publishers.oauth: SixtyEightPublishers\OAuth\Bridge\Nette\DI\OAuthExtension
+    68publishers.oauth.azure: SixtyEightPublishers\OAuth\Bridge\Nette\DI\AzureOAuthExtension
+
+68publishers.oauth.azure:
+    config: App\Bridge\SixtyEightPublishers\OAuth\Azure\Config
+    authenticator: App\Bridge\SixtyEightPublishers\OAuth\Azure\AzureAuthenticator

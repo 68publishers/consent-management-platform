@@ -62,6 +62,13 @@
                 <cascade-remove />
             </cascade>
         </one-to-many>
+
+        <one-to-many field="externalAuths" target-entity="App\Domain\User\ExternalAuth" mapped-by="user" orphan-removal="true">
+            <cascade>
+                <cascade-persist />
+                <cascade-remove />
+            </cascade>
+        </one-to-many>
     </entity>
 
 </doctrine-mapping>
