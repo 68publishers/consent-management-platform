@@ -63,7 +63,7 @@
             </cascade>
         </one-to-many>
 
-        <one-to-many field="externalAuths" target-entity="App\Domain\User\ExternalAuth" mapped-by="user" orphan-removal="true">
+        <one-to-many field="externalAuths" target-entity="App\Domain\User\ExternalAuth" mapped-by="user" orphan-removal="true" fetch="LAZY" index-by="providerCode">
             <cascade>
                 <cascade-persist />
                 <cascade-remove />

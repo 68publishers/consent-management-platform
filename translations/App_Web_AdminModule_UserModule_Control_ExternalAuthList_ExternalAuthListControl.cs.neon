@@ -1,0 +1,3 @@
+auth_type: Typ autentizace
+resource_owner_id: ID uživatele
+no_rows: Uživatel nepoužívá žádnou externí autentizaci.

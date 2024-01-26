@@ -10,6 +10,9 @@ services:
     -
         autowired: no
         factory: App\Infrastructure\User\Doctrine\ReadModel\FindNotificationReceiversByTypeAndProjectIdsQueryHandler
+    -
+        autowired: no
+        factory: App\Infrastructure\User\Doctrine\ReadModel\FindExternalAuthenticationsQueryHandler
 
 # infra: doctrine mapping
 nettrine.orm.xml:

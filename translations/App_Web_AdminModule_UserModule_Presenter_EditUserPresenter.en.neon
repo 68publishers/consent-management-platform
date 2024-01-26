@@ -1,6 +1,7 @@
 page_title: Edit user
 heading_basic: Basic information
 notification_preferences: Notification settings
+external_auth_list: External authentication
 back_to_list: Back to the user list
 
 message:

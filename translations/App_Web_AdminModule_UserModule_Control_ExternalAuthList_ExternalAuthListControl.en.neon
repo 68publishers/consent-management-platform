@@ -1,0 +1,3 @@
+auth_type: Authentication type
+resource_owner_id: User ID
+no_rows: The user does not use any external authentication.

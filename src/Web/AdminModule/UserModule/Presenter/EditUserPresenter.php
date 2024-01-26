@@ -7,6 +7,8 @@ namespace App\Web\AdminModule\UserModule\Presenter;
 use App\Application\Acl\UserResource;
 use App\ReadModel\User\UserView;
 use App\Web\AdminModule\Presenter\AdminPresenter;
+use App\Web\AdminModule\UserModule\Control\ExternalAuthList\ExternalAuthListControl;
+use App\Web\AdminModule\UserModule\Control\ExternalAuthList\ExternalAuthListControlFactoryInterface;
 use App\Web\AdminModule\UserModule\Control\NotificationPreferences\Event\NotificationPreferencesProcessingFailedEvent;
 use App\Web\AdminModule\UserModule\Control\NotificationPreferences\Event\NotificationPreferencesUpdatedEvent;
 use App\Web\AdminModule\UserModule\Control\NotificationPreferences\NotificationPreferencesControl;
@@ -31,6 +33,7 @@ final class EditUserPresenter extends AdminPresenter
     public function __construct(
         private readonly UserFormControlFactoryInterface $userFormControlFactory,
         private readonly NotificationPreferencesControlFactoryInterface $notificationPreferencesControlFactory,
+        private readonly ExternalAuthListControlFactoryInterface $externalAuthListControlFactory,
         private readonly QueryBusInterface $queryBus,
     ) {
         parent::__construct();
@@ -90,5 +93,12 @@ final class EditUserPresenter extends AdminPresenter
         });
 
         return $control;
+    }
+
+    protected function createComponentExternalAuthList(): ExternalAuthListControl
+    {
+        return $this->externalAuthListControlFactory->create(
+            userId: $this->userView->id->toString(),
+        );
     }
 }
