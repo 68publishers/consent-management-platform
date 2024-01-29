@@ -25,9 +25,10 @@ final class PutAzureAuthSettingsCommandHandler implements CommandHandlerInterfac
         }
 
         $globalSettings->updateAzureAuthSettings(AzureAuthSettings::fromValues(
-            $command->enabled(),
-            $command->clientId(),
-            $command->clientSecret(),
+            enabled: $command->enabled(),
+            clientId: $command->clientId(),
+            clientSecret: $command->clientSecret(),
+            tenantId: $command->tenantId(),
         ));
 
         $this->globalSettingsRepository->save($globalSettings);

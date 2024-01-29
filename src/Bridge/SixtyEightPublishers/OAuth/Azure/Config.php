@@ -22,6 +22,7 @@ final class Config extends LazyConfig
                     options: [
                         AzureAuthorizator::OptClientId => $azureAuthSetting->clientId(),
                         AzureAuthorizator::OptClientSecret => $azureAuthSetting->clientSecret(),
+                        AzureAuthorizator::OptTenantId => $azureAuthSetting->tenantId(),
                     ],
                 );
             },

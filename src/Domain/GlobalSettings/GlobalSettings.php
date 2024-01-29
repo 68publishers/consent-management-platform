@@ -101,7 +101,7 @@ final class GlobalSettings implements AggregateRootInterface
         $this->apiCache = ApiCache::create();
         $this->crawlerSettings = CrawlerSettings::fromValues(false, null, null, null, null);
         $this->environmentSettings = EnvironmentSettings::createDefault();
-        $this->azureAuthSettings = AzureAuthSettings::fromValues(false, null, null);
+        $this->azureAuthSettings = AzureAuthSettings::fromValues(false, null, null, null);
     }
 
     protected function whenLocalizationSettingsChanged(LocalizationSettingsChanged $event): void

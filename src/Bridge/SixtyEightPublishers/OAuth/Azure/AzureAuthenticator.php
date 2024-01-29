@@ -24,6 +24,8 @@ use SixtyEightPublishers\UserBundle\Bridge\Nette\Security\Identity as NetteIdent
 use SixtyEightPublishers\UserBundle\Domain\Command\CreateUserCommand;
 use SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId;
 use SixtyEightPublishers\UserBundle\ReadModel\Query\GetUserByEmailAddressQuery;
+use TheNetworg\OAuth2\Client\Provider\Azure;
+use TheNetworg\OAuth2\Client\Token\AccessToken;
 use Throwable;
 
 final class AzureAuthenticator implements AuthenticatorInterface
@@ -39,7 +41,32 @@ final class AzureAuthenticator implements AuthenticatorInterface
     {
         $userData = $authorizationResult->resourceOwner->toArray();
 
-        if (empty($userData['email'] ?? '')) {
+        $username = $userData['email'] ?? '';
+        $firstname = $userData['given_name'] ?? '';
+        $surname = $userData['family_name'] ?? '';
+
+        if ('' === $username) {
+            try {
+                $client = $authorizationResult->client;
+                $token = $authorizationResult->accessToken;
+                assert($client instanceof Azure && $token instanceof AccessToken);
+
+                $data = $client->get($client->getRootMicrosoftGraphUri($token) . '/v1.0/me', $token);
+                $username = $data['mail'] ?? '';
+                $firstname = $data['givenName'] ?? $firstname;
+                $surname = $data['surname'] ?? $surname;
+            } catch (Throwable $e) {
+                $this->logger->error(sprintf(
+                    'Unable to request profile for user with oid %s via %s.',
+                    $authorizationResult->resourceOwner->getId(),
+                    $flowName,
+                ));
+
+                throw new AuthenticationException($e->getMessage(), 0, $e);
+            }
+        }
+
+        if ('' === $username) {
             $this->logger->error(sprintf(
                 'Unable to login user with oid %s via %s. Missing claim for property "email".',
                 $authorizationResult->resourceOwner->getId(),
@@ -48,8 +75,6 @@ final class AzureAuthenticator implements AuthenticatorInterface
 
             throw new AuthenticationException('Missing claim for property "email".');
         }
-
-        $username = $userData['email'];
 
         try {
             $userView = $this->queryBus->dispatch(GetUserByEmailAddressQuery::create(
@@ -80,6 +105,8 @@ final class AzureAuthenticator implements AuthenticatorInterface
                 flowName: $flowName,
                 username: $username,
                 roles: $roles,
+                firstname: (string) $firstname,
+                surname: (string) $surname,
             );
         } else {
             $userId = $userView->id->toString();
@@ -111,18 +138,17 @@ final class AzureAuthenticator implements AuthenticatorInterface
     /**
      * @param array<int, string> $roles
      */
-    private function createUser(ResourceOwnerInterface $resourceOwner, string $flowName, string $username, array $roles): string
+    private function createUser(ResourceOwnerInterface $resourceOwner, string $flowName, string $username, array $roles, string $firstname, string $surname): string
     {
         $userId = UserId::new()->toString();
-        $userData = $resourceOwner->toArray();
 
         try {
             $command = CreateUserCommand::create(
                 username: $username,
                 password: null,
                 emailAddress: $username,
-                firstname: $userData['given_name'] ?? '',
-                surname: $userData['family_name'] ?? '',
+                firstname: $firstname,
+                surname: $surname,
                 roles: $roles,
                 userId: $userId,
             );

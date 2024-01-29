@@ -31,7 +31,7 @@ final class GlobalSettings implements GlobalSettingsInterface
             ApiCache::create(),
             CrawlerSettings::fromValues(false, null, null, null, null),
             EnvironmentSettings::createDefault(),
-            AzureAuthSettings::fromValues(false, null, null),
+            AzureAuthSettings::fromValues(false, null, null, null),
         );
     }
 

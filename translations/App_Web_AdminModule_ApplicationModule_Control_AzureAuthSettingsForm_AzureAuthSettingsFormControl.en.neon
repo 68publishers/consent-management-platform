@@ -2,12 +2,16 @@ enabled:
     field: Enabled
 
 client_id:
-    field: 'Application ID (client)'
+    field: 'Application (client) ID'
     required: Please enter a application ID.
 
 client_secret:
     field: Client secret code
     required: Please enter a client secret code.
+
+tenant_id:
+    field: 'Directory (tenant) ID'
+    description: 'Fill only if the "Supported account types" option in the application settings on the Azure site is set to "Accounts in this organizational directory only" - single tenant. Otherwise, leave blank.'
 
 callback_uri:
     field: Callback URI

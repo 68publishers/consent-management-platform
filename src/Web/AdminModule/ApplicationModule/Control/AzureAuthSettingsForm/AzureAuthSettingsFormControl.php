@@ -41,6 +41,7 @@ final class AzureAuthSettingsFormControl extends Control
         $enabledField->addCondition($form::EQUAL, true)
             ->toggle('#' . $this->getUniqueId() . '-client_id-container')
             ->toggle('#' . $this->getUniqueId() . '-client_secret-container')
+            ->toggle('#' . $this->getUniqueId() . '-tenant_id-container')
             ->toggle('#' . $this->getUniqueId() . '-callback_uri-container');
 
         $form->addText('client_id', 'client_id.field')
@@ -52,6 +53,10 @@ final class AzureAuthSettingsFormControl extends Control
             ->setOption('id', $this->getUniqueId() . '-client_secret-container')
             ->addConditionOn($enabledField, $form::EQUAL, true)
                 ->setRequired('client_secret.required');
+
+        $form->addText('tenant_id', 'tenant_id.field')
+            ->setOption('id', $this->getUniqueId() . '-tenant_id-container')
+            ->setOption('description', 'tenant_id.description');
 
         $form->addText('callback_uri', 'callback_uri.field')
             ->setDisabled()
@@ -71,6 +76,7 @@ final class AzureAuthSettingsFormControl extends Control
             'enabled' => $defaults->enabled(),
             'client_id' => (string) $defaults->clientId(),
             'client_secret' => (string) $defaults->clientSecret(),
+            'tenant_id' => (string) $defaults->tenantId(),
         ]);
 
         $form->onSuccess[] = function (Form $form): void {
@@ -84,9 +90,10 @@ final class AzureAuthSettingsFormControl extends Control
     {
         $values = $form->getValues();
         $command = PutAzureAuthSettingsCommand::create(
-            $values->enabled,
-            $values->client_id ?: null,
-            $values->client_secret ?: null,
+            enabled: $values->enabled,
+            clientId: $values->client_id ?: null,
+            clientSecret: $values->client_secret ?: null,
+            tenantId: $values->tenant_id ?: null,
         );
 
         try {
