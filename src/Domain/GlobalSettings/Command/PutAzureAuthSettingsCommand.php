@@ -8,12 +8,13 @@ use SixtyEightPublishers\ArchitectureBundle\Command\AbstractCommand;
 
 final class PutAzureAuthSettingsCommand extends AbstractCommand
 {
-    public static function create(bool $enabled, ?string $clientId, ?string $clientSecret): self
+    public static function create(bool $enabled, ?string $clientId, ?string $clientSecret, ?string $tenantId): self
     {
         return self::fromParameters([
             'enabled' => $enabled,
             'client_id' => $clientId,
             'client_secret' => $clientSecret,
+            'tenant_id' => $tenantId,
         ]);
     }
 
@@ -30,5 +31,10 @@ final class PutAzureAuthSettingsCommand extends AbstractCommand
     public function clientSecret(): ?string
     {
         return $this->getParam('client_secret');
+    }
+
+    public function tenantId(): ?string
+    {
+        return $this->getParam('tenant_id');
     }
 }

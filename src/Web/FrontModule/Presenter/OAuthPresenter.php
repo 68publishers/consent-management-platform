@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Web\FrontModule\Presenter;
 
+use App\Web\Ui\Presenter;
 use Psr\Log\LoggerInterface;
 use SixtyEightPublishers\FlashMessageBundle\Domain\FlashMessage;
 use SixtyEightPublishers\OAuth\Bridge\Nette\Application\OAuthPresenterTrait;
 use SixtyEightPublishers\OAuth\Exception\OAuthExceptionInterface;
 
-final class OAuthPresenter extends FrontPresenter
+final class OAuthPresenter extends Presenter
 {
     use OAuthPresenterTrait;
 

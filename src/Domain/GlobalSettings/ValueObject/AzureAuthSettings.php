@@ -12,11 +12,13 @@ final class AzureAuthSettings extends AbstractArrayValueObject
         bool $enabled,
         ?string $clientId,
         ?string $clientSecret,
+        ?string $tenantId,
     ): self {
         return self::fromArray([
             'enabled' => $enabled,
             'client_id' => $clientId,
             'client_secret' => $clientSecret,
+            'tenant_id' => $tenantId,
         ]);
     }
 
@@ -33,5 +35,10 @@ final class AzureAuthSettings extends AbstractArrayValueObject
     public function clientSecret(): ?string
     {
         return $this->get('client_secret');
+    }
+
+    public function tenantId(): ?string
+    {
+        return $this->get('tenant_id');
     }
 }

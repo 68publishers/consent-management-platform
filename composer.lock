@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d27ce67fe12fe6b9d18d516514787da9",
+    "content-hash": "5d250921197ce7129c855e0b4223f481",
     "packages": [
         {
             "name": "68publishers/asset",
@@ -405,16 +405,16 @@
         },
         {
             "name": "68publishers/oauth",
-            "version": "dev-main",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/68publishers/oauth.git",
-                "reference": "7dd061dc877a0b517eac4fe041e8b98d6105f14c"
+                "reference": "98c077b382cb37b572d9ac9d28c80d2dd2c1d70f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/68publishers/oauth/zipball/7dd061dc877a0b517eac4fe041e8b98d6105f14c",
-                "reference": "7dd061dc877a0b517eac4fe041e8b98d6105f14c",
+                "url": "https://api.github.com/repos/68publishers/oauth/zipball/98c077b382cb37b572d9ac9d28c80d2dd2c1d70f",
+                "reference": "98c077b382cb37b572d9ac9d28c80d2dd2c1d70f",
                 "shasum": ""
             },
             "require": {
@@ -440,7 +440,6 @@
                 "roave/security-advisories": "dev-latest",
                 "thenetworg/oauth2-azure": "^2.2"
             },
-            "default-branch": true,
             "type": "project",
             "autoload": {
                 "psr-4": {
@@ -460,9 +459,9 @@
             ],
             "support": {
                 "issues": "https://github.com/68publishers/oauth/issues",
-                "source": "https://github.com/68publishers/oauth/tree/main"
+                "source": "https://github.com/68publishers/oauth/tree/v1.0.0"
             },
-            "time": "2024-01-25T23:44:03+00:00"
+            "time": "2024-01-29T01:14:07+00:00"
         },
         {
             "name": "68publishers/omni",
@@ -12970,7 +12969,6 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "68publishers/oauth": 20,
         "68publishers/omni": 20,
         "contributte/mailing": 20,
         "fmasa/messenger": 20,

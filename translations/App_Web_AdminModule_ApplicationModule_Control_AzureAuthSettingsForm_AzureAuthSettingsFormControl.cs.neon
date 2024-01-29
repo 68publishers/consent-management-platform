@@ -9,6 +9,10 @@ client_secret:
     field: Tajný kód klienta
     required: Vyplňte prosím tajný kód klienta.
 
+tenant_id:
+    field: 'ID adresáře (tenanta)'
+    description: 'Vyplňte pouze pokud je v nastavení aplikace na webu Azure nastaveno "Podporované typy účtu" na možnost "Jen účty v tomto adresáři organizace" - jeden tenant. Jinak ponechte prázdné.'
+
 callback_uri:
     field: Callback URI
     description: 'V nastavení aplikace na webu Azure nastavte jako "Identifikátor URI pro přesměrování".'
