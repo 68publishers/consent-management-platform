@@ -62,6 +62,26 @@ $fixtures['category'] = [
         'active' => true,
         'necessary' => false,
     ],
+    'ad_user_data' => [
+        'category_id' => CategoryId::new()->toString(),
+        'code' => 'ad_user_data',
+        'names' => [
+            'cs' => 'Ad user data',
+            'en' => 'Ad user data',
+        ],
+        'active' => true,
+        'necessary' => false,
+    ],
+    'ad_personalization' => [
+        'category_id' => CategoryId::new()->toString(),
+        'code' => 'ad_personalization',
+        'names' => [
+            'cs' => 'Ad personalization',
+            'en' => 'Ad personalization',
+        ],
+        'active' => true,
+        'necessary' => false,
+    ],
     'analytics_storage' => [
         'category_id' => CategoryId::new()->toString(),
         'code' => 'analytics_storage',
