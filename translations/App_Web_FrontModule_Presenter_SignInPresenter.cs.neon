@@ -1,5 +1,6 @@
 page_title: Přihlášení
 forgot_your_password: Zapomenuté heslo?
+oauth_divider: Nebo
 
 login_with:
     azure: Přihlásit se přes Azure

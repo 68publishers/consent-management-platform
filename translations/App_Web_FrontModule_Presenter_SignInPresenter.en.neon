@@ -1,5 +1,6 @@
 page_title: Sign in
 forgot_your_password: Forgot Password?
+oauth_divider: Or
 
 login_with:
     azure: Sign in with Azure
