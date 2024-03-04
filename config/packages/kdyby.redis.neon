@@ -3,8 +3,8 @@ extensions:
 
 kdyby.redis:
     session:
-        database: 0
         native: no
+    journal: yes
 
 services:
     redis:
