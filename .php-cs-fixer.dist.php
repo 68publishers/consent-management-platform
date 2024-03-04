@@ -9,6 +9,7 @@ use PhpCsFixerCustomFixers\Fixer\MultilinePromotedPropertiesFixer;
 $finder = Finder::create()
     ->in(__DIR__ . '/src')
     ->in(__DIR__ . '/public')
+    ->in(__DIR__ . '/config/php')
     ->in(__DIR__ . '/tests');
 
 return (new Config())
