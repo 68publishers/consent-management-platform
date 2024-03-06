@@ -17,7 +17,7 @@
 
 ## About CMP
 
-The CMP is a standalone application for storing users' cookie consent and managing the cookies themselves on any website or application.
+The CMP is a standalone application for storing user's cookie consents and managing the cookies themselves on any website or application.
 
 ![CMP Application](docs/images/dashboard.png)
 

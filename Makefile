@@ -19,8 +19,9 @@ down:
 
 restart:
 	make stop
+	make stop-worker
 	make start
-	make data-migration
+	make start-worker
 
 cache:
 	docker exec -it cmp-app bin/console
@@ -95,6 +96,7 @@ init:
 	make start
 	make install
 	make data
+	make start-worker
 
 data:
 	make data-migration
