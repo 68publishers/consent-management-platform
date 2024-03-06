@@ -76,7 +76,7 @@ jobs:
         uses: docker/login-action@v2
         if: ${{ github.event.inputs.push_to_hpt == 'true' }}
         with:
-          registry: registry.hptronic.cz
+          registry: gitlab2.hptronic.cz
           username: ${{ secrets.HPT_REGISTRY_USERNAME }}
           password: ${{ secrets.HPT_REGISTRY_TOKEN }}
 
@@ -112,7 +112,7 @@ jobs:
         if: ${{ github.event.inputs.push_to_hpt == 'true' }}
         with:
           images: |
-            name=registry.hptronic.cz/dev/cmp/cmp
+            name=gitlab2.hptronic.cz/dev/cmp/cmp
           flavor: |
             latest=false
           tags: |
@@ -125,7 +125,7 @@ jobs:
         if: ${{ github.event.inputs.push_to_hpt == 'true' }}
         with:
           images: |
-            name=registry.hptronic.cz/dev/cmp/cmp/worker
+            name=gitlab2.hptronic.cz/dev/cmp/cmp/worker
           flavor: |
             latest=false
           tags: |
@@ -220,7 +220,7 @@ jobs:
         uses: docker/login-action@v2
         if: ${{ github.event.inputs.push_to_hpt == 'true' }}
         with:
-          registry: registry.hptronic.cz
+          registry: gitlab2.hptronic.cz
           username: ${{ secrets.HPT_REGISTRY_USERNAME }}
           password: ${{ secrets.HPT_REGISTRY_TOKEN }}
 
