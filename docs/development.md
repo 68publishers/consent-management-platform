@@ -15,6 +15,7 @@
 * [API and integration](#api-and-integration)
 * [Cookies crawler](#cookies-crawler)
 * [How to update to the latest version](#how-to-update-to-the-latest-version)
+* [Production build](#production-build)
 * [Contributing](#contributing)
 
 ## Stack
@@ -219,6 +220,17 @@ All of these tasks can be done after downloading the new version by running the 
 $ make install
 $ make restart
 ```
+
+## Production build
+
+For production usage, there are prepared docker images on the [DockerHub](https://hub.docker.com/r/68publishers/cmp/tags).
+
+Two images are published with each new version of the application:
+
+- `68publishers/cmp:app-{version}` - the container with the application
+- `68publishers/cmp:worker-{version}` - the container with the worker
+
+The images are already build, they contain all libraries, assets and so on. So there should be no need to manually install or build anything into them.
 
 ## Contributing
 
