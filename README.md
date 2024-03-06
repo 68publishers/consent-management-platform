@@ -7,6 +7,17 @@
 
 <br>
 
+- ✅ Managing cookies and providers in bulk
+- ✅ Summary statistics on user consent positivity including their detailed histories
+- ✅ Direct integration with [68publishers/cookie-consent](https://github.com/68publishers/cookie-consent)
+- ✅ Configurable storages standardized by Google
+- ✅ Automatic cookie detection using Crawler including proposals for changes
+- ✅ Support for multiple environments (web, mobile app, etc.)
+- ✅ Wide possibilities of integration with your projects
+- ✅ Automated reporting
+- ✅ Support of authentication with Azure AD
+- And many more!
+
 ## Table of Contents
 * [About CMP](#about-cmp)
 * [Getting Started](#getting-started)

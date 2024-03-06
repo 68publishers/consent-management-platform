@@ -167,7 +167,7 @@ Next, the `admin` and `manager` roles need to be created in Azure for the enterp
 ## Cookies
 
 Cookie management is based on the fact that cookie categories and cookie providers are defined.
-Each provider is assigned its own cookies and the providers are then assigned to individual projects.j
+Each provider is assigned its own cookies and the providers are then assigned to individual projects.
 
 <img src="images/cookie-management.png" alt="Cookie management diagram" width="800">
 
@@ -455,7 +455,7 @@ By integration is meant the ability to easily render a table with providers, alt
 
 A template that fits exactly into the design of the website can be defined for each locale. The table can be displayed by copying the generated script to the website.
 
-The templates are written in the [Latte](https://latte.nette.org/) templating language and two variables can be accessed - `$providers` and `$cookies`. It is recommended leaving the creation of the templates to the programmer.
+The templates are written in the [Latte](https://latte.nette.org/) templating language and two variables can be accessed - `$providers` and `$cookies`. It is recommended leaving the creation of the templates to the developer.
 
 Values of the provided variables exactly copy the response from the endpoint `/api/v{version}/cookies/{project}`. More information about the API in the [Development Guide](development.md).
 
