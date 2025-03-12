@@ -36,10 +36,12 @@
                                 to => (sizeof($rows) + $paginator->getOffset()|formatNumber),
                                 total => ($paginator->getItemCount()|formatNumber),
                             ]}
-                            {if isset($paginatorMaxItemsCount) && $paginatorMaxItemsCount <= $paginator->getItemCount()}
-                                {do $translatorArgs['total'] = ($paginatorMaxItemsCount|formatNumber)}
+                            {if $countMode instanceof App\Web\Ui\DataGrid\CountMode\LimitedCountMode && $countMode->getLimit() <= $paginator->getItemCount()}
+                                {do $translatorArgs['total'] = ($countMode->getLimit()|formatNumber)}
 
                                 {_'ublaboo_datagrid.showing_items_with_max_count', $translatorArgs|noescape}
+                            {elseif $countMode instanceof App\Web\Ui\DataGrid\CountMode\EstimateCountMode}
+                                {_'ublaboo_datagrid.showing_items_with_estimate', $translatorArgs|noescape}
                             {else}
                                 {_'ublaboo_datagrid.showing_items', $translatorArgs|noescape}
                             {/if}

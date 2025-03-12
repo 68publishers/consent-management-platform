@@ -29,6 +29,7 @@ per_page_submit: Změnit
 showing_all_items: Všechny položky
 showing_items: 'Zobrazeno <span class="font-medium">%from%</span> - <span class="font-medium">%to%</span> z <span class="font-medium">%total%</span> položek'
 showing_items_with_max_count: 'Zobrazeno <span class="font-medium">%from%</span> - <span class="font-medium">%to%</span> z více jak <span class="font-medium">%total%</span> položek'
+showing_items_with_estimate: 'Zobrazeno <span class="font-medium">%from%</span> - <span x-data x-tooltip.placement.bottom.raw="Počet položek nemusí být přesný, jedná se pouze o odhad."><span class="font-medium">%to%</span> z <span class="font-medium">~%total%</span> položek</span>'
 
 boolean_filter:
     yes: ano

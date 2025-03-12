@@ -29,6 +29,7 @@ per_page_submit: Change
 showing_all_items: All items
 showing_items: 'Showing <span class="font-medium">%from%</span> - <span class="font-medium">%to%</span> from <span class="font-medium">%total%</span> items'
 showing_items_with_max_count: 'Showing <span class="font-medium">%from%</span> - <span class="font-medium">%to%</span> from more than <span class="font-medium">%total%</span> items'
+showing_items_with_estimate: 'Showing <span class="font-medium">%from%</span> - <span class="font-medium">%to%</span> from <span x-data x-tooltip.placement.bottom.raw="The number of items may not be exact, this is only an estimate."><span class="font-medium">~%total%</span> items</span>'
 
 boolean_filter:
     yes: 'yes'

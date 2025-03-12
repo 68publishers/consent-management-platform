@@ -3,10 +3,9 @@
  * @param array     $steps
  * @param string    $iconPrefix
  *}
-
 {var $link = [$control->getParent(), link]}
 
-<nav n:if="$paginator->pageCount > 1" class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+<nav n:if="(null === $countMode || $countMode instanceof App\Web\Ui\DataGrid\CountMode\LimitedCountMode) && $paginator->pageCount > 1" class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
     {if !$paginator->isFirst()}
         <a href="{$link('page!', ['page' => $paginator->page - 1])}" class="ajax relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
             <span class="sr-only">{_ublaboo_datagrid.previous}</span>
@@ -39,6 +38,32 @@
     {else}
         <span class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
             <span class="sr-only">{_ublaboo_datagrid.next}</span>
+            {svg common/chevron-right.svg, class: 'h-4 w-4', aria-hidden: 'true'}
+        </span>
+    {/if}
+</nav>
+
+<nav n:if="$countMode instanceof App\Web\Ui\DataGrid\CountMode\EstimateCountMode" class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+    {if !$paginator->isFirst()}
+        <a href="{$link('page!', ['page' => $paginator->page - 1])}" class="ajax relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+            {svg common/chevron-left.svg, class: 'h-4 w-4', aria-hidden: 'true'}
+            <span>{_ublaboo_datagrid.previous}</span>
+        </a>
+    {else}
+        <span class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+            {svg common/chevron-left.svg, class: 'h-4 w-4', aria-hidden: 'true'}
+            <span>{_ublaboo_datagrid.previous}</span>
+        </span>
+    {/if}
+
+    {if $countMode->getCurrentRowsCount() >= $paginator->getItemsPerPage()}
+        <a href="{$link('page!', ['page' => $paginator->page + 1])}" class="ajax relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+            <span>{_ublaboo_datagrid.next}</span>
+            {svg common/chevron-right.svg, class: 'h-4 w-4', aria-hidden: 'true'}
+        </a>
+    {else}
+        <span class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+            <span>{_ublaboo_datagrid.next}</span>
             {svg common/chevron-right.svg, class: 'h-4 w-4', aria-hidden: 'true'}
         </span>
     {/if}

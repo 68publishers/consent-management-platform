@@ -15,15 +15,15 @@ use App\ReadModel\Consent\ConsentView;
 use App\ReadModel\Consent\GetConsentByIdAndProjectIdQuery;
 use App\ReadModel\ConsentSettings\ConsentSettingsView;
 use App\ReadModel\ConsentSettings\GetConsentSettingsByIdAndProjectIdQuery;
-use App\ReadModel\DataGridQueryInterface;
 use App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryModalControl;
 use App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryModalControlFactoryInterface;
 use App\Web\AdminModule\ProjectModule\Control\ConsentSettingsDetail\ConsentSettingsDetailModalControl;
 use App\Web\AdminModule\ProjectModule\Control\ConsentSettingsDetail\ConsentSettingsDetailModalControlFactoryInterface;
 use App\Web\Ui\Control;
+use App\Web\Ui\DataGrid\CountMode\EstimateCountMode;
+use App\Web\Ui\DataGrid\CountMode\LimitedCountMode;
 use App\Web\Ui\DataGrid\DataGrid;
 use App\Web\Ui\DataGrid\DataGridFactoryInterface;
-use App\Web\Ui\DataGrid\DataSource\ReadModelDataSource;
 use Nette\Application\UI\Multiplier;
 use Nette\InvalidStateException;
 use Ramsey\Uuid\Uuid;
@@ -40,7 +40,7 @@ final class ConsentListControl extends Control
         private readonly ConsentSettingsDetailModalControlFactoryInterface $consentSettingsDetailModalControlFactory,
         private readonly QueryBusInterface $queryBus,
         private readonly GlobalSettingsInterface $globalSettings,
-        private readonly ?int $countLimit = null,
+        private readonly bool $countEstimateOnly,
     ) {}
 
     /**
@@ -50,7 +50,7 @@ final class ConsentListControl extends Control
     {
         $query = ConsentsDataGridQuery::create(
             projectId: $this->projectId->toString(),
-            countLimit: $this->countLimit,
+            countEstimateOnly: $this->countEstimateOnly,
         );
         $environments = EnabledEnvironmentsResolver::resolveProjectEnvironments(
             environmentSettings: $this->globalSettings->environmentSettings(),
@@ -62,8 +62,15 @@ final class ConsentListControl extends Control
         $grid->setSessionNamePostfix('p' . $this->projectId->toString());
         $grid->setTranslator($this->getPrefixedTranslator());
         $grid->setTemplateFile(__DIR__ . '/templates/datagrid.latte');
-        $grid->addTemplateVariable('paginatorMaxItemsCount', $query->getCountLimit());
         $grid->addTemplateVariable('environments', $environments);
+
+        $grid->setCountMode(
+            $this->countEstimateOnly
+            ? new EstimateCountMode()
+            : new LimitedCountMode(
+                limit: ConsentsDataGridQuery::CountLimit,
+            ),
+        );
 
         $grid->setDefaultSort([
             'last_update_at' => 'DESC',
@@ -102,37 +109,6 @@ final class ConsentListControl extends Control
             ->setTemplate(__DIR__ . '/templates/action.detail.latte', [
                 'createLink' => fn (ConsentListView $view): string => $this->link('openModal!', ['modal' => 'history-' . Uuid::fromString($view->id)->getHex()->toString()]),
             ]);
-
-        $dataModel = $grid->getDataModel();
-
-        if (null !== $dataModel) {
-            $dataModel->onAfterPaginated[] = function (ReadModelDataSource $dataSource) use ($grid, $query): void {
-                $paginator = $grid->getPaginator()?->getPaginator();
-
-                if (null === $paginator || $paginator->getItemCount() < $query->getCountLimit() || !$paginator->isLast()) {
-                    return;
-                }
-
-                $additionalPages = $grid->page - $paginator->page + 1;
-                $itemCount = $paginator->getItemCount() + ($additionalPages * $paginator->getItemsPerPage());
-                $paginator->setItemCount($itemCount);
-
-                $dataSource->limit(
-                    $paginator->getOffset(),
-                    $paginator->getItemsPerPage(),
-                );
-
-                $dataSource->onData[] = function (array $data, DataGridQueryInterface $query) use ($paginator): array {
-                    if ($query::MODE_DATA !== $query->mode() || count($data) >= $paginator->getItemsPerPage()) {
-                        return $data;
-                    }
-
-                    $paginator->setItemCount($paginator->getItemCount() - $paginator->getItemsPerPage() - ($paginator->getItemsPerPage() - count($data)));
-
-                    return $data;
-                };
-            };
-        }
 
         return $grid;
     }
