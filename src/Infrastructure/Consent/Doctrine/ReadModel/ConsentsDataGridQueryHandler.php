@@ -7,6 +7,7 @@ namespace App\Infrastructure\Consent\Doctrine\ReadModel;
 use App\Infrastructure\DataGridQueryHandlerTrait;
 use App\ReadModel\Consent\ConsentListView;
 use App\ReadModel\Consent\ConsentsDataGridQuery;
+use App\ReadModel\DataGridQueryInterface;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Query\QueryBuilder as DbalQueryBuilder;
 use Doctrine\DBAL\Types\Types;
@@ -28,12 +29,16 @@ final class ConsentsDataGridQueryHandler implements QueryHandlerInterface
     {
         return $this->processQuery(
             $query,
-            function () use ($query): DbalQueryBuilder {
+            function () use ($query): DbalQueryBuilder|string {
+                if ($query->isCountEstimateOnly()) {
+                    return self::EstimateOnly;
+                }
+
                 return $this->em->getConnection()->createQueryBuilder()
                     ->select('1')
                     ->from('consent', 'c')
                     ->andWhere('c.project_id = :projectId')
-                    ->setMaxResults($query->getCountLimit())
+                    ->setMaxResults(ConsentsDataGridQuery::CountLimit)
                     ->setParameter('projectId', $query->projectId());
             },
             function () use ($query): DbalQueryBuilder {
@@ -68,9 +73,13 @@ final class ConsentsDataGridQueryHandler implements QueryHandlerInterface
         );
     }
 
-    protected function beforeCountQueryFetch(OrmQueryBuilder|DbalQueryBuilder $qb): DbalQueryBuilder
+    protected function beforeCountQueryFetch(OrmQueryBuilder|DbalQueryBuilder $qb, DataGridQueryInterface $query): DbalQueryBuilder
     {
-        assert($qb instanceof DbalQueryBuilder);
+        assert($qb instanceof DbalQueryBuilder && $query instanceof ConsentsDataGridQuery);
+
+        if ($query->isCountEstimateOnly()) {
+            return $qb;
+        }
 
         return $this->em->getConnection()->createQueryBuilder()
             ->select('COUNT(*)')

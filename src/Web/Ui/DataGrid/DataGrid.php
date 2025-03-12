@@ -6,13 +6,17 @@ namespace App\Web\Ui\DataGrid;
 
 use App\Application\Localization\ApplicationDateTimeZone;
 use App\Web\Ui\DataGrid\Column\ColumnDateTimeTz;
+use App\Web\Ui\DataGrid\CountMode\CountModeInterface;
 use App\Web\Ui\DataGrid\Filter\FilterDate;
 use App\Web\Ui\DataGrid\Filter\FilterDateRange;
 use App\Web\Ui\DataGrid\Translator\TranslatorProxy;
+use BadMethodCallException;
+use Nette\Application\UI\Presenter;
 use Nette\Localization\ITranslator;
 use Nette\Localization\Translator;
 use Ublaboo\DataGrid\Column\Column;
 use Ublaboo\DataGrid\Column\ColumnNumber;
+use Ublaboo\DataGrid\Components\DataGridPaginator\DataGridPaginator;
 use Ublaboo\DataGrid\DataGrid as UblabooDataGrid;
 use Ublaboo\DataGrid\DataModel;
 use Ublaboo\DataGrid\Exception\DataGridException;
@@ -24,6 +28,10 @@ class DataGrid extends UblabooDataGrid
     private ?string $sessionNamePostfix = null;
 
     private array $templateVariables = [];
+
+    private ?string $customPaginatorTemplate = null;
+
+    private ?CountModeInterface $countMode = null;
 
     /**
      * @param ITranslator|Translator $translator
@@ -41,6 +49,7 @@ class DataGrid extends UblabooDataGrid
     {
         $this->getTemplate()->ublabooTemplateFile = parent::getOriginalTemplateFile();
         $this->getTemplate()->linkFactory = new LinkFactory($this);
+        $this->getTemplate()->countMode = $this->countMode;
 
         foreach ($this->templateVariables as $name => $value) {
             $this->getTemplate()->{$name} = $value;
@@ -147,5 +156,51 @@ class DataGrid extends UblabooDataGrid
     public function getDataModel(): ?DataModel
     {
         return $this->dataModel;
+    }
+
+    public function setCustomPaginatorTemplate(string $templateFile): void
+    {
+        parent::setCustomPaginatorTemplate($templateFile);
+
+        $this->customPaginatorTemplate = $templateFile;
+    }
+
+    public function createComponentPaginator(): DataGridPaginator
+    {
+        $className = $this->countMode?->getPaginatorClass() ?? DataGridPaginator::class;
+
+        $component = new $className(
+            $this->getTranslator(),
+            static::$iconPrefix,
+            static::$btnSecondaryClass,
+        );
+        $paginator = $component->getPaginator();
+
+        $paginator->setPage($this->page);
+
+        if (is_int($this->getPerPage())) {
+            $paginator->setItemsPerPage($this->getPerPage());
+        }
+
+        if ($this->customPaginatorTemplate !== null) {
+            $component->setTemplateFile($this->customPaginatorTemplate);
+        }
+
+        $component->monitor(Presenter::class, function () use ($component) {
+            $component->getTemplate()->countMode = $this->countMode;
+        });
+
+        return $component;
+    }
+
+    public function setCountMode(CountModeInterface $countMode): void
+    {
+        if (null !== $this->countMode) {
+            throw new BadMethodCallException('Changing count mode is not allowed.');
+        }
+
+        $this->countMode = $countMode;
+
+        $countMode->apply($this);
     }
 }

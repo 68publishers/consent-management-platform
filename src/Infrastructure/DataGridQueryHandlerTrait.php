@@ -10,17 +10,22 @@ use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Exception as DbalException;
 use Doctrine\DBAL\Query\QueryBuilder as DbalQueryBuilder;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
+use JsonException;
 use RuntimeException;
 use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\ReadModel\PaginatedResultFactory;
+use UnexpectedValueException;
 
 trait DataGridQueryHandlerTrait
 {
+    protected const string EstimateOnly = '_estimateOnly_';
+
     protected EntityManagerInterface $em;
 
     private PaginatedResultFactory $paginatedResultFactory;
@@ -33,7 +38,7 @@ trait DataGridQueryHandlerTrait
         $this->paginatedResultFactory = $paginatedResultFactory;
     }
 
-    protected function beforeCountQueryFetch(QueryBuilder|DbalQueryBuilder $qb): QueryBuilder|DbalQueryBuilder
+    protected function beforeCountQueryFetch(QueryBuilder|DbalQueryBuilder $qb, DataGridQueryInterface $query): QueryBuilder|DbalQueryBuilder
     {
         return $qb;
     }
@@ -47,12 +52,31 @@ trait DataGridQueryHandlerTrait
     {
         if ($query::MODE_COUNT === $query->mode()) {
             $qb = $countQueryBuilderFactory($query);
-            assert($qb instanceof QueryBuilder || $qb instanceof DbalQueryBuilder);
+            assert($qb instanceof QueryBuilder || $qb instanceof DbalQueryBuilder || self::EstimateOnly === $qb);
+            $estimateOnly = self::EstimateOnly === $qb;
+
+            if ($estimateOnly) {
+                $qb = $dataQueryBuilderFactory($query);
+
+                if (!($qb instanceof DbalQueryBuilder)) {
+                    throw new UnexpectedValueException(
+                        message: sprintf(
+                            'For an estimated count, the result of Closure $dataQueryBuilderFactory must be an instance of %s. %s given.',
+                            DbalQueryBuilder::class,
+                            get_class($qb),
+                        ),
+                    );
+                }
+            }
 
             $this->applyFilters($query, $qb, $filterDefinitions);
 
             $this->paramsCount = 0;
-            $qb = $this->beforeCountQueryFetch($qb);
+            $qb = $this->beforeCountQueryFetch($qb, $query);
+
+            if ($estimateOnly) {
+                return $this->fetchRowsEstimate(qb: $qb);
+            }
 
             return (int) ($qb instanceof QueryBuilder ? $qb->getQuery()->getSingleScalarResult() : $qb->fetchOne());
         }
@@ -221,5 +245,35 @@ trait DataGridQueryHandlerTrait
         $this->paramsCount++;
 
         return $return;
+    }
+
+    /**
+     * @throws DbalException
+     */
+    private function fetchRowsEstimate(DbalQueryBuilder $qb): int
+    {
+        $result = $this->em->getConnection()->executeQuery(
+            sql: sprintf(
+                'EXPLAIN (FORMAT JSON) %s',
+                $qb->getSQL(),
+            ),
+            params: $qb->getParameters(),
+            types: $qb->getParameterTypes(),
+        );
+
+        try {
+            $explain = json_decode(
+                json: $result->fetchOne(),
+                flags: JSON_THROW_ON_ERROR,
+            );
+        } catch (JsonException $e) {
+            return 0;
+        }
+
+        if (!isset($explain[0])) {
+            return 0;
+        }
+
+        return $explain[0]->Plan?->{'Plan Rows'} ?? 0;
     }
 }

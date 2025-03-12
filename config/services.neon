@@ -100,7 +100,7 @@ services:
     -
         implement: App\Web\AdminModule\ProjectModule\Control\ConsentList\ConsentListControlFactoryInterface
         arguments:
-            countLimit: ::env(GRID_COUNT_LIMIT|int, 100000)
+            countEstimateOnly: ::env(CONSENT_GRID_ESTIMATE_ONLY|bool, no)
 
     - App\Web\AdminModule\ProjectModule\Control\ConsentSettingsList\ConsentSettingsListControlFactoryInterface
     - App\Web\AdminModule\ProjectModule\Control\ConsentHistory\ConsentHistoryControlFactoryInterface
