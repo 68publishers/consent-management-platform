@@ -1,6 +1,8 @@
 APP_VERSION = $$(git describe --tags `git rev-list --tags --max-count=1` | cut -c 2- ) # Get latest tag without the "v" prefix
 IMAGE ?= 68publishers/cmp
 
+.PHONY: tests
+
 start:
 	docker compose --profile web up -d
 	@echo "visit http://localhost:8888"
@@ -22,6 +24,7 @@ restart:
 	make stop-worker
 	make start
 	make start-worker
+	make database-migrate
 
 cache:
 	docker exec -it cmp-app bin/console
@@ -30,9 +33,10 @@ cache-clear:
 	rm -rf var/cache/*
 	rm -rf var/log/*
 	rm -rf var/mail-panel-latte
+	rm -rf var/mail-panel-mails
 
-db-clear:
-	rm -rf var/postgres-data/*
+redis-clear:
+	docker exec -it cmp-redis redis-cli -a redis_pass flushall
 
 build.local.%:
 	@echo "building a local image $(IMAGE):app-$* ..."
@@ -78,10 +82,11 @@ build.multiarch.%:
 
 install:
 	make cache-clear
+	make redis-clear
 	make install-composer
 	make install-assets
-	# Duplicity with init
-	make data-migration
+	make database-migrate
+	docker exec -it cmp-app bin/console messenger:stop-workers
 
 install-composer:
 	docker exec -it cmp-app composer install --no-interaction --no-ansi --prefer-dist --no-progress --optimize-autoloader
@@ -92,20 +97,22 @@ install-assets:
 
 init:
 	make stop
-	make db-clear
+	make stop-worker
 	make start
 	make install
-	make data
 	make start-worker
 
 data:
 	make data-migration
 	docker exec -it cmp-app bin/console doctrine:fixtures:load --no-interaction
 
-data-migration:
+database-migrate:
 	docker exec -it cmp-app bin/console migrations:migrate --no-interaction
 
-.PHONY: tests
+fixtures:
+	@echo "\033[1;91mWarning: running this command without `--append` option will remove all existing data in the database!\033[0m"
+	docker exec -it cmp-app bin/console doctrine:fixtures:load --append --no-interaction
+
 tests:
 	docker exec cmp-app vendor/bin/tester -C -s ./tests
 

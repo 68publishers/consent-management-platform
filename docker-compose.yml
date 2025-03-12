@@ -30,6 +30,7 @@ services:
             - backend
         volumes:
             - .:/var/www/html:cached
+            - ./docker/worker/log:/etc/supervisor/logs
         depends_on:
             redis:
                 condition: service_started
@@ -48,8 +49,8 @@ services:
         networks:
             - backend
         volumes:
-            - ./docker/postgres/postgres.conf:/etc/postgresql/postgresql.conf:delegated
-            - ./var/postgres-data:/var/lib/postgresql/data:cached
+            - ./docker/postgres/conf/postgres.conf:/etc/postgresql/postgresql.conf:delegated
+            - ./docker/postgres/data:/var/lib/postgresql/data:cached
         environment:
             - PGDATA=/var/lib/postgresql/data/pgdata
             - POSTGRES_USER=root
