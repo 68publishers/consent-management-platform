@@ -44,6 +44,7 @@ $ git clone https://github.com/68publishers/consent-management-platform cmp
 $ cd cmp
 $ cp .env.dist .env
 $ make init
+$ make fixtures
 ```
 
 Visit http://localhost:8888 and sign in via `admin@68publishers.io` / `admin` credentials.
