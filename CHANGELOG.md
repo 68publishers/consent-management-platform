@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 1.1.0 - 2025-05-13
+
 ### Added
 - Added optional ENV variable `CONSENT_GRID_ESTIMATE_ONLY`. If the variable has the value `1` then the DataGrid only displays the estimated number of records and has a simplified pagination (only the " previous " and " next " buttons). Enabling this variable solves the performance problem when displaying the DataGrid if there are already too many records in the database.
 - Added nginx reverse proxy with SSL for local and dev environments.
