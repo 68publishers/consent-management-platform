@@ -26,7 +26,7 @@ services:
             - backend
 
     app:
-        image: 68publishers/php:8.3-unit-dev-1.0.0
+        image: 68publishers/php:8.3-unit-dev-1.0.1
         user: "www-data:www-data"
         container_name: cmp-app
         profiles:

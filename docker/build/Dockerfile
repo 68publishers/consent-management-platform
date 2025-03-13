@@ -29,7 +29,7 @@ RUN set -ex \
     && yarn install --no-progress --non-interactive \
     && yarn run encore prod
 
-FROM 68publishers/php:8.3-unit-prod-1.0.0 as app
+FROM 68publishers/php:8.3-unit-prod-1.0.1 as app
 
 WORKDIR /var/www/html
 
