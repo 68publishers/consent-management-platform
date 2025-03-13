@@ -1,11 +1,22 @@
 APP_VERSION = $$(git describe --tags `git rev-list --tags --max-count=1` | cut -c 2- ) # Get latest tag without the "v" prefix
 IMAGE ?= 68publishers/cmp
+COMPOSE_ENV := "local"# "local" or "stage"
+
+ifneq (,$(wildcard ./.env.dist))
+	include .env.dist
+	export
+endif
+
+ifneq (,$(wildcard ./.env))
+	include .env
+	export
+endif
 
 .PHONY: tests
 
 start:
 	docker compose --profile web up -d
-	@echo "visit http://localhost:8888"
+	@echo "\033[1;92mvisit https://${NGINX_DOMAIN_NAME}\033[0m"
 
 start-worker:
 	docker compose --profile worker up -d
@@ -25,6 +36,14 @@ restart:
 	make start
 	make start-worker
 	make database-migrate
+
+mkcert:
+	@if [ "stage" = "${COMPOSE_ENV}" ]; then \
+		docker run -it --rm --name certbot -v ./docker/nginx/certs:/etc/letsencrypt -v ./docker/certbot/www:/var/www/certbot --env TERM=xterm  certbot/certbot certonly --manual --cert-name "${NGINX_DOMAIN_NAME}" -d "${NGINX_DOMAIN_NAME}" --text --agree-tos --email "${CERTBOT_EMAIL}" --rsa-key-size 4096 --verbose --keep-until-expiring --preferred-challenges=dns; \
+	else \
+		cd ./docker/nginx/certs && mkdir -p "live/${NGINX_DOMAIN_NAME}" && cd "./live/${NGINX_DOMAIN_NAME}" && mkcert -key-file privkey.pem -cert-file fullchain.pem ${NGINX_DOMAIN_NAME}; \
+	fi
+	@echo "certificates successfully created"
 
 cache:
 	docker exec -it cmp-app bin/console
@@ -94,6 +113,21 @@ install-composer:
 install-assets:
 	docker exec -it cmp-app yarn install --no-progress --non-interactive
 	docker exec -it cmp-app yarn run encore prod
+
+init-with-certs:
+	@echo "\033[1;94mDo you want to setup the application on a domain ${NGINX_DOMAIN_NAME} with \"${COMPOSE_ENV}\" environment? [y/n]\033[0m"
+	@read line; if [ $$line != "y" ]; then echo "aborting"; exit 1 ; fi
+	@if [ "stage" != "${COMPOSE_ENV}" ]; then \
+		make mkcert; \
+		make init; \
+	else \
+	  	NGINX_TEMPLATE_DIR=/etc/nginx/templates/nossl docker compose --profile web stop; \
+	  	NGINX_TEMPLATE_DIR=/etc/nginx/templates/nossl docker compose --profile web up -d; \
+	  	make install; \
+	  	make mkcert; \
+	  	NGINX_TEMPLATE_DIR=/etc/nginx/templates/nossl docker compose --profile web stop; \
+	  	make init; \
+	fi
 
 init:
 	make stop

@@ -1,0 +1,64 @@
+upstream app {
+	server app:8080;
+}
+
+map ${DOLLAR}cache ${DOLLAR}control {
+    1 "public";
+}
+
+map ${DOLLAR}cache ${DOLLAR}expires {
+    1       1y;
+    default off;
+}
+
+map ${DOLLAR}uri ${DOLLAR}cache {
+    ~*\.(?:ico|css|js|gif|jpe?g|pjpe?g|png|webp|avif|svg|eot|woff|ttf)${DOLLAR} 1;
+}
+
+# HTTP => HTTPS
+server {
+	listen 80;
+	listen [::]:80;
+	server_name ${NGINX_DOMAIN_NAME};
+	server_tokens off;
+
+	location / {
+		return 301 https://${DOLLAR}host${DOLLAR}request_uri;
+	}
+}
+
+# Handle all subdomains
+server {
+	gzip on;
+	gzip_types text/css text/plain application/javascript application/json application/xml;
+
+	set ${DOLLAR}nginx_restrict_access ${NGINX_RESTRICT_ACCESS};
+
+	listen 443 ssl;
+	listen [::]:443 ssl;
+	http2 on;
+	server_name ${NGINX_DOMAIN_NAME};
+	ssl_certificate /etc/nginx/ssl/live/${NGINX_DOMAIN_NAME}/fullchain.pem;
+	ssl_certificate_key /etc/nginx/ssl/live/${NGINX_DOMAIN_NAME}/privkey.pem;
+
+	expires ${DOLLAR}expires;
+	add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload;";
+    add_header Cache-Control ${DOLLAR}control;
+
+	location / {
+		proxy_pass http://app/;
+		proxy_set_header Host ${DOLLAR}host;
+		proxy_set_header X-Real-IP ${DOLLAR}remote_addr;
+		proxy_set_header X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
+
+		if (${DOLLAR}nginx_restrict_access != 1) {
+			set ${DOLLAR}auth_basic off;
+		}
+		if (${DOLLAR}nginx_restrict_access = 1) {
+			set ${DOLLAR}auth_basic Restricted;
+		}
+
+		auth_basic ${DOLLAR}auth_basic;
+		auth_basic_user_file /etc/nginx/.htpasswd;
+	}
+}

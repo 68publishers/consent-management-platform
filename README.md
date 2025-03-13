@@ -37,17 +37,32 @@ The CMP is a standalone application for storing user's cookie consents and manag
 ### Prerequisites
 - Docker
 - Make
+- Mkcert
 
 ### Installation
+
+#### Hosts file
+
+```sh
+$ sudo vi /etc/hosts
+```
+
+```sh
+127.0.0.1 cmp.local
+::1 cmp.local
+```
+
+#### Installation steps
+
 ```sh
 $ git clone https://github.com/68publishers/consent-management-platform cmp
 $ cd cmp
 $ cp .env.dist .env
-$ make init
+$ make init-with-certs
 $ make fixtures
 ```
 
-Visit http://localhost:8888 and sign in via `admin@68publishers.io` / `admin` credentials.
+Visit https://cmp.local and sign in via `admin@68publishers.io` / `admin` credentials.
 
 See [Makefile](./Makefile) for other useful commands and the [Development Guide](docs/development.md) for information about ENV variables etc.
 

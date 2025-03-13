@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Added optional ENV variable `CONSENT_GRID_ESTIMATE_ONLY`. If the variable has the value `1` then the DataGrid only displays the estimated number of records and has a simplified pagination (only the " previous " and " next " buttons). Enabling this variable solves the performance problem when displaying the DataGrid if there are already too many records in the database.
+- Added nginx reverse proxy with SSL for local and dev environments.
 
 ### Removed
 - Removed ENV variable `GRID_COUNT_LIMIT`. The limit is now always `100 000` when the `CONSENT_GRID_ESTIMATE_ONLY` variable is disabled.
@@ -17,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed `68publishers/php` Docker images to the latest versions.
 - Updated composer dependencies and codebase syntax (typed constants, readonly classes etc.).
 - Email notifications are not sent for disabled projects.
+- Updated development guide and installation instructions.
 
 ### Fixed
 - Fixed broken styles in notification emails.
