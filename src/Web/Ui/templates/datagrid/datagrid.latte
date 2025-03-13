@@ -48,14 +48,21 @@
                         {/if}
                     </p>
                 </div>
-                <div class="col-pagination">
+                <div n:if="!($countMode instanceof App\Web\Ui\DataGrid\CountMode\EstimateCountMode)" class="col-pagination">
                     {control paginator}
                 </div>
                 <div class="col-per-page">
-                    <a n:if="$filter_active" n:href="resetFilter!" class="ajax btn btn-danger btn-sm reset-filter mr-2">{_'ublaboo_datagrid.reset_filter'}</a>
-                    {if $control->isPaginated()}
+                    <a n:if="$filter_active" n:href="resetFilter!" class="ajax btn btn-danger btn-sm reset-filter ml-2">{_'ublaboo_datagrid.reset_filter'}</a>
+
+                    <div n:if="$control->isPaginated()" class="ml-2">
                         {input $filter['perPage'], data-autosubmit-per-page => TRUE, class => 'form-control input-sm form-control-sm', x-data => TRUE, x-select => TRUE}
                         {input $filter['perPage_submit'], class => 'datagrid-per-page-submit'}
+                    </div>
+
+                    {if $countMode instanceof App\Web\Ui\DataGrid\CountMode\EstimateCountMode}
+                        <div class="ml-2">
+                            {control paginator}
+                        </div>
                     {/if}
                 </div>
             </div>

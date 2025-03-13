@@ -17,7 +17,7 @@
                     if (!row_detail.hasClass('loaded')) {
                         return el.addClass('ublaboo-spinner-icon');
                     }
-                } else if (el.is('.datagrid .col-pagination a') || el.is('.datagrid .datagrid-per-page-submit') || el.is('.datagrid .reset-filter')) {
+                } else if (el.is('.datagrid .grid-pagination a') || el.is('.datagrid .datagrid-per-page-submit') || el.is('.datagrid .reset-filter')) {
                     return el.closest('.row-grid-bottom').find('.col-per-page').prepend(spinner_template);
                 } else if (settings.nette.form) {
                     var form = settings.nette.form;
