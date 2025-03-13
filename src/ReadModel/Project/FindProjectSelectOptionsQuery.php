@@ -30,6 +30,11 @@ final class FindProjectSelectOptionsQuery extends AbstractQuery
         ]);
     }
 
+    public function withActiveOnly(bool $activeOnly): self
+    {
+        return $this->withParam('active_only', $activeOnly);
+    }
+
     public function userId(): ?string
     {
         return $this->getParam('user_id');
@@ -38,5 +43,10 @@ final class FindProjectSelectOptionsQuery extends AbstractQuery
     public function cookieProviderId(): ?string
     {
         return $this->getParam('cookie_provider_id');
+    }
+
+    public function activeOnly(): bool
+    {
+        return $this->getParam('active_only') ?? false;
     }
 }

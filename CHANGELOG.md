@@ -13,10 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed ENV variable `GRID_COUNT_LIMIT`. The limit is now always `100 000` when the `CONSENT_GRID_ESTIMATE_ONLY` variable is disabled.
 
 ### Changed
-
 - Changed minimum PHP version to `8.3`.
 - Changed `68publishers/php` Docker images to the latest versions.
 - Updated composer dependencies and codebase syntax (typed constants, readonly classes etc.).
+- Email notifications are not sent for disabled projects.
+
+### Fixed
+- Fixed broken styles in notification emails.
 
 ## 1.0.0 - 2024-03-06
 

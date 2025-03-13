@@ -55,7 +55,10 @@ final class CookieSuggestionsNotifierCommand extends Command
                 'lastFoundedAt' => null !== $suggestion->getLatestOccurrence() ? $suggestion->getLatestOccurrence()->lastFoundAt->format('j.n.Y H:i:s') : null,
             ], $suggestions);
 
-        foreach ($this->queryBus->dispatch(FindProjectSelectOptionsQuery::all()) as $projectSelectOptionView) {
+        $projectQuery = FindProjectSelectOptionsQuery::all()
+            ->withActiveOnly(true);
+
+        foreach ($this->queryBus->dispatch($projectQuery) as $projectSelectOptionView) {
             assert($projectSelectOptionView instanceof ProjectSelectOptionView);
 
             $projectId = $projectSelectOptionView->id->toString();

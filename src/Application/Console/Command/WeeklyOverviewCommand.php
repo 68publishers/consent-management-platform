@@ -59,7 +59,10 @@ final class WeeklyOverviewCommand extends Command
         $projects = [];
 
         // find all projects
-        foreach ($this->queryBus->dispatch(FindProjectSelectOptionsQuery::all()) as $projectSelectOptionView) {
+        $projectQuery = FindProjectSelectOptionsQuery::all()
+            ->withActiveOnly(true);
+
+        foreach ($this->queryBus->dispatch($projectQuery) as $projectSelectOptionView) {
             assert($projectSelectOptionView instanceof ProjectSelectOptionView);
 
             $projectId = $projectSelectOptionView->id->toString();

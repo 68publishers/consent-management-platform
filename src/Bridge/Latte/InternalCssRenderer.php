@@ -56,6 +56,8 @@ final class InternalCssRenderer
             $this->logger->error($errorMessage);
         }
 
+        $entryPointLookup->reset();
+
         return sprintf(
             "<style>\n%s\n</style>",
             implode("\n", $styles),
