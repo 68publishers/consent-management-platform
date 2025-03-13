@@ -23,10 +23,6 @@ final class Bootstrap
         $configurator->setTempDirectory(__DIR__ . '/../var');
         $configurator->addConfig(__DIR__ . '/../config/config.neon');
 
-        if ('dev' === $_ENV['APP_ENV'] && '1' === $_ENV['APP_DEBUG']) {
-            $configurator->addConfig(__DIR__ . '/../config/config.dev.neon');
-        }
-
         if ('cli' === PHP_SAPI) {
             $configurator->addStaticParameters([
                 'wwwDir' => dirname(__DIR__ . '/../public/index.php'),

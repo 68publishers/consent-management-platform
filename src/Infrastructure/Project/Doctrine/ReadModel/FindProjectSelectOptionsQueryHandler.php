@@ -30,7 +30,7 @@ final readonly class FindProjectSelectOptionsQueryHandler implements QueryHandle
         $qb = $this->em->createQueryBuilder()
             ->select('p.id, p.name')
             ->from(Project::class, 'p')
-            ->where('p.deletedAt IS NULL')
+            ->andWhere('p.deletedAt IS NULL')
             ->orderBy('p.name', 'ASC');
 
         if (null !== $query->userId()) {
@@ -41,6 +41,11 @@ final readonly class FindProjectSelectOptionsQueryHandler implements QueryHandle
         if (null !== $query->cookieProviderId()) {
             $qb->join('p.cookieProviders', 'phc', Join::WITH, 'phc.cookieProviderId = :cookieProviderId')
                 ->setParameter('cookieProviderId', $query->cookieProviderId());
+        }
+
+        if ($query->activeOnly()) {
+            $qb->andWhere('p.active = :active')
+                ->setParameter('active', true);
         }
 
         $data = $qb->getQuery()

@@ -1,8 +1,0 @@
-tracy:
-    bar:
-        - Nextras\MailPanel\MailPanel(%tempDir%/mail-panel-latte)
-
-services:
-    nette.mailer:
-        type: Nette\Mail\IMailer
-        factory: Nextras\MailPanel\FileMailer(%tempDir%/mail-panel-mails)
