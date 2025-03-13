@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Web\Ui\DataGrid\CountMode;
 
-use App\ReadModel\Consent\ConsentsDataGridQuery;
 use App\ReadModel\DataGridQueryInterface;
 use App\Web\Ui\DataGrid\DataGrid;
 use App\Web\Ui\DataGrid\DataSource\ReadModelDataSource;
@@ -24,7 +23,7 @@ final readonly class LimitedCountMode implements CountModeInterface
             $dataModel->onAfterPaginated[] = function (ReadModelDataSource $dataSource) use ($grid): void {
                 $paginator = $grid->getPaginator()?->getPaginator();
 
-                if (null === $paginator || $paginator->getItemCount() < ConsentsDataGridQuery::CountLimit || !$paginator->isLast()) {
+                if (null === $paginator || $paginator->getItemCount() < $this->limit || !$paginator->isLast()) {
                     return;
                 }
 
