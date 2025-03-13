@@ -1,0 +1,13 @@
+upstream app {
+	server app:8080;
+}
+
+server {
+	listen 80;
+    listen [::]:80;
+	server_name *.${NGINX_DOMAIN_NAME} ${NGINX_DOMAIN_NAME};
+
+	location / {
+		return 301 https://${DOLLAR}host${DOLLAR}request_uri;
+	}
+}

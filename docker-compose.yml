@@ -1,12 +1,38 @@
 services:
+    nginx:
+        image: nginx:1.27.1
+        container_name: cmp-nginx
+        profiles:
+            - web
+        ports:
+            - "80:80"
+            - "443:443"
+        restart: always
+        volumes:
+            - ./docker/nginx/conf/:/etc/nginx/conf.d
+            - ./docker/nginx/templates/:/etc/nginx/templates/
+            - ./docker/nginx/certs:/etc/nginx/ssl
+            - ./docker/nginx/.htpasswd:/etc/nginx/.htpasswd
+        environment:
+            - DOLLAR=$$
+            - NGINX_DOMAIN_NAME=${NGINX_DOMAIN_NAME:-cmp.local}
+            - NGINX_RESTRICT_ACCESS=${NGINX_RESTRICT_ACCESS:-0}
+            - NGINX_ENVSUBST_TEMPLATE_DIR=${NGINX_TEMPLATE_DIR:-/etc/nginx/templates/default}
+        command: [ "nginx", "-g", "daemon off;" ]
+        depends_on:
+            app:
+                condition: service_started
+        networks:
+            - backend
+
     app:
         image: 68publishers/php:8.3-unit-dev-1.0.0
         user: "www-data:www-data"
         container_name: cmp-app
         profiles:
             - web
-        ports:
-            - "8888:8080"
+        expose:
+            - "8080"
         networks:
             - backend
         volumes:
@@ -44,8 +70,8 @@ services:
             - web
             - worker
         shm_size: 256m
-        ports:
-            - "5432:5432"
+        expose:
+            - "5432"
         networks:
             - backend
         volumes:
@@ -73,8 +99,8 @@ services:
             - web
             - worker
         command: redis-server --requirepass redis_pass
-        ports:
-            - "6379:6379"
+        expose:
+            - "6379"
         networks:
             - backend
 
