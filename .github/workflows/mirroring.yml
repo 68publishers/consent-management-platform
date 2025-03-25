@@ -1,0 +1,15 @@
+name: Mirroring
+on: [push]
+
+jobs:
+  to_gitlab:
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v3
+          with:
+            fetch-depth: 0
+        - uses: yesolutions/mirror-action@master
+          with:
+            REMOTE: https://gitlab2.hptronic.cz/dev/cmp/cmp.git
+            GIT_USERNAME: ${{ secrets.MIRROR_USERNAME }}
+            GIT_PASSWORD: ${{ secrets.MIRROR_PASSWORD }}
