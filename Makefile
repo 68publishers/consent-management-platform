@@ -39,11 +39,43 @@ restart:
 
 mkcert:
 	@if [ "stage" = "${COMPOSE_ENV}" ]; then \
-		docker run -it --rm --name certbot -v ./docker/nginx/certs:/etc/letsencrypt -v ./docker/certbot/www:/var/www/certbot --env TERM=xterm  certbot/certbot certonly --manual --cert-name "${NGINX_DOMAIN_NAME}" -d "${NGINX_DOMAIN_NAME}" --text --agree-tos --email "${CERTBOT_EMAIL}" --rsa-key-size 4096 --verbose --keep-until-expiring --preferred-challenges=dns; \
+  		docker run -it --rm --name certbot \
+  			-v ./docker/nginx/certs:/etc/letsencrypt \
+  			-v ./docker/certbot/www:/var/www/certbot \
+  			-v ./docker/certbot/secrets:/.secrets \
+  			certbot/dns-digitalocean certonly \
+  			--dns-digitalocean \
+  			--dns-digitalocean-credentials /.secrets/digitalocean.ini \
+  			--dns-digitalocean-propagation-seconds 60 \
+  			--cert-name "${NGINX_DOMAIN_NAME}" \
+  			-d "${NGINX_DOMAIN_NAME}" \
+  			--text --agree-tos --email "${CERTBOT_EMAIL}" --rsa-key-size 4096 --verbose; \
 	else \
 		cd ./docker/nginx/certs && mkdir -p "live/${NGINX_DOMAIN_NAME}" && cd "./live/${NGINX_DOMAIN_NAME}" && mkcert -key-file privkey.pem -cert-file fullchain.pem ${NGINX_DOMAIN_NAME}; \
 	fi
 	@echo "certificates successfully created"
+
+# Stage only
+certs-renew:
+	@if [ "stage" != "${COMPOSE_ENV}" ]; then \
+  		echo "\033[1;91mError: The command certs-renew can be called in the stage environment only.\033[0m"; \
+  		exit 1; \
+  	fi
+	@docker run -it --rm --name certbot \
+		-v ./docker/nginx/certs:/etc/letsencrypt \
+		-v ./docker/certbot/www:/var/www/certbot \
+		-v ./docker/certbot/secrets:/.secrets \
+		-v ./docker/certbot/renew:/renew-hook \
+		certbot/dns-digitalocean renew \
+		--post-hook "touch /renew-hook/renewed.txt";
+	@make certs-renew.post-hook
+
+certs-renew.post-hook:
+ifneq (,$(wildcard ./docker/certbot/renew/renewed.txt))
+	@rm ./docker/certbot/renew/renewed.txt
+	@docker exec -it cmp-nginx nginx -s reload
+	@echo "\033[0;34mNginx reloaded\033[0m"
+endif
 
 cache:
 	docker exec -it cmp-app bin/console
