@@ -15,7 +15,9 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\QueryHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'query')]
 final class ConsentsDataGridQueryHandler implements QueryHandlerInterface
 {
     use DataGridQueryHandlerTrait;

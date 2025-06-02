@@ -9,7 +9,9 @@ use App\Domain\Category\CheckCodeUniquenessInterface;
 use App\Domain\Category\Command\UpdateCategoryCommand;
 use App\Domain\Category\ValueObject\CategoryId;
 use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'command')]
 final readonly class UpdateCategoryCommandHandler implements CommandHandlerInterface
 {
     public function __construct(

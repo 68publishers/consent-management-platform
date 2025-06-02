@@ -13,7 +13,9 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\QueryHandlerInterface;
 use SixtyEightPublishers\UserBundle\Domain\Aggregate\User;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'query')]
 final class UsersDataGridQueryHandler implements QueryHandlerInterface
 {
     use DataGridQueryHandlerTrait;

@@ -9,7 +9,9 @@ use App\Domain\Project\Command\CreateProjectCommand;
 use App\Domain\Project\Project;
 use App\Domain\Project\ProjectRepositoryInterface;
 use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'command')]
 final readonly class CreateProjectCommandHandler implements CommandHandlerInterface
 {
     public function __construct(

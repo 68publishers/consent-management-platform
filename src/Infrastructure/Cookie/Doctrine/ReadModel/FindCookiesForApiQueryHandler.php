@@ -17,7 +17,9 @@ use Doctrine\ORM\Query\Expr\Orx;
 use Generator;
 use SixtyEightPublishers\ArchitectureBundle\Infrastructure\Doctrine\ReadModel\BatchGeneratorFactory;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\QueryHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'query')]
 final readonly class FindCookiesForApiQueryHandler implements QueryHandlerInterface
 {
     public function __construct(

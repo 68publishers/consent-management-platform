@@ -8,7 +8,9 @@ use App\Domain\CookieSuggestion\Command\DoNotIgnoreCookieSuggestionCommand;
 use App\Domain\CookieSuggestion\CookieSuggestionRepositoryInterface;
 use App\Domain\CookieSuggestion\ValueObject\CookieSuggestionId;
 use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'command')]
 final readonly class DoNotIgnoreCookieSuggestionCommandHandler implements CommandHandlerInterface
 {
     public function __construct(

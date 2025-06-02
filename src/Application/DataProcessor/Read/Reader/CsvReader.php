@@ -39,7 +39,7 @@ final class CsvReader extends AbstractReader
     {
         try {
             $reader = $this->createReader();
-            $rows = Statement::create()->process($reader);
+            $rows = (new Statement())->process($reader);
         } catch (LeagueException $e) {
             $errorCallback(ReaderException::invalidResource($e->getMessage()));
 

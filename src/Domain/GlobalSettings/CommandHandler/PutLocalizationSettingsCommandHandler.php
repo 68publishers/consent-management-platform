@@ -11,7 +11,9 @@ use App\Domain\Shared\ValueObject\Locale;
 use App\Domain\Shared\ValueObject\Locales;
 use App\Domain\Shared\ValueObject\LocalesConfig;
 use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'command')]
 final readonly class PutLocalizationSettingsCommandHandler implements CommandHandlerInterface
 {
     public function __construct(

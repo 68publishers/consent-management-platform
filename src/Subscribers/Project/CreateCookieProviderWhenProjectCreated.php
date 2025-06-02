@@ -13,7 +13,9 @@ use App\ReadModel\CookieProvider\GetCookieProviderByIdQuery;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\ArchitectureBundle\Event\EventHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'event')]
 final readonly class CreateCookieProviderWhenProjectCreated implements EventHandlerInterface
 {
     public function __construct(

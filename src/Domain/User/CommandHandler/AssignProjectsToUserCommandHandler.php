@@ -10,7 +10,9 @@ use App\Domain\User\User;
 use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
 use SixtyEightPublishers\UserBundle\Domain\Repository\UserRepositoryInterface;
 use SixtyEightPublishers\UserBundle\Domain\ValueObject\UserId;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'command')]
 final readonly class AssignProjectsToUserCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
