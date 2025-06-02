@@ -21,11 +21,11 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.4
           tools: composer:v2
 
       - name: Install dependencies
         run: composer install --no-progress
 
       - name: Php-Cs-Fixer
-        run: vendor/bin/php-cs-fixer fix -v --dry-run
+        run: PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix -v --dry-run
