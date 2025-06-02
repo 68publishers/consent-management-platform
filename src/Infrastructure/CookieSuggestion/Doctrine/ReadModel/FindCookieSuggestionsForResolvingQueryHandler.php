@@ -11,7 +11,9 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\QueryHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'query')]
 final readonly class FindCookieSuggestionsForResolvingQueryHandler implements QueryHandlerInterface
 {
     public function __construct(

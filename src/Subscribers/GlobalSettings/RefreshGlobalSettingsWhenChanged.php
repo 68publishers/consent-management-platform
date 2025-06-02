@@ -12,24 +12,20 @@ use App\Domain\GlobalSettings\Event\EnvironmentSettingsChanged;
 use App\Domain\GlobalSettings\Event\GlobalSettingsCreated;
 use App\Domain\GlobalSettings\Event\LocalizationSettingsChanged;
 use SixtyEightPublishers\ArchitectureBundle\Event\EventHandlerInterface;
-use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final readonly class RefreshGlobalSettingsWhenChanged implements EventHandlerInterface, MessageSubscriberInterface
+final readonly class RefreshGlobalSettingsWhenChanged implements EventHandlerInterface
 {
     public function __construct(
         private GlobalSettingsInterface $globalSettings,
     ) {}
 
-    public static function getHandledMessages(): iterable
-    {
-        yield GlobalSettingsCreated::class;
-        yield LocalizationSettingsChanged::class;
-        yield ApiCacheSettingsChanged::class;
-        yield CrawlerSettingsChanged::class;
-        yield EnvironmentSettingsChanged::class;
-        yield AzureAuthSettingsChanged::class;
-    }
-
+    #[AsMessageHandler(bus: 'event', handles: GlobalSettingsCreated::class)]
+    #[AsMessageHandler(bus: 'event', handles: LocalizationSettingsChanged::class)]
+    #[AsMessageHandler(bus: 'event', handles: ApiCacheSettingsChanged::class)]
+    #[AsMessageHandler(bus: 'event', handles: CrawlerSettingsChanged::class)]
+    #[AsMessageHandler(bus: 'event', handles: EnvironmentSettingsChanged::class)]
+    #[AsMessageHandler(bus: 'event', handles: AzureAuthSettingsChanged::class)]
     public function __invoke(): void
     {
         $this->globalSettings->refresh();

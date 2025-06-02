@@ -13,8 +13,10 @@ use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\ArchitectureBundle\Event\EventHandlerInterface;
 use SixtyEightPublishers\ForgotPasswordBundle\Domain\Event\PasswordChangeCompleted;
 use SixtyEightPublishers\UserBundle\ReadModel\Query\GetUserByEmailAddressQuery;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 
+#[AsMessageHandler(bus: 'event')]
 final readonly class SendPasswordChangedMail implements EventHandlerInterface
 {
     public function __construct(

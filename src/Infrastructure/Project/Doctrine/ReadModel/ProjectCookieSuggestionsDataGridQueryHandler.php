@@ -14,7 +14,9 @@ use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\QueryHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'query')]
 final class ProjectCookieSuggestionsDataGridQueryHandler implements QueryHandlerInterface
 {
     use DataGridQueryHandlerTrait;

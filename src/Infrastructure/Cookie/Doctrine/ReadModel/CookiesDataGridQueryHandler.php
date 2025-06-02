@@ -18,7 +18,9 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\Expr\Orx;
 use JsonException;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\QueryHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'query')]
 final class CookiesDataGridQueryHandler implements QueryHandlerInterface
 {
     use DataGridQueryHandlerTrait;

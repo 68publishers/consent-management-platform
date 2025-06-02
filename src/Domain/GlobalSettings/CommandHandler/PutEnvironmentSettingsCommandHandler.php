@@ -10,7 +10,9 @@ use App\Domain\GlobalSettings\GlobalSettings;
 use App\Domain\GlobalSettings\GlobalSettingsRepositoryInterface;
 use App\Domain\GlobalSettings\ValueObject\EnvironmentSettings;
 use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'command')]
 final readonly class PutEnvironmentSettingsCommandHandler implements CommandHandlerInterface
 {
     public function __construct(

@@ -12,7 +12,6 @@ use App\Domain\Cookie\Event\CookieCategoryChanged;
 use App\Domain\Cookie\Event\CookieCreated;
 use App\Domain\Cookie\Event\CookieDomainChanged;
 use App\Domain\Cookie\Event\CookieNameChanged;
-use App\Domain\CookieProvider\CookieProvider;
 use App\Domain\CookieSuggestion\Event\CookieOccurrenceAdded;
 use App\Domain\CookieSuggestion\Event\CookieOccurrenceLastFoundAtChanged;
 use App\Domain\CookieSuggestion\Event\CookieSuggestionCreated;
@@ -31,146 +30,101 @@ use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Event\AggregateDeleted;
 use SixtyEightPublishers\ArchitectureBundle\Event\EventHandlerInterface;
-use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 
-final readonly class RecalculateCookieSuggestionsStatisticsWhenAnythingRelatedChanged implements EventHandlerInterface, MessageSubscriberInterface
+final readonly class RecalculateCookieSuggestionsStatisticsWhenAnythingRelatedChanged implements EventHandlerInterface
 {
     public function __construct(
         private CommandBusInterface $commandBus,
         private QueryBusInterface $queryBus,
     ) {}
 
-    public static function getHandledMessages(): iterable
-    {
-        # project
-        yield ProjectCreated::class => [
-            'method' => 'whenProjectCreated',
-        ];
-        yield ProjectDomainChanged::class => [
-            'method' => 'whenProjectDomainChanged',
-        ];
-        yield ProjectCookieProviderAdded::class => [
-            'method' => 'whenProjectCookieProviderAdded',
-        ];
-        yield ProjectCookieProviderRemoved::class => [
-            'method' => 'whenProjectCookieProviderRemoved',
-        ];
-
-        # category
-        yield CategoryCodeChanged::class => [
-            'method' => 'whenCategoryCodeChanged',
-        ];
-
-        # cookie
-        yield CookieCreated::class => [
-            'method' => 'whenCookieCreated',
-        ];
-        yield CookieCategoryChanged::class => [
-            'method' => 'whenCookieCategoryChanged',
-        ];
-        yield CookieDomainChanged::class => [
-            'method' => 'whenCookieDomainChanged',
-        ];
-        yield CookieNameChanged::class => [
-            'method' => 'whenCookieNameChanged',
-        ];
-
-        # cookie suggestion
-        yield CookieSuggestionCreated::class => [
-            'method' => 'whenCookieSuggestionCreated',
-        ];
-        yield CookieSuggestionIgnoredPermanentlyChanged::class => [
-            'method' => 'whenCookieSuggestionIgnoredPermanentlyChanged',
-        ];
-        yield CookieSuggestionIgnoredUntilNextOccurrenceChanged::class => [
-            'method' => 'whenCookieSuggestionIgnoredUntilNextOccurrenceChanged',
-        ];
-
-        # cookie suggestion - occurrences
-        yield CookieOccurrenceAdded::class => [
-            'method' => 'whenCookieOccurrenceAdded',
-        ];
-        yield CookieOccurrenceLastFoundAtChanged::class => [
-            'method' => 'whenCookieOccurrenceLastFoundAtChanged',
-        ];
-
-        # deletes
-        yield AggregateDeleted::class => [
-            'method' => 'whenAggregateDeleted',
-        ];
-    }
-
+    #[AsMessageHandler(bus: 'event')]
     public function whenProjectDomainChanged(ProjectDomainChanged $event): void
     {
         $this->doDispatch([$event->projectId()->toString()]);
     }
 
+    #[AsMessageHandler(bus: 'event')]
     public function whenProjectCreated(ProjectCreated $event): void
     {
         $this->doDispatch([$event->projectId()->toString()]);
     }
 
+    #[AsMessageHandler(bus: 'event')]
     public function whenProjectCookieProviderAdded(ProjectCookieProviderAdded $event): void
     {
         $this->doDispatch([$event->projectId()->toString()]);
     }
 
+    #[AsMessageHandler(bus: 'event')]
     public function whenProjectCookieProviderRemoved(ProjectCookieProviderRemoved $event): void
     {
         $this->doDispatch([$event->projectId()->toString()]);
     }
 
-    public function whenCategoryCodeChanged(): void
+    #[AsMessageHandler(bus: 'event')]
+    public function whenCategoryCodeChanged(CategoryCodeChanged $event): void
     {
         $this->doDispatch($this->getAllProjectIds());
     }
 
+    #[AsMessageHandler(bus: 'event')]
     public function whenCookieCreated(CookieCreated $event): void
     {
         $this->doDispatch($this->getAllProjectIdsByCookieProviderId($event->cookieProviderId()->toString()));
     }
 
+    #[AsMessageHandler(bus: 'event')]
     public function whenCookieCategoryChanged(CookieCategoryChanged $event): void
     {
         $this->doDispatch($this->getAllProjectIdsByCookieId($event->cookieId()->toString()));
     }
 
+    #[AsMessageHandler(bus: 'event')]
     public function whenCookieDomainChanged(CookieDomainChanged $event): void
     {
         $this->doDispatch($this->getAllProjectIdsByCookieId($event->cookieId()->toString()));
     }
 
+    #[AsMessageHandler(bus: 'event')]
     public function whenCookieNameChanged(CookieNameChanged $event): void
     {
         $this->doDispatch($this->getAllProjectIdsByCookieId($event->cookieId()->toString()));
     }
 
+    #[AsMessageHandler(bus: 'event')]
     public function whenCookieSuggestionCreated(CookieSuggestionCreated $event): void
     {
         $this->doDispatch([$event->projectId()->toString()]);
     }
 
+    #[AsMessageHandler(bus: 'event')]
     public function whenCookieSuggestionIgnoredPermanentlyChanged(CookieSuggestionIgnoredPermanentlyChanged $event): void
     {
         $this->doDispatch($this->getAllProjectIdsByCookieSuggestionId($event->cookieSuggestionId()->toString()));
     }
 
+    #[AsMessageHandler(bus: 'event')]
     public function whenCookieSuggestionIgnoredUntilNextOccurrenceChanged(CookieSuggestionIgnoredUntilNextOccurrenceChanged $event): void
     {
         $this->doDispatch($this->getAllProjectIdsByCookieSuggestionId($event->cookieSuggestionId()->toString()));
     }
 
+    #[AsMessageHandler(bus: 'event')]
     public function whenCookieOccurrenceAdded(CookieOccurrenceAdded $event): void
     {
         $this->doDispatch($this->getAllProjectIdsByCookieSuggestionId($event->cookieSuggestionId()->toString()));
     }
 
+    #[AsMessageHandler(bus: 'event')]
     public function whenCookieOccurrenceLastFoundAtChanged(CookieOccurrenceLastFoundAtChanged $event): void
     {
         $this->doDispatch($this->getAllProjectIdsByCookieSuggestionId($event->cookieSuggestionId()->toString()));
     }
 
+    #[AsMessageHandler(bus: 'event')]
     public function whenAggregateDeleted(AggregateDeleted $event): void
     {
         $ids = [];

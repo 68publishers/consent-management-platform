@@ -11,7 +11,9 @@ use DateTimeZone;
 use Doctrine\DBAL\Connection;
 use Exception;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\QueryHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'query')]
 final readonly class FindExternalAuthenticationsQueryHandler implements QueryHandlerInterface
 {
     public function __construct(

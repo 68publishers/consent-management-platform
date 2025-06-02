@@ -10,7 +10,9 @@ use App\Domain\Cookie\Command\UpdateCookieCommand;
 use App\Domain\Cookie\CookieRepositoryInterface;
 use App\Domain\Cookie\ValueObject\CookieId;
 use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'command')]
 final readonly class UpdateCookieCommandHandler implements CommandHandlerInterface
 {
     public function __construct(

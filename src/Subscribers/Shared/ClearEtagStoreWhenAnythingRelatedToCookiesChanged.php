@@ -36,62 +36,50 @@ use App\Domain\Project\Event\ProjectTemplateChanged;
 use App\Domain\Project\Project;
 use SixtyEightPublishers\ArchitectureBundle\Domain\Event\AggregateDeleted;
 use SixtyEightPublishers\ArchitectureBundle\Event\EventHandlerInterface;
-use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final readonly class ClearEtagStoreWhenAnythingRelatedToCookiesChanged implements EventHandlerInterface, MessageSubscriberInterface
+final readonly class ClearEtagStoreWhenAnythingRelatedToCookiesChanged implements EventHandlerInterface
 {
     public function __construct(
         private EtagStoreInterface $etagStore,
     ) {}
 
-    public static function getHandledMessages(): iterable
-    {
-        # cookie creation & updates
-        yield CookieCreated::class;
-        yield CookieCategoryChanged::class;
-        yield CookieActiveStateChanged::class;
-        yield CookieNameChanged::class;
-        yield CookieProcessingTimeChanged::class;
-        yield CookiePurposeChanged::class;
-        yield CookieEnvironmentsChanged::class;
-
-        # cookie provider updates
-        yield CookieProviderActiveStateChanged::class;
-        yield CookieProviderCodeChanged::class;
-        yield CookieProviderLinkChanged::class;
-        yield CookieProviderNameChanged::class;
-        yield CookieProviderPurposeChanged::class;
-        yield CookieProviderTypeChanged::class;
-
-        # category updates
-        yield CategoryActiveStateChanged::class;
-        yield CategoryCodeChanged::class;
-        yield CategoryNameUpdated::class;
-
-        # project changes
-        yield ProjectActiveStateChanged::class;
-        yield ProjectCodeChanged::class;
-        yield ProjectCookieProviderAdded::class;
-        yield ProjectCookieProviderRemoved::class;
-        yield ProjectLocalesChanged::class;
-        yield ProjectTemplateChanged::class;
-        yield ProjectEnvironmentsChanged::class;
-
-        # global settings changes
-        yield ApiCacheSettingsChanged::class;
-        yield EnvironmentSettingsChanged::class;
-
-        # deletes
-        yield AggregateDeleted::class => [
-            'method' => 'whenAggregateDeleted',
-        ];
-    }
-
+    # cookie creation & updates
+    #[AsMessageHandler(bus: 'event', handles: CookieCreated::class)]
+    #[AsMessageHandler(bus: 'event', handles: CookieCategoryChanged::class)]
+    #[AsMessageHandler(bus: 'event', handles: CookieActiveStateChanged::class)]
+    #[AsMessageHandler(bus: 'event', handles: CookieNameChanged::class)]
+    #[AsMessageHandler(bus: 'event', handles: CookieProcessingTimeChanged::class)]
+    #[AsMessageHandler(bus: 'event', handles: CookiePurposeChanged::class)]
+    #[AsMessageHandler(bus: 'event', handles: CookieEnvironmentsChanged::class)]
+    # cookie creation & updates
+    #[AsMessageHandler(bus: 'event', handles: CookieProviderActiveStateChanged::class)]
+    #[AsMessageHandler(bus: 'event', handles: CookieProviderCodeChanged::class)]
+    #[AsMessageHandler(bus: 'event', handles: CookieProviderLinkChanged::class)]
+    #[AsMessageHandler(bus: 'event', handles: CookieProviderNameChanged::class)]
+    #[AsMessageHandler(bus: 'event', handles: CookieProviderPurposeChanged::class)]
+    #[AsMessageHandler(bus: 'event', handles: CookieProviderTypeChanged::class)]
+    # category updates
+    #[AsMessageHandler(bus: 'event', handles: CategoryActiveStateChanged::class)]
+    #[AsMessageHandler(bus: 'event', handles: CategoryCodeChanged::class)]
+    #[AsMessageHandler(bus: 'event', handles: CategoryNameUpdated::class)]
+    # project changes
+    #[AsMessageHandler(bus: 'event', handles: ProjectActiveStateChanged::class)]
+    #[AsMessageHandler(bus: 'event', handles: ProjectCodeChanged::class)]
+    #[AsMessageHandler(bus: 'event', handles: ProjectCookieProviderAdded::class)]
+    #[AsMessageHandler(bus: 'event', handles: ProjectCookieProviderRemoved::class)]
+    #[AsMessageHandler(bus: 'event', handles: ProjectLocalesChanged::class)]
+    #[AsMessageHandler(bus: 'event', handles: ProjectTemplateChanged::class)]
+    #[AsMessageHandler(bus: 'event', handles: ProjectEnvironmentsChanged::class)]
+    # global settings changes
+    #[AsMessageHandler(bus: 'event', handles: ApiCacheSettingsChanged::class)]
+    #[AsMessageHandler(bus: 'event', handles: EnvironmentSettingsChanged::class)]
     public function __invoke(): void
     {
         $this->etagStore->clear();
     }
 
+    #[AsMessageHandler(bus: 'event')]
     public function whenAggregateDeleted(AggregateDeleted $event): void
     {
         $classnames = [

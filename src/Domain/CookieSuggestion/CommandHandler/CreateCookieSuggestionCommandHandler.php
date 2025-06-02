@@ -10,7 +10,9 @@ use App\Domain\CookieSuggestion\CookieSuggestion;
 use App\Domain\CookieSuggestion\CookieSuggestionRepositoryInterface;
 use Exception;
 use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'command')]
 final readonly class CreateCookieSuggestionCommandHandler implements CommandHandlerInterface
 {
     public function __construct(

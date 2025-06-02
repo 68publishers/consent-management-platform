@@ -8,7 +8,9 @@ use App\Domain\Import\Command\CompleteImportCommand;
 use App\Domain\Import\ImportRepositoryInterface;
 use App\Domain\Import\ValueObject\ImportId;
 use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'command')]
 final readonly class CompleteImportCommandHandler implements CommandHandlerInterface
 {
     public function __construct(

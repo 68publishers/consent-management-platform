@@ -9,7 +9,9 @@ use App\ReadModel\Category\FindAllOptionalCategoryCodesQuery;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\QueryHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'query')]
 final readonly class FindAllOptionalCategoryCodesQueryHandler implements QueryHandlerInterface
 {
     public function __construct(
