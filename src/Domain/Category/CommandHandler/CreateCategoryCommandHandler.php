@@ -9,7 +9,9 @@ use App\Domain\Category\CategoryRepositoryInterface;
 use App\Domain\Category\CheckCodeUniquenessInterface;
 use App\Domain\Category\Command\CreateCategoryCommand;
 use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'command')]
 final readonly class CreateCategoryCommandHandler implements CommandHandlerInterface
 {
     public function __construct(

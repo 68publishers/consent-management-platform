@@ -27,6 +27,8 @@ tracy:
 
 http:
     proxy: ::array_filter(::explode(',', ::env(TRUSTED_PROXIES, '')))
+    headers:
+        X-Powered-By: "'68 Publishers/CMP"
 
 decorator:
     Nette\Application\UI\Control:

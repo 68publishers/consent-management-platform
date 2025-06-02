@@ -11,7 +11,9 @@ use App\Domain\Cookie\Command\CreateCookieCommand;
 use App\Domain\Cookie\Cookie;
 use App\Domain\Cookie\CookieRepositoryInterface;
 use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'command')]
 final readonly class CreateCookieCommandHandler implements CommandHandlerInterface
 {
     public function __construct(

@@ -11,7 +11,9 @@ use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\Project\ValueObject\Template;
 use App\Domain\Shared\ValueObject\Locale;
 use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'command')]
 final readonly class UpdateProjectTemplatesCommandHandler implements CommandHandlerInterface
 {
     public function __construct(

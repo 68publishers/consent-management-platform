@@ -11,8 +11,10 @@ use Psr\Log\LoggerInterface;
 use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
 use SixtyEightPublishers\TranslationBridge\Localization\TranslatorLocalizerInterface;
 use SixtyEightPublishers\TranslationBridge\PrefixedTranslatorFactoryInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Throwable;
 
+#[AsMessageHandler(bus: 'command')]
 final class SendMailCommandHandler implements CommandHandlerInterface
 {
     private string $templatesDirectory;
