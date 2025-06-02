@@ -10,7 +10,9 @@ use App\Domain\Consent\Consent;
 use App\Domain\Consent\ConsentRepositoryInterface;
 use App\Domain\Consent\Exception\UserIdentifierExistsException;
 use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'command')]
 final readonly class StoreConsentCommandHandler implements CommandHandlerInterface
 {
     public function __construct(

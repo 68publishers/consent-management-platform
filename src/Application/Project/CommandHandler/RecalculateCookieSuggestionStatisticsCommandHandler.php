@@ -15,11 +15,13 @@ use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Handler\Acknowledger;
 use Symfony\Component\Messenger\Handler\BatchHandlerInterface;
 use Symfony\Component\Messenger\Handler\BatchHandlerTrait;
 use function count;
 
+#[AsMessageHandler(bus: 'command')]
 final class RecalculateCookieSuggestionStatisticsCommandHandler implements CommandHandlerInterface, BatchHandlerInterface
 {
     use BatchHandlerTrait;

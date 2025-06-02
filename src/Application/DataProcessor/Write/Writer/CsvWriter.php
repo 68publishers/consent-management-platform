@@ -14,6 +14,7 @@ use App\Application\DataProcessor\Write\Destination\FileDestination;
 use App\Application\DataProcessor\Write\Destination\StringDestination;
 use App\Application\DataProcessor\Write\Helper\FilePutContents;
 use App\Application\DataProcessor\Write\Resource\ResourceInterface;
+use League\Csv\Bom;
 use League\Csv\Exception;
 use League\Csv\InvalidArgument;
 use League\Csv\Writer;
@@ -65,7 +66,7 @@ final class CsvWriter extends AbstractWriter
         }
 
         if (isset($options[self::INCLUDE_BOM])) {
-            $writer->setOutputBOM($writer::BOM_UTF8);
+            $writer->setOutputBOM(Bom::Utf8);
         }
     }
 

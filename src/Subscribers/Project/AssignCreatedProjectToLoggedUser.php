@@ -10,7 +10,9 @@ use Nette\Security\User as NetteUser;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 use SixtyEightPublishers\ArchitectureBundle\Event\EventHandlerInterface;
 use SixtyEightPublishers\UserBundle\Application\Authentication\Identity;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'event')]
 final readonly class AssignCreatedProjectToLoggedUser implements EventHandlerInterface
 {
     public function __construct(

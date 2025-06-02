@@ -8,11 +8,5 @@ extensions:
             ::env('REDIS_PORT|int'),
             ::env('REDIS_AUTH|nullable', '')
         )
-        - SixtyEightPublishers\HealthCheck\ServiceChecker\PDOServiceChecker::fromParams([
-            driver: pgsql
-            host: ::env(DB_HOST)
-            port: ::env(DB_PORT)
-            dbname: ::env(DB_NAME)
-            user: ::env(DB_USER)
-            password: ::env(DB_PASSWORD)
-        ])
+        - SixtyEightPublishers\HealthCheck\ServiceChecker\DbalConnectionServiceChecker(serviceName: database)
+        - SixtyEightPublishers\HealthCheck\ServiceChecker\DbalConnectionServiceChecker(serviceName: ~database, table: project)

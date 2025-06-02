@@ -17,6 +17,7 @@ use SixtyEightPublishers\ArchitectureBundle\Bus\QueryBusInterface;
 use SixtyEightPublishers\ProjectionBundle\Projection\AbstractProjection;
 use SixtyEightPublishers\ProjectionBundle\Projection\EventDefinition;
 use SixtyEightPublishers\ProjectionBundle\ProjectionModel\ProjectionModelLocatorInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 final class ConsentStatisticsProjection extends AbstractProjection
 {
@@ -38,11 +39,13 @@ final class ConsentStatisticsProjection extends AbstractProjection
         yield new EventDefinition(Consent::class, ConsentUpdated::class);
     }
 
+    #[AsMessageHandler(bus: 'projection', fromTransport: 'consent_statistics')]
     public function whenConsentCreated(ConsentCreated $event): void
     {
         $this->insertRow($event->projectId(), $event->consentId(), $event->createdAt(), $event->consents(), $event->environment());
     }
 
+    #[AsMessageHandler(bus: 'projection', fromTransport: 'consent_statistics')]
     public function whenConsentUpdated(ConsentUpdated $event): void
     {
         $this->insertRow($event->projectId(), $event->consentId(), $event->createdAt(), $event->consents(), $event->environment());

@@ -9,7 +9,9 @@ use App\Domain\Project\Command\UpdateProjectCommand;
 use App\Domain\Project\ProjectRepositoryInterface;
 use App\Domain\Project\ValueObject\ProjectId;
 use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'command')]
 final readonly class UpdateProjectCommandHandler implements CommandHandlerInterface
 {
     public function __construct(

@@ -16,7 +16,9 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\Batch;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\BatchUtils;
 use SixtyEightPublishers\ArchitectureBundle\ReadModel\Query\QueryHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'query')]
 final readonly class CookieExportQueryHandler implements QueryHandlerInterface
 {
     public function __construct(

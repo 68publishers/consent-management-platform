@@ -15,7 +15,9 @@ use App\Domain\Project\ValueObject\ProjectId;
 use App\Domain\Shared\ValueObject\Checksum;
 use Exception;
 use SixtyEightPublishers\ArchitectureBundle\Command\CommandHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'command')]
 final readonly class StoreConsentSettingsCommandHandler implements CommandHandlerInterface
 {
     public function __construct(

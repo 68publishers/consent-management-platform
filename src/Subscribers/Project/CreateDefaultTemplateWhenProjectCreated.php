@@ -9,7 +9,9 @@ use App\Domain\Project\Event\ProjectCreated;
 use Psr\Log\LoggerInterface;
 use SixtyEightPublishers\ArchitectureBundle\Bus\CommandBusInterface;
 use SixtyEightPublishers\ArchitectureBundle\Event\EventHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(bus: 'event')]
 final readonly class CreateDefaultTemplateWhenProjectCreated implements EventHandlerInterface
 {
     public function __construct(

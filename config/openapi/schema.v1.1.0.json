@@ -694,33 +694,33 @@
       "HealthCheckResponse": {
         "type": "object",
         "properties": {
-          "status": {
-            "type": "string",
-            "example": "ok"
-          },
           "is_ok": {
             "type": "boolean"
           },
-          "services": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "example": "my-service"
-                },
-                "is_ok": {
-                  "type": "boolean"
-                },
-                "status": {
-                  "type": "string",
-                  "example": "running"
-                },
-                "error": {
-                  "type": "string",
-                  "nullable": true,
-                  "example": null
+          "detail": {
+            "properties": {
+              "services": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "my-service"
+                    },
+                    "is_ok": {
+                      "type": "boolean"
+                    },
+                    "detail": {
+                      "type": "object",
+                      "additionalProperties": true
+                    },
+                    "error": {
+                      "type": "string",
+                      "nullable": true,
+                      "example": null
+                    }
+                  }
                 }
               }
             }
