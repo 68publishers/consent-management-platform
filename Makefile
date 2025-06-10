@@ -83,8 +83,6 @@ cache:
 cache-clear:
 	rm -rf var/cache/*
 	rm -rf var/log/*
-	rm -rf var/mail-panel-latte
-	rm -rf var/mail-panel-mails
 
 redis-clear:
 	docker exec -it cmp-redis redis-cli -a redis_pass flushall

@@ -1,4 +1,4 @@
-FROM 68publishers/php:8.3-cli-prod-1.0.0 as builder
+FROM 68publishers/php:8.4-cli-prod-1.0.0 as builder
 
 WORKDIR /build
 USER root
@@ -11,9 +11,6 @@ RUN set -ex \
     # clear ./var
     && rm -rf var/cache \
     && cd var/log/ && rm -rf $(ls | grep -v .gitkeep) && cd ../.. \
-    && rm -rf var/mail-panel-latte \
-    && rm -rf var/mail-panel-mails \
-    && rm -rf var/postgres-data \
     && rm -rf var/git-version \
     # clear ./public/dist
     && rm -rf public/dist \
@@ -29,7 +26,7 @@ RUN set -ex \
     && yarn install --no-progress --non-interactive \
     && yarn run encore prod
 
-FROM 68publishers/php:8.3-unit-prod-1.0.1 as app
+FROM 68publishers/php:8.4-unit-prod-1.0.0 as app
 
 WORKDIR /var/www/html
 
@@ -44,7 +41,7 @@ COPY --from=builder --chown=www-data:www-data /build/vendor ./vendor/
 COPY --from=builder --chown=www-data:www-data /build/composer* .
 COPY --from=builder --chown=www-data:www-data /build/.env.local.php .
 
-FROM 68publishers/php:8.3-cli-prod-1.0.0 as worker
+FROM 68publishers/php:8.4-cli-prod-1.0.0 as worker
 
 USER root
 
