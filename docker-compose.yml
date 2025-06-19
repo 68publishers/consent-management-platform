@@ -115,5 +115,17 @@ services:
         networks:
             - backend
 
+    assets-builder:
+        image: node:22.16.0-alpine3.22
+        container_name: cmp-assets-builder
+        working_dir: /var/www/html
+        command: ["tail", "-f", "/dev/null"]
+        volumes:
+            - .:/var/www/html:cached
+        profiles:
+            - web
+        networks:
+            - backend
+
 networks:
     backend:
