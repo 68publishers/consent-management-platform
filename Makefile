@@ -141,8 +141,12 @@ install-composer:
 	docker exec -it cmp-app composer install --no-interaction --no-ansi --prefer-dist --no-progress --optimize-autoloader
 
 install-assets:
-	docker exec -it cmp-app yarn install --no-progress --non-interactive
-	docker exec -it cmp-app yarn run encore prod
+	docker exec -it cmp-assets-builder yarn install --no-progress --non-interactive
+	docker exec -it cmp-assets-builder yarn run encore prod
+
+install-assets.watch:
+	docker exec -it cmp-assets-builder yarn install --no-progress --non-interactive
+	docker exec -it cmp-assets-builder yarn run encore dev --watch
 
 init-with-certs:
 	@echo "\033[1;94mDo you want to setup the application on a domain ${NGINX_DOMAIN_NAME} with \"${COMPOSE_ENV}\" environment? [y/n]\033[0m"
