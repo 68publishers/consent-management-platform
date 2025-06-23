@@ -22,7 +22,7 @@
 		"68publishers/environment": "^1.1",
 		"68publishers/event-dispatcher-extra": "^1.3",
 		"68publishers/health-check": "^1.0.1",
-		"68publishers/oauth": "^1.0",
+		"68publishers/oauth": "^1.0.1",
 		"68publishers/omni": "0.1.x-dev",
 		"68publishers/smart-nette-component": "^1.0",
 		"68publishers/tracy-git-version": "^1.2",

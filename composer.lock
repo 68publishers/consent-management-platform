@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "07709507a40ae0b6db91ce456e59c924",
+    "content-hash": "8b9980d7b32248ec1854dc57728c700e",
     "packages": [
         {
             "name": "68publishers/asset",
@@ -410,16 +410,16 @@
         },
         {
             "name": "68publishers/oauth",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/68publishers/oauth.git",
-                "reference": "98c077b382cb37b572d9ac9d28c80d2dd2c1d70f"
+                "reference": "5bb2338e16266fcd079e14e9b07d10ea77d45567"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/68publishers/oauth/zipball/98c077b382cb37b572d9ac9d28c80d2dd2c1d70f",
-                "reference": "98c077b382cb37b572d9ac9d28c80d2dd2c1d70f",
+                "url": "https://api.github.com/repos/68publishers/oauth/zipball/5bb2338e16266fcd079e14e9b07d10ea77d45567",
+                "reference": "5bb2338e16266fcd079e14e9b07d10ea77d45567",
                 "shasum": ""
             },
             "require": {
@@ -464,9 +464,9 @@
             ],
             "support": {
                 "issues": "https://github.com/68publishers/oauth/issues",
-                "source": "https://github.com/68publishers/oauth/tree/v1.0.0"
+                "source": "https://github.com/68publishers/oauth/tree/v1.0.1"
             },
-            "time": "2024-01-29T01:14:07+00:00"
+            "time": "2025-06-23T08:38:02+00:00"
         },
         {
             "name": "68publishers/omni",
