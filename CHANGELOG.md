@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 1.2.1 - 2025-06-23
+
+### Added
+- Added command `make install-assets.watch`.
+
+### Changed
+- Frontend assets are now built using the `assets-builder` container. There is no need to make any changes when using the `make install-assets` command.
+
+### Fixed
+- Fixed handling of requests with invalid actions in OAuth presenter (fixed inside the package `68publishers/oauth`).
+
+## 1.2.0 - 2025-06-10
+
 ### Added
 - Added `<meta name="robots" content="noindex,nofollow">` to all pages to prevent pages indexing.
 
