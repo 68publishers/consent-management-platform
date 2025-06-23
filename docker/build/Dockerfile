@@ -25,6 +25,7 @@ WORKDIR /build
 USER root
 
 COPY . .
+COPY --from=builder /build/vendor ./vendor
 
 RUN set -ex \
     # clear ./public/dist
