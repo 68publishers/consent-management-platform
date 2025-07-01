@@ -334,16 +334,16 @@
         },
         {
             "name": "68publishers/health-check",
-            "version": "v1.0.1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/68publishers/health-check.git",
-                "reference": "18bc17433832491d75ce8f373d078e9e4d3a6dcc"
+                "reference": "f7484f91d3453503830e28380a57b8b90c890f27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/68publishers/health-check/zipball/18bc17433832491d75ce8f373d078e9e4d3a6dcc",
-                "reference": "18bc17433832491d75ce8f373d078e9e4d3a6dcc",
+                "url": "https://api.github.com/repos/68publishers/health-check/zipball/f7484f91d3453503830e28380a57b8b90c890f27",
+                "reference": "f7484f91d3453503830e28380a57b8b90c890f27",
                 "shasum": ""
             },
             "require": {
@@ -371,14 +371,21 @@
                 "phpstan/phpstan": "^1.9",
                 "phpstan/phpstan-nette": "^1.1",
                 "roave/security-advisories": "dev-latest",
-                "symfony/console": "^5.4 || ^6.0",
-                "symfony/dotenv": "^6.2"
+                "symfony/console": "^5.4 || ^6.0 || ^7.0",
+                "symfony/dotenv": "^6.2 || ^7.0"
             },
             "suggest": {
                 "nette/di": "For an integration with Nette Framework.",
                 "symfony/console": "If you want to use a console command."
             },
             "type": "library",
+            "extra": {
+                "omni": {
+                    "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"800\" height=\"800\" viewBox=\"0 0 32 32\"><path fill=\"#e291a8\" d=\"M26.94 8.07a8 8 0 0 0-5.56-2.23A7.79 7.79 0 0 0 16 8.08a8 8 0 0 0-11.1.22A7.91 7.91 0 0 0 5 19.51l.4.36a.65.65 0 0 0 .13.16l9.89 9.68a1 1 0 0 0 .7.29h0a1 1 0 0 0 .7-.3l1.58-1.61a1 1 0 0 0 .28-.73 1 1 0 0 0-.33-.72 4.2 4.2 0 0 1-1.35-3.2 4.37 4.37 0 0 1 7.52-3 1 1 0 0 0 .71.31h0a1 1 0 0 0 .71-.3l.61-.62a1 1 0 0 0 .24-.39l.29-.28h0a7.85 7.85 0 0 0-.14-11.09z\"/><g fill=\"#dd2853\"><path d=\"M21.31,19.08A4.37,4.37,0,0,0,17,23.44a4.41,4.41,0,0,0,4.36,4.37,4.37,4.37,0,0,0,4.37-4.37,4.37,4.37,0,0,0-4.37-4.36Z\"/><path d=\"M25.91 19A6.36 6.36 0 1 0 17 28.12a6.22 6.22 0 0 0 4.3 1.69 6.38 6.38 0 0 0 6.37-6.37A6.28 6.28 0 0 0 25.91 19zm-4.6 8.77A4.41 4.41 0 0 1 17 23.44a4.37 4.37 0 0 1 4.36-4.36 4.37 4.37 0 0 1 4.37 4.36 4.37 4.37 0 0 1-4.42 4.37z\"/></g><path fill=\"#e291a8\" d=\"M24.2 21.42a1 1 0 0 0-1.41-.14l-2.62 2.14-.41-.51a1 1 0 0 0-1.56 1.26l1 1.29a1 1 0 0 0 .68.37H20a1.05 1.05 0 0 0 .64-.22l3.4-2.78a1 1 0 0 0 .16-1.41z\"/></svg>",
+                    "name": "Health Check Extension",
+                    "extension": "SixtyEightPublishers\\HealthCheck\\Bridge\\Omni\\DI\\HealthCheckExtension"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "SixtyEightPublishers\\HealthCheck\\": "src/"
@@ -404,9 +411,9 @@
             ],
             "support": {
                 "issues": "https://github.com/68publishers/health-check/issues",
-                "source": "https://github.com/68publishers/health-check/tree/v1.0.1"
+                "source": "https://github.com/68publishers/health-check/tree/v1.1.0"
             },
-            "time": "2025-06-10T08:59:05+00:00"
+            "time": "2025-06-11T04:36:33+00:00"
         },
         {
             "name": "68publishers/oauth",
@@ -13296,6 +13303,6 @@
         "ext-libxml": "*",
         "ext-mbstring": "*"
     },
-    "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "platform-dev": [],
+    "plugin-api-version": "2.3.0"
 }
