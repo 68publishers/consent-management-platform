@@ -39,7 +39,7 @@ restart:
 
 mkcert:
 	@if [ "stage" = "${COMPOSE_ENV}" ]; then \
-  		docker run -it --rm --name certbot \
+  		docker run --rm --name certbot \
   			-v ./docker/nginx/certs:/etc/letsencrypt \
   			-v ./docker/certbot/www:/var/www/certbot \
   			-v ./docker/certbot/secrets:/.secrets \
@@ -61,7 +61,7 @@ certs-renew:
   		echo "\033[1;91mError: The command certs-renew can be called in the stage environment only.\033[0m"; \
   		exit 1; \
   	fi
-	@docker run -it --rm --name certbot \
+	@docker run --rm --name certbot \
 		-v ./docker/nginx/certs:/etc/letsencrypt \
 		-v ./docker/certbot/www:/var/www/certbot \
 		-v ./docker/certbot/secrets:/.secrets \
@@ -71,21 +71,21 @@ certs-renew:
 	@make certs-renew.post-hook
 
 certs-renew.post-hook:
-ifneq (,$(wildcard ./docker/certbot/renew/renewed.txt))
-	@rm ./docker/certbot/renew/renewed.txt
-	@docker exec -it cmp-nginx nginx -s reload
-	@echo "\033[0;34mNginx reloaded\033[0m"
-endif
+	@if [ -f ./docker/certbot/renew/renewed.txt ]; then \
+		rm ./docker/certbot/renew/renewed.txt; \
+		docker exec cmp-nginx nginx -s reload; \
+		echo "\033[0;34mNginx reloaded\033[0m"; \
+	fi
 
 cache:
-	docker exec -it cmp-app bin/console
+	docker exec -t cmp-app bin/console
 
 cache-clear:
 	rm -rf var/cache/*
 	rm -rf var/log/*
 
 redis-clear:
-	docker exec -it cmp-redis redis-cli -a redis_pass flushall
+	docker exec -t cmp-redis redis-cli -a redis_pass flushall
 
 build.local.%:
 	@echo "building a local image $(IMAGE):app-$* ..."
@@ -135,18 +135,18 @@ install:
 	make install-composer
 	make install-assets
 	make database-migrate
-	docker exec -it cmp-app bin/console messenger:stop-workers
+	docker exec -t cmp-app bin/console messenger:stop-workers
 
 install-composer:
-	docker exec -it cmp-app composer install --no-interaction --no-ansi --prefer-dist --no-progress --optimize-autoloader
+	docker exec -t cmp-app composer install --no-interaction --no-ansi --prefer-dist --no-progress --optimize-autoloader
 
 install-assets:
-	docker exec -it cmp-assets-builder yarn install --no-progress --non-interactive
-	docker exec -it cmp-assets-builder yarn run encore prod
+	docker exec -t cmp-assets-builder yarn install --no-progress --non-interactive
+	docker exec -t cmp-assets-builder yarn run encore prod
 
 install-assets.watch:
-	docker exec -it cmp-assets-builder yarn install --no-progress --non-interactive
-	docker exec -it cmp-assets-builder yarn run encore dev --watch
+	docker exec -t cmp-assets-builder yarn install --no-progress --non-interactive
+	docker exec -t cmp-assets-builder yarn run encore dev --watch
 
 init-with-certs:
 	@echo "\033[1;94mDo you want to setup the application on a domain ${NGINX_DOMAIN_NAME} with \"${COMPOSE_ENV}\" environment? [y/n]\033[0m"
@@ -172,14 +172,14 @@ init:
 
 data:
 	make data-migration
-	docker exec -it cmp-app bin/console doctrine:fixtures:load --no-interaction
+	docker exec -t cmp-app bin/console doctrine:fixtures:load --no-interaction
 
 database-migrate:
-	docker exec -it cmp-app bin/console migrations:migrate --no-interaction
+	docker exec -t cmp-app bin/console migrations:migrate --no-interaction
 
 fixtures:
 	@echo "\033[1;91mWarning: running this command without `--append` option will remove all existing data in the database!\033[0m"
-	docker exec -it cmp-app bin/console doctrine:fixtures:load --append --no-interaction
+	docker exec -t cmp-app bin/console doctrine:fixtures:load --append --no-interaction
 
 tests:
 	docker exec cmp-app vendor/bin/tester -C -s ./tests
@@ -188,7 +188,7 @@ qa:
 	@echo "not implemented" >&2
 
 cs:
-	docker exec -it -e PHP_CS_FIXER_IGNORE_ENV=1 cmp-app ./vendor/bin/php-cs-fixer fix -v
+	docker exec -t -e PHP_CS_FIXER_IGNORE_ENV=1 cmp-app ./vendor/bin/php-cs-fixer fix -v
 
 coverage:
 	@echo "not implemented" >&2
