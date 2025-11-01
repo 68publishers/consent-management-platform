@@ -63,7 +63,7 @@
 		"nette/tokenizer": "^3.1",
 		"nette/utils": "^4.0",
 		"nettrine/fixtures": "^0.6.4",
-		"nettrine/migrations": "^0.8.1",
+		"nettrine/migrations": "^0.10.0",
 		"nettrine/orm": "^0.8.4",
 		"oro/doctrine-extensions": "^2.0",
 		"scienta/doctrine-json-functions": "^5.5",
