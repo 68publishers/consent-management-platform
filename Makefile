@@ -12,7 +12,7 @@ ifneq (,$(wildcard ./.env))
 	export
 endif
 
-.PHONY: tests
+.PHONY: tests release
 
 start:
 	docker compose --profile web up -d
@@ -128,6 +128,11 @@ build.multiarch.%:
 		-t $(IMAGE):worker-$* \
 		.
 	@echo "done"
+
+# Local replacement of the GH Actions workflow, see ./docker/build/release.sh
+# Usage: make release VERSION=1.2.3 CHECKOUT=v1.2.3 [PLATFORMS=linux/amd64,linux/arm64] [PUSH_HPT=1] [PUSH_DOCKERHUB=1]
+release:
+	@./docker/build/release.sh
 
 install:
 	make cache-clear
