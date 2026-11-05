@@ -11,7 +11,7 @@ RUN set -ex \
     && cd var/log/ && rm -rf $(ls | grep -v .gitkeep) && cd ../.. \
     && rm -rf var/git-version \
     # install composer (dev included)
-    && composer install --no-interaction --no-ansi --prefer-dist --no-progress --dev \
+    && composer install --no-interaction --no-ansi --prefer-dist --no-progress \
     # export information about git repository
     && ./vendor/bin/tracy-git-version export-repository --output-file ./var/git-version/repository.json -vv \
     # dump .env.local.php file

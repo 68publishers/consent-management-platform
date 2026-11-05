@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Updated the version of dev docker images `68publishers/php` to `8.4-unit-dev-1.1.2` and `8.4-cli-dev-1.1.2` and production images to `8.4-unit-prod-1.1.2` and `8.4-cli-prod-1.1.2` (fixes CVE-2026-111497).
+- Composer installs the dev dependencies in the production build without the deprecated `--dev` option.
 
 ## 1.2.2 - 2026-10-21
 
