@@ -59,6 +59,7 @@ labels=(
     --label "org.opencontainers.image.licenses=NOASSERTION"
 )
 
+manifests=()
 # same as GH Actions: push by digest, then create the tagged manifest list (OCI index)
 for build in "${builds[@]}"; do
     target="${build%% *}"
@@ -79,6 +80,11 @@ for build in "${builds[@]}"; do
         --metadata-file "$metadata" \
         "$context"
     digest=$(jq -r '."containerimage.digest"' "$metadata")
-    docker buildx imagetools create --builder multi_arch_builder -t "$ref" "$image@$digest"
+    manifests+=("$ref $image@$digest")
+done
+
+# same as GH Actions merge job: publish the tags only after all images have been built
+for manifest in "${manifests[@]}"; do
+    docker buildx imagetools create --builder multi_arch_builder -t "${manifest%% *}" "${manifest#* }"
 done
 echo "done"
