@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Local replacement of the GH Actions workflow (.github/workflows/build.yml), run it while connected to the HPT VPN.
 # Builds a clean checkout of CHECKOUT from GitHub (like actions/checkout), not the working directory.
-# Requires `docker login registry2.hptronic.cz` and `docker login` (DockerHub) beforehand.
+# Requires `jq`, `docker login registry2.hptronic.cz` and `docker login` (DockerHub) beforehand.
 # Usage: VERSION=1.2.3 CHECKOUT=v1.2.3 [PLATFORMS=linux/amd64,linux/arm64] [PUSH_HPT=1] [PUSH_DOCKERHUB=1] ./docker/build/release.sh
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -32,6 +32,11 @@ if [[ "$PUSH_HPT" == 1 ]]; then
 fi
 if [[ ${#builds[@]} -eq 0 ]]; then
     echo "Error: At least one of the options PUSH_HPT or PUSH_DOCKERHUB must be enabled." >&2
+    exit 1
+fi
+
+if ! command -v jq > /dev/null; then
+    echo "Error: jq is required to read the image digests." >&2
     exit 1
 fi
 
