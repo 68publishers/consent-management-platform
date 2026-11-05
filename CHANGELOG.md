@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 1.2.3 - 2026-11-05
+
 ### Added
 
 - Added command `make release` (`docker/build/release.sh`) that builds and pushes the production images locally the same way as the GitHub Actions workflow.
