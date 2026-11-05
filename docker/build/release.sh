@@ -79,6 +79,6 @@ for build in "${builds[@]}"; do
         --metadata-file "$metadata" \
         "$context"
     digest=$(jq -r '."containerimage.digest"' "$metadata")
-    docker buildx imagetools create -t "$ref" "$image@$digest"
+    docker buildx imagetools create --builder multi_arch_builder -t "$ref" "$image@$digest"
 done
 echo "done"
