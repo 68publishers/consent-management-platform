@@ -1,6 +1,6 @@
 services:
     nginx:
-        image: nginx:1.27.1
+        image: nginx:1.30.7
         container_name: cmp-nginx
         profiles:
             - web
@@ -26,7 +26,7 @@ services:
             - backend
 
     app:
-        image: 68publishers/php:8.4-unit-dev-1.1.2
+        image: 68publishers/php:8.4-unit-dev-1.1.3
         user: "www-data:www-data"
         container_name: cmp-app
         profiles:

@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 1.2.4 - 2026-11-19
+
+### Changed
+
+- Updated the version of dev docker images `68publishers/php` to `8.4-unit-dev-1.1.3` and `8.4-cli-dev-1.1.3` and production images to `8.4-unit-prod-1.1.3` and `8.4-cli-prod-1.1.3` (PHP 8.4.28 security release, fixes curl CVE-2026-92392).
+- Updated the version of docker image `nginx` to `1.30.7` (fixes CVE-2026-123007).
+
 ## 1.2.3 - 2026-11-05
 
 ### Added
